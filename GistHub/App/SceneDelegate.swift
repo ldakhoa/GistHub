@@ -17,7 +17,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         boostrapWidow(from: scene)
     }
-    
+
     /// Bootstrap a new window with root view controller to display.
     private func boostrapWidow(from scene: UIScene) {
         guard let windowScene = scene as? UIWindowScene else { return }

@@ -15,7 +15,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-   
         return true
     }
 
@@ -31,7 +30,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             window.makeKeyAndVisible()
         }
     }
-    
+
     // MARK: UISceneSession Lifecycle
 
     func application(
