@@ -72,26 +72,26 @@ struct ProfilePage: View {
                         Text(followingText).foregroundColor(Colors.neutralEmphasisPlus.color)
                     }
 
-                    Button {
-
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text("View GitHub Profile")
-                                .font(.callout)
-                                .fontWeight(.semibold)
-                            Spacer()
+                    if let htmlURL = user.htmlURL,
+                       let url = URL(string: htmlURL) {
+                        Link(destination: url) {
+                            HStack {
+                                Spacer()
+                                Text("View GitHub Profile")
+                                    .font(.callout)
+                                    .fontWeight(.semibold)
+                                Spacer()
+                            }
+                            .padding(12)
+                            .background(Colors.buttonBackground.color)
+                            .foregroundColor(Colors.buttonForeground.color)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Colors.buttonBorder.color)
+                            )
                         }
-                        .padding(12)
-                        .background(Colors.buttonBackground.color)
-                        .foregroundColor(Colors.buttonForeground.color)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Colors.buttonBorder.color)
-                        )
+                        .padding(.top, 24)
                     }
-                    .padding(.top, 24)
-
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .padding(24)
