@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - IssuesStatistics
-
 struct Gist: Codable, Identifiable {
     let url: String?
     let forksURL: String?
@@ -19,10 +17,9 @@ struct Gist: Codable, Identifiable {
     let gitPushURL: String?
     let htmlURL: String?
     let files: [String: File]?
-    let issuesStatisticsPublic: Bool?
     let createdAt: Date?
     let updatedAt: Date?
-    let issuesStatisticsDescription: String?
+    let description: String?
     let comments: Int?
     let commentsURL: String?
     let owner: Owner?
@@ -38,10 +35,9 @@ struct Gist: Codable, Identifiable {
         case gitPushURL = "git_push_url"
         case htmlURL = "html_url"
         case files = "files"
-        case issuesStatisticsPublic = "public"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
-        case issuesStatisticsDescription = "description"
+        case description
         case comments = "comments"
         case commentsURL = "comments_url"
         case owner = "owner"
