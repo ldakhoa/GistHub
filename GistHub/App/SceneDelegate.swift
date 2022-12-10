@@ -25,11 +25,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         // Make initial view controller.
-        let viewController = UIViewController()
-        viewController.view.backgroundColor = .red
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let viewController = MainTabBarController()
         // Display the initial view controller.
-        window.rootViewController = navigationController
+        window.rootViewController = viewController
         window.makeKeyAndVisible()
         // Share the window to the `AppDelegate`.
         (UIApplication.shared.delegate as? AppDelegate)?.window = window
