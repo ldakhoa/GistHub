@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@MainActor final class HomeViewModel: ObservableObject {
+@MainActor final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
 
     private let client: GistHubAPIClient
@@ -16,9 +16,15 @@ import SwiftUI
         self.client = client
     }
 
-    func fetchGists() async {
+    func fetchGists(listsMode: GistListsMode) async {
         do {
-            let gists = try await client.gists()
+            let gists: [Gist]
+            switch listsMode {
+            case .allGists:
+                gists = try await client.gists()
+            case .starred:
+                gists = try await client.starredGists()
+            }
             contentState = .content(gists: gists)
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -26,7 +32,7 @@ import SwiftUI
     }
 }
 
-extension HomeViewModel {
+extension GistListsViewModel {
     enum ContentState {
         case loading
         case content(gists: [Gist])

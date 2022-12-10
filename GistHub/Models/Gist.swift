@@ -17,6 +17,7 @@ struct Gist: Codable, Identifiable {
     let gitPushURL: String?
     let htmlURL: String?
     let files: [String: File]?
+    let `public`: Bool?
     let createdAt: Date?
     let updatedAt: Date?
     let description: String?
@@ -35,6 +36,7 @@ struct Gist: Codable, Identifiable {
         case gitPushURL = "git_push_url"
         case htmlURL = "html_url"
         case files = "files"
+        case `public` = "public"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case description

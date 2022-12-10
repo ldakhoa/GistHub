@@ -17,7 +17,8 @@ final class MainTabBarController: UITabBarController {
 
         tabBar.tintColor = Colors.accent
 
-        let homePage = UIHostingController(rootView: HomePage())
+        let homePage = UIHostingController(rootView: GistListsView(listsMode: .allGists))
+        let starredPage = UIHostingController(rootView: GistListsView(listsMode: .starred))
 
         viewControllers = [
             createNavController(
@@ -27,7 +28,7 @@ final class MainTabBarController: UITabBarController {
                 selectedImageName: "home-fill"
             ),
             createNavController(
-                viewController: UIViewController(),
+                viewController: starredPage,
                 title: "Starred",
                 imageName: "star",
                 selectedImageName: "star-fill"

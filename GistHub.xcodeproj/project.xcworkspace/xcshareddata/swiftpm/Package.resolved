@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "44e891bdb61426a95e31492a67c7c0dfad1f87c5",
+        "version" : "7.4.1"
+      }
+    },
+    {
       "identity" : "networkable",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tphduy/Networkable",

@@ -9,8 +9,11 @@ import Foundation
 import Networkable
 
 protocol GistHubAPIClient {
-    /// List gists for the authenticated user
+    /// List gists for the authenticated user.
     func gists() async throws -> [Gist]
+
+    /// List the authenticated user's starred gist.
+    func starredGists() async throws -> [Gist]
 }
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -23,11 +26,16 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func gists() async throws -> [Gist] {
         try await session.data(for: API.gists)
     }
+
+    func starredGists() async throws -> [Gist] {
+        try await session.data(for: API.starredGists)
+    }
 }
 
 extension DefaultGistHubAPIClient {
     enum API: Request {
         case gists
+        case starredGists
 
         var headers: [String: String]? {
             return [
@@ -39,12 +47,14 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .gists:
                 return "/gists"
+            case .starredGists:
+                return "/gists/starred"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .gists:
+            case .gists, .starredGists:
                 return .get
             }
         }

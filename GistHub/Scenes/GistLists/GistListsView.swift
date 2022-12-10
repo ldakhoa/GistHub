@@ -1,0 +1,129 @@
+//
+//  HomePage.swift
+//  GistHub
+//
+//  Created by Khoa Le on 10/12/2022.
+//
+
+import SwiftUI
+import Inject
+import Kingfisher
+
+struct GistListsView: View {
+    @ObserveInjection private var inject
+    @StateObject private var viewModel = GistListsViewModel()
+
+    let listsMode: GistListsMode
+
+    var body: some View {
+        ZStack {
+            switch viewModel.contentState {
+            case .loading:
+                ProgressView()
+            case let .content(gists):
+                List {
+                    ForEach(gists) { gist in
+                        PlainNavigationLink {
+                            GistDetailView(gist: gist)
+                        } label: {
+                            GistListDetailView(gist: gist)
+                        }
+                    }
+                }
+                .listStyle(.plain)
+            case let .error(error):
+                Text(error)
+                    .foregroundColor(Colors.danger.color)
+            }
+        }
+        .navigationTitle(Text(listsMode.navigationTitle))
+        .onLoad { fetchGists() }
+        .refreshable { fetchGists() }
+        .enableInjection()
+    }
+
+    private func fetchGists() {
+        Task {
+            await viewModel.fetchGists(listsMode: listsMode)
+        }
+    }
+}
+
+private struct GistListDetailView: View {
+    let gist: Gist
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let files = gist.files,
+               let fileName: String = files.keys.first,
+               let createdAt = gist.createdAt,
+               let updatedAt = gist.updatedAt {
+                HStack(alignment: .center, spacing: 6) {
+                    if
+                        let avatarURLString = gist.owner?.avatarURL,
+                        let url = URL(string: avatarURLString)
+                    {
+                        KFImage
+                            .url(url)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 24, height: 24)
+                            .cornerRadius(12)
+                    }
+                    Text(gist.owner?.login ?? "")
+                        .font(.subheadline)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                }
+
+                HStack(alignment: .center, spacing: 2) {
+                    Text(fileName)
+                        .bold()
+
+                    makeVisibleImage(isPublic: gist.public ?? false)
+                }
+
+                if let description = gist.description, !description.isEmpty {
+                    Text(description)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        .font(.subheadline)
+                        .lineLimit(2)
+                }
+
+                if createdAt == updatedAt {
+                    Text("Created \(createdAt.agoString())")
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        .font(.caption)
+                } else {
+                    Text("Last active \(createdAt.agoString())")
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        .font(.caption)
+                }
+
+                HStack(alignment: .center) {
+                    let fileTitle = files.keys.count > 1 ? "files" : "file"
+                    footerItem(title: "\(files.keys.count) \(fileTitle)", imageName: "file-code")
+                    let commentTitle = gist.comments ?? 0 > 1 ? "comments" : "comment"
+                    footerItem(title: "\(gist.comments ?? 0) \(commentTitle)", imageName: "comment")
+                }
+            }
+        }
+    }
+
+    private func makeVisibleImage(isPublic: Bool) -> some View {
+        Image(systemName: isPublic ? "" : "lock")
+            .font(.subheadline)
+            .foregroundColor(Colors.neutralEmphasis.color)
+            .padding(.leading, 2)
+    }
+
+    private func footerItem(title: String, imageName: String) -> some View {
+        HStack(alignment: .center, spacing: 2) {
+            Image(imageName)
+                .resizable()
+                .frame(width: 16, height: 16)
+            Text(title)
+                .font(.footnote)
+        }
+        .padding(.top, 2)
+    }
+}
