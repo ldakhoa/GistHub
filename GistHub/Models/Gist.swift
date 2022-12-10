@@ -23,7 +23,7 @@ struct Gist: Codable, Identifiable {
     let description: String?
     let comments: Int?
     let commentsURL: String?
-    let owner: Owner?
+    let owner: User?
     let truncated: Bool?
 
     enum CodingKeys: String, CodingKey {

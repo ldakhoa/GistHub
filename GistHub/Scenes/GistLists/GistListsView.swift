@@ -29,6 +29,7 @@ struct GistListsView: View {
                             GistListDetailView(gist: gist)
                         }
                     }
+                    .listRowBackground(Colors.listBackground.color)
                 }
                 .listStyle(.plain)
             case let .error(error):
@@ -79,7 +80,12 @@ private struct GistListDetailView: View {
                     Text(fileName)
                         .bold()
 
-                    makeVisibleImage(isPublic: gist.public ?? false)
+                    if !(gist.public ?? true) {
+                        Image(systemName: "lock")
+                            .font(.subheadline)
+                            .foregroundColor(Colors.neutralEmphasis.color)
+                            .padding(.leading, 2)
+                    }
                 }
 
                 if let description = gist.description, !description.isEmpty {
@@ -109,21 +115,16 @@ private struct GistListDetailView: View {
         }
     }
 
-    private func makeVisibleImage(isPublic: Bool) -> some View {
-        Image(systemName: isPublic ? "" : "lock")
-            .font(.subheadline)
-            .foregroundColor(Colors.neutralEmphasis.color)
-            .padding(.leading, 2)
-    }
-
     private func footerItem(title: String, imageName: String) -> some View {
         HStack(alignment: .center, spacing: 2) {
             Image(imageName)
                 .resizable()
+                .renderingMode(.template)
                 .frame(width: 16, height: 16)
             Text(title)
                 .font(.footnote)
         }
+        .foregroundColor(Colors.neutralEmphasisPlus.color)
         .padding(.top, 2)
     }
 }

@@ -19,6 +19,7 @@ final class MainTabBarController: UITabBarController {
 
         let homePage = UIHostingController(rootView: GistListsView(listsMode: .allGists))
         let starredPage = UIHostingController(rootView: GistListsView(listsMode: .starred))
+        let profilePage = UIHostingController(rootView: ProfilePage())
 
         viewControllers = [
             createNavController(
@@ -34,7 +35,7 @@ final class MainTabBarController: UITabBarController {
                 selectedImageName: "star-fill"
             ),
             createNavController(
-                viewController: UIViewController(),
+                viewController: profilePage,
                 title: "Profile",
                 imageName: "person",
                 selectedImageName: "person-fill"
@@ -50,7 +51,13 @@ final class MainTabBarController: UITabBarController {
     ) -> UIViewController {
         let navController = UINavigationController(rootViewController: viewController)
         navController.navigationBar.prefersLargeTitles = true
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = Colors.listBackground
+
         navigationController?.navigationBar.tintColor = Colors.accent
+        navController.navigationBar.standardAppearance = appearance
+        navController.navigationBar.scrollEdgeAppearance = appearance
 
         navController.tabBarItem.title = title
 

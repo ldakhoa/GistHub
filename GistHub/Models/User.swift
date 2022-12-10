@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Owner: Codable {
+struct User: Codable {
     let login: String?
     let id: Int?
     let nodeID: String?
@@ -26,6 +26,14 @@ struct Owner: Codable {
     let receivedEventsURL: String?
     let type: String?
     let siteAdmin: Bool?
+    let name: String?
+    let location: String?
+    let company: String?
+    let followers: Int?
+    let following: Int?
+    let email: String?
+    let bio: String?
+    let twitterUsername: String?
 
     enum CodingKeys: String, CodingKey {
         case login = "login"
@@ -46,5 +54,13 @@ struct Owner: Codable {
         case receivedEventsURL = "received_events_url"
         case type = "type"
         case siteAdmin = "site_admin"
+        case name
+        case location
+        case company
+        case followers
+        case following
+        case email
+        case bio
+        case twitterUsername = "twitter_username"
     }
 }

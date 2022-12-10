@@ -14,6 +14,9 @@ protocol GistHubAPIClient {
 
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
+
+    /// Get authenticated user info.
+    func user() async throws -> User
 }
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -30,12 +33,17 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func starredGists() async throws -> [Gist] {
         try await session.data(for: API.starredGists)
     }
+
+    func user() async throws -> User {
+        try await session.data(for: API.user)
+    }
 }
 
 extension DefaultGistHubAPIClient {
     enum API: Request {
         case gists
         case starredGists
+        case user
 
         var headers: [String: String]? {
             return [
@@ -49,12 +57,14 @@ extension DefaultGistHubAPIClient {
                 return "/gists"
             case .starredGists:
                 return "/gists/starred"
+            case .user:
+                return "/user"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .gists, .starredGists:
+            case .gists, .starredGists, .user:
                 return .get
             }
         }
