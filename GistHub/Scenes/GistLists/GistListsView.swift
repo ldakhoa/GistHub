@@ -52,6 +52,11 @@ struct GistListsView: View {
         }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
+        .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+        .scrollDismissesKeyboard(.interactively)
+        .onChange(of: viewModel.searchText) { _ in
+            viewModel.search()
+        }
         .enableInjection()
     }
 

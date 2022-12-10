@@ -9,7 +9,9 @@ import SwiftUI
 
 @MainActor final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
+    @Published var searchText = ""
 
+    @Published private var gists = [Gist]()
     private let client: GistHubAPIClient
 
     init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
@@ -25,9 +27,28 @@ import SwiftUI
             case .starred:
                 gists = try await client.starredGists()
             }
+            self.gists = gists
             contentState = .content(gists: gists)
         } catch {
             contentState = .error(error: error.localizedDescription)
+        }
+    }
+
+    func search() {
+        if searchText.isEmpty {
+            contentState = .content(gists: self.gists)
+            print(gists.count)
+        } else {
+            let newGists = gists.filter {
+                if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {
+                let fileNameCondition = fileNames.filter { $0.range(of: searchText, options: .caseInsensitive) != nil }
+                    let loginNameCondition = loginName.localizedCaseInsensitiveContains(searchText)
+                    let descriptionCondition = ($0.description ?? "").localizedCaseInsensitiveContains(searchText)
+                    return !fileNameCondition.isEmpty || loginNameCondition || descriptionCondition
+                }
+                return false
+            }
+            contentState = .content(gists: newGists)
         }
     }
 }

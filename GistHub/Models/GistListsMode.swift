@@ -19,4 +19,13 @@ enum GistListsMode {
             return "Starred Gists"
         }
     }
+
+    var promptSearchText: String {
+        switch self {
+        case .allGists:
+            return "Search Gists"
+        case .starred:
+            return "Search Starred Gists"
+        }
+    }
 }
