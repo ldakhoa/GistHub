@@ -17,6 +17,15 @@ protocol GistHubAPIClient {
 
     /// Get authenticated user info.
     func user() async throws -> User
+
+    /// Star a gist.
+    func starGist(gistID: String) async throws
+
+    /// Unstar a gist.
+    func unstarGist(gistID: String) async throws
+
+    /// Check if gist is starred.
+    func isStarred(gistID: String) async throws
 }
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -37,6 +46,18 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func user() async throws -> User {
         try await session.data(for: API.user)
     }
+
+    func starGist(gistID: String) async throws {
+        try await session.data(for: API.starGist(gistID: gistID))
+    }
+
+    func unstarGist(gistID: String) async throws {
+        try await session.data(for: API.unstarGist(gistID: gistID))
+    }
+
+    func isStarred(gistID: String) async throws {
+        try await session.data(for: API.isStarred(gistID: gistID))
+    }
 }
 
 extension DefaultGistHubAPIClient {
@@ -44,10 +65,14 @@ extension DefaultGistHubAPIClient {
         case gists
         case starredGists
         case user
+        case starGist(gistID: String)
+        case unstarGist(gistID: String)
+        case isStarred(gistID: String)
 
         var headers: [String: String]? {
             return [
-                "Authorization": "Bearer \(PRIVATE_TOKEN)"
+                "Authorization": "Bearer \(PRIVATE_TOKEN)",
+                "Accept": "application/vnd.github+json"
             ]
         }
 
@@ -59,13 +84,21 @@ extension DefaultGistHubAPIClient {
                 return "/gists/starred"
             case .user:
                 return "/user"
+            case let .starGist(gistID),
+                let .unstarGist(gistID),
+                let .isStarred(gistID):
+                return "/gists/\(gistID)/star"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .gists, .starredGists, .user:
+            case .gists, .starredGists, .user, .isStarred:
                 return .get
+            case .starGist:
+                return .put
+            case .unstarGist:
+                return .delete
             }
         }
 
