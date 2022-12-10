@@ -25,7 +25,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             let window = UIWindow()
             self.window = window
-            let viewController = UIViewController()
+            let viewController = MainTabBarController()
             window.rootViewController = viewController
             window.makeKeyAndVisible()
         }

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5312943CF33007B7D68 /* AppDelegate.swift */; };
 		6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */; };
-		6A7CF5362943CF33007B7D68 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5352943CF33007B7D68 /* ViewController.swift */; };
 		6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53A2943CF35007B7D68 /* Assets.xcassets */; };
 		6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53C2943CF35007B7D68 /* LaunchScreen.storyboard */; };
 		6A7CF54A294455B9007B7D68 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF549294455B9007B7D68 /* Colors.swift */; };
@@ -23,13 +22,19 @@
 		6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF55E29446967007B7D68 /* MainTabBarController.swift */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
 		6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56329446E5D007B7D68 /* GitHubPrivateKey.swift */; };
+		6A7CF56729446F3E007B7D68 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56629446F3E007B7D68 /* HomePage.swift */; };
+		6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5692944720D007B7D68 /* Gist.swift */; };
+		6A7CF56C29447275007B7D68 /* Owner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56B29447275007B7D68 /* Owner.swift */; };
+		6A7CF56E29447285007B7D68 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56D29447285007B7D68 /* File.swift */; };
+		6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56F294473B0007B7D68 /* GistHubAPIClient.swift */; };
+		6A7CF572294474E8007B7D68 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF571294474E8007B7D68 /* HomeViewModel.swift */; };
+		6A7CF574294475DC007B7D68 /* ViewDidLoadModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF573294475DC007B7D68 /* ViewDidLoadModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A7CF5312943CF33007B7D68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6A7CF5352943CF33007B7D68 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,6 +46,13 @@
 		6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDecoderMiddleware.swift; sourceTree = "<group>"; };
 		6A7CF55E29446967007B7D68 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		6A7CF56329446E5D007B7D68 /* GitHubPrivateKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubPrivateKey.swift; sourceTree = "<group>"; };
+		6A7CF56629446F3E007B7D68 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		6A7CF5692944720D007B7D68 /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
+		6A7CF56B29447275007B7D68 /* Owner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Owner.swift; sourceTree = "<group>"; };
+		6A7CF56D29447285007B7D68 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		6A7CF56F294473B0007B7D68 /* GistHubAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GistHubAPIClient.swift; sourceTree = "<group>"; };
+		6A7CF571294474E8007B7D68 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		6A7CF573294475DC007B7D68 /* ViewDidLoadModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,12 +88,13 @@
 		6A7CF5302943CF33007B7D68 /* GistHub */ = {
 			isa = PBXGroup;
 			children = (
+				6A7CF575294475E7007B7D68 /* Utilities */,
+				6A7CF56829447206007B7D68 /* Models */,
 				6A7CF5452943CF3A007B7D68 /* App */,
 				6A7CF556294464BE007B7D68 /* Networking */,
 				6A7CF54829444ECE007B7D68 /* PrimerStyle */,
 				6A7CF5462943CF42007B7D68 /* Resources */,
 				6A7CF55D29446530007B7D68 /* Scenes */,
-				6A7CF5352943CF33007B7D68 /* ViewController.swift */,
 			);
 			path = GistHub;
 			sourceTree = "<group>";
@@ -123,6 +136,7 @@
 				6A7CF557294464D2007B7D68 /* GitHubError.swift */,
 				6A7CF559294464D8007B7D68 /* NetworkSession+GitHub.swift */,
 				6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */,
+				6A7CF56F294473B0007B7D68 /* GistHubAPIClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -130,8 +144,36 @@
 		6A7CF55D29446530007B7D68 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				6A7CF56529446F19007B7D68 /* Home */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		6A7CF56529446F19007B7D68 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				6A7CF56629446F3E007B7D68 /* HomePage.swift */,
+				6A7CF571294474E8007B7D68 /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		6A7CF56829447206007B7D68 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6A7CF5692944720D007B7D68 /* Gist.swift */,
+				6A7CF56B29447275007B7D68 /* Owner.swift */,
+				6A7CF56D29447285007B7D68 /* File.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6A7CF575294475E7007B7D68 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				6A7CF573294475DC007B7D68 /* ViewDidLoadModifier.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,14 +278,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A7CF56C29447275007B7D68 /* Owner.swift in Sources */,
 				6A7CF55C294464F3007B7D68 /* ErrorDecoderMiddleware.swift in Sources */,
-				6A7CF5362943CF33007B7D68 /* ViewController.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
+				6A7CF572294474E8007B7D68 /* HomeViewModel.swift in Sources */,
 				6A7CF55029445898007B7D68 /* UIColor+Extensions.swift in Sources */,
 				6A7CF55A294464D9007B7D68 /* NetworkSession+GitHub.swift in Sources */,
+				6A7CF574294475DC007B7D68 /* ViewDidLoadModifier.swift in Sources */,
 				6A7CF558294464D2007B7D68 /* GitHubError.swift in Sources */,
 				6A7CF54A294455B9007B7D68 /* Colors.swift in Sources */,
+				6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */,
+				6A7CF56729446F3E007B7D68 /* HomePage.swift in Sources */,
 				6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */,
+				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
+				6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */,
 				6A7CF54E2944586E007B7D68 /* ColorValue.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,

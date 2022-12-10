@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 final class MainTabBarController: UITabBarController {
 
@@ -16,18 +17,23 @@ final class MainTabBarController: UITabBarController {
 
         tabBar.tintColor = Colors.accent
 
-        let home = UIViewController()
-        home.view.backgroundColor = .white
+        let homePage = UIHostingController(rootView: HomePage())
 
         viewControllers = [
             createNavController(
-                viewController: home,
+                viewController: homePage,
                 title: "Home",
                 imageName: "home",
                 selectedImageName: "home-fill"
             ),
             createNavController(
-                viewController: home,
+                viewController: UIViewController(),
+                title: "Starred",
+                imageName: "star",
+                selectedImageName: "star-fill"
+            ),
+            createNavController(
+                viewController: UIViewController(),
                 title: "Profile",
                 imageName: "person",
                 selectedImageName: "person-fill"
@@ -49,8 +55,6 @@ final class MainTabBarController: UITabBarController {
 
         navController.tabBarItem.selectedImage = UIImage(named: selectedImageName)?.withRenderingMode(.alwaysTemplate)
         navController.tabBarItem.image = UIImage(named: imageName)
-
-        navController.setNavigationBarHidden(true, animated: true)
 
         return navController
     }
