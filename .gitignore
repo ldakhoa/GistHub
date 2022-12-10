@@ -88,3 +88,4 @@ Resources/*.xcconfig
 FailureDiffs/s
 
 .env
+GistHub/Networking/GitHubPrivateKey.swift

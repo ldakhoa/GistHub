@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Inject
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -26,8 +27,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         // Make initial view controller.
         let viewController = MainTabBarController()
+        let injectController = Inject.ViewControllerHost(viewController)
         // Display the initial view controller.
-        window.rootViewController = viewController
+        window.rootViewController = injectController
         window.makeKeyAndVisible()
         // Share the window to the `AppDelegate`.
         (UIApplication.shared.delegate as? AppDelegate)?.window = window
