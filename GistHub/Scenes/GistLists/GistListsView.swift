@@ -38,6 +38,18 @@ struct GistListsView: View {
             }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+
+                } label: {
+                    Image(systemName: "plus.circle")
+                        .renderingMode(.template)
+                        .foregroundColor(Colors.accent.color)
+                }
+
+            }
+        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .enableInjection()
@@ -83,7 +95,7 @@ private struct GistListDetailView: View {
                     if !(gist.public ?? true) {
                         Image(systemName: "lock")
                             .font(.subheadline)
-                            .foregroundColor(Colors.neutralEmphasis.color)
+                            .foregroundColor(Colors.neutralEmphasisPlus.color)
                             .padding(.leading, 2)
                     }
                 }

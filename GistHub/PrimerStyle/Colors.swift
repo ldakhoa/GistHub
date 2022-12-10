@@ -419,7 +419,7 @@ final class Colors {
         }
     }
 
-    static var accent = Palette.Blue.blue5.dynamicColor
+    static var accent = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark)
     static var success = Palette.Green.green5.dynamicColor
     static var danger = Palette.Red.red5.dynamicColor
     static var neutralEmphasisPlus = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
