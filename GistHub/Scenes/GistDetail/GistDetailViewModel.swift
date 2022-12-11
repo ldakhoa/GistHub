@@ -8,7 +8,7 @@
 import Combine
 
 @MainActor final class GistDetailViewModel: ObservableObject {
-    @Published var contentState: ContentState = .idling
+    @Published var contentState: ContentState = .loading
     @Published var starButtonState: StarButtonState = .idling
 
     private let client: GistHubAPIClient
@@ -43,11 +43,21 @@ import Combine
             starButtonState = .unstarred
         }
     }
+
+    func gist(gistID: String) async {
+        do {
+            let gist = try await client.gist(fromGistID: gistID)
+            contentState = .content(gist: gist)
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
 }
 
 extension GistDetailViewModel {
     enum ContentState {
-        case idling
+        case loading
+        case content(gist: Gist)
         case error(error: String)
     }
 

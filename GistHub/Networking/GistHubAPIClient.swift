@@ -26,6 +26,9 @@ protocol GistHubAPIClient {
 
     /// Check if gist is starred.
     func isStarred(gistID: String) async throws
+
+    /// Get a gist.
+    func gist(fromGistID gistID: String) async throws -> Gist
 }
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -58,6 +61,10 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func isStarred(gistID: String) async throws {
         try await session.data(for: API.isStarred(gistID: gistID))
     }
+
+    func gist(fromGistID gistID: String) async throws -> Gist {
+        try await session.data(for: API.gist(gistID: gistID))
+    }
 }
 
 extension DefaultGistHubAPIClient {
@@ -68,6 +75,7 @@ extension DefaultGistHubAPIClient {
         case starGist(gistID: String)
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
+        case gist(gistID: String)
 
         var headers: [String: String]? {
             return [
@@ -88,12 +96,14 @@ extension DefaultGistHubAPIClient {
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
                 return "/gists/\(gistID)/star"
+            case let .gist(gistID):
+                return "/gists/\(gistID)"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .gists, .starredGists, .user, .isStarred:
+            case .gists, .starredGists, .user, .isStarred, .gist:
                 return .get
             case .starGist:
                 return .put

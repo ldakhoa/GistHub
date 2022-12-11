@@ -7,40 +7,178 @@
 
 import SwiftUI
 import Inject
+import Kingfisher
 
 struct GistDetailView: View {
     @ObserveInjection private var inject
 
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
+    @State private var scrollOffset: CGPoint = .zero
 
     let gist: Gist
 
     var body: some View {
-        VStack {
-            switch viewModel.starButtonState {
-            case .idling:
-                EmptyView()
-            case .starred:
-                buildStarButton(isStarred: true)
-            case .unstarred:
-                buildStarButton(isStarred: false)
+        ZStack {
+            switch viewModel.contentState {
+            case .loading:
+                ProgressView()
+            case let .error(error):
+                Text(error)
+                    .foregroundColor(Colors.danger.color)
+            case let .content(gist):
+                ZStack {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 8) {
+                            buildTitleView()
+
+                            if let description = gist.description, !description.isEmpty {
+                                Text(description)
+                                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                    .lineLimit(2)
+                            }
+
+                            if let createdAt = gist.createdAt,
+                               let updatedAt = gist.updatedAt {
+                                if createdAt == updatedAt {
+                                    Text("Created \(createdAt.agoString())")
+                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                        .font(.subheadline)
+                                } else {
+                                    Text("Last active \(createdAt.agoString())")
+                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                        .font(.subheadline)
+                                }
+                            }
+
+                            switch viewModel.starButtonState {
+                            case .idling:
+                                EmptyView()
+                            case .starred:
+                                buildStarButton(isStarred: true)
+                            case .unstarred:
+                                buildStarButton(isStarred: false)
+                            }
+                            Text("\(scrollOffset.y)")
+                        }
+                        .padding(16)
+                        .readingScrollView(from: "scroll", into: $scrollOffset)
+
+                        VStack {
+                            Text("Test scroll")
+                        }
+                    }
+                    .coordinateSpace(name: "scroll")
+
+                    Button {
+
+                    } label: {
+                        Text("Floating button will here")
+                    }
+
+                }
             }
         }
+        .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
-                await viewModel.isStarred(gistID: gist.id ?? "")
+                await viewModel.isStarred(gistID: gist.id)
+                await viewModel.gist(gistID: gist.id)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }, label: {
+                    Image(systemName: "chevron.backward")
+                        .font(.system(size: 18))
+                        .foregroundColor(Colors.accent.color)
+                })
+            }
+
+            if scrollOffset.y >= 45 {
+                ToolbarItem(placement: .principal) {
+                    VStack(alignment: .center) {
+                        Text(gist.owner?.login ?? "")
+                        Text("\(fileName())")
+                    }
+                }
+            } else {
+                ToolbarItem(placement: .principal) {
+                    Text("")
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    makeMenuButton(title: "Edit", systemImage: "pencil") {
+
+                    }
+
+                    makeMenuButton(title: "Shared", systemImage: "square.and.arrow.up") {
+
+                    }
+
+                    makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
+
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .foregroundColor(Colors.accent.color)
+                }
+                .tint(Colors.danger.color)
             }
         }
         .enableInjection()
+    }
+
+    private func buildTitleView() -> some View {
+        HStack(alignment: .center, spacing: 4) {
+            HStack(spacing: 6) {
+                if
+                    let avatarURLString = gist.owner?.avatarURL,
+                    let url = URL(string: avatarURLString)
+                {
+                    KFImage
+                        .url(url)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 24, height: 24)
+                        .cornerRadius(12)
+                }
+                Text(gist.owner?.login ?? "")
+                    .bold()
+            }
+            if let files = gist.files, let fileName = files.keys.first {
+                Text("/")
+                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+
+                Text(fileName)
+                    .bold()
+            }
+            if !(gist.public ?? true) {
+                Image(systemName: "lock")
+                    .font(.subheadline)
+                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                    .padding(.leading, 2)
+            }
+        }
+    }
+
+    private func fileName() -> String {
+        if let files = gist.files, let fileName = files.keys.first {
+            return fileName
+        }
+        return ""
     }
 
     private func buildStarButton(isStarred: Bool) -> some View {
         Button {
             Task {
                 if isStarred {
-                    await viewModel.unstarGist(gistID: gist.id ?? "")
+                    await viewModel.unstarGist(gistID: gist.id)
                 } else {
-                    await viewModel.starGist(gistID: gist.id ?? "")
+                    await viewModel.starGist(gistID: gist.id)
                 }
             }
         } label: {
@@ -65,5 +203,33 @@ struct GistDetailView: View {
                     .stroke(Colors.buttonBorder.color)
             )
         }
+    }
+
+    private func makeMenuButton(
+        title: String,
+        systemImage: String,
+        role: ButtonRole? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(role: role ?? .none, action: action) {
+            Label(title, systemImage: systemImage)
+        }
+    }
+}
+
+/// Enable swipe back to pop screen
+extension UINavigationController: UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+
+    // To make it works also with ScrollView
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
     }
 }

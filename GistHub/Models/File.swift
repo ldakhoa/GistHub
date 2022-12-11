@@ -13,12 +13,14 @@ struct File: Codable {
     let language: String?
     let rawURL: String?
     let size: Int?
+    let content: String?
 
     enum CodingKeys: String, CodingKey {
-        case filename = "filename"
-        case type = "type"
-        case language = "language"
+        case filename
+        case type
+        case language
         case rawURL = "raw_url"
-        case size = "size"
+        case size
+        case content
     }
 }

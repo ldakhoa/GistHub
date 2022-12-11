@@ -11,7 +11,7 @@ struct Gist: Codable, Identifiable {
     let url: String?
     let forksURL: String?
     let commitsURL: String?
-    let id: String?
+    let id: String
     let nodeID: String?
     let gitPullURL: String?
     let gitPushURL: String?
