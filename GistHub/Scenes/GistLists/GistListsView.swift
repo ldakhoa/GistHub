@@ -49,9 +49,7 @@ struct GistListsView: View {
                         .foregroundColor(Colors.accent.color)
                 }
                 .sheet(isPresented: $showingNewGistView) {
-                    NavigationView {
-                        NewGistView()
-                    }
+                    NewGistView()
                 }
             }
         }
