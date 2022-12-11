@@ -28,7 +28,7 @@ struct GistDetailView: View {
                     .foregroundColor(Colors.danger.color)
             case let .content(gist):
                 ZStack {
-                    ScrollView {
+                    ScrollView(showsIndicators: true) {
                         VStack(alignment: .leading, spacing: 8) {
                             buildTitleView()
 
@@ -62,12 +62,14 @@ struct GistDetailView: View {
                         }
                         .padding(16)
                         .readingScrollView(from: "scroll", into: $scrollOffset)
+                        .background(Colors.itemBackground)
 
                         VStack {
                             Text("Test scroll")
                         }
                     }
                     .coordinateSpace(name: "scroll")
+                    .background(Colors.scrollViewBackground)
 
                     buildFloatingCommentButton()
                 }
@@ -241,7 +243,8 @@ struct GistDetailView: View {
     }
 }
 
-/// Enable swipe back to pop screen
+// MARK: - Enable swipe back to pop screen
+
 extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -259,4 +262,11 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     ) -> Bool {
         true
     }
+}
+
+// MARK: - Color for GistDetailView
+
+extension Colors {
+    static let scrollViewBackground = UIColor.systemGroupedBackground.color
+    static let itemBackground = UIColor.secondarySystemGroupedBackground.color
 }

@@ -13,7 +13,7 @@ struct ScrollViewOffsetPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
         value = nextValue()
     }
-    
+
     typealias Value = CGPoint
 }
 
