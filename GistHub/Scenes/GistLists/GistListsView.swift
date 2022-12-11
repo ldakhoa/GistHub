@@ -12,6 +12,7 @@ import Kingfisher
 struct GistListsView: View {
     @ObserveInjection private var inject
     @StateObject private var viewModel = GistListsViewModel()
+    @State private var showingNewGistView = false
 
     let listsMode: GistListsMode
 
@@ -41,13 +42,17 @@ struct GistListsView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-
+                    showingNewGistView.toggle()
                 } label: {
                     Image(systemName: "plus.circle")
                         .renderingMode(.template)
                         .foregroundColor(Colors.accent.color)
                 }
-
+                .sheet(isPresented: $showingNewGistView) {
+                    NavigationView {
+                        NewGistView()
+                    }
+                }
             }
         }
         .onLoad { fetchGists() }

@@ -26,6 +26,15 @@
         "revision" : "8e514e65d81a8ed7a67f718e3cc9399ce2094be4",
         "version" : "2.0.0"
       }
+    },
+    {
+      "identity" : "runestone",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/Runestone",
+      "state" : {
+        "revision" : "e9d220ae1a00b5ef00a7b6146d77f660f9e5dbe2",
+        "version" : "0.2.10"
+      }
     }
   ],
   "version" : 2
