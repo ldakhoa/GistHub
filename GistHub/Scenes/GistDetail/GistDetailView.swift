@@ -69,12 +69,7 @@ struct GistDetailView: View {
                     }
                     .coordinateSpace(name: "scroll")
 
-                    Button {
-
-                    } label: {
-                        Text("Floating button will here")
-                    }
-
+                    buildFloatingCommentButton()
                 }
             }
         }
@@ -170,6 +165,35 @@ struct GistDetailView: View {
             return fileName
         }
         return ""
+    }
+
+    private func buildFloatingCommentButton() -> some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button {
+
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "bubble.left")
+                        Text("Write Comment")
+                    }
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .padding()
+                    .background(Colors.Palette.Black.black0.dynamicColor.color)
+                    .foregroundColor(Colors.Palette.White.white0.dynamicColor.color)
+                    .cornerRadius(12)
+                    .shadow(
+                        color: Colors.Palette.Black.black0.dynamicColor.color.opacity(0.4),
+                        radius: 8
+                    )
+                }
+                .padding(.trailing, 16)
+                .padding(.bottom, 16)
+            }
+        }
     }
 
     private func buildStarButton(isStarred: Bool) -> some View {
