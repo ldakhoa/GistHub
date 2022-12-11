@@ -59,7 +59,6 @@ struct GistDetailView: View {
                             case .unstarred:
                                 buildStarButton(isStarred: false)
                             }
-                            Text("\(scrollOffset.y)")
                         }
                         .padding(16)
                         .readingScrollView(from: "scroll", into: $scrollOffset)
@@ -96,16 +95,18 @@ struct GistDetailView: View {
                 })
             }
 
-            if scrollOffset.y >= 45 {
+            if scrollOffset.y >= 15 {
                 ToolbarItem(placement: .principal) {
                     VStack(alignment: .center) {
                         Text(gist.owner?.login ?? "")
                         Text("\(fileName())")
+                            .fontWeight(.medium)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
                     }
-                }
-            } else {
-                ToolbarItem(placement: .principal) {
-                    Text("")
+                    .font(.subheadline)
+                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                    .opacity(scrollOffset.y / 45.0)
                 }
             }
 
