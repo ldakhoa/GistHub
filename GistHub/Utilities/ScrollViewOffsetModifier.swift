@@ -13,6 +13,7 @@ struct ScrollViewOffsetPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
         value = nextValue()
     }
+    
     typealias Value = CGPoint
 }
 
@@ -26,7 +27,10 @@ struct ScrollViewOffsetModifier: ViewModifier {
             GeometryReader { proxy in
                 let x = proxy.frame(in: .named(coordinateSpace)).minX
                 let y = proxy.frame(in: .named(coordinateSpace)).minY
-                Color.clear.preference(key: ScrollViewOffsetPreferenceKey.self, value: CGPoint(x: x * -1, y: y * -1))
+                Color.clear.preference(
+                    key: ScrollViewOffsetPreferenceKey.self,
+                    value: CGPoint(x: x * -1, y: y * -1)
+                )
             }
         }
         .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
@@ -36,7 +40,10 @@ struct ScrollViewOffsetModifier: ViewModifier {
 }
 
 extension View {
-    func readingScrollView(from coordinateSpace: String, into binding: Binding<CGPoint>) -> some View {
+    func readingScrollView(
+        from coordinateSpace: String,
+        into binding: Binding<CGPoint>
+    ) -> some View {
         modifier(ScrollViewOffsetModifier(coordinateSpace: coordinateSpace, offset: binding))
     }
 }

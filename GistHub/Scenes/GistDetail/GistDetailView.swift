@@ -127,7 +127,6 @@ struct GistDetailView: View {
                     Image(systemName: "ellipsis.circle")
                         .foregroundColor(Colors.accent.color)
                 }
-                .tint(Colors.danger.color)
             }
         }
         .enableInjection()
@@ -230,7 +229,10 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
 
     // To make it works also with ScrollView
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
         true
     }
 }
