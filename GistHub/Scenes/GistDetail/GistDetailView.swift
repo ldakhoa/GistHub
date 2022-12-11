@@ -65,8 +65,15 @@ struct GistDetailView: View {
                         .background(Colors.itemBackground)
 
                         VStack {
-                            Text("Test scroll")
+                            Text("Code section will appear here")
                         }
+
+                        Spacer()
+
+                        buildCommentSection()
+//                        VStack {
+//                            Text("comment section")
+//                        }
                     }
                     .coordinateSpace(name: "scroll")
                     .background(Colors.scrollViewBackground)
@@ -81,6 +88,7 @@ struct GistDetailView: View {
             Task {
                 await viewModel.isStarred(gistID: gist.id)
                 await viewModel.gist(gistID: gist.id)
+                await viewModel.comments(gistID: gist.id)
             }
         }
         .toolbar {
@@ -241,6 +249,71 @@ struct GistDetailView: View {
             Label(title, systemImage: systemImage)
         }
     }
+
+    private func buildCommentSection() -> some View {
+        ZStack {
+            switch viewModel.commentContentState {
+            case .loading:
+                ProgressView()
+            case let .error(error):
+                Text(error).foregroundColor(Colors.danger.color)
+            case let .content(comments):
+                LazyVStack(alignment: .leading) {
+                    ForEach(comments, id: \.id) { comment in
+                        commentView(comment: comment)
+                        Divider()
+                            .overlay(Colors.neutralEmphasis.color)
+                    }
+                }
+            }
+        }
+        .background(Colors.itemBackground)
+    }
+
+    private func commentView(comment: Comment) -> some View {
+        VStack(alignment: .leading) {
+            HStack(alignment: .center) {
+                if
+                    let avatarURLString = comment.user.avatarURL,
+                    let url = URL(string: avatarURLString)
+                {
+                    KFImage
+                        .url(url)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .cornerRadius(24)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(comment.user.login ?? "")
+                            .bold()
+                        if let createdAt = comment.createdAt {
+                            Text("· \(createdAt.agoString())")
+                                .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        }
+                    }
+
+                    if let authorAssociation = comment.authorAssociation, authorAssociation == "OWNER" {
+                        Text("Author")
+                            .font(.caption)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Colors.badgeBackground.color)
+                            .foregroundColor(Colors.badgeForeground.color)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Colors.badgeBorder.color)
+                            )
+                            .cornerRadius(16)
+                    }
+                }
+            }
+            Text(comment.body!)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+    }
 }
 
 // MARK: - Enable swipe back to pop screen
@@ -269,4 +342,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 extension Colors {
     static let scrollViewBackground = UIColor.systemGroupedBackground.color
     static let itemBackground = UIColor.secondarySystemGroupedBackground.color
+    static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
+    static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
+    static var badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
 }

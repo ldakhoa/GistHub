@@ -10,6 +10,7 @@ import Combine
 @MainActor final class GistDetailViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var starButtonState: StarButtonState = .idling
+    @Published var commentContentState: CommentContentState = .loading
 
     private let client: GistHubAPIClient
 
@@ -52,7 +53,18 @@ import Combine
             contentState = .error(error: error.localizedDescription)
         }
     }
+
+    func comments(gistID: String) async {
+        do {
+            let comments = try await client.comments(gistID: gistID)
+            commentContentState = .content(comments: comments)
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
 }
+
+// MARK: - ContentState
 
 extension GistDetailViewModel {
     enum ContentState {
@@ -65,5 +77,11 @@ extension GistDetailViewModel {
         case idling
         case starred
         case unstarred
+    }
+
+    enum CommentContentState {
+        case loading
+        case content(comments: [Comment])
+        case error(error: String)
     }
 }

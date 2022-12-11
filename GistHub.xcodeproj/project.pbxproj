@@ -38,6 +38,7 @@
 		6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5902944F044007B7D68 /* ProfileViewModel.swift */; };
 		6A7CF593294527DF007B7D68 /* GistDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF592294527DF007B7D68 /* GistDetailViewModel.swift */; };
 		6A7CF5952945DC32007B7D68 /* ScrollViewOffsetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5942945DC32007B7D68 /* ScrollViewOffsetModifier.swift */; };
+		6A7CF5972945EAEE007B7D68 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5962945EAEE007B7D68 /* Comment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		6A7CF5902944F044007B7D68 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		6A7CF592294527DF007B7D68 /* GistDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GistDetailViewModel.swift; sourceTree = "<group>"; };
 		6A7CF5942945DC32007B7D68 /* ScrollViewOffsetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewOffsetModifier.swift; sourceTree = "<group>"; };
+		6A7CF5962945EAEE007B7D68 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 				6A7CF56B29447275007B7D68 /* User.swift */,
 				6A7CF56D29447285007B7D68 /* File.swift */,
 				6A7CF5882944EED3007B7D68 /* GistListsMode.swift */,
+				6A7CF5962945EAEE007B7D68 /* Comment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6A7CF593294527DF007B7D68 /* GistDetailViewModel.swift in Sources */,
 				6A7CF58F2944F01E007B7D68 /* ProfilePage.swift in Sources */,
+				6A7CF5972945EAEE007B7D68 /* Comment.swift in Sources */,
 				6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */,
 				6A7CF54E2944586E007B7D68 /* ColorValue.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
