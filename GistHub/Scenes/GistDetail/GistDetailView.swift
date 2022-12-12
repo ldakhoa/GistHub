@@ -11,10 +11,10 @@ import Kingfisher
 
 struct GistDetailView: View {
     @ObserveInjection private var inject
-
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
     @State private var scrollOffset: CGPoint = .zero
+    @State private var floatingButtonSize: CGSize = .zero
 
     let gist: Gist
 
@@ -70,10 +70,11 @@ struct GistDetailView: View {
 
                         Spacer()
 
+                        // padding bottom of the Button is 16,
+                        // and we want the space between list and Comment button is 8
+                        let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
                         buildCommentSection()
-//                        VStack {
-//                            Text("comment section")
-//                        }
+                            .padding(.bottom, listPaddingBottom)
                     }
                     .coordinateSpace(name: "scroll")
                     .background(Colors.scrollViewBackground)
@@ -192,13 +193,16 @@ struct GistDetailView: View {
                     .font(.callout)
                     .fontWeight(.semibold)
                     .padding()
-                    .background(Colors.Palette.Black.black0.dynamicColor.color)
+                    .background(Colors.commentButton.color)
                     .foregroundColor(Colors.Palette.White.white0.dynamicColor.color)
                     .cornerRadius(12)
                     .shadow(
                         color: Colors.Palette.Black.black0.dynamicColor.color.opacity(0.4),
                         radius: 8
                     )
+                }
+                .readSize { buttonSize in
+                    self.floatingButtonSize = buttonSize
                 }
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
@@ -260,7 +264,7 @@ struct GistDetailView: View {
             case let .content(comments):
                 LazyVStack(alignment: .leading) {
                     ForEach(comments, id: \.id) { comment in
-                        commentView(comment: comment)
+                        CommentView(comment: comment)
                         Divider()
                             .overlay(Colors.neutralEmphasis.color)
                     }
@@ -268,51 +272,6 @@ struct GistDetailView: View {
             }
         }
         .background(Colors.itemBackground)
-    }
-
-    private func commentView(comment: Comment) -> some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .center) {
-                if
-                    let avatarURLString = comment.user.avatarURL,
-                    let url = URL(string: avatarURLString)
-                {
-                    KFImage
-                        .url(url)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(24)
-                }
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Text(comment.user.login ?? "")
-                            .bold()
-                        if let createdAt = comment.createdAt {
-                            Text("· \(createdAt.agoString())")
-                                .foregroundColor(Colors.neutralEmphasisPlus.color)
-                        }
-                    }
-
-                    if let authorAssociation = comment.authorAssociation, authorAssociation == "OWNER" {
-                        Text("Author")
-                            .font(.caption)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Colors.badgeBackground.color)
-                            .foregroundColor(Colors.badgeForeground.color)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Colors.badgeBorder.color)
-                            )
-                            .cornerRadius(16)
-                    }
-                }
-            }
-            Text(comment.body!)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
     }
 }
 
@@ -345,4 +304,5 @@ extension Colors {
     static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
     static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
     static var badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
+    static var commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
 }

@@ -23,12 +23,6 @@ final class MainTabBarController: UITabBarController {
 
         viewControllers = [
             createNavController(
-                viewController: EditorViewController(),
-                title: "Editor",
-                imageName: "home",
-                selectedImageName: "home-fill"
-            ),
-            createNavController(
                 viewController: homePage,
                 title: "Home",
                 imageName: "home",

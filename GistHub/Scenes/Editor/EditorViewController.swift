@@ -9,6 +9,7 @@ import UIKit
 import Runestone
 import TreeSitterMarkdownRunestone
 import TreeSitterSwift
+import TreeSitterJavaScriptRunestone
 
 final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
@@ -48,10 +49,10 @@ final class EditorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let languageMode = TreeSitterLanguageMode(language: .markdown)
+        let languageMode = TreeSitterLanguageMode(language: .javaScript)
         textView.setLanguageMode(languageMode)
     }
-
+ 
 }
 
 extension EditorViewController: TextViewDelegate {
