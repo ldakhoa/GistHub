@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct File: Codable {
+struct File: Codable, Identifiable, Hashable {
+    var id: String {
+        rawURL ?? ""
+    }
+
     let filename: String?
     let type: String?
     let language: String?

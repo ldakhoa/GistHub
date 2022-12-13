@@ -63,6 +63,7 @@ struct NewGistView: View {
                     Button("Create") {
                         presentCreateDialog = true
                     }
+                    .disabled(true)
                     .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
                         Button("Create secret gist") {}
                         Button("Create public gist") {}

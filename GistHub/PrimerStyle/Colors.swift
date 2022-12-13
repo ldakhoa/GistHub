@@ -429,6 +429,8 @@ final class Colors {
     static var buttonBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
     static var buttonForeground = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
     static var buttonBorder = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
+
+    static var border = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
 }
 
 extension UIColor {

@@ -34,6 +34,19 @@ final class EditorViewController: UIViewController {
 
     let label = UILabel()
 
+    private let content: String
+    private let isEditable: Bool
+
+    init(content: String, isEditable: Bool) {
+        self.content = content
+        self.isEditable = isEditable
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         super.loadView()
 
@@ -51,8 +64,11 @@ final class EditorViewController: UIViewController {
         super.viewDidLoad()
         let languageMode = TreeSitterLanguageMode(language: .javaScript)
         textView.setLanguageMode(languageMode)
+
+        textView.text = content
+        textView.isEditable = isEditable
     }
- 
+
 }
 
 extension EditorViewController: TextViewDelegate {

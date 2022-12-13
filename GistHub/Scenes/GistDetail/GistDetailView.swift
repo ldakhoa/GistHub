@@ -64,11 +64,11 @@ struct GistDetailView: View {
                         .readingScrollView(from: "scroll", into: $scrollOffset)
                         .background(Colors.itemBackground)
 
-                        VStack {
-                            Text("Code section will appear here")
-                        }
+                        Spacer(minLength: 16)
 
-                        Spacer()
+                        buildCodeSection()
+
+                        Spacer(minLength: 16)
 
                         // padding bottom of the Button is 16,
                         // and we want the space between list and Comment button is 8
@@ -262,16 +262,78 @@ struct GistDetailView: View {
             case let .error(error):
                 Text(error).foregroundColor(Colors.danger.color)
             case let .content(comments):
-                LazyVStack(alignment: .leading) {
-                    ForEach(comments, id: \.id) { comment in
-                        CommentView(comment: comment)
-                        Divider()
-                            .overlay(Colors.neutralEmphasis.color)
+                VStack(alignment: .leading) {
+                    let commentTitle = comments.count > 1 ? "Comments" : "Comment"
+                    Text(comments.isEmpty ? "" : commentTitle)
+                        .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        .padding(.horizontal, 16)
+                    LazyVStack(alignment: .leading) {
+                        ForEach(comments, id: \.id) { comment in
+                            CommentView(comment: comment)
+                            Divider()
+                                .overlay(Colors.neutralEmphasis.color)
+                        }
                     }
+                    .background(Colors.itemBackground)
                 }
             }
         }
-        .background(Colors.itemBackground)
+    }
+
+    @State private var selectCodeSectionBackgroundColor = false
+    private func buildCodeSection() -> some View {
+        let fileNames = gist.files?.keys.map { String($0) } ?? []
+        return VStack(alignment: .leading) {
+            Text(fileNames.count > 1 ? "Files" : "File")
+                .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
+                .foregroundColor(Colors.neutralEmphasisPlus.color)
+                .padding(.horizontal, 16)
+            LazyVStack(alignment: .leading) {
+                ForEach(fileNames, id: \.hashValue) { fileName in
+                    buildFileNameView(fileName: fileName)
+                    if !isLastFileName(fileNames: fileNames, fileName) {
+                        Divider()
+                            .overlay(Colors.neutralEmphasis.color)
+                            .padding(.leading, 42)
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+            .background(Colors.itemBackground)
+        }
+
+    }
+
+    private func buildFileNameView(fileName: String) -> some View {
+        NavigationLink {
+            Text("A")
+        } label: {
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Image(systemName: "doc")
+                    Text(fileName)
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 16))
+                        .foregroundColor(Colors.neutralEmphasis.color)
+                }
+                .foregroundColor(Colors.fileNameForeground.color)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 16)
+            }
+        }
+    }
+
+    private func isLastFileName(fileNames: [String], _ fileName: String) -> Bool {
+        let fileNamesCount = fileNames.count
+        if let index = fileNames.firstIndex(of: fileName) {
+            if index + 1 != fileNamesCount {
+                return false
+            }
+        }
+        return true
     }
 }
 
@@ -303,6 +365,7 @@ extension Colors {
     static let itemBackground = UIColor.secondarySystemGroupedBackground.color
     static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
     static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
-    static var badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
-    static var commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
+    static let badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
+    static let commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
+    static let fileNameForeground = UIColor(light: Colors.Palette.Black.black0.light, dark: .white)
 }

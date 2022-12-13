@@ -10,8 +10,11 @@ import SwiftUI
 struct EditorView: UIViewControllerRepresentable {
     typealias UIViewControllerType = EditorViewController
 
+    @State var content = ""
+    @State var isEditable = true
+
     func makeUIViewController(context: Context) -> EditorViewController {
-        let viewController = EditorViewController()
+        let viewController = EditorViewController(content: content, isEditable: isEditable)
         return viewController
     }
 
