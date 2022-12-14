@@ -12,10 +12,16 @@ struct EditorViewRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = EditorViewController
 
     let content: Binding<String>
+    let language: File.Language
     @State var isEditable = true
+    @State var isSelectable = true
 
     func makeUIViewController(context: Context) -> EditorViewController {
-        let viewController = EditorViewController(content: content, isEditable: isEditable)
+        let viewController = EditorViewController(
+            content: content,
+            isEditable: isEditable,
+            isSelectable: isSelectable,
+            language: language)
         viewController.delegate = context.coordinator
         return viewController
     }

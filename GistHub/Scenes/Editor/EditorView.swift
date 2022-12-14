@@ -10,34 +10,34 @@ import Inject
 
 struct EditorView: View {
     @State var content: String = ""
+    let language: File.Language
 
     @Environment(\.dismiss) private var dismiss
     @ObserveInjection private var inject
 
     var body: some View {
-        EditorViewRepresentable(content: $content, isEditable: true)
+        EditorViewRepresentable(content: $content, language: language, isEditable: true)
             .navigationTitle("Edit")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }, label: {
-                        Image(systemName: "chevron.backward")
-                            .font(.system(size: 18))
-                            .foregroundColor(Colors.accent.color)
-                    })
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .foregroundColor(Colors.accent.color)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Update") {
-                        print(content)
                         dismiss()
                     }
+                    .foregroundColor(Colors.accent.color)
                 }
             }
+            .toolbarBackground(.visible, for: .navigationBar)
             .enableInjection()
             .onChange(of: content) { newValue in
                 NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
             }
     }
 }
-

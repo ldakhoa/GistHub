@@ -7,9 +7,6 @@
 
 import UIKit
 import Runestone
-import TreeSitterMarkdownRunestone
-import TreeSitterSwift
-import TreeSitterJavaScriptRunestone
 import SwiftUI
 
 protocol EditorViewControllerDelegate: AnyObject {
@@ -18,23 +15,9 @@ protocol EditorViewControllerDelegate: AnyObject {
 
 final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
-        let textView = TextView()
+        let textView = TextView.makeConfigured(usingSettings: .standard)
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .systemBackground
-        textView.textContainerInset = UIEdgeInsets(top: 8, left: 5, bottom: 8, right: 5)
-        textView.showLineNumbers = true
-        textView.lineHeightMultiplier = 1.2
-        textView.kern = 0.3
-        textView.showNonBreakingSpaces = true
-        textView.showLineBreaks = true
-        textView.showSoftLineBreaks = true
-        textView.isLineWrappingEnabled = true
-        textView.autocorrectionType = .no
-        textView.autocapitalizationType = .none
-        textView.smartQuotesType = .no
-        textView.smartDashesType = .no
         textView.editorDelegate = self
-        textView.isScrollEnabled = true
         return textView
     }()
 
@@ -42,12 +25,21 @@ final class EditorViewController: UIViewController {
 
     private let content: Binding<String>
     private let isEditable: Bool
+    private let isSelectable: Bool
+    private let language: File.Language
 
     weak var delegate: EditorViewControllerDelegate?
 
-    init(content: Binding<String>, isEditable: Bool) {
+    init(
+        content: Binding<String>,
+        isEditable: Bool,
+        isSelectable: Bool = true,
+        language: File.Language
+    ) {
         self.content = content
         self.isEditable = isEditable
+        self.language = language
+        self.isSelectable = isSelectable
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -69,16 +61,25 @@ final class EditorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let languageMode = TreeSitterLanguageMode(language: .javaScript)
+
+        let languageMode = TreeSitterLanguageMode(language: language.treeSitterLanguage)
         textView.setLanguageMode(languageMode)
 
         textView.text = content.wrappedValue
         textView.isEditable = isEditable
+        textView.isSelectable = isSelectable
 
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(updateTextView),
             name: .editorTextViewTextDidChange,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTextViewSettings),
+            name: .textViewShouldUpdateSettings,
             object: nil
         )
     }
@@ -87,6 +88,12 @@ final class EditorViewController: UIViewController {
     private func updateTextView(notification: Notification) {
         guard let content = notification.object as? String else { return }
         textView.text = content
+    }
+
+    @objc
+    private func updateTextViewSettings() {
+        let settings = UserDefaults.standard
+        textView.applySettings(from: settings)
     }
 }
 

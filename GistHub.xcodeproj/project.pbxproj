@@ -120,6 +120,10 @@
 		6A7E480F2949A52A00D6964C /* EditorDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E480E2949A52A00D6964C /* EditorDisplayView.swift */; };
 		6A7E4811294A025A00D6964C /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4810294A025A00D6964C /* EditorView.swift */; };
 		6A7E4813294A028200D6964C /* NSNotification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4812294A028200D6964C /* NSNotification+Name.swift */; };
+		6A7E4817294A0C4000D6964C /* EditorCodeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */; };
+		6A7E4819294A0C5D00D6964C /* UserDefaults+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4818294A0C5D00D6964C /* UserDefaults+Helpers.swift */; };
+		6A7E481B294A0D1D00D6964C /* TextView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */; };
+		6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -161,6 +165,10 @@
 		6A7E480E2949A52A00D6964C /* EditorDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorDisplayView.swift; sourceTree = "<group>"; };
 		6A7E4810294A025A00D6964C /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		6A7E4812294A028200D6964C /* NSNotification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Name.swift"; sourceTree = "<group>"; };
+		6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorCodeSettingsView.swift; sourceTree = "<group>"; };
+		6A7E4818294A0C5D00D6964C /* UserDefaults+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Helpers.swift"; sourceTree = "<group>"; };
+		6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+Helpers.swift"; sourceTree = "<group>"; };
+		6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSettingsStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -362,6 +370,7 @@
 				6A7CF56D29447285007B7D68 /* File.swift */,
 				6A7CF5882944EED3007B7D68 /* GistListsMode.swift */,
 				6A7CF5962945EAEE007B7D68 /* Comment.swift */,
+				6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -400,10 +409,12 @@
 		6A7CF5982945FB7A007B7D68 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				6A7E481C294A0D2300D6964C /* TextView */,
 				6A7CF59E29463C3A007B7D68 /* EditorViewController.swift */,
 				6A7CF5A029463D07007B7D68 /* EditorViewRepresentable.swift */,
 				6A7E480E2949A52A00D6964C /* EditorDisplayView.swift */,
 				6A7E4810294A025A00D6964C /* EditorView.swift */,
+				6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -413,6 +424,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6A7E481C294A0D2300D6964C /* TextView */ = {
+			isa = PBXGroup;
+			children = (
+				6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */,
+				6A7E4818294A0C5D00D6964C /* UserDefaults+Helpers.swift */,
+			);
+			path = TextView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -600,7 +620,9 @@
 				6A7CF56C29447275007B7D68 /* User.swift in Sources */,
 				6A7CF57A29447C25007B7D68 /* PlainNavigationLink.swift in Sources */,
 				6A7CF55C294464F3007B7D68 /* ErrorDecoderMiddleware.swift in Sources */,
+				6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
+				6A7E4819294A0C5D00D6964C /* UserDefaults+Helpers.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
 				6A7CF57C2944867F007B7D68 /* Date+AgoString.swift in Sources */,
@@ -612,7 +634,9 @@
 				6A7CF558294464D2007B7D68 /* GitHubError.swift in Sources */,
 				6A7CF54A294455B9007B7D68 /* Colors.swift in Sources */,
 				6A7CF5952945DC32007B7D68 /* ScrollViewOffsetModifier.swift in Sources */,
+				6A7E4817294A0C4000D6964C /* EditorCodeSettingsView.swift in Sources */,
 				6A6EEF69294789DE0018AC26 /* SizePreferenceKey.swift in Sources */,
+				6A7E481B294A0D1D00D6964C /* TextView+Helpers.swift in Sources */,
 				6A7CF5A129463D07007B7D68 /* EditorViewRepresentable.swift in Sources */,
 				6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */,
 				6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */,

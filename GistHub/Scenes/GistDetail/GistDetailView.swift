@@ -308,9 +308,11 @@ struct GistDetailView: View {
     }
 
     private func buildFileNameView(gist: Gist, fileName: String) -> some View {
-        let content = gist.files?[fileName]?.content ?? ""
+        let file = gist.files?[fileName]
+        let content = file?.content ?? ""
+        let language = file?.language ?? .unknown
         return NavigationLink {
-            EditorDisplayView(content: content, fileName: fileName)
+            EditorDisplayView(content: content, fileName: fileName, language: language)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {

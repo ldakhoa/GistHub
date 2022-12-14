@@ -11,14 +11,16 @@ import Inject
 struct EditorDisplayView: View {
     @State var content: String = ""
     @State var fileName: String = ""
+    let language: File.Language
 
     @State private var showEditorInEditMode = false
+    @State private var showCodeSettings = false
 
     @Environment(\.dismiss) private var dismiss
     @ObserveInjection private var inject
 
     var body: some View {
-        EditorViewRepresentable(content: $content, isEditable: false)
+        EditorViewRepresentable(content: $content, language: language, isEditable: false)
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -35,7 +37,7 @@ struct EditorDisplayView: View {
                         }
 
                         Button {
-                            showEditorInEditMode.toggle()
+                            showCodeSettings.toggle()
                         } label: {
                             Label("View Code Options", systemImage: "gear")
                         }
@@ -45,8 +47,11 @@ struct EditorDisplayView: View {
                     }
                     .sheet(isPresented: $showEditorInEditMode) {
                         NavigationView {
-                            EditorView(content: content)
+                            EditorView(content: content, language: language)
                         }
+                    }
+                    .sheet(isPresented: $showCodeSettings) {
+                        EditorCodeSettingsView(codeSettingsStore: CodeSettingsStore())
                     }
                 }
             }
