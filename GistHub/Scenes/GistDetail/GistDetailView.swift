@@ -5,6 +5,7 @@
 //  Created by Khoa Le on 10/12/2022.
 //
 
+import AlertToast
 import SwiftUI
 import Inject
 import Kingfisher
@@ -15,6 +16,9 @@ struct GistDetailView: View {
     @StateObject private var viewModel = GistDetailViewModel()
     @State private var scrollOffset: CGPoint = .zero
     @State private var floatingButtonSize: CGSize = .zero
+
+    @State private var showToastAlert = false
+    @State private var showDeleteAlert = false
 
     let gist: Gist
 
@@ -122,7 +126,7 @@ struct GistDetailView: View {
                     }
 
                     makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
-
+                        showDeleteAlert.toggle()
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -130,6 +134,31 @@ struct GistDetailView: View {
                 }
             }
         }
+        .confirmationDialog("Delete Gist?", isPresented: $showDeleteAlert) {
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.deleteGist(gistID: gist.id)
+                }
+                showToastAlert.toggle()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Are you positive you want to delete this Gist?")
+        }
+        .toast(
+            isPresenting: $showToastAlert,
+            duration: 1.0,
+            alert: {
+                AlertToast(
+                    displayMode: .banner(.pop),
+                    type: .complete(Colors.success.color),
+                    title: "Deleted Gist",
+                    style: .style(backgroundColor: Colors.toastBackground.color, titleColor: nil)
+                )
+            }, completion: {
+                self.dismiss()
+            }
+        )
         .enableInjection()
     }
 
@@ -373,4 +402,5 @@ extension Colors {
     static let badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
     static let commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
     static let fileNameForeground = UIColor(light: Colors.Palette.Black.black0.light, dark: .white)
+    static let toastBackground = UIColor(light: Colors.Palette.White.white0.light, dark: Colors.Palette.Black.black0.dark)
 }

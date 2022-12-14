@@ -62,6 +62,14 @@ import Combine
             contentState = .error(error: error.localizedDescription)
         }
     }
+
+    func deleteGist(gistID: String) async {
+        do {
+            try await client.deleteGist(fromGistID: gistID)
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
 }
 
 // MARK: - ContentState

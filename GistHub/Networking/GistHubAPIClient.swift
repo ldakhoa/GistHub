@@ -30,6 +30,9 @@ protocol GistHubAPIClient {
     /// Get a gist.
     func gist(fromGistID gistID: String) async throws -> Gist
 
+    /// Delete a gist.
+    func deleteGist(fromGistID gistID: String) async throws
+
     /// Get comments of the gist.
     func comments(gistID: String) async throws -> [Comment]
 }
@@ -69,6 +72,10 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.gist(gistID: gistID))
     }
 
+    func deleteGist(fromGistID gistID: String) async throws {
+        try await session.data(for: API.deleteGist(gistID: gistID))
+    }
+
     func comments(gistID: String) async throws -> [Comment] {
         try await session.data(for: API.comments(gistID: gistID))
     }
@@ -83,6 +90,7 @@ extension DefaultGistHubAPIClient {
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
         case gist(gistID: String)
+        case deleteGist(gistID: String)
         case comments(gistID: String)
 
         var headers: [String: String]? {
@@ -104,7 +112,7 @@ extension DefaultGistHubAPIClient {
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
                 return "/gists/\(gistID)/star"
-            case let .gist(gistID):
+            case let .gist(gistID), let .deleteGist(gistID):
                 return "/gists/\(gistID)"
             case let .comments(gistID):
                 return "/gists/\(gistID)/comments"
@@ -117,7 +125,7 @@ extension DefaultGistHubAPIClient {
                 return .get
             case .starGist:
                 return .put
-            case .unstarGist:
+            case .unstarGist, .deleteGist:
                 return .delete
             }
         }
