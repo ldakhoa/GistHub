@@ -28,7 +28,7 @@ struct EditorCodeSettingsView: View {
             List {
                 Section {
                     EditorViewRepresentable(content: $codeSample, language: .javaScript, isEditable: true, isSelectable: true)
-                        .frame(height: 150)
+                        .frame(height: 130)
                 } header: {
                     Text("Preview")
                 }
