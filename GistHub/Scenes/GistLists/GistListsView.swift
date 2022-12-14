@@ -78,7 +78,7 @@ private struct GistListDetailView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             if let files = gist.files,
-               let fileName: String = files.keys.first,
+               let fileName: String = files.fileName,
                let createdAt = gist.createdAt,
                let updatedAt = gist.updatedAt {
                 HStack(alignment: .center, spacing: 6) {

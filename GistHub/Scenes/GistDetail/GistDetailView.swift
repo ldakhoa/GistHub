@@ -94,8 +94,19 @@ struct GistDetailView: View {
         .onAppear {
             Task {
                 await viewModel.isStarred(gistID: gist.id)
+            }
+        }
+        .onLoad {
+            Task {
                 await viewModel.gist(gistID: gist.id)
                 await viewModel.comments(gistID: gist.id)
+            }
+        }
+        .refreshable {
+            Task {
+                await viewModel.gist(gistID: gist.id)
+                await viewModel.comments(gistID: gist.id)
+                await viewModel.isStarred(gistID: gist.id)
             }
         }
         .toolbar {
