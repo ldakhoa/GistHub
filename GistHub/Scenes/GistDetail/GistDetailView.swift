@@ -23,6 +23,7 @@ struct GistDetailView: View {
     @EnvironmentObject var userStore: UserStore
 
     let gist: Gist
+    let shouldReloadGistListsView: () -> Void
 
     var body: some View {
         ZStack {
@@ -169,6 +170,7 @@ struct GistDetailView: View {
                     style: .style(backgroundColor: Colors.toastBackground.color, titleColor: nil)
                 )
             }, completion: {
+                shouldReloadGistListsView()
                 self.dismiss()
             }
         )
@@ -354,8 +356,13 @@ struct GistDetailView: View {
         let content = file?.content ?? ""
         let language = file?.language ?? .unknown
         return NavigationLink {
-            EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
-                .environmentObject(userStore)
+            EditorDisplayView(
+                content: content,
+                fileName: fileName,
+                gist: gist,
+                language: language
+            )
+            .environmentObject(userStore)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
@@ -370,6 +377,25 @@ struct GistDetailView: View {
                 .foregroundColor(Colors.fileNameForeground.color)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 16)
+            }
+        }
+        .contextMenu {
+            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
+            ShareLink(
+                item: gist.htmlURL ?? "",
+                preview: SharePreview(titlePreview, image: Image(systemName: "home"))
+            ) {
+                Label("Share via...", systemImage: "square.and.arrow.up")
+            }
+        } preview: {
+            NavigationStack {
+                EditorDisplayView(
+                    content: content,
+                    fileName: fileName,
+                    gist: gist,
+                    language: language
+                )
+                .environmentObject(userStore)
             }
         }
     }

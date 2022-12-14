@@ -26,10 +26,27 @@ struct GistListsView: View {
                 List {
                     ForEach(gists) { gist in
                         PlainNavigationLink {
-                            GistDetailView(gist: gist)
-                                .environmentObject(UserStore(user: user))
+                            GistDetailView(gist: gist) {
+                                fetchGists()
+                            }
+                            .environmentObject(UserStore(user: user))
                         } label: {
                             GistListDetailView(gist: gist)
+                        }
+                        .contextMenu {
+                            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
+                            ShareLink(
+                                item: gist.htmlURL ?? "",
+                                preview: SharePreview(titlePreview, image: Image(systemName: "home"))
+                            ) {
+                                Label("Share via...", systemImage: "square.and.arrow.up")
+                            }
+                        } preview: {
+                            // Put in NavigationStack to solve size issues
+                            NavigationStack {
+                                GistDetailView(gist: gist) {}
+                                    .environmentObject(UserStore(user: user))
+                            }
                         }
                     }
                     .listRowBackground(Colors.listBackground.color)
