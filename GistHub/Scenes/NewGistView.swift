@@ -37,7 +37,7 @@ struct NewGistView: View {
                             .font(.subheadline)
 
                         NavigationLink("Create") {
-                            EditorDisplayView(content: "", language: .swift)
+                            EditorView(language: .javaScript)
                                 .navigationTitle(newFileTitle)
                         }
 

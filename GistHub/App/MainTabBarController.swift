@@ -11,36 +11,63 @@ import SwiftUI
 
 final class MainTabBarController: UITabBarController {
 
+    private let client: GistHubAPIClient
+    @EnvironmentObject var userStore: UserStore
+
+    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: Internal
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tabBar.tintColor = Colors.accent
+        view.backgroundColor = .systemBackground
 
-        let homePage = UIHostingController(rootView: GistListsView(listsMode: .allGists))
-        let starredPage = UIHostingController(rootView: GistListsView(listsMode: .starred))
-        let profilePage = UIHostingController(rootView: ProfilePage())
+        Task {
+            guard let user = await user() else { return }
 
-        viewControllers = [
-            createNavController(
-                viewController: homePage,
-                title: "Home",
-                imageName: "home",
-                selectedImageName: "home-fill"
-            ),
-            createNavController(
-                viewController: starredPage,
-                title: "Starred",
-                imageName: "star",
-                selectedImageName: "star-fill"
-            ),
-            createNavController(
-                viewController: profilePage,
-                title: "Profile",
-                imageName: "person",
-                selectedImageName: "person-fill"
-            )
-        ]
+            let homePage = UIHostingController(rootView: GistListsView(listsMode: .allGists, user: user))
+            let starredPage = UIHostingController(rootView: GistListsView(listsMode: .starred, user: user))
+            let profilePage = UIHostingController(rootView: ProfilePage(user: user))
+
+            viewControllers = [
+                createNavController(
+                    viewController: homePage,
+                    title: "Home",
+                    imageName: "home",
+                    selectedImageName: "home-fill"
+                ),
+                createNavController(
+                    viewController: starredPage,
+                    title: "Starred",
+                    imageName: "star",
+                    selectedImageName: "star-fill"
+                ),
+                createNavController(
+                    viewController: profilePage,
+                    title: "Profile",
+                    imageName: "person",
+                    selectedImageName: "person-fill"
+                )
+            ]
+        }
+    }
+
+    private func user() async -> User? {
+        do {
+            let user = try await client.user()
+            return user
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
     }
 
     private func createNavController(

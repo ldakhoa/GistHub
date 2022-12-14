@@ -15,6 +15,7 @@ struct GistListsView: View {
     @State private var showingNewGistView = false
 
     let listsMode: GistListsMode
+    let user: User
 
     var body: some View {
         ZStack {
@@ -26,6 +27,7 @@ struct GistListsView: View {
                     ForEach(gists) { gist in
                         PlainNavigationLink {
                             GistDetailView(gist: gist)
+                                .environmentObject(UserStore(user: user))
                         } label: {
                             GistListDetailView(gist: gist)
                         }

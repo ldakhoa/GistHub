@@ -9,8 +9,10 @@ import SwiftUI
 import Inject
 
 struct EditorDisplayView: View {
+    @EnvironmentObject var userStore: UserStore
     @State var content: String = ""
     @State var fileName: String = ""
+    let gist: Gist
     let language: File.Language
 
     @State private var showEditorInEditMode = false
@@ -30,10 +32,12 @@ struct EditorDisplayView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        Button {
-                            showEditorInEditMode.toggle()
-                        } label: {
-                            Label("Edit", systemImage: "pencil")
+                        if gist.owner?.id == userStore.user.id {
+                            Button {
+                                showEditorInEditMode.toggle()
+                            } label: {
+                                Label("Edit", systemImage: "pencil")
+                            }
                         }
 
                         Button {

@@ -64,3 +64,11 @@ struct User: Codable {
         case twitterUsername = "twitter_username"
     }
 }
+
+class UserStore: ObservableObject {
+    var user: User
+
+    init(user: User) {
+        self.user = user
+    }
+}

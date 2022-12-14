@@ -20,6 +20,8 @@ struct GistDetailView: View {
     @State private var showToastAlert = false
     @State private var showDeleteAlert = false
 
+    @EnvironmentObject var userStore: UserStore
+
     let gist: Gist
 
     var body: some View {
@@ -117,16 +119,16 @@ struct GistDetailView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    makeMenuButton(title: "Make public", systemImage: "square.and.arrow.up") {
-
+                    if userStore.user.id == gist.owner?.id {
+                        makeMenuButton(title: "Make public", systemImage: "lock.open") {}
                     }
 
-                    makeMenuButton(title: "Shared", systemImage: "square.and.arrow.up") {
+                    makeMenuButton(title: "Shared", systemImage: "square.and.arrow.up") {}
 
-                    }
-
-                    makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
-                        showDeleteAlert.toggle()
+                    if userStore.user.id == gist.owner?.id {
+                        makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
+                            showDeleteAlert.toggle()
+                        }
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -341,7 +343,8 @@ struct GistDetailView: View {
         let content = file?.content ?? ""
         let language = file?.language ?? .unknown
         return NavigationLink {
-            EditorDisplayView(content: content, fileName: fileName, language: language)
+            EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
+                .environmentObject(userStore)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
