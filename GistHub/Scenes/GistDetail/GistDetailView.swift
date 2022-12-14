@@ -66,7 +66,7 @@ struct GistDetailView: View {
 
                         Spacer(minLength: 16)
 
-                        buildCodeSection()
+                        buildCodeSection(gist: gist)
 
                         Spacer(minLength: 16)
 
@@ -94,13 +94,8 @@ struct GistDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }, label: {
-                    Image(systemName: "chevron.backward")
-                        .font(.system(size: 18))
-                        .foregroundColor(Colors.accent.color)
-                })
+                makeLeadingToolbarButton()
             }
-
             if scrollOffset.y >= 15 {
                 ToolbarItem(placement: .principal) {
                     VStack(alignment: .center) {
@@ -118,7 +113,7 @@ struct GistDetailView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
-                    makeMenuButton(title: "Edit", systemImage: "pencil") {
+                    makeMenuButton(title: "Make public", systemImage: "square.and.arrow.up") {
 
                     }
 
@@ -130,7 +125,7 @@ struct GistDetailView: View {
 
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(Colors.accent.color)
                 }
             }
@@ -254,6 +249,14 @@ struct GistDetailView: View {
         }
     }
 
+    private func makeLeadingToolbarButton() -> some View {
+        Button(action: { dismiss() }, label: {
+            Image(systemName: "chevron.backward")
+                .font(.system(size: 18))
+                .foregroundColor(Colors.accent.color)
+        })
+    }
+
     private func buildCommentSection() -> some View {
         ZStack {
             switch viewModel.commentContentState {
@@ -281,8 +284,7 @@ struct GistDetailView: View {
         }
     }
 
-    @State private var selectCodeSectionBackgroundColor = false
-    private func buildCodeSection() -> some View {
+    private func buildCodeSection(gist: Gist) -> some View {
         let fileNames = gist.files?.keys.map { String($0) } ?? []
         return VStack(alignment: .leading) {
             Text(fileNames.count > 1 ? "Files" : "File")
@@ -291,7 +293,7 @@ struct GistDetailView: View {
                 .padding(.horizontal, 16)
             LazyVStack(alignment: .leading) {
                 ForEach(fileNames, id: \.hashValue) { fileName in
-                    buildFileNameView(fileName: fileName)
+                    buildFileNameView(gist: gist, fileName: fileName)
                     if !isLastFileName(fileNames: fileNames, fileName) {
                         Divider()
                             .overlay(Colors.neutralEmphasis.color)
@@ -305,9 +307,10 @@ struct GistDetailView: View {
 
     }
 
-    private func buildFileNameView(fileName: String) -> some View {
-        NavigationLink {
-            Text("A")
+    private func buildFileNameView(gist: Gist, fileName: String) -> some View {
+        let content = gist.files?[fileName]?.content ?? ""
+        return NavigationLink {
+            EditorDisplayView(content: content, fileName: fileName)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {

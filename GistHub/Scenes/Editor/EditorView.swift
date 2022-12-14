@@ -2,26 +2,42 @@
 //  EditorView.swift
 //  GistHub
 //
-//  Created by Khoa Le on 11/12/2022.
+//  Created by Khoa Le on 14/12/2022.
 //
 
 import SwiftUI
+import Inject
 
-struct EditorView: UIViewControllerRepresentable {
-    typealias UIViewControllerType = EditorViewController
+struct EditorView: View {
+    @State var content: String = ""
 
-    @State var content = ""
-    @State var isEditable = true
+    @Environment(\.dismiss) private var dismiss
+    @ObserveInjection private var inject
 
-    func makeUIViewController(context: Context) -> EditorViewController {
-        let viewController = EditorViewController(content: content, isEditable: isEditable)
-        return viewController
-    }
-
-    func updateUIViewController(
-        _ uiViewController: EditorViewController,
-        context: Context
-    ) {
-
+    var body: some View {
+        EditorViewRepresentable(content: $content, isEditable: true)
+            .navigationTitle("Edit")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { dismiss() }, label: {
+                        Image(systemName: "chevron.backward")
+                            .font(.system(size: 18))
+                            .foregroundColor(Colors.accent.color)
+                    })
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Update") {
+                        print(content)
+                        dismiss()
+                    }
+                }
+            }
+            .enableInjection()
+            .onChange(of: content) { newValue in
+                NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
+            }
     }
 }
+

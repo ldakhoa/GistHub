@@ -10,6 +10,11 @@ import Runestone
 import TreeSitterMarkdownRunestone
 import TreeSitterSwift
 import TreeSitterJavaScriptRunestone
+import SwiftUI
+
+protocol EditorViewControllerDelegate: AnyObject {
+    func textViewDidChange(text: String)
+}
 
 final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
@@ -29,15 +34,18 @@ final class EditorViewController: UIViewController {
         textView.smartQuotesType = .no
         textView.smartDashesType = .no
         textView.editorDelegate = self
+        textView.isScrollEnabled = true
         return textView
     }()
 
     let label = UILabel()
 
-    private let content: String
+    private let content: Binding<String>
     private let isEditable: Bool
 
-    init(content: String, isEditable: Bool) {
+    weak var delegate: EditorViewControllerDelegate?
+
+    init(content: Binding<String>, isEditable: Bool) {
         self.content = content
         self.isEditable = isEditable
         super.init(nibName: nil, bundle: nil)
@@ -57,7 +65,6 @@ final class EditorViewController: UIViewController {
             textView.topAnchor.constraint(equalTo: view.topAnchor),
             textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-
     }
 
     override func viewDidLoad() {
@@ -65,14 +72,26 @@ final class EditorViewController: UIViewController {
         let languageMode = TreeSitterLanguageMode(language: .javaScript)
         textView.setLanguageMode(languageMode)
 
-        textView.text = content
+        textView.text = content.wrappedValue
         textView.isEditable = isEditable
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTextView),
+            name: .editorTextViewTextDidChange,
+            object: nil
+        )
     }
 
+    @objc
+    private func updateTextView(notification: Notification) {
+        guard let content = notification.object as? String else { return }
+        textView.text = content
+    }
 }
 
 extension EditorViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
-        print(textView.text)
+        delegate?.textViewDidChange(text: textView.text)
     }
 }

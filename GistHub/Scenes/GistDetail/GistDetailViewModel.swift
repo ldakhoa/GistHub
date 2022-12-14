@@ -47,8 +47,8 @@ import Combine
 
     func gist(gistID: String) async {
         do {
-            let gist = try await client.gist(fromGistID: gistID)
-            contentState = .content(gist: gist)
+            async let gist = client.gist(fromGistID: gistID)
+            contentState = try await .content(gist: gist)
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
@@ -56,8 +56,8 @@ import Combine
 
     func comments(gistID: String) async {
         do {
-            let comments = try await client.comments(gistID: gistID)
-            commentContentState = .content(comments: comments)
+            async let comments = client.comments(gistID: gistID)
+            commentContentState = try await .content(comments: comments)
         } catch {
             contentState = .error(error: error.localizedDescription)
         }

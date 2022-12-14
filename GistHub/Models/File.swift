@@ -25,6 +25,6 @@ struct File: Codable, Identifiable, Hashable {
         case language
         case rawURL = "raw_url"
         case size
-        case content
+        case content = "content"
     }
 }
