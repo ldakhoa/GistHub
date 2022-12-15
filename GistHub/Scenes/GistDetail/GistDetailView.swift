@@ -181,7 +181,8 @@ struct GistDetailView: View {
             PlainTextEditorView(
                 description: gist.description ?? "",
                 gistID: gist.id,
-                navigationTitle: "Edit Description"
+                navigationTitle: "Edit Description",
+                placeholder: "Enter a description..."
             ) {
                 Task {
                     await viewModel.gist(gistID: gist.id)

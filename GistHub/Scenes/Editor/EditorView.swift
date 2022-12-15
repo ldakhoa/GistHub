@@ -64,7 +64,8 @@ struct EditorView: View {
                             }
                         }
                     }
-                    .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.neutralEmphasis.color)
+                    .bold()
+                    .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.accentDisabled.color)
                     .disabled(!contentHasChanged)
                 }
             }
