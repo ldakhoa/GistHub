@@ -95,12 +95,12 @@ struct GistDetailView: View {
         .onAppear {
             Task {
                 await viewModel.isStarred(gistID: gist.id)
-                await viewModel.gist(gistID: gist.id)
             }
         }
         .onLoad {
             Task {
                 await viewModel.comments(gistID: gist.id)
+                await viewModel.gist(gistID: gist.id)
             }
         }
         .refreshable {
@@ -361,7 +361,11 @@ struct GistDetailView: View {
                 fileName: fileName,
                 gist: gist,
                 language: language
-            )
+            ) {
+                Task {
+                    await viewModel.gist(gistID: gist.id)
+                }
+            }
             .environmentObject(userStore)
         } label: {
             VStack(alignment: .leading) {
@@ -394,7 +398,7 @@ struct GistDetailView: View {
                     fileName: fileName,
                     gist: gist,
                     language: language
-                )
+                ) {}
                 .environmentObject(userStore)
             }
         }

@@ -15,6 +15,7 @@ struct EditorDisplayView: View {
     @State var fileName: String = ""
     let gist: Gist
     let language: File.Language
+    let completion: () -> Void
 
     @State private var showEditorInEditMode = false
     @State private var showCodeSettings = false
@@ -104,6 +105,7 @@ struct EditorDisplayView: View {
                     style: .style(backgroundColor: Colors.toastBackground.color)
                 )
             } completion: {
+                self.completion()
                 dismiss()
             }
             .toast(isPresenting: $showErrorToast, duration: 2.5) {
