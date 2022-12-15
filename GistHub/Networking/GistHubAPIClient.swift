@@ -49,9 +49,6 @@ protocol GistHubAPIClient {
 
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
-
-    /// Get comments of the gist.
-    func comments(gistID: String) async throws -> [Comment]
 }
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -91,10 +88,6 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
 
     func deleteGist(fromGistID gistID: String) async throws {
         try await session.data(for: API.deleteGist(gistID: gistID))
-    }
-
-    func comments(gistID: String) async throws -> [Comment] {
-        try await session.data(for: API.comments(gistID: gistID))
     }
 
     @discardableResult
@@ -138,7 +131,6 @@ extension DefaultGistHubAPIClient {
             description: String?
         )
         case deleteGist(gistID: String)
-        case comments(gistID: String)
 
         var headers: [String: String]? {
             return [
@@ -164,14 +156,12 @@ extension DefaultGistHubAPIClient {
                 let .updateGist(gistID, _, _),
                 let .updateGistDescription(gistID, _):
                 return "/gists/\(gistID)"
-            case let .comments(gistID):
-                return "/gists/\(gistID)/comments"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .gists, .starredGists, .user, .isStarred, .gist, .comments:
+            case .gists, .starredGists, .user, .isStarred, .gist:
                 return .get
             case .starGist:
                 return .put
@@ -204,7 +194,6 @@ extension DefaultGistHubAPIClient {
                 struct Request: Codable {
                     let description: String?
                 }
-                
                 let request = Request(description: description)
                 return try? JSONEncoder().encode(request)
             default:

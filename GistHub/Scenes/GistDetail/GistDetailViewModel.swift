@@ -12,15 +12,20 @@ import Combine
     @Published var starButtonState: StarButtonState = .idling
     @Published var commentContentState: CommentContentState = .loading
 
-    private let client: GistHubAPIClient
+    private let gistHubClient: GistHubAPIClient
+    private let commentClient: CommentAPIClient
 
-    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
-        self.client = client
+    init(
+        gistHubClient: GistHubAPIClient = DefaultGistHubAPIClient(),
+        commentClient: CommentAPIClient = DefaultCommentAPIClient()
+    ) {
+        self.gistHubClient = gistHubClient
+        self.commentClient = commentClient
     }
 
     func starGist(gistID: String) async {
         do {
-            try await client.starGist(gistID: gistID)
+            try await gistHubClient.starGist(gistID: gistID)
             await isStarred(gistID: gistID)
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -29,7 +34,7 @@ import Combine
 
     func unstarGist(gistID: String) async {
         do {
-            try await client.unstarGist(gistID: gistID)
+            try await gistHubClient.unstarGist(gistID: gistID)
             await isStarred(gistID: gistID)
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -38,7 +43,7 @@ import Combine
 
     func isStarred(gistID: String) async {
         do {
-            try await client.isStarred(gistID: gistID)
+            try await gistHubClient.isStarred(gistID: gistID)
             starButtonState = .starred
         } catch {
             starButtonState = .unstarred
@@ -47,7 +52,7 @@ import Combine
 
     func gist(gistID: String) async {
         do {
-            async let gist = client.gist(fromGistID: gistID)
+            async let gist = gistHubClient.gist(fromGistID: gistID)
             contentState = try await .content(gist: gist)
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -56,7 +61,7 @@ import Combine
 
     func comments(gistID: String) async {
         do {
-            async let comments = client.comments(gistID: gistID)
+            async let comments = commentClient.comments(gistID: gistID)
             commentContentState = try await .content(comments: comments)
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -65,7 +70,7 @@ import Combine
 
     func deleteGist(gistID: String) async {
         do {
-            try await client.deleteGist(fromGistID: gistID)
+            try await gistHubClient.deleteGist(fromGistID: gistID)
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
