@@ -5,6 +5,7 @@
 //  Created by Khoa Le on 14/12/2022.
 //
 
+import AlertToast
 import SwiftUI
 import Inject
 
@@ -17,7 +18,12 @@ struct EditorDisplayView: View {
 
     @State private var showEditorInEditMode = false
     @State private var showCodeSettings = false
+    @State private var showConfirmDialog = false
+    @State private var showSuccessToast = false
+    @State private var showErrorToast = false
+    @State private var error = ""
 
+    @StateObject private var viewModel = EditorViewModel()
     @Environment(\.dismiss) private var dismiss
     @ObserveInjection private var inject
 
@@ -45,6 +51,14 @@ struct EditorDisplayView: View {
                         } label: {
                             Label("View Code Options", systemImage: "gear")
                         }
+
+                        if gist.owner?.id == userStore.user.id {
+                            Button(role: .destructive) {
+                                showConfirmDialog.toggle()
+                            } label: {
+                                Label("Delete File", systemImage: "trash")
+                            }
+                        }
                     } label: {
                         Image(systemName: "ellipsis")
                             .font(.system(size: 18))
@@ -62,7 +76,43 @@ struct EditorDisplayView: View {
                     .sheet(isPresented: $showCodeSettings) {
                         EditorCodeSettingsView(codeSettingsStore: CodeSettingsStore())
                     }
+                    .confirmationDialog(
+                        "Are you sure you want to delete this file?",
+                        isPresented: $showConfirmDialog,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Delete File", role: .destructive) {
+                            Task {
+                                do {
+                                    try await viewModel.deleteGist(gistID: gist.id, fileName: fileName) {
+                                        showSuccessToast.toggle()
+                                    }
+                                } catch let updateError {
+                                    error = updateError.localizedDescription
+                                    showErrorToast.toggle()
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+            .toast(isPresenting: $showSuccessToast, duration: 0.8) {
+                AlertToast(
+                    displayMode: .banner(.pop),
+                    type: .complete(Colors.success.color),
+                    title: "Deleted File",
+                    style: .style(backgroundColor: Colors.toastBackground.color)
+                )
+            } completion: {
+                dismiss()
+            }
+            .toast(isPresenting: $showErrorToast, duration: 2.5) {
+                AlertToast(
+                    displayMode: .banner(.pop),
+                    type: .error(Colors.danger.color),
+                    title: error,
+                    style: .style(backgroundColor: Colors.errorToastBackground.color)
+                )
             }
             .enableInjection()
     }

@@ -98,7 +98,3 @@ struct EditorView: View {
             .interactiveDismissDisabled(contentHasChanged)
     }
 }
-
-fileprivate extension Colors {
-    static let errorToastBackground = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Black.black0.dark)
-}

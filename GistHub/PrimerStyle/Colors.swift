@@ -433,6 +433,7 @@ final class Colors {
     static var border = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
 
     static let toastBackground = UIColor(light: Colors.Palette.White.white0.light, dark: Colors.Palette.Black.black0.dark)
+    static let errorToastBackground = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Black.black0.dark)
 
     static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
     static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)

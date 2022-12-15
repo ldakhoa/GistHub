@@ -38,7 +38,7 @@ protocol GistHubAPIClient {
         fromGistID gistID: String,
         description: String?,
         fileName: String,
-        content: String
+        content: String?
     ) async throws -> Gist
 
     /// Delete a gist.
@@ -96,7 +96,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         fromGistID gistID: String,
         description: String?,
         fileName: String,
-        content: String
+        content: String?
     ) async throws -> Gist {
         try await session.data(for: API.updateGist(
             gistID: gistID,
@@ -116,7 +116,7 @@ extension DefaultGistHubAPIClient {
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
         case gist(gistID: String)
-        case updateGist(gistID: String, description: String?, fileName: String, content: String)
+        case updateGist(gistID: String, description: String?, fileName: String, content: String?)
         case deleteGist(gistID: String)
         case comments(gistID: String)
 

@@ -11,7 +11,7 @@
 - [ ] Update gist
 	- [x] Content
 	- [ ] Filename + Language
-  - [ ] Delete file
+  - [x] Delete file
 - [ ] Create gists
 - [x] Alert when content different than before
 - [ ] Make public / Private

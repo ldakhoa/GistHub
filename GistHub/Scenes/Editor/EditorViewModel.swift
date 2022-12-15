@@ -14,12 +14,33 @@ import SwiftUI
         self.client = client
     }
 
-    func updateGist(gistID: String, fileName: String, content: String, completion: (() -> Void)? = nil) async throws {
+    func updateGist(
+        gistID: String,
+        fileName: String,
+        content: String,
+        completion: (() -> Void)? = nil
+    ) async throws {
         let gist = try await client.updateGist(
             fromGistID: gistID,
             description: nil,
             fileName: fileName,
             content: content
+        )
+        if gist.url != nil {
+            completion!()
+        }
+    }
+
+    func deleteGist(
+        gistID: String,
+        fileName: String,
+        completion: (() -> Void)? = nil
+    ) async throws {
+        let gist = try await client.updateGist(
+            fromGistID: gistID,
+            description: nil,
+            fileName: fileName,
+            content: nil
         )
         if gist.url != nil {
             completion!()
