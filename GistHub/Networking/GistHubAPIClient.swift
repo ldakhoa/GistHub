@@ -30,6 +30,17 @@ protocol GistHubAPIClient {
     /// Get a gist.
     func gist(fromGistID gistID: String) async throws -> Gist
 
+    /// Update a gist
+    ///
+    /// Allows you to update a gist's description and to update, delete, or rename gist files.
+    @discardableResult
+    func updateGist(
+        fromGistID gistID: String,
+        description: String?,
+        fileName: String,
+        content: String
+    ) async throws -> Gist
+
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
 
@@ -79,6 +90,21 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func comments(gistID: String) async throws -> [Comment] {
         try await session.data(for: API.comments(gistID: gistID))
     }
+
+    @discardableResult
+    func updateGist(
+        fromGistID gistID: String,
+        description: String?,
+        fileName: String,
+        content: String
+    ) async throws -> Gist {
+        try await session.data(for: API.updateGist(
+            gistID: gistID,
+            description: description,
+            fileName: fileName,
+            content: content
+        ))
+    }
 }
 
 extension DefaultGistHubAPIClient {
@@ -90,6 +116,7 @@ extension DefaultGistHubAPIClient {
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
         case gist(gistID: String)
+        case updateGist(gistID: String, description: String?, fileName: String, content: String)
         case deleteGist(gistID: String)
         case comments(gistID: String)
 
@@ -112,7 +139,7 @@ extension DefaultGistHubAPIClient {
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
                 return "/gists/\(gistID)/star"
-            case let .gist(gistID), let .deleteGist(gistID):
+            case let .gist(gistID), let .deleteGist(gistID), let .updateGist(gistID, _, _, _):
                 return "/gists/\(gistID)"
             case let .comments(gistID):
                 return "/gists/\(gistID)/comments"
@@ -127,11 +154,33 @@ extension DefaultGistHubAPIClient {
                 return .put
             case .unstarGist, .deleteGist:
                 return .delete
+            case .updateGist:
+                return .patch
             }
         }
 
         func body() throws -> Data? {
-            nil
+            switch self {
+            case let .updateGist(_, description, fileName, content):
+                struct Request: Codable {
+                    let description: String?
+                    let files: [String: FileValue]?
+
+                    struct FileValue: Codable {
+                        let content: String?
+                    }
+
+                    func toData() throws -> Data? {
+                        return try? JSONEncoder().encode(self)
+                    }
+                }
+                let content = Request.FileValue(content: content)
+                let files: [String: Request.FileValue] = [fileName: content]
+                let request = Request(description: description, files: files)
+                return try? request.toData()
+            default:
+                return nil
+            }
         }
     }
 }

@@ -8,11 +8,12 @@
 
 ### Gist
 - [x] View gists
-- [ ] Update gists
-	- [ ] Content
+- [ ] Update gist
+	- [x] Content
 	- [ ] Filename + Language
+  - [ ] Delete file
 - [ ] Create gists
-- [ ] Alert when content different than before
+- [x] Alert when content different than before
 - [ ] Make public / Private
 - [ ] Share gists
 - [x] Star/Unstar gist
@@ -23,7 +24,7 @@
 - [ ] Write comment
 - [ ] Delete comment
 - [ ] Edit comment
-- [ ] Reaction (Optional)
+- [ ] Reaction
 
 ### Editor
 - [ ] Keyboard tool view

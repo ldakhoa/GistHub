@@ -124,6 +124,7 @@
 		6A7E481B294A0D1D00D6964C /* TextView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */; };
 		6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */; };
 		6A7E4821294A4C0800D6964C /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7E4820294A4C0800D6964C /* OrderedCollections */; };
+		6A7E4825294B696500D6964C /* EditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4824294B696500D6964C /* EditorViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -168,6 +169,7 @@
 		6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorCodeSettingsView.swift; sourceTree = "<group>"; };
 		6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+Helpers.swift"; sourceTree = "<group>"; };
 		6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSettingsStore.swift; sourceTree = "<group>"; };
+		6A7E4824294B696500D6964C /* EditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -409,12 +411,13 @@
 		6A7CF5982945FB7A007B7D68 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				6A7E481C294A0D2300D6964C /* TextView */,
-				6A7CF59E29463C3A007B7D68 /* EditorViewController.swift */,
-				6A7CF5A029463D07007B7D68 /* EditorViewRepresentable.swift */,
+				6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */,
 				6A7E480E2949A52A00D6964C /* EditorDisplayView.swift */,
 				6A7E4810294A025A00D6964C /* EditorView.swift */,
-				6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */,
+				6A7CF59E29463C3A007B7D68 /* EditorViewController.swift */,
+				6A7E4824294B696500D6964C /* EditorViewModel.swift */,
+				6A7CF5A029463D07007B7D68 /* EditorViewRepresentable.swift */,
+				6A7E481C294A0D2300D6964C /* TextView */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
+				6A7E4825294B696500D6964C /* EditorViewModel.swift in Sources */,
 				6A7CF57C2944867F007B7D68 /* Date+AgoString.swift in Sources */,
 				6A7CF55029445898007B7D68 /* UIColor+Extensions.swift in Sources */,
 				6A7CF58C2944EF37007B7D68 /* GistDetailView.swift in Sources */,

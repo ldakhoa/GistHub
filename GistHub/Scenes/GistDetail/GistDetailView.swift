@@ -95,11 +95,11 @@ struct GistDetailView: View {
         .onAppear {
             Task {
                 await viewModel.isStarred(gistID: gist.id)
+                await viewModel.gist(gistID: gist.id)
             }
         }
         .onLoad {
             Task {
-                await viewModel.gist(gistID: gist.id)
                 await viewModel.comments(gistID: gist.id)
             }
         }
@@ -434,13 +434,9 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 
 // MARK: - Color for GistDetailView
 
-extension Colors {
+fileprivate extension Colors {
     static let scrollViewBackground = UIColor.systemGroupedBackground.color
     static let itemBackground = UIColor.secondarySystemGroupedBackground.color
-    static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
-    static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
-    static let badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
     static let commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
     static let fileNameForeground = UIColor(light: Colors.Palette.Black.black0.light, dark: .white)
-    static let toastBackground = UIColor(light: Colors.Palette.White.white0.light, dark: Colors.Palette.Black.black0.dark)
 }

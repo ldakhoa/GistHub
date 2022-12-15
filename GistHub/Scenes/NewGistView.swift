@@ -37,8 +37,8 @@ struct NewGistView: View {
                             .font(.subheadline)
 
                         NavigationLink("Create") {
-                            EditorView(language: .javaScript)
-                                .navigationTitle(newFileTitle)
+//                            EditorView(language: .javaScript)
+//                                .navigationTitle(newFileTitle)
                         }
 
                         Button("Cancel", role: .cancel, action: {})

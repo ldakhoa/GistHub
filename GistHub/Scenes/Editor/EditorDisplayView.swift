@@ -51,7 +51,12 @@ struct EditorDisplayView: View {
                     }
                     .sheet(isPresented: $showEditorInEditMode) {
                         NavigationView {
-                            EditorView(content: content, language: language)
+                            EditorView(
+                                fileName: fileName,
+                                content: content,
+                                language: language,
+                                gist: gist
+                            )
                         }
                     }
                     .sheet(isPresented: $showCodeSettings) {
