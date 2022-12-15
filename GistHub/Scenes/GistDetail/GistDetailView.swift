@@ -305,6 +305,7 @@ struct GistDetailView: View {
             .padding(12)
             .background(Colors.buttonBackground.color)
             .foregroundColor(Colors.buttonForeground.color)
+            .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Colors.buttonBorder.color)
