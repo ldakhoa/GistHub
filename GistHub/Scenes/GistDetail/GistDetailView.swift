@@ -19,6 +19,9 @@ struct GistDetailView: View {
 
     @State private var showToastAlert = false
     @State private var showDeleteAlert = false
+    @State private var showPlainTextEditorView = false
+    @State private var showToastError = false
+    @State private var gistDescription = ""
 
     @EnvironmentObject var userStore: UserStore
 
@@ -132,7 +135,9 @@ struct GistDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     if userStore.user.id == gist.owner?.id {
-                        makeMenuButton(title: "Edit Description", systemImage: "pencil") {}
+                        makeMenuButton(title: "Edit Description", systemImage: "pencil") {
+                            showPlainTextEditorView.toggle()
+                        }
                     }
 
                     if let htmlUrl = gist.htmlURL,
@@ -171,6 +176,17 @@ struct GistDetailView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Are you positive you want to delete this Gist?")
+        }
+        .sheet(isPresented: $showPlainTextEditorView) {
+            PlainTextEditorView(
+                description: gist.description ?? "",
+                gistID: gist.id,
+                navigationTitle: "Edit Description"
+            ) {
+                Task {
+                    await viewModel.gist(gistID: gist.id)
+                }
+            }
         }
         .toast(
             isPresenting: $showToastAlert,
@@ -244,10 +260,10 @@ struct GistDetailView: View {
                     }
                     .font(.callout)
                     .fontWeight(.semibold)
-                    .padding()
+                    .padding(12)
                     .background(Colors.commentButton.color)
                     .foregroundColor(Colors.Palette.White.white0.dynamicColor.color)
-                    .cornerRadius(12)
+                    .cornerRadius(8)
                     .shadow(
                         color: Colors.Palette.Black.black0.dynamicColor.color.opacity(0.4),
                         radius: 8

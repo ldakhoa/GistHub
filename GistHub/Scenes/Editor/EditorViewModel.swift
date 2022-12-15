@@ -22,7 +22,6 @@ import SwiftUI
     ) async throws {
         let gist = try await client.updateGist(
             fromGistID: gistID,
-            description: nil,
             fileName: fileName,
             content: content
         )
@@ -38,9 +37,22 @@ import SwiftUI
     ) async throws {
         let gist = try await client.updateGist(
             fromGistID: gistID,
-            description: nil,
             fileName: fileName,
             content: nil
+        )
+        if gist.url != nil {
+            completion!()
+        }
+    }
+
+    func updateDescription(
+        _ description: String,
+        gistID: String,
+        completion: (() -> Void)? = nil
+    ) async throws {
+        let gist = try await client.updateDescription(
+            fromGistID: gistID,
+            description: description
         )
         if gist.url != nil {
             completion!()

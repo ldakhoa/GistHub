@@ -125,6 +125,7 @@
 		6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */; };
 		6A7E4821294A4C0800D6964C /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7E4820294A4C0800D6964C /* OrderedCollections */; };
 		6A7E4825294B696500D6964C /* EditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4824294B696500D6964C /* EditorViewModel.swift */; };
+		6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -170,6 +171,7 @@
 		6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+Helpers.swift"; sourceTree = "<group>"; };
 		6A7E481D294A12EC00D6964C /* CodeSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSettingsStore.swift; sourceTree = "<group>"; };
 		6A7E4824294B696500D6964C /* EditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewModel.swift; sourceTree = "<group>"; };
+		6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,6 +419,7 @@
 				6A7CF59E29463C3A007B7D68 /* EditorViewController.swift */,
 				6A7E4824294B696500D6964C /* EditorViewModel.swift */,
 				6A7CF5A029463D07007B7D68 /* EditorViewRepresentable.swift */,
+				6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */,
 				6A7E481C294A0D2300D6964C /* TextView */,
 			);
 			path = Editor;
@@ -645,6 +648,7 @@
 				6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */,
 				6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */,
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
+				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
 				6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6A7CF59D2945FCC2007B7D68 /* NewGistView.swift in Sources */,
