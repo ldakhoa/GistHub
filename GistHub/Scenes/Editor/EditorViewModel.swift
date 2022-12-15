@@ -47,3 +47,7 @@ import SwiftUI
         }
     }
 }
+
+final class EditorPR {
+    var test_swift_lint : String = ""
+}
