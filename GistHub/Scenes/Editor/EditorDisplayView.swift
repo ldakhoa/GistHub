@@ -54,6 +54,7 @@ struct EditorDisplayView: View {
                         }
 
                         if gist.owner?.id == userStore.user.id {
+                            Divider()
                             Button(role: .destructive) {
                                 showConfirmDialog.toggle()
                             } label: {

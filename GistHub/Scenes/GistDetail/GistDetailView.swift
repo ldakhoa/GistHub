@@ -132,10 +132,23 @@ struct GistDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     if userStore.user.id == gist.owner?.id {
-                        makeMenuButton(title: "Make public", systemImage: "lock.open") {}
+                        makeMenuButton(title: "Edit Description", systemImage: "pencil") {}
                     }
 
-                    makeMenuButton(title: "Shared", systemImage: "square.and.arrow.up") {}
+                    if let htmlUrl = gist.htmlURL,
+                       let url = URL(string: htmlUrl) {
+                        Link(destination: url) {
+                            Label("Open In Browser", systemImage: "globe")
+                        }
+                    }
+
+                    // ShareLink in Menu currently works on iOS 16.1
+                    if #available(iOS 16.1, *) {
+                        let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
+                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Shareddd")
+                    }
+
+                    Divider()
 
                     if userStore.user.id == gist.owner?.id {
                         makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
@@ -351,6 +364,15 @@ struct GistDetailView: View {
 
     }
 
+    private func makeShareLink(itemString: String, previewTitle: String, label: String) -> some View {
+        ShareLink(
+            item: itemString,
+            preview: SharePreview(previewTitle, image: Image(uiImage: UIImage(named: "AppIcon") ?? UIImage()))
+        ) {
+            Label(label, systemImage: "square.and.arrow.up")
+        }
+    }
+
     private func buildFileNameView(gist: Gist, fileName: String) -> some View {
         let file = gist.files?[fileName]
         let content = file?.content ?? ""
@@ -385,12 +407,7 @@ struct GistDetailView: View {
         }
         .contextMenu {
             let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-            ShareLink(
-                item: gist.htmlURL ?? "",
-                preview: SharePreview(titlePreview, image: Image(systemName: "home"))
-            ) {
-                Label("Share via...", systemImage: "square.and.arrow.up")
-            }
+            makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share via...")
         } preview: {
             NavigationStack {
                 EditorDisplayView(
