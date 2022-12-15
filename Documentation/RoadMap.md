@@ -10,14 +10,14 @@
 - [x] View gists
 - [ ] Update gist
 	- [x] Content
+  - [x] Description
 	- [ ] Filename + Language
   - [x] Delete file
 - [ ] Create gists
 - [x] Alert when content different than before
-- [ ] Make public / Private
-- [ ] Share gists
+- [x] Share gists
 - [x] Star/Unstar gist
-- [ ] Get star count
+- [ ] Get star count (Migrate to using GraphQL)
 
 ### Comment
 - [x] View comment
