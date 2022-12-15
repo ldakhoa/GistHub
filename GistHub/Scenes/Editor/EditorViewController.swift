@@ -21,8 +21,6 @@ final class EditorViewController: UIViewController {
         return textView
     }()
 
-    let label = UILabel()
-
     private let content: Binding<String>
     private let isEditable: Bool
     private let isSelectable: Bool

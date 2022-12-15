@@ -58,20 +58,20 @@ struct GistListsView: View {
             }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    showingNewGistView.toggle()
-                } label: {
-                    Image(systemName: "plus.circle")
-                        .renderingMode(.template)
-                        .foregroundColor(Colors.accent.color)
-                }
-                .sheet(isPresented: $showingNewGistView) {
-                    NewGistView()
-                }
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                Button {
+//                    showingNewGistView.toggle()
+//                } label: {
+//                    Image(systemName: "plus.circle")
+//                        .renderingMode(.template)
+//                        .foregroundColor(Colors.accent.color)
+//                }
+//                .sheet(isPresented: $showingNewGistView) {
+//                    NewGistView()
+//                }
+//            }
+//        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
