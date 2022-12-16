@@ -10,7 +10,7 @@ import Combine
 @MainActor final class GistDetailViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var starButtonState: StarButtonState = .idling
-    @Published var commentContentState: CommentContentState = .loading
+    @Published var gist: Gist!
 
     private let gistHubClient: GistHubAPIClient
     private let commentClient: CommentAPIClient
@@ -54,15 +54,7 @@ import Combine
         do {
             async let gist = gistHubClient.gist(fromGistID: gistID)
             contentState = try await .content(gist: gist)
-        } catch {
-            contentState = .error(error: error.localizedDescription)
-        }
-    }
-
-    func comments(gistID: String) async {
-        do {
-            async let comments = commentClient.comments(gistID: gistID)
-            commentContentState = try await .content(comments: comments)
+            self.gist = try await gist
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
@@ -90,11 +82,5 @@ extension GistDetailViewModel {
         case idling
         case starred
         case unstarred
-    }
-
-    enum CommentContentState {
-        case loading
-        case content(comments: [Comment])
-        case error(error: String)
     }
 }

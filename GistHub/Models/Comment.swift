@@ -28,3 +28,9 @@ struct Comment: Codable {
         case body
     }
 }
+
+extension Comment: Equatable {
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        lhs.id == rhs.id
+    }
+}

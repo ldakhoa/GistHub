@@ -10,21 +10,23 @@ import SwiftUI
 import Inject
 
 struct PlainTextEditorView: View {
-    @State var description: String
+    let style: Style
+    @State var content: String
     let gistID: String
     let navigationTitle: String
     let placeholder: String
+    @ObservedObject var commentViewModel: CommentViewModel
     let completion: () -> Void
 
     @ObserveInjection private var inject
-    
+
     @StateObject private var viewModel = EditorViewModel()
-    @State private var originalDescription = ""
+
+    @State private var originalContent = ""
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
     @State private var contentHasChanged = false
     @State private var showConfirmDialog = false
-    @State private var showSuccessToast = false
     @State private var showErrorToast = false
     @State private var error = ""
     @State private var placeholderState = ""
@@ -32,7 +34,7 @@ struct PlainTextEditorView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                TextEditor(text: $description)
+                TextEditor(text: $content)
                     .focused($isFocused)
                     .padding(8)
                     .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
@@ -54,15 +56,12 @@ struct PlainTextEditorView: View {
 
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button("Save") {
-                                Task {
-                                    do {
-                                        try await viewModel.updateDescription(description, gistID: gistID) {
-                                            self.showSuccessToast.toggle()
-                                        }
-                                    } catch let gistError {
-                                        error = gistError.localizedDescription
-                                        self.showErrorToast.toggle()
-                                    }
+                                if style == .description {
+                                    updateDescription()
+                                } else if style == .comment {
+                                    createComment()
+                                } else if style == .updateComment {
+
                                 }
                             }
                             .bold()
@@ -86,13 +85,13 @@ struct PlainTextEditorView: View {
             }
         }
         .onAppear {
-            self.originalDescription = description
-            placeholderState = description.isEmpty ? placeholder : ""
+            self.originalContent = content
+            placeholderState = content.isEmpty ? placeholder : ""
             isFocused = true
         }
-        .onChange(of: description) { newValue in
-            contentHasChanged = newValue != originalDescription ? true : false
-            placeholderState = description.isEmpty ? placeholder : ""
+        .onChange(of: content) { newValue in
+            contentHasChanged = newValue != originalContent ? true : false
+            placeholderState = content.isEmpty ? placeholder : ""
         }
         .confirmationDialog("Are you sure you want to cancel?", isPresented: $showConfirmDialog, titleVisibility: .visible) {
             Button("Discard Changes", role: .destructive) {
@@ -100,17 +99,6 @@ struct PlainTextEditorView: View {
             }
         } message: {
             Text("Your changes will be discarded.")
-        }
-        .toast(isPresenting: $showSuccessToast, duration: 1.0) {
-            AlertToast(
-                displayMode: .banner(.pop),
-                type: .complete(Colors.success.color),
-                title: "Updated Description",
-                style: .style(backgroundColor: Colors.toastBackground.color)
-            )
-        } completion: {
-            dismiss()
-            completion()
         }
         .toast(isPresenting: $showErrorToast, duration: 2.5) {
             AlertToast(
@@ -122,5 +110,43 @@ struct PlainTextEditorView: View {
         }
         .interactiveDismissDisabled(contentHasChanged)
         .enableInjection()
+    }
+
+    private func updateDescription() {
+        Task {
+            do {
+                try await viewModel.updateDescription(content, gistID: gistID) {
+                    dismiss()
+                    completion()
+                }
+            } catch let gistError {
+                error = gistError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func createComment() {
+        Task {
+            do {
+                try await commentViewModel.createComment(gistID: gistID, body: content)
+                dismiss()
+            } catch let commentError {
+                error = commentError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func updateComment() {
+
+    }
+}
+
+extension PlainTextEditorView {
+    enum Style {
+        case description
+        case comment
+        case updateComment
     }
 }

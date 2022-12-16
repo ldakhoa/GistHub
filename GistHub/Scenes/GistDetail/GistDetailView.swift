@@ -14,10 +14,12 @@ struct GistDetailView: View {
     @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
+    @StateObject private var commentViewModel = CommentViewModel()
     @State private var scrollOffset: CGPoint = .zero
     @State private var floatingButtonSize: CGSize = .zero
 
     @State private var showToastAlert = false
+    @State private var showCommentTextEditor = false
     @State private var showDeleteAlert = false
     @State private var showPlainTextEditorView = false
     @State private var showToastError = false
@@ -38,56 +40,63 @@ struct GistDetailView: View {
                     .foregroundColor(Colors.danger.color)
             case let .content(gist):
                 ZStack {
-                    ScrollView(showsIndicators: true) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            buildTitleView()
+                    ScrollViewReader { scrollViewProxy in
+                        ScrollView(showsIndicators: true) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                buildTitleView(gist: gist)
 
-                            if let description = gist.description, !description.isEmpty {
-                                Text(description)
-                                    .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                    .lineLimit(2)
-                            }
+                                if let description = gist.description, !description.isEmpty {
+                                    Text(description)
+                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                        .lineLimit(2)
+                                }
 
-                            if let createdAt = gist.createdAt,
-                               let updatedAt = gist.updatedAt {
-                                if createdAt == updatedAt {
-                                    Text("Created \(createdAt.agoString())")
-                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                        .font(.subheadline)
-                                } else {
-                                    Text("Last active \(createdAt.agoString())")
-                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                        .font(.subheadline)
+                                if let createdAt = gist.createdAt,
+                                   let updatedAt = gist.updatedAt {
+                                    if createdAt == updatedAt {
+                                        Text("Created \(createdAt.agoString())")
+                                            .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                            .font(.subheadline)
+                                    } else {
+                                        Text("Last active \(createdAt.agoString())")
+                                            .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                            .font(.subheadline)
+                                    }
+                                }
+
+                                switch viewModel.starButtonState {
+                                case .idling:
+                                    EmptyView()
+                                case .starred:
+                                    buildStarButton(isStarred: true)
+                                case .unstarred:
+                                    buildStarButton(isStarred: false)
                                 }
                             }
+                            .padding(16)
+                            .readingScrollView(from: "scroll", into: $scrollOffset)
+                            .background(Colors.itemBackground)
 
-                            switch viewModel.starButtonState {
-                            case .idling:
-                                EmptyView()
-                            case .starred:
-                                buildStarButton(isStarred: true)
-                            case .unstarred:
-                                buildStarButton(isStarred: false)
+                            Spacer(minLength: 16)
+
+                            buildCodeSection(gist: gist)
+
+                            Spacer(minLength: 16)
+
+                            // padding bottom of the Button is 16,
+                            // and we want the space between list and Comment button is 8
+                            let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
+                            buildCommentSection()
+                                .padding(.bottom, listPaddingBottom)
+                        }
+                        .onChange(of: commentViewModel.comments) { _ in
+                            withAnimation {
+                                scrollViewProxy.scrollTo(commentViewModel.comments.last?.id, anchor: .center)
                             }
                         }
-                        .padding(16)
-                        .readingScrollView(from: "scroll", into: $scrollOffset)
-                        .background(Colors.itemBackground)
-
-                        Spacer(minLength: 16)
-
-                        buildCodeSection(gist: gist)
-
-                        Spacer(minLength: 16)
-
-                        // padding bottom of the Button is 16,
-                        // and we want the space between list and Comment button is 8
-                        let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
-                        buildCommentSection()
-                            .padding(.bottom, listPaddingBottom)
+                        .coordinateSpace(name: "scroll")
+                        .background(Colors.scrollViewBackground)
                     }
-                    .coordinateSpace(name: "scroll")
-                    .background(Colors.scrollViewBackground)
 
                     buildFloatingCommentButton()
                 }
@@ -102,14 +111,14 @@ struct GistDetailView: View {
         }
         .onLoad {
             Task {
-                await viewModel.comments(gistID: gist.id)
+                await commentViewModel.fetchComments(gistID: gist.id)
                 await viewModel.gist(gistID: gist.id)
             }
         }
         .refreshable {
             Task {
                 await viewModel.gist(gistID: gist.id)
-                await viewModel.comments(gistID: gist.id)
+                await commentViewModel.fetchComments(gistID: gist.id)
                 await viewModel.isStarred(gistID: gist.id)
             }
         }
@@ -150,7 +159,7 @@ struct GistDetailView: View {
                     // ShareLink in Menu currently works on iOS 16.1
                     if #available(iOS 16.1, *) {
                         let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Shareddd")
+                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Shared")
                     }
 
                     Divider()
@@ -179,15 +188,27 @@ struct GistDetailView: View {
         }
         .sheet(isPresented: $showPlainTextEditorView) {
             PlainTextEditorView(
-                description: gist.description ?? "",
+                style: .description,
+                content: viewModel.gist.description ?? "",
                 gistID: gist.id,
                 navigationTitle: "Edit Description",
-                placeholder: "Enter a description..."
+                placeholder: "Enter a description...",
+                commentViewModel: self.commentViewModel
             ) {
                 Task {
                     await viewModel.gist(gistID: gist.id)
                 }
             }
+        }
+        .sheet(isPresented: $showCommentTextEditor) {
+            PlainTextEditorView(
+                style: .comment,
+                content: "",
+                gistID: gist.id,
+                navigationTitle: "Write Comment",
+                placeholder: "Write a comment...",
+                commentViewModel: self.commentViewModel
+            ) {}
         }
         .toast(
             isPresenting: $showToastAlert,
@@ -207,7 +228,7 @@ struct GistDetailView: View {
         .enableInjection()
     }
 
-    private func buildTitleView() -> some View {
+    private func buildTitleView(gist: Gist) -> some View {
         HStack(alignment: .center, spacing: 4) {
             HStack(spacing: 6) {
                 if
@@ -253,7 +274,7 @@ struct GistDetailView: View {
             HStack {
                 Spacer()
                 Button {
-
+                    showCommentTextEditor.toggle()
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "bubble.left")
@@ -334,12 +355,13 @@ struct GistDetailView: View {
 
     private func buildCommentSection() -> some View {
         ZStack {
-            switch viewModel.commentContentState {
+            switch commentViewModel.contentState {
             case .loading:
                 ProgressView()
             case let .error(error):
                 Text(error).foregroundColor(Colors.danger.color)
-            case let .content(comments):
+            case .showContent:
+                let comments = commentViewModel.comments
                 VStack(alignment: .leading) {
                     let commentTitle = comments.count > 1 ? "Comments" : "Comment"
                     Text(comments.isEmpty ? "" : commentTitle)
@@ -348,7 +370,7 @@ struct GistDetailView: View {
                         .padding(.horizontal, 16)
                     LazyVStack(alignment: .leading) {
                         ForEach(comments, id: \.id) { comment in
-                            CommentView(comment: comment)
+                            CommentView(comment: comment).id(comment.id)
                             Divider()
                                 .overlay(Colors.neutralEmphasis.color)
                         }
