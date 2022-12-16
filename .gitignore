@@ -82,7 +82,7 @@ _site/
 
 # secrets
 Resources/*.xcconfig
-*Secrets.swift*
+#*Secrets.swift*
 
 # FBSnapshotTestCase Failure Diffs
 FailureDiffs/s
