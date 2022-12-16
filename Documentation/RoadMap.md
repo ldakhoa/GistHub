@@ -31,3 +31,6 @@
 - [ ] Theme
 - [x] View/Edit mode
 - [x] Code Settings
+
+### Misc
+- [ ] Create GistHub issues in-app
