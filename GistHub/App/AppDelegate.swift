@@ -11,10 +11,13 @@ import UIKit
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
+    let appController = AppController()
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        appController.appDidFinishLaunching(with: window)
         UserDefaults.standard.registerDefaults()
         return true
     }
