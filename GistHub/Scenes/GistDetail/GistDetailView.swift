@@ -463,6 +463,7 @@ struct GistDetailView: View {
                     language: language
                 ) {}
                 .environmentObject(userStore)
+                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

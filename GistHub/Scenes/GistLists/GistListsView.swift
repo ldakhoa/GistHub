@@ -46,6 +46,9 @@ struct GistListsView: View {
                             NavigationStack {
                                 GistDetailView(gist: gist) {}
                                     .environmentObject(UserStore(user: user))
+                                    .toolbarBackground(.visible, for: .navigationBar)
+                                    .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
+                                    .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")
                             }
                         }
                     }
