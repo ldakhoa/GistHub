@@ -203,12 +203,11 @@ struct GistDetailView: View {
         .sheet(isPresented: $showCommentTextEditor) {
             PlainTextEditorView(
                 style: .comment,
-                content: "",
                 gistID: gist.id,
                 navigationTitle: "Write Comment",
                 placeholder: "Write a comment...",
                 commentViewModel: self.commentViewModel
-            ) {}
+            )
         }
         .toast(
             isPresenting: $showToastAlert,

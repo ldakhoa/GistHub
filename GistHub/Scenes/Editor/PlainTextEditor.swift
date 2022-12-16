@@ -9,27 +9,54 @@ import AlertToast
 import SwiftUI
 import Inject
 
+/// A view that uses for write comments and descriptions.
 struct PlainTextEditorView: View {
-    let style: Style
-    @State var content: String
-    let gistID: String
-    let navigationTitle: String
-    let placeholder: String
-    @ObservedObject var commentViewModel: CommentViewModel
-    let completion: () -> Void
 
-    @ObserveInjection private var inject
+    // MARK: - Dependencies
+
+    private let style: Style
+    @State private var content: String
+    private let gistID: String
+    private let navigationTitle: String
+    private let placeholder: String
+    @ObservedObject var commentViewModel: CommentViewModel
+    private let completion: (() -> Void)?
+
+    // MARK: - State
 
     @StateObject private var viewModel = EditorViewModel()
-
     @State private var originalContent = ""
-    @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
     @State private var contentHasChanged = false
     @State private var showConfirmDialog = false
     @State private var showErrorToast = false
     @State private var error = ""
     @State private var placeholderState = ""
+
+    // MARK: - Environments
+
+    @ObserveInjection private var inject
+    @Environment(\.dismiss) private var dismiss
+
+    // MARK: - Initializer
+
+    init(
+        style: Style,
+        content: String = "",
+        gistID: String,
+        navigationTitle: String,
+        placeholder: String = "",
+        commentViewModel: CommentViewModel,
+        completion: (() -> Void)? = nil
+    ) {
+        self.style = style
+        _content = State(initialValue: content)
+        self.gistID = gistID
+        self.navigationTitle = navigationTitle
+        self.placeholder = placeholder
+        self.commentViewModel = commentViewModel
+        self.completion = completion
+    }
 
     var body: some View {
         NavigationStack {
@@ -117,7 +144,7 @@ struct PlainTextEditorView: View {
             do {
                 try await viewModel.updateDescription(content, gistID: gistID) {
                     dismiss()
-                    completion()
+                    completion!()
                 }
             } catch let gistError {
                 error = gistError.localizedDescription
