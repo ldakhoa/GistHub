@@ -7,9 +7,22 @@
 
 import SwiftUI
 import Kingfisher
+import Inject
 
 struct CommentView: View {
-    let comment: Comment
+    private let comment: Comment
+    private let gistID: String
+    @ObservedObject private var viewModel: CommentViewModel
+
+    @State private var showContentActionConfirmedDialog = false
+    @State private var showDeleteConfirmedDialog = false
+    @ObserveInjection private var inject
+
+    init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
+        self.comment = comment
+        self.gistID = gistID
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -33,6 +46,15 @@ struct CommentView: View {
                             Text("· \(createdAt.agoString())")
                                 .foregroundColor(Colors.neutralEmphasisPlus.color)
                         }
+
+                        Spacer()
+
+                        Button {
+                            showContentActionConfirmedDialog.toggle()
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        }
                     }
 
                     if let authorAssociation = comment.authorAssociation, authorAssociation == "OWNER" {
@@ -53,7 +75,28 @@ struct CommentView: View {
             Text(.init(comment.body ?? ""))
                 .font(.callout)
         }
+        .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
+            Button("Delete", role: .destructive) {
+                showDeleteConfirmedDialog.toggle()
+            }
+
+            Button("Edit") {}
+
+            Button("Quote reply") {}
+        }
+        .confirmationDialog(
+            "Are you sure you want to delete this?",
+            isPresented: $showDeleteConfirmedDialog,
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.deleteComments(gistID: gistID, commentID: comment.id ?? 0)
+                }
+            }
+        }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+        .enableInjection()
     }
 }

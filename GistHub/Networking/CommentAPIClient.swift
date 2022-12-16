@@ -19,7 +19,7 @@ protocol CommentAPIClient {
     func updateComment(gistID: String) async throws -> Comment
 
     /// Delete a gist comment
-    func deleteComment(gistID: String) async throws
+    func deleteComment(gistID: String, commentID: Int) async throws
 }
 
 final class DefaultCommentAPIClient: CommentAPIClient {
@@ -41,8 +41,8 @@ final class DefaultCommentAPIClient: CommentAPIClient {
         try await session.data(for: API.updateComment(gistID: gistID))
     }
 
-    func deleteComment(gistID: String) async throws {
-        try await session.data(for: API.deleteComment(gistID: gistID))
+    func deleteComment(gistID: String, commentID: Int) async throws {
+        try await session.data(for: API.deleteComment(gistID: gistID, commentID: commentID))
     }
 }
 
@@ -51,7 +51,7 @@ extension DefaultCommentAPIClient {
         case comments(gistID: String)
         case createComment(gistID: String, body: String)
         case updateComment(gistID: String)
-        case deleteComment(gistID: String)
+        case deleteComment(gistID: String, commentID: Int)
 
         var headers: [String: String]? {
             return [
@@ -64,9 +64,10 @@ extension DefaultCommentAPIClient {
             switch self {
             case let .comments(gistID),
                 let .createComment(gistID, _),
-                let .updateComment(gistID),
-                let .deleteComment(gistID):
+                let .updateComment(gistID):
                 return "/gists/\(gistID)/comments"
+            case let .deleteComment(gistID, commentID):
+                return "/gists/\(gistID)/comments/\(commentID)"
             }
         }
 

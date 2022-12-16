@@ -90,12 +90,15 @@ struct GistDetailView: View {
                                 .padding(.bottom, listPaddingBottom)
                         }
                         .onChange(of: commentViewModel.comments) { _ in
-                            withAnimation {
-                                scrollViewProxy.scrollTo(commentViewModel.comments.last?.id, anchor: .center)
+                            if commentViewModel.shouldScrollToComment {
+                                withAnimation {
+                                    scrollViewProxy.scrollTo(commentViewModel.comments.last?.id, anchor: .center)
+                                }
                             }
                         }
                         .coordinateSpace(name: "scroll")
                         .background(Colors.scrollViewBackground)
+                        .animation(.spring(), value: commentViewModel.comments)
                     }
 
                     buildFloatingCommentButton()
@@ -159,7 +162,7 @@ struct GistDetailView: View {
                     // ShareLink in Menu currently works on iOS 16.1
                     if #available(iOS 16.1, *) {
                         let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Shared")
+                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share")
                     }
 
                     Divider()
@@ -369,7 +372,8 @@ struct GistDetailView: View {
                         .padding(.horizontal, 16)
                     LazyVStack(alignment: .leading) {
                         ForEach(comments, id: \.id) { comment in
-                            CommentView(comment: comment).id(comment.id)
+                            CommentView(comment: comment, gistID: gist.id, viewModel: commentViewModel)
+                                .id(comment.id)
                             Divider()
                                 .overlay(Colors.neutralEmphasis.color)
                         }
