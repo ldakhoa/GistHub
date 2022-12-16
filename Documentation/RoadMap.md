@@ -4,7 +4,7 @@
 - [ ] OAuth
 - [ ] Access token
 - [ ] Logout
-- [ ] Basic user info
+- [x] Basic user info
 
 ### Gist
 - [x] View gists
