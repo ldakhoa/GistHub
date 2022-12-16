@@ -17,6 +17,7 @@ struct PlainTextEditorView: View {
     private let style: Style
     @State private var content: String
     private let gistID: String
+    private let commentID: Int?
     private let navigationTitle: String
     private let placeholder: String
     @ObservedObject var commentViewModel: CommentViewModel
@@ -32,6 +33,7 @@ struct PlainTextEditorView: View {
     @State private var showErrorToast = false
     @State private var error = ""
     @State private var placeholderState = ""
+    @State private var showLoadingSaveButton = false
 
     // MARK: - Environments
 
@@ -44,6 +46,7 @@ struct PlainTextEditorView: View {
         style: Style,
         content: String = "",
         gistID: String,
+        commentID: Int? = nil,
         navigationTitle: String,
         placeholder: String = "",
         commentViewModel: CommentViewModel,
@@ -52,6 +55,7 @@ struct PlainTextEditorView: View {
         self.style = style
         _content = State(initialValue: content)
         self.gistID = gistID
+        self.commentID = commentID
         self.navigationTitle = navigationTitle
         self.placeholder = placeholder
         self.commentViewModel = commentViewModel
@@ -82,13 +86,19 @@ struct PlainTextEditorView: View {
                         }
 
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Save") {
-                                if style == .description {
-                                    updateDescription()
-                                } else if style == .comment {
-                                    createComment()
-                                } else if style == .updateComment {
-
+                            Button {
+                                showLoadingSaveButton = true
+                                switch style {
+                                case .description: updateDescription()
+                                case .comment: createComment()
+                                case .updateComment: updateComment()
+                                }
+                            } label: {
+                                if showLoadingSaveButton {
+                                    ProgressView()
+                                        .tint(Colors.accent.color)
+                                } else {
+                                    Text("Save")
                                 }
                             }
                             .bold()
@@ -135,6 +145,14 @@ struct PlainTextEditorView: View {
                 style: .style(backgroundColor: Colors.errorToastBackground.color)
             )
         }
+        .toast(isPresenting: $commentViewModel.showErrorToast, duration: 2.5) {
+            AlertToast(
+                displayMode: .banner(.pop),
+                type: .error(Colors.danger.color),
+                title: commentViewModel.errorToastTitle,
+                style: .style(backgroundColor: Colors.errorToastBackground.color)
+            )
+        }
         .interactiveDismissDisabled(contentHasChanged)
         .enableInjection()
     }
@@ -149,6 +167,7 @@ struct PlainTextEditorView: View {
             } catch let gistError {
                 error = gistError.localizedDescription
                 self.showErrorToast.toggle()
+                showLoadingSaveButton = false
             }
         }
     }
@@ -156,17 +175,28 @@ struct PlainTextEditorView: View {
     private func createComment() {
         Task {
             do {
-                try await commentViewModel.createComment(gistID: gistID, body: content)
-                dismiss()
-            } catch let commentError {
-                error = commentError.localizedDescription
-                self.showErrorToast.toggle()
+                await commentViewModel.createComment(gistID: gistID, body: content) {
+                    dismiss()
+                }
             }
+            showLoadingSaveButton = false
         }
     }
 
     private func updateComment() {
-
+        Task {
+            do {
+                guard let commentID = commentID else { return }
+                await commentViewModel.updateComment(
+                    gistID: gistID,
+                    commentID: commentID,
+                    body: content
+                ) {
+                    dismiss()
+                }
+            }
+            showLoadingSaveButton = false
+        }
     }
 }
 

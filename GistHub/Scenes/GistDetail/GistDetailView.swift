@@ -374,10 +374,13 @@ struct GistDetailView: View {
                         ForEach(comments, id: \.id) { comment in
                             CommentView(comment: comment, gistID: gist.id, viewModel: commentViewModel)
                                 .id(comment.id)
-                            Divider()
-                                .overlay(Colors.neutralEmphasis.color)
+                            if !isLastObject(objects: comments, object: comment) {
+                                Divider()
+                                    .overlay(Colors.neutralEmphasis.color)
+                            }
                         }
                     }
+                    .padding(.vertical, comments.isEmpty ? 0 : 4)
                     .background(Colors.itemBackground)
                 }
             }
@@ -394,14 +397,14 @@ struct GistDetailView: View {
             LazyVStack(alignment: .leading) {
                 ForEach(fileNames, id: \.hashValue) { fileName in
                     buildFileNameView(gist: gist, fileName: fileName)
-                    if !isLastFileName(fileNames: fileNames, fileName) {
+                    if !isLastObject(objects: fileNames, object: fileName) {
                         Divider()
                             .overlay(Colors.neutralEmphasis.color)
                             .padding(.leading, 42)
                     }
                 }
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, fileNames.isEmpty ? 0 : 4)
             .background(Colors.itemBackground)
         }
 
@@ -462,16 +465,6 @@ struct GistDetailView: View {
                 .environmentObject(userStore)
             }
         }
-    }
-
-    private func isLastFileName(fileNames: [String], _ fileName: String) -> Bool {
-        let fileNamesCount = fileNames.count
-        if let index = fileNames.firstIndex(of: fileName) {
-            if index + 1 != fileNamesCount {
-                return false
-            }
-        }
-        return true
     }
 }
 

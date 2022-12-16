@@ -16,7 +16,7 @@ protocol CommentAPIClient {
     func createComment(gistID: String, body: String) async throws -> Comment
 
     /// Update a gist comment
-    func updateComment(gistID: String) async throws -> Comment
+    func updateComment(gistID: String, commentID: Int, body: String) async throws -> Comment
 
     /// Delete a gist comment
     func deleteComment(gistID: String, commentID: Int) async throws
@@ -37,8 +37,8 @@ final class DefaultCommentAPIClient: CommentAPIClient {
         try await session.data(for: API.createComment(gistID: gistID, body: body))
     }
 
-    func updateComment(gistID: String) async throws -> Comment {
-        try await session.data(for: API.updateComment(gistID: gistID))
+    func updateComment(gistID: String, commentID: Int, body: String) async throws -> Comment {
+        try await session.data(for: API.updateComment(gistID: gistID, commentID: commentID, body: body))
     }
 
     func deleteComment(gistID: String, commentID: Int) async throws {
@@ -50,7 +50,7 @@ extension DefaultCommentAPIClient {
     enum API: Request {
         case comments(gistID: String)
         case createComment(gistID: String, body: String)
-        case updateComment(gistID: String)
+        case updateComment(gistID: String, commentID: Int, body: String)
         case deleteComment(gistID: String, commentID: Int)
 
         var headers: [String: String]? {
@@ -63,10 +63,10 @@ extension DefaultCommentAPIClient {
         var url: String {
             switch self {
             case let .comments(gistID),
-                let .createComment(gistID, _),
-                let .updateComment(gistID):
+                let .createComment(gistID, _):
                 return "/gists/\(gistID)/comments"
-            case let .deleteComment(gistID, commentID):
+            case let .updateComment(gistID, commentID, _),
+                let .deleteComment(gistID, commentID):
                 return "/gists/\(gistID)/comments/\(commentID)"
             }
         }
@@ -86,7 +86,8 @@ extension DefaultCommentAPIClient {
 
         func body() throws -> Data? {
             switch self {
-            case let .createComment(_, body):
+            case let .createComment(_, body),
+                let .updateComment(_, _, body):
                 let request: [String: String] = ["body": body]
                 return try? JSONEncoder().encode(request)
             default:

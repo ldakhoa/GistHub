@@ -12,22 +12,13 @@ import SwiftUI
     @Published var comments = [Comment]()
     @Published var contentState: ContentState = .loading
     @Published var shouldScrollToComment = false
+    @Published var errorToastTitle = ""
+    @Published var showErrorToast = false
 
     private let client: CommentAPIClient
 
     init(client: CommentAPIClient = DefaultCommentAPIClient()) {
         self.client = client
-    }
-
-    func createComment(gistID: String, body: String) async throws {
-        do {
-            let comment = try await client.createComment(gistID: gistID, body: body)
-            self.comments.append(comment)
-            self.contentState = .showContent
-            shouldScrollToComment = true
-        } catch {
-            contentState = .error(error: error.localizedDescription)
-        }
     }
 
     func fetchComments(gistID: String) async {
@@ -38,6 +29,39 @@ import SwiftUI
             shouldScrollToComment = true
         } catch {
             contentState = .error(error: error.localizedDescription)
+        }
+    }
+
+    func createComment(gistID: String, body: String, completion: () -> Void) async {
+        do {
+            let comment = try await client.createComment(gistID: gistID, body: body)
+            self.comments.append(comment)
+            self.contentState = .showContent
+            shouldScrollToComment = true
+            completion()
+        } catch {
+            showErrorToast = true
+            errorToastTitle = error.localizedDescription
+        }
+    }
+
+    func updateComment(
+        gistID: String,
+        commentID: Int,
+        body: String,
+        completion: () -> Void
+    ) async {
+        do {
+            let comment = try await client.updateComment(gistID: gistID, commentID: commentID, body: body)
+            if let index = comments.firstIndex(where: { $0.id == commentID }) {
+                comments[index] = comment
+            }
+            self.contentState = .showContent
+            shouldScrollToComment = false
+            completion()
+        } catch {
+            showErrorToast = true
+            errorToastTitle = error.localizedDescription
         }
     }
 

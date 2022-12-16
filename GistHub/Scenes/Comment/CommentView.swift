@@ -16,6 +16,7 @@ struct CommentView: View {
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
+    @State private var showPlainTextEditorView = false
     @ObserveInjection private var inject
 
     init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
@@ -43,7 +44,12 @@ struct CommentView: View {
                         Text(comment.user.login ?? "")
                             .bold()
                         if let createdAt = comment.createdAt {
-                            Text("· \(createdAt.agoString())")
+                            Text("· \(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
+                                .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        }
+
+                        if comment.createdAt != comment.updatedAt {
+                            Text("· edited")
                                 .foregroundColor(Colors.neutralEmphasisPlus.color)
                         }
 
@@ -72,6 +78,7 @@ struct CommentView: View {
                     }
                 }
             }
+            Spacer(minLength: 12)
             Text(.init(comment.body ?? ""))
                 .font(.callout)
         }
@@ -80,7 +87,9 @@ struct CommentView: View {
                 showDeleteConfirmedDialog.toggle()
             }
 
-            Button("Edit") {}
+            Button("Edit") {
+                showPlainTextEditorView.toggle()
+            }
 
             Button("Quote reply") {}
         }
@@ -94,6 +103,16 @@ struct CommentView: View {
                     await viewModel.deleteComments(gistID: gistID, commentID: comment.id ?? 0)
                 }
             }
+        }
+        .sheet(isPresented: $showPlainTextEditorView) {
+            PlainTextEditorView(
+                style: .updateComment,
+                content: comment.body ?? "",
+                gistID: gistID,
+                commentID: comment.id,
+                navigationTitle: "Edit Comment",
+                placeholder: "Write a comment...",
+                commentViewModel: viewModel)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

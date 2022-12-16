@@ -21,10 +21,9 @@
 
 ### Comment
 - [x] View comment
-- [ ] Write comment
-- [ ] Delete comment
-- [ ] Edit comment
-- [ ] Reaction
+- [x] Write comment
+- [x] Delete comment
+- [x] Edit comment
 
 ### Editor
 - [ ] Keyboard tool view
