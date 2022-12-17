@@ -16,6 +16,8 @@ struct LoginView: View {
     @State private var error = ""
     @State private var ghButtonLoading = false
     @State private var patButtonLoading = false
+    @State private var showLoginAlertField = false
+    @State private var accessToken = ""
 
     var body: some View {
         VStack(spacing: 24) {
@@ -52,7 +54,7 @@ struct LoginView: View {
                     foregroundColor: Colors.tokenButtonForeground,
                     shouldShowLoading: patButtonLoading
                 ) {
-
+                    showLoginAlertField.toggle()
                 }
             }
             .padding(.bottom, 32)
@@ -64,8 +66,6 @@ struct LoginView: View {
                 self.patButtonLoading = false
             case .ghLoading:
                 self.ghButtonLoading = true
-            case .patLoading:
-                self.patButtonLoading = true
             case let .error(error):
                 self.ghButtonLoading = false
                 self.patButtonLoading = false
@@ -80,6 +80,25 @@ struct LoginView: View {
                 title: error,
                 style: .style(backgroundColor: Colors.errorToastBackground.color)
             )
+        }
+        .alert("Personal Access Token", isPresented: $showLoginAlertField) {
+            SecureField("Personal Access Token", text: $accessToken)
+                .font(.callout)
+
+            Button("Login") {
+                patButtonLoading = true
+                let token = accessToken
+                Task {
+                    await viewModel.personalAccessTokenLogin(token: token)
+                }
+                accessToken = ""
+            }
+
+            Button("Cancel", role: .cancel) {
+                accessToken = ""
+            }
+        } message: {
+            Text("Sign in with a Personal Access Token with both gists and user scopes.")
         }
         .enableInjection()
     }

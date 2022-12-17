@@ -96,13 +96,24 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
         .store(in: &cancellables)
     }
 
+    @MainActor
+    func personalAccessTokenLogin(token: String) async {
+        do {
+            let user = try await client.verifyPersonalAccessTokenRequest(token: token)
+            if user.id != nil {
+                contentState = .idling
+            }
+            print(user.login)
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
 }
 
 extension LoginViewModel {
     enum ContentState: Equatable {
         case idling
         case ghLoading
-        case patLoading
         case error(error: String)
     }
 }

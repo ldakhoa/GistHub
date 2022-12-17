@@ -19,6 +19,8 @@ protocol AccessTokenClient {
         code: String,
         promise: @escaping (Result<AccessTokenUser, Error>) -> Void
     )
+
+    func verifyPersonalAccessTokenRequest(token: String) async throws -> User
 }
 
 struct DefaultAccessTokenClient: AccessTokenClient {
@@ -54,7 +56,7 @@ struct DefaultAccessTokenClient: AccessTokenClient {
         }
     }
 
-    private func verifyPersonalAccessTokenRequest(token: String) async throws -> User {
+    func verifyPersonalAccessTokenRequest(token: String) async throws -> User {
         try await session.data(
             for: API.user(token: token),
             decoder: JSONDecoder())
