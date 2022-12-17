@@ -1,10 +1,11 @@
 # Road Map
 
 ### User
-- [ ] OAuth
-- [ ] Access token
+- [x] OAuth
+- [x] Access token
 - [ ] Logout
 - [x] Basic user info
+- [ ] Multi user
 
 ### Gist
 - [x] View gists
