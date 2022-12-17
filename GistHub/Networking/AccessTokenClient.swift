@@ -67,7 +67,7 @@ struct DefaultAccessTokenClient: AccessTokenClient {
         var url: String {
             switch self {
             case .accessToken:
-                return "https://github.com/login/oauth/access_token"
+                return "/login/oauth/access_token"
             case .user:
                 return "https://api.github.com/user"
             }

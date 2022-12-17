@@ -40,7 +40,8 @@ struct LoginView: View {
                 makeButton(
                     title: "Sign in with GitHub",
                     backgroundColor: Colors.ghButtonBackground,
-                    foregroundColor: Colors.ghButtonForeground
+                    foregroundColor: Colors.ghButtonForeground,
+                    shouldShowLoading: ghButtonLoading
                 ) {
                     viewModel.login()
                 }
@@ -48,7 +49,8 @@ struct LoginView: View {
                 makeButton(
                     title: "Sign in with Personal Token",
                     backgroundColor: Colors.tokenButtonBackground,
-                    foregroundColor: Colors.tokenButtonForeground
+                    foregroundColor: Colors.tokenButtonForeground,
+                    shouldShowLoading: patButtonLoading
                 ) {
 
                 }
@@ -86,11 +88,12 @@ struct LoginView: View {
         title: String,
         backgroundColor: UIColor,
         foregroundColor: UIColor,
+        shouldShowLoading: Bool,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
             HStack {
-                if ghButtonLoading || patButtonLoading {
+                if shouldShowLoading {
                     ProgressView()
                         .tint(foregroundColor.color)
                 } else {

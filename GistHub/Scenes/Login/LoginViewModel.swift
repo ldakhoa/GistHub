@@ -85,6 +85,7 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
                     switch result {
                     case let .success(response):
                         print("Login succeed: ", response.token, response.username)
+                        self?.contentState = .idling
                     case let .failure(error):
                         print(error.localizedDescription)
                         self?.contentState = .error(error: "An error occured when attempting to sign in.")
