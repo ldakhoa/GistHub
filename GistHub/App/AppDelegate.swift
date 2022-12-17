@@ -17,22 +17,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-//        appController.appDidFinishLaunching(with: window)
         UserDefaults.standard.registerDefaults()
         return true
-    }
-
-    /// Bootstrap a new window with root view controller to display.
-    private func boostrapWidow() {
-        if #available(iOS 13, *) {
-            // The `SceneDelegate` take reponsibilities for bootstrapping the window.
-        } else {
-            let window = UIWindow()
-            self.window = window
-            let viewController = MainTabBarController()
-            window.rootViewController = viewController
-            window.makeKeyAndVisible()
-        }
     }
 
     // MARK: UISceneSession Lifecycle

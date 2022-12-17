@@ -28,13 +28,10 @@ class GitHubSessionManager: NSObject {
     override init() {
         defaults = UserDefaults(suiteName: "space.khoale.gisthub") ?? .standard
 
-        do {
-            if let data = defaults.object(forKey: sessionKeys) as? Data,
-               let session = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSOrderedSet.self, from: data) {
-                userSessions.union(session)
-            }
-        } catch {
-            print("Unarchiver error: \(error.localizedDescription)")
+        // Workaround why new method not works
+        if let data = defaults.object(forKey: sessionKeys) as? Data,
+           let session = NSKeyedUnarchiver.unarchiveObject(with: data) as? NSOrderedSet {
+            userSessions.union(session)
         }
 
         super.init()
@@ -63,11 +60,8 @@ class GitHubSessionManager: NSObject {
 
     private func save() {
         if userSessions.count > 0 {
-            do {
-                try defaults.set(NSKeyedArchiver.archivedData(withRootObject: userSessions, requiringSecureCoding: true), forKey: sessionKeys)
-            } catch {
-                print("Archiver error: \(error.localizedDescription)")
-            }
+            // Workaround why new method not works
+            defaults.set(NSKeyedArchiver.archivedData(withRootObject: userSessions), forKey: sessionKeys)
         } else {
             defaults.removeObject(forKey: sessionKeys)
         }

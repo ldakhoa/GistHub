@@ -27,7 +27,7 @@ class GitHubUserSession: NSObject, NSCoding {
     init(
         token: String,
         authMethod: AuthMethod,
-        username: String? = nil
+        username: String?
     ) {
         self.token = token
         self.authMethod = authMethod
@@ -48,7 +48,7 @@ class GitHubUserSession: NSObject, NSCoding {
 
     func encode(with coder: NSCoder) {
         coder.encode(token, forKey: Keys.token)
-        coder.encode(authMethod, forKey: Keys.authMethod)
+        coder.encode(authMethod.rawValue, forKey: Keys.authMethod)
         coder.encode(username, forKey: Keys.username)
     }
 }
