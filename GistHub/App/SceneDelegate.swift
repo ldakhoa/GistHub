@@ -30,21 +30,4 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         appController.appDidBecomeActive()
     }
-
-    /// Bootstrap a new window with root view controller to display.
-    private func boostrapWidow(from scene: UIScene) {
-        guard let windowScene = scene as? UIWindowScene else { return }
-        // Make a window and then save it for later usuage.
-        let window = UIWindow(windowScene: windowScene)
-        self.window = window
-        // Make initial view controller.
-//        let viewController = MainTabBarController()
-//        let viewController = UIHostingController(rootView: LoginView())
-        let viewController = UIViewController()
-        // Display the initial view controller.
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        // Share the window to the `AppDelegate`.
-        (UIApplication.shared.delegate as? AppDelegate)?.window = window
-    }
 }
