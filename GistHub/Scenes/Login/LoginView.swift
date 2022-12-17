@@ -5,11 +5,17 @@
 //  Created by Khoa Le on 16/12/2022.
 //
 
+import AlertToast
 import SwiftUI
 import Inject
 
 struct LoginView: View {
     @ObserveInjection private var inject
+    @StateObject private var viewModel = LoginViewModel()
+    @State private var showErrorToast = false
+    @State private var error = ""
+    @State private var ghButtonLoading = false
+    @State private var patButtonLoading = false
 
     var body: some View {
         VStack(spacing: 24) {
@@ -36,7 +42,7 @@ struct LoginView: View {
                     backgroundColor: Colors.ghButtonBackground,
                     foregroundColor: Colors.ghButtonForeground
                 ) {
-
+                    viewModel.login()
                 }
 
                 makeButton(
@@ -49,6 +55,30 @@ struct LoginView: View {
             }
             .padding(.bottom, 32)
         }
+        .onChange(of: viewModel.contentState) { contentState in
+            switch contentState {
+            case .idling:
+                self.ghButtonLoading = false
+                self.patButtonLoading = false
+            case .ghLoading:
+                self.ghButtonLoading = true
+            case .patLoading:
+                self.patButtonLoading = true
+            case let .error(error):
+                self.ghButtonLoading = false
+                self.patButtonLoading = false
+                self.showErrorToast.toggle()
+                self.error = error
+            }
+        }
+        .toast(isPresenting: $showErrorToast, duration: 2.5) {
+            AlertToast(
+                displayMode: .hud,
+                type: .error(Colors.danger.color),
+                title: error,
+                style: .style(backgroundColor: Colors.errorToastBackground.color)
+            )
+        }
         .enableInjection()
     }
 
@@ -60,6 +90,13 @@ struct LoginView: View {
     ) -> some View {
         Button(action: action) {
             HStack {
+                if ghButtonLoading || patButtonLoading {
+                    ProgressView()
+                        .tint(foregroundColor.color)
+                } else {
+                    ProgressView().hidden()
+                }
+
                 Spacer()
                 Text(title)
                     .bold()

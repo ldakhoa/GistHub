@@ -3,7 +3,15 @@ import Networkable
 
 extension NetworkSession {
     static var github: NetworkSession {
-        let baseURL = URL(string: "https://api.github.com")
+        buildSession(urlString: "https://api.github.com")
+    }
+
+    static var accessToken: NetworkSession {
+        buildSession(urlString: "https://github.com")
+    }
+
+    private static func buildSession(urlString: String) -> NetworkSession {
+        let baseURL = URL(string: urlString)
         let requestBuilder = URLRequestBuilder(baseURL: baseURL)
         let logging = LoggingMiddleware(type: .info)
         let statusCodeValidation = StatusCodeValidationMiddleware()

@@ -134,6 +134,8 @@
 		6AC4F2C5294CD42000F0A2BA /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C4294CD42000F0A2BA /* LoginViewModel.swift */; };
 		6AC4F2C7294CD78F00F0A2BA /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C6294CD78F00F0A2BA /* AppController.swift */; };
 		6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */; };
+		6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */; };
+		6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,6 +190,8 @@
 		6AC4F2C4294CD42000F0A2BA /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6AC4F2C6294CD78F00F0A2BA /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUserSession.swift; sourceTree = "<group>"; };
+		6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenClient.swift; sourceTree = "<group>"; };
+		6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +365,7 @@
 				6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */,
 				6A7CF56F294473B0007B7D68 /* GistHubAPIClient.swift */,
 				6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */,
+				6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -411,6 +416,7 @@
 				6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */,
 				6A7E4812294A028200D6964C /* NSNotification+Name.swift */,
 				6AC4F2BD294CB8B300F0A2BA /* View+IsLastObject.swift */,
+				6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -662,6 +668,7 @@
 				6A7CF55C294464F3007B7D68 /* ErrorDecoderMiddleware.swift in Sources */,
 				6AC4F2C1294CD28C00F0A2BA /* Secrets.swift in Sources */,
 				6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */,
+				6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
@@ -690,6 +697,7 @@
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
 				6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
+				6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */,
 				6A7CF59D2945FCC2007B7D68 /* NewGistView.swift in Sources */,
 				6A7E4811294A025A00D6964C /* EditorView.swift in Sources */,
 				6A7CF593294527DF007B7D68 /* GistDetailViewModel.swift in Sources */,
@@ -856,7 +864,7 @@
 					"-Xlinker",
 					"-interposable",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.GistHub;
+				PRODUCT_BUNDLE_IDENTIFIER = space.khoale.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -888,7 +896,7 @@
 					"-Xlinker",
 					"-interposable",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.GistHub;
+				PRODUCT_BUNDLE_IDENTIFIER = space.khoale.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
