@@ -9,6 +9,10 @@ import AuthenticationServices
 import SwiftUI
 import Combine
 
+protocol LoginDelegate: AnyObject {
+    func finishLogin(token: String, authMethod: GitHubUserSession.AuthMethod, username: String)
+}
+
 final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentationContextProviding {
     @Published var contentState: ContentState = .idling
 
@@ -21,6 +25,8 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
         .url!
 
     private let callbackURLScheme = "gisthub"
+
+    weak var delegate: LoginDelegate?
 
     // MARK: - Utils
 
@@ -84,10 +90,13 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
                 DispatchQueue.main.async {
                     switch result {
                     case let .success(response):
-                        print("Login succeed: ", response.token, response.username)
                         self?.contentState = .idling
-                    case let .failure(error):
-                        print(error.localizedDescription)
+                        self?.delegate?.finishLogin(
+                            token: response.token,
+                            authMethod: .oauth,
+                            username: response.username
+                        )
+                    case .failure:
                         self?.contentState = .error(error: "An error occured when attempting to sign in.")
                     }
                 }
@@ -103,7 +112,11 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
             if user.id != nil {
                 contentState = .idling
             }
-            print(user.login)
+            self.delegate?.finishLogin(
+                token: token,
+                authMethod: .pat,
+                username: user.login ?? ""
+            )
         } catch {
             contentState = .error(error: error.localizedDescription)
         }

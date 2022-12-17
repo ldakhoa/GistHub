@@ -6,14 +6,84 @@
 //
 
 import UIKit
+import SwiftUI
 
-final class AppController {
-    func appDidFinishLaunching(with window: UIWindow?) {
-//        guard let
-        print("appDidFinishLaunching")
+final class AppController: NSObject, LoginDelegate, GitHubSessionListener {
+
+    // MARK: - Misc
+
+    private var mainTabBarController = MainTabBarController()
+    private let sessionManager = GitHubSessionManager()
+    private var loginViewController: UIHostingController<LoginView>?
+
+    // MARK: - Initializer
+
+    override init() {
+        super.init()
+        sessionManager.listener = self
+    }
+
+    // MARK: - App LifeCycle
+
+    func boostrapWindow(from scene: UIScene) -> UIWindow {
+        guard let windowScene = scene as? UIWindowScene else { return UIWindow() }
+        // Make a window and then save it for later usuage.
+        let window = UIWindow(windowScene: windowScene)
+        // Make initial view controller.
+        window.rootViewController = mainTabBarController
+        window.makeKeyAndVisible()
+        (UIApplication.shared.delegate as? AppDelegate)?.window = window
+        return window
     }
 
     func appDidBecomeActive() {
-        print("appDidBecomeActive")
+        // dont need to login if there's a user session
+        guard sessionManager.focusedUserSession == nil && loginViewController == nil else { return }
+        showLogin(animated: false)
+    }
+
+    // MARK: - Side Effects
+
+    private func showLogin(animated: Bool) {
+        let loginView = LoginView(delegate: self)
+        let controller = UIHostingController(rootView: loginView)
+        controller.modalPresentationStyle = .fullScreen
+        loginViewController = controller
+
+        let present: () -> Void = {
+            self.mainTabBarController.present(controller, animated: animated)
+        }
+
+        if let presented = mainTabBarController.presentedViewController {
+            presented.dismiss(animated: animated, completion: present)
+        } else {
+            present()
+        }
+    }
+
+    // MARK: - LoginDelegate
+
+    func finishLogin(
+        token: String,
+        authMethod: GitHubUserSession.AuthMethod,
+        username: String
+    ) {
+        sessionManager.focus(
+            GitHubUserSession(
+                token: token,
+                authMethod: authMethod,
+                username: username
+            )
+        )
+    }
+
+    // MARK: - GitHubSessionListener
+
+    func didFocus() {
+        mainTabBarController.presentedViewController?.dismiss(animated: true)
+    }
+
+    func didLogout(manager: GitHubSessionManager) {
+        showLogin(animated: true)
     }
 }

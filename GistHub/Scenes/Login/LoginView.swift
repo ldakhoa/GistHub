@@ -11,13 +11,17 @@ import Inject
 
 struct LoginView: View {
     @ObserveInjection private var inject
-    @StateObject private var viewModel = LoginViewModel()
+    @ObservedObject private var viewModel = LoginViewModel()
     @State private var showErrorToast = false
     @State private var error = ""
     @State private var ghButtonLoading = false
     @State private var patButtonLoading = false
     @State private var showLoginAlertField = false
     @State private var accessToken = ""
+
+    init(delegate: LoginDelegate) {
+        viewModel.delegate = delegate
+    }
 
     var body: some View {
         VStack(spacing: 24) {

@@ -18,15 +18,19 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        let appController = (UIApplication.shared.delegate as! AppDelegate).appController
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let appController = appDelegate.appController
         self.appController = appController
-        boostrapWidow(from: scene)
+
+        self.window = appController.boostrapWindow(from: scene)
+        // Share the window to the `AppDelegate`.
+        appDelegate.window = window
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         appController.appDidBecomeActive()
     }
-    
+
     /// Bootstrap a new window with root view controller to display.
     private func boostrapWidow(from scene: UIScene) {
         guard let windowScene = scene as? UIWindowScene else { return }
@@ -35,7 +39,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         // Make initial view controller.
 //        let viewController = MainTabBarController()
-        let viewController = UIHostingController(rootView: LoginView())
+//        let viewController = UIHostingController(rootView: LoginView())
+        let viewController = UIViewController()
         // Display the initial view controller.
         window.rootViewController = viewController
         window.makeKeyAndVisible()

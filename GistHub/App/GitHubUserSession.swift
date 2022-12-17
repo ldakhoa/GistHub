@@ -15,7 +15,7 @@ class GitHubUserSession: NSObject, NSCoding {
     }
 
     enum AuthMethod: String {
-        case oath
+        case oauth
         case pat
     }
 
@@ -37,7 +37,7 @@ class GitHubUserSession: NSObject, NSCoding {
     convenience required init?(coder: NSCoder) {
         guard let token = coder.decodeObject(forKey: Keys.token) as? String else { return nil }
         let storedAuthMethod = coder.decodeObject(forKey: Keys.authMethod) as? String
-        let authMethod = storedAuthMethod.flatMap(AuthMethod.init) ?? .oath
+        let authMethod = storedAuthMethod.flatMap(AuthMethod.init) ?? .oauth
         let username = coder.decodeObject(forKey: Keys.username) as? String
         self.init(
             token: token,

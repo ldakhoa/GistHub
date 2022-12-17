@@ -136,6 +136,7 @@
 		6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */; };
 		6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */; };
 		6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */; };
+		6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -192,6 +193,7 @@
 		6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUserSession.swift; sourceTree = "<group>"; };
 		6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenClient.swift; sourceTree = "<group>"; };
 		6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
+		6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSessionManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 				6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */,
 				6AC4F2C6294CD78F00F0A2BA /* AppController.swift */,
 				6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */,
+				6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				6A7CF5972945EAEE007B7D68 /* Comment.swift in Sources */,
 				6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */,
 				6A7CF54E2944586E007B7D68 /* ColorValue.swift in Sources */,
+				6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
 				6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
