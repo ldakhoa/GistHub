@@ -27,7 +27,7 @@ struct LoginView: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+            Image("default")
                 .resizable()
                 .frame(width: 140, height: 140)
                 .cornerRadius(70)
