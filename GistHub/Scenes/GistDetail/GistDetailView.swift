@@ -374,6 +374,7 @@ struct GistDetailView: View {
                         ForEach(comments, id: \.id) { comment in
                             CommentView(comment: comment, gistID: gist.id, viewModel: commentViewModel)
                                 .id(comment.id)
+                                .environmentObject(userStore)
                             if !isLastObject(objects: comments, object: comment) {
                                 Divider()
                                     .overlay(Colors.neutralEmphasis.color)

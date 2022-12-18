@@ -13,10 +13,12 @@ struct CommentView: View {
     private let comment: Comment
     private let gistID: String
     @ObservedObject private var viewModel: CommentViewModel
+    @EnvironmentObject var userStore: UserStore
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
     @State private var showPlainTextEditorView = false
+    @State private var showQuoteCommentTextEditor = false
     @ObserveInjection private var inject
 
     init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
@@ -83,15 +85,21 @@ struct CommentView: View {
                 .font(.callout)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
-            Button("Delete", role: .destructive) {
-                showDeleteConfirmedDialog.toggle()
+            if comment.user.id == userStore.user.id {
+                Button("Delete", role: .destructive) {
+                    showDeleteConfirmedDialog.toggle()
+                }
             }
 
-            Button("Edit") {
-                showPlainTextEditorView.toggle()
+            if comment.user.id == userStore.user.id {
+                Button("Edit") {
+                    showPlainTextEditorView.toggle()
+                }
             }
 
-            Button("Quote reply") {}
+            Button("Quote reply") {
+                showQuoteCommentTextEditor.toggle()
+            }
         }
         .confirmationDialog(
             "Are you sure you want to delete this?",
@@ -114,8 +122,24 @@ struct CommentView: View {
                 placeholder: "Write a comment...",
                 commentViewModel: viewModel)
         }
+        .sheet(isPresented: $showQuoteCommentTextEditor) {
+            PlainTextEditorView(
+                style: .comment,
+                content: quoteBody(body: comment.body ?? ""),
+                gistID: gistID,
+                navigationTitle: "Write Comment",
+                placeholder: "Write a comment...",
+                commentViewModel: viewModel)
+        }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .enableInjection()
+    }
+
+    private func quoteBody(body: String) -> String {
+        let result = "> "
+        let newBody = body.replacingOccurrences(of: "\n", with: "\n> ")
+        let newLine = "\n\n"
+        return result + newBody + newLine
     }
 }
