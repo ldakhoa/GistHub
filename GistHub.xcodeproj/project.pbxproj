@@ -136,6 +136,9 @@
 		6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */; };
 		6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */; };
 		6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */; };
+		6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D1294F45A400F0A2BA /* SettingView.swift */; };
+		6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */; };
+		6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF29E5D294F72D8007546FE /* SettingAccountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -192,6 +195,9 @@
 		6AC4F2CA294DC13100F0A2BA /* AccessTokenClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenClient.swift; sourceTree = "<group>"; };
 		6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
 		6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSessionManager.swift; sourceTree = "<group>"; };
+		6AC4F2D1294F45A400F0A2BA /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllers.swift; sourceTree = "<group>"; };
+		6AF29E5D294F72D8007546FE /* SettingAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,6 +335,7 @@
 				6A7CF5312943CF33007B7D68 /* AppDelegate.swift */,
 				6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */,
 				6A7CF55E29446967007B7D68 /* MainTabBarController.swift */,
+				6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */,
 				6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */,
 				6AC4F2C6294CD78F00F0A2BA /* AppController.swift */,
 				6AC4F2C8294CDB6300F0A2BA /* GitHubUserSession.swift */,
@@ -374,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				6AC4F2BF294CD11700F0A2BA /* Login */,
+				6AC4F2D0294F459700F0A2BA /* Settings */,
 				6A6EEF6A2947A4220018AC26 /* Comment */,
 				6A7CF5982945FB7A007B7D68 /* Editor */,
 				6A7CF58D2944F016007B7D68 /* Profile */,
@@ -476,6 +484,15 @@
 				6AC4F2C4294CD42000F0A2BA /* LoginViewModel.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		6AC4F2D0294F459700F0A2BA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				6AC4F2D1294F45A400F0A2BA /* SettingView.swift */,
+				6AF29E5D294F72D8007546FE /* SettingAccountView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -669,6 +686,7 @@
 				6AC4F2C1294CD28C00F0A2BA /* Secrets.swift in Sources */,
 				6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */,
 				6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */,
+				6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
@@ -679,6 +697,7 @@
 				6A7E480F2949A52A00D6964C /* EditorDisplayView.swift in Sources */,
 				6A7CF55A294464D9007B7D68 /* NetworkSession+GitHub.swift in Sources */,
 				6A7E482B294BC6DF00D6964C /* CommentViewModel.swift in Sources */,
+				6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */,
 				6AC4F2BE294CB8B300F0A2BA /* View+IsLastObject.swift in Sources */,
 				6AC4F2C5294CD42000F0A2BA /* LoginViewModel.swift in Sources */,
 				6A7CF574294475DC007B7D68 /* ViewDidLoadModifier.swift in Sources */,
@@ -691,6 +710,7 @@
 				6A7CF5A129463D07007B7D68 /* EditorViewRepresentable.swift in Sources */,
 				6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */,
 				6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */,
+				6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */,
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
 				6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */,

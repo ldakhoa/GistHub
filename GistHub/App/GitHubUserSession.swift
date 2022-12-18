@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GitHubUserSession: NSObject, NSCoding {
+class GitHubUserSession: NSObject, NSCoding, Identifiable {
     enum Keys {
         static let token = "token"
         static let authMethod = "authMethod"

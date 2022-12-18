@@ -18,6 +18,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         UserDefaults.standard.registerDefaults()
+        appController.appDidFinishLaunching()
         return true
     }
 

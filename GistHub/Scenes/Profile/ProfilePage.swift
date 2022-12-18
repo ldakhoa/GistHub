@@ -14,7 +14,14 @@ struct ProfilePage: View {
 
     let user: User?
 
-    @StateObject private var viewModel = ProfileViewModel()
+    @ObservedObject private var viewModel = ProfileViewModel()
+    let sessionManager: GitHubSessionManager
+
+    init(user: User, delegate: ProfileDelegate, sessionManager: GitHubSessionManager) {
+        self.user = user
+        self.sessionManager = sessionManager
+        viewModel.delegate = delegate
+    }
 
     var body: some View {
         ZStack {
@@ -32,7 +39,29 @@ struct ProfilePage: View {
                 }
             }
         }
-        .navigationBarHidden(true)
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                HStack {
+                    NavigationLink {
+                        SettingView(user: user!, sessionManager: sessionManager) {
+                            viewModel.logout()
+                        }
+                    } label: {
+                        Image(systemName: "gear")
+                            .foregroundColor(Colors.accent.color)
+                    }
+
+                    Button {
+
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundColor(Colors.accent.color)
+                    }
+                }
+            }
+        }
         .refreshable { fetchUser() }
         .enableInjection()
     }

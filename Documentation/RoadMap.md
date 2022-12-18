@@ -3,7 +3,7 @@
 ### User
 - [x] OAuth
 - [x] Access token
-- [ ] Logout
+- [x] Logout
 - [x] Basic user info
 - [ ] Multi user
 

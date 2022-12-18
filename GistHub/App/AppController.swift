@@ -8,11 +8,11 @@
 import UIKit
 import SwiftUI
 
-final class AppController: NSObject, LoginDelegate, GitHubSessionListener {
+final class AppController: NSObject, LoginDelegate, GitHubSessionListener, ProfileDelegate {
 
     // MARK: - Misc
 
-    private var mainTabBarController = MainTabBarController()
+    private let mainTabBarController = MainTabBarController()
     private let sessionManager = GitHubSessionManager()
     private var loginViewController: UIHostingController<LoginView>?
 
@@ -24,6 +24,13 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener {
     }
 
     // MARK: - App LifeCycle
+
+    func appDidFinishLaunching() {
+
+        if sessionManager.focusedUserSession != nil {
+            resetViewController()
+        }
+    }
 
     func boostrapWindow(from scene: UIScene) -> UIWindow {
         guard let windowScene = scene as? UIWindowScene else { return UIWindow() }
@@ -61,6 +68,20 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener {
         }
     }
 
+    private func resetViewController() {
+        let client: GistHubAPIClient = DefaultGistHubAPIClient()
+        Task {
+            do {
+                let user = try await client.user()
+                await mainTabBarController.reset(viewControllers: [
+                    homeRootViewController(user: user),
+                    starredRootViewController(user: user),
+                    profileRootViewController(user: user, sessionManager: sessionManager, delegate: self)
+                ])
+            }
+        }
+    }
+
     // MARK: - LoginDelegate
 
     func finishLogin(
@@ -81,9 +102,13 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener {
 
     func didFocus() {
         mainTabBarController.presentedViewController?.dismiss(animated: true)
+        resetViewController()
     }
 
-    func didLogout(manager: GitHubSessionManager) {
+    // MARK: - ProfileDelegate
+
+    func shouldLogout() {
+        sessionManager.logout()
         showLogin(animated: true)
     }
 }

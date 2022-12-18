@@ -9,14 +9,13 @@ import Foundation
 
 protocol GitHubSessionListener: AnyObject {
     func didFocus()
-    func didLogout(manager: GitHubSessionManager)
 }
 
 /// An object that manages user sessions.
 ///
 /// This will support multi user sessions later
 class GitHubSessionManager: NSObject {
-    private let userSessions = NSMutableOrderedSet()
+    private let _userSessions = NSMutableOrderedSet()
     private let defaults: UserDefaults
 
     private let sessionKeys = "com.github.sessionmanager.shared.session"
@@ -31,7 +30,7 @@ class GitHubSessionManager: NSObject {
         // Workaround why new method not works
         if let data = defaults.object(forKey: sessionKeys) as? Data,
            let session = NSKeyedUnarchiver.unarchiveObject(with: data) as? NSOrderedSet {
-            userSessions.union(session)
+            _userSessions.union(session)
         }
 
         super.init()
@@ -40,18 +39,27 @@ class GitHubSessionManager: NSObject {
     // MARK: - Public API
 
     var focusedUserSession: GitHubUserSession? {
-        return userSessions.firstObject as? GitHubUserSession
+        return _userSessions.firstObject as? GitHubUserSession
     }
 
     func focus(_ userSession: GitHubUserSession) {
         update(oldUserSession: userSession, newUserSession: userSession)
     }
 
+    var userSessions: [GitHubUserSession] {
+        return _userSessions.array as? [GitHubUserSession] ?? []
+    }
+
+    func logout() {
+        _userSessions.removeAllObjects()
+        save()
+    }
+
     // MARK: - Private
 
     private func update(oldUserSession: GitHubUserSession, newUserSession: GitHubUserSession) {
-        userSessions.remove(oldUserSession)
-        userSessions.insert(newUserSession, at: 0)
+        _userSessions.remove(oldUserSession)
+        _userSessions.insert(newUserSession, at: 0)
         save()
 
         // Support multiple user later
@@ -59,9 +67,9 @@ class GitHubSessionManager: NSObject {
     }
 
     private func save() {
-        if userSessions.count > 0 {
+        if _userSessions.count > 0 {
             // Workaround why new method not works
-            defaults.set(NSKeyedArchiver.archivedData(withRootObject: userSessions), forKey: sessionKeys)
+            defaults.set(NSKeyedArchiver.archivedData(withRootObject: _userSessions), forKey: sessionKeys)
         } else {
             defaults.removeObject(forKey: sessionKeys)
         }

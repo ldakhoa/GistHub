@@ -53,7 +53,6 @@ protocol GistHubAPIClient {
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
-    let userSessionManager = GitHubSessionManager()
 
     init(session: NetworkSession = .github) {
         self.session = session
@@ -135,8 +134,9 @@ extension DefaultGistHubAPIClient {
 
         var headers: [String: String]? {
             let userSessionManager = GitHubSessionManager()
+            guard let focusedUserSession = userSessionManager.focusedUserSession else { return [:] }
             return [
-                "Authorization": userSessionManager.focusedUserSession!.authorizationHeader,
+                "Authorization": focusedUserSession.authorizationHeader,
                 "Accept": "application/vnd.github+json"
             ]
         }
