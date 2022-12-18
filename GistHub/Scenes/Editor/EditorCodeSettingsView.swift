@@ -24,43 +24,41 @@ struct EditorCodeSettingsView: View {
         """
 
     var body: some View {
-        NavigationView {
-            List {
-                Section {
-                    EditorViewRepresentable(content: $codeSample, language: .javaScript, isEditable: true, isSelectable: true)
-                        .frame(height: 130)
-                } header: {
-                    Text("Preview")
-                }
-                Section {
-                    makeToggleView(isOn: $codeSettingsStore.showLineNumbers, title: "Show Line Numbers")
-                    makeToggleView(isOn: $codeSettingsStore.wrapLines, title: "Line Wrapping")
-                    makeToggleView(isOn: $codeSettingsStore.highlightSelectedLine, title: "Highlight Selected Line")
-                } header: {
-                    Text("display")
-                }
+        List {
+            Section {
+                EditorViewRepresentable(content: $codeSample, language: .javaScript, isEditable: true, isSelectable: true)
+                    .frame(height: 130)
+            } header: {
+                Text("Preview")
+            }
+            Section {
+                makeToggleView(isOn: $codeSettingsStore.showLineNumbers, title: "Show Line Numbers")
+                makeToggleView(isOn: $codeSettingsStore.wrapLines, title: "Line Wrapping")
+                makeToggleView(isOn: $codeSettingsStore.highlightSelectedLine, title: "Highlight Selected Line")
+            } header: {
+                Text("display")
+            }
 
-                Section {
-                    makeToggleView(isOn: $codeSettingsStore.showPageGuide, title: "Show Page Guide")
-                    makeToggleView(isOn: $codeSettingsStore.showInvisibleCharacters, title: "Show Line Break")
-                    makeToggleView(isOn: $codeSettingsStore.showSpaces, title: "Show Spaces")
-                    makeToggleView(isOn: $codeSettingsStore.showTabs, title: "Show Tabs")
-                } header: {
-                    Text("Editing")
-                }
+            Section {
+                makeToggleView(isOn: $codeSettingsStore.showPageGuide, title: "Show Page Guide")
+                makeToggleView(isOn: $codeSettingsStore.showInvisibleCharacters, title: "Show Line Break")
+                makeToggleView(isOn: $codeSettingsStore.showSpaces, title: "Show Spaces")
+                makeToggleView(isOn: $codeSettingsStore.showTabs, title: "Show Tabs")
+            } header: {
+                Text("Editing")
             }
-            .navigationTitle("Code Options")
-            .navigationBarTitleDisplayMode(.inline)
-            .scrollDismissesKeyboard(.interactively)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-            .toolbarBackground(.visible, for: .navigationBar)
         }
+        .navigationTitle("Code Options")
+        .navigationBarTitleDisplayMode(.inline)
+        .scrollDismissesKeyboard(.interactively)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
+        .toolbarBackground(.visible, for: .navigationBar)
         .enableInjection()
     }
 

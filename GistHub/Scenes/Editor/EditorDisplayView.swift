@@ -76,7 +76,9 @@ struct EditorDisplayView: View {
                         }
                     }
                     .sheet(isPresented: $showCodeSettings) {
-                        EditorCodeSettingsView(codeSettingsStore: CodeSettingsStore())
+                        NavigationView {
+                            EditorCodeSettingsView(codeSettingsStore: CodeSettingsStore())
+                        }
                     }
                     .confirmationDialog(
                         "Are you sure you want to delete this file?",

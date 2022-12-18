@@ -22,6 +22,23 @@ struct SettingView: View {
                 NavigationLink("Manage Accounts") {
                     SettingAccountView(user: user, sessionManager: sessionManager)
                 }
+                NavigationLink("Code Options") {
+                    EditorCodeSettingsView()
+                }
+            }
+
+            Section {
+                Link(destination: URL(string: "https://github.com/ldakhoa/GistHub")!) {
+                    HStack {
+                        Text("View GistHub Repo")
+                            .foregroundColor(Colors.foreground.color)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 14))
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color(UIColor.tertiaryLabel))
+                    }
+                }
             }
 
             Section {
@@ -41,4 +58,8 @@ struct SettingView: View {
         }
         .enableInjection()
     }
+}
+
+fileprivate extension Colors {
+    static let foreground = UIColor(light: .black, dark: .white)
 }

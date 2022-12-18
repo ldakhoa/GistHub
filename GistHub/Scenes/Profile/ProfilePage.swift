@@ -53,9 +53,11 @@ struct ProfilePage: View {
                             .foregroundColor(Colors.accent.color)
                     }
 
-                    Button {
-
-                    } label: {
+                    let titlePreview = "\(user?.login ?? "") - Overview"
+                    ShareLink(
+                        item: user?.htmlURL ?? "",
+                        preview: SharePreview(titlePreview, image: Image(uiImage: UIImage(named: "AppIcon") ?? UIImage()))
+                    ) {
                         Image(systemName: "square.and.arrow.up")
                             .foregroundColor(Colors.accent.color)
                     }
