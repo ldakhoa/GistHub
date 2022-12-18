@@ -8,7 +8,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>space.khoale.gisthub</string>
+			<string>com.ldakhoa.gisthub</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>gisthub</string>
