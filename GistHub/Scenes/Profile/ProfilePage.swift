@@ -64,6 +64,7 @@ struct ProfilePage: View {
                 }
             }
         }
+        .toolbarBackground(UIColor.systemGroupedBackground.color, for: .navigationBar)
         .refreshable { fetchUser() }
         .enableInjection()
     }
