@@ -12,7 +12,6 @@ import SwiftUI
 final class MainTabBarController: UITabBarController {
 
     private let client: GistHubAPIClient
-    @EnvironmentObject var userStore: UserStore
 
     init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
         self.client = client

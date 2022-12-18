@@ -53,13 +53,14 @@ protocol GistHubAPIClient {
 
 final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
+    let userSessionManager = GitHubSessionManager()
 
     init(session: NetworkSession = .github) {
         self.session = session
     }
 
     func gists() async throws -> [Gist] {
-        try await session.data(for: API.gists)
+        return try await session.data(for: API.gists)
     }
 
     func starredGists() async throws -> [Gist] {
@@ -133,8 +134,9 @@ extension DefaultGistHubAPIClient {
         case deleteGist(gistID: String)
 
         var headers: [String: String]? {
+            let userSessionManager = GitHubSessionManager()
             return [
-                "Authorization": "Bearer \(PRIVATE_TOKEN)",
+                "Authorization": userSessionManager.focusedUserSession!.authorizationHeader,
                 "Accept": "application/vnd.github+json"
             ]
         }

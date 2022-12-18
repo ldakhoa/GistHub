@@ -24,7 +24,6 @@
 		6A7CF55C294464F3007B7D68 /* ErrorDecoderMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */; };
 		6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF55E29446967007B7D68 /* MainTabBarController.swift */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
-		6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56329446E5D007B7D68 /* GitHubPrivateKey.swift */; };
 		6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56629446F3E007B7D68 /* GistListsView.swift */; };
 		6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5692944720D007B7D68 /* Gist.swift */; };
 		6A7CF56C29447275007B7D68 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF56B29447275007B7D68 /* User.swift */; };
@@ -155,7 +154,6 @@
 		6A7CF559294464D8007B7D68 /* NetworkSession+GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkSession+GitHub.swift"; sourceTree = "<group>"; };
 		6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDecoderMiddleware.swift; sourceTree = "<group>"; };
 		6A7CF55E29446967007B7D68 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		6A7CF56329446E5D007B7D68 /* GitHubPrivateKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubPrivateKey.swift; sourceTree = "<group>"; };
 		6A7CF56629446F3E007B7D68 /* GistListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GistListsView.swift; sourceTree = "<group>"; };
 		6A7CF5692944720D007B7D68 /* Gist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		6A7CF56B29447275007B7D68 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -362,7 +360,6 @@
 		6A7CF556294464BE007B7D68 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				6A7CF56329446E5D007B7D68 /* GitHubPrivateKey.swift */,
 				6A7CF557294464D2007B7D68 /* GitHubError.swift */,
 				6A7CF559294464D8007B7D68 /* NetworkSession+GitHub.swift */,
 				6A7CF55B294464F3007B7D68 /* ErrorDecoderMiddleware.swift */,
@@ -698,7 +695,6 @@
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
 				6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */,
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
-				6A7CF56429446E5D007B7D68 /* GitHubPrivateKey.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */,
 				6A7CF59D2945FCC2007B7D68 /* NewGistView.swift in Sources */,

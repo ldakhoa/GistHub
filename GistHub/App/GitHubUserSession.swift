@@ -52,3 +52,14 @@ class GitHubUserSession: NSObject, NSCoding {
         coder.encode(username, forKey: Keys.username)
     }
 }
+
+extension GitHubUserSession {
+    var authorizationHeader: String {
+        switch authMethod {
+        case .oauth:
+            return "Bearer \(token)"
+        case .pat:
+            return "token \(token)"
+        }
+    }
+}
