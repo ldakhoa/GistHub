@@ -72,7 +72,9 @@ struct EditorDisplayView: View {
                                 content: content,
                                 language: language,
                                 gist: gist
-                            )
+                            ) {
+                                completion()
+                            }
                         }
                     }
                     .sheet(isPresented: $showCodeSettings) {

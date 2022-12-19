@@ -19,9 +19,9 @@ struct EditorView: View {
     @ObserveInjection private var inject
     @StateObject private var viewModel = EditorViewModel()
     @State var originalContent: String = ""
+    @State var updateContentCompletion: () -> Void
 
     @State private var contentHasChanged = false
-    @State private var showSuccessToast = false
     @State private var showErrorToast = false
     @State private var showConfirmDialog = false
     @State private var error = ""
@@ -56,7 +56,8 @@ struct EditorView: View {
                         Task {
                             do {
                                 try await viewModel.updateGist(gistID: gist.id, fileName: fileName, content: self.content) {
-                                    self.showSuccessToast.toggle()
+                                    self.dismiss()
+                                    self.updateContentCompletion()
                                 }
                             } catch let updateError {
                                 error = updateError.localizedDescription
@@ -74,16 +75,6 @@ struct EditorView: View {
             .onChange(of: content) { newValue in
                 NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
                 contentHasChanged = newValue != originalContent ? true : false
-            }
-            .toast(isPresenting: $showSuccessToast, duration: 1.0) {
-                AlertToast(
-                    displayMode: .banner(.pop),
-                    type: .complete(Colors.success.color),
-                    title: "Updated Gist",
-                    style: .style(backgroundColor: Colors.toastBackground.color)
-                )
-            } completion: {
-                dismiss()
             }
             .toast(isPresenting: $showErrorToast, duration: 2.5) {
                 AlertToast(
