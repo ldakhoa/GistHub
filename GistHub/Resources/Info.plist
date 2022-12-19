@@ -19,6 +19,8 @@
 	<string>ID</string>
 	<key>GITHUBSECRET</key>
 	<string>SECRET</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
