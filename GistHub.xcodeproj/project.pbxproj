@@ -187,7 +187,6 @@
 		6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAPIClient.swift; sourceTree = "<group>"; };
 		6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
-		6A9BF5022950417C00EBFF04 /* .env */ = {isa = PBXFileReference; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		6AC4F2BD294CB8B300F0A2BA /* View+IsLastObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsLastObject.swift"; sourceTree = "<group>"; };
 		6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		6AC4F2C2294CD3BD00F0A2BA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -483,7 +482,6 @@
 		6A9BF50029503C0300EBFF04 /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
-				6A9BF5022950417C00EBFF04 /* .env */,
 				6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */,
 			);
 			path = ci_scripts;
