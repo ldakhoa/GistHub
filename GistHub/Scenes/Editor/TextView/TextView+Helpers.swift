@@ -26,7 +26,18 @@ extension TextView {
         textView.pageGuideColumn = 80
 //        textView.inputAccessoryView = KeyboardToolsView(textView: textView)
         textView.applySettings(from: settings)
+        let theme = settings.theme.makeTheme()
+        textView.applyTheme(theme)
+        textView.applySettings(from: settings)
         return textView
+    }
+
+    func applyTheme(_ theme: EditorTheme) {
+        self.theme = theme
+        backgroundColor = theme.backgroundColor
+        insertionPointColor = theme.textColor
+        selectionBarColor = theme.textColor
+        selectionHighlightColor = theme.textColor.withAlphaComponent(0.2)
     }
 
     func applySettings(from settings: UserDefaults) {

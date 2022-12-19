@@ -97,7 +97,7 @@ extension File {
         case rust
         case scss
         case svelte
-        case swift = "TypeScript" // Since swift syntax highlighting currently slow to render, improve later
+        case swift
         case toml
         case tsx
         case typeScript
@@ -146,7 +146,7 @@ extension File {
             case .rust: return .rust
             case .scss: return .scss
             case .svelte: return .svelte
-            case .swift: return .swift
+            case .swift: return .java
             case .toml: return .toml
             case .tsx: return .tsx
             case .typeScript: return .typeScript

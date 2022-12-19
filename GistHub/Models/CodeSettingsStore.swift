@@ -60,9 +60,16 @@ class CodeSettingsStore: ObservableObject {
 
     @Published var showPageGuide: Bool = UserDefaults.standard.bool(forKey: Key.showPageGuide) {
         didSet {
-           settings.showPageGuide = showPageGuide
+            settings.showPageGuide = showPageGuide
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
+        }
+    }
 
+    @Published var forceDarkTheme: Bool = UserDefaults.standard.bool(forKey: Key.darkTheme) {
+        didSet {
+            settings.forceDarkTheme = forceDarkTheme
+            settings.theme = forceDarkTheme ? .tomorrowNight : .tomorrow
+            NotificationCenter.default.post(name: .textViewShouldUpdateTheme, object: nil)
         }
     }
 }
@@ -77,6 +84,7 @@ enum Key {
     static let highlightSelectedLine = "GistHub.highlightSelectedLine"
     static let showPageGuide = "GistHub.showPageGuide"
     static let theme = "GistHub.theme"
+    static let darkTheme = "GistHub.darktheme"
 }
 
 extension UserDefaults {
@@ -145,18 +153,27 @@ extension UserDefaults {
         }
     }
 
-    //    var theme: ThemeSetting {
-//        get {
-//            if let rawValue = string(forKey: Key.theme), let setting = ThemeSetting(rawValue: rawValue) {
-//                return setting
-//            } else {
-//                return .tomorrow
-//            }
-//        }
-//        set {
-//            set(newValue.rawValue, forKey: Key.theme)
-//        }
-//    }
+    var forceDarkTheme: Bool {
+        get {
+            return bool(forKey: Key.darkTheme)
+        }
+        set {
+            set(newValue, forKey: Key.darkTheme)
+        }
+    }
+
+    var theme: ThemeSetting {
+        get {
+            if let rawValue = string(forKey: Key.theme), let setting = ThemeSetting(rawValue: rawValue) {
+                return setting
+            } else {
+                return .tomorrow
+            }
+        }
+        set {
+            set(newValue.rawValue, forKey: Key.theme)
+        }
+    }
 
     func registerDefaults() {
         register(defaults: [
