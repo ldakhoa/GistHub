@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GITHUBSECRET</key>
-	<string>ID</string>
-	<key>GITHUBID</key>
-	<string>Secret</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -19,6 +15,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>GITHUBID</key>
+	<string>ID</string>
+	<key>GITHUBSECRET</key>
+	<string>SECRET</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
