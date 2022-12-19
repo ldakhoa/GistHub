@@ -56,7 +56,7 @@ struct ProfilePage: View {
                     let titlePreview = "\(user?.login ?? "") - Overview"
                     ShareLink(
                         item: user?.htmlURL ?? "",
-                        preview: SharePreview(titlePreview, image: Image(uiImage: UIImage(named: "AppIcon") ?? UIImage()))
+                        preview: SharePreview(titlePreview, image: Image("default"))
                     ) {
                         Image(systemName: "square.and.arrow.up")
                             .foregroundColor(Colors.accent.color)

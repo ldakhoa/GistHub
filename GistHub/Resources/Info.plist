@@ -15,6 +15,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>GITHUBID</key>
+	<string>ID</string>
+	<key>GITHUBSECRET</key>
+	<string>SECRET</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

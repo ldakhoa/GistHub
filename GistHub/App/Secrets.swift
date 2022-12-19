@@ -9,8 +9,8 @@ import Foundation
 
 enum Secrets {
     enum CI {
-        static let githubId = "{GITHUBID}"
-        static let githubSecret = "{GITHUBSECRET}"
+        static let githubId = Bundle.main.infoDictionary?["GITHUBID"] as! String
+        static let githubSecret = Bundle.main.infoDictionary?["GITHUBSECRET"] as! String
     }
 
     enum GitHub {

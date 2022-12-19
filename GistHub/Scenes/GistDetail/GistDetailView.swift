@@ -414,7 +414,7 @@ struct GistDetailView: View {
     private func makeShareLink(itemString: String, previewTitle: String, label: String) -> some View {
         ShareLink(
             item: itemString,
-            preview: SharePreview(previewTitle, image: Image(uiImage: UIImage(named: "AppIcon") ?? UIImage()))
+            preview: SharePreview(previewTitle, image: Image("default"))
         ) {
             Label(label, systemImage: "square.and.arrow.up")
         }
