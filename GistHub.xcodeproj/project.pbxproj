@@ -186,6 +186,7 @@
 		6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextEditor.swift; sourceTree = "<group>"; };
 		6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAPIClient.swift; sourceTree = "<group>"; };
 		6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6AC4F2BD294CB8B300F0A2BA /* View+IsLastObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsLastObject.swift"; sourceTree = "<group>"; };
 		6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		6AC4F2C2294CD3BD00F0A2BA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -301,6 +302,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6A9BF50029503C0300EBFF04 /* ci_scripts */,
 				6A7CF5302943CF33007B7D68 /* GistHub */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
 				6A7CF6B5294652B9007B7D68 /* Frameworks */,
@@ -475,6 +477,14 @@
 				6A7E481A294A0D1D00D6964C /* TextView+Helpers.swift */,
 			);
 			path = TextView;
+			sourceTree = "<group>";
+		};
+		6A9BF50029503C0300EBFF04 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */,
+			);
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		6AC4F2BF294CD11700F0A2BA /* Login */ = {
