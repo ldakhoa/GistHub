@@ -10,4 +10,5 @@ import Foundation
 extension NSNotification.Name {
     static let editorTextViewTextDidChange = NSNotification.Name("editorTextViewTextDidChange")
     static let textViewShouldUpdateSettings = NSNotification.Name("textViewShouldUpdateSettings")
+    static let textViewShouldUpdateTheme = NSNotification.Name("textViewShouldUpdateTheme")
 }

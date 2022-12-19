@@ -21,6 +21,12 @@ final class EditorViewController: UIViewController {
         return textView
     }()
 
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     private let content: Binding<String>
     private let isEditable: Bool
     private let isSelectable: Bool
@@ -49,23 +55,26 @@ final class EditorViewController: UIViewController {
         super.loadView()
 
         view.addSubview(textView)
+        view.addSubview(activityIndicator)
+        view.bringSubviewToFront(activityIndicator)
+
         NSLayoutConstraint.activate([
             textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             textView.topAnchor.constraint(equalTo: view.topAnchor),
-            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            textView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let languageMode = TreeSitterLanguageMode(language: language.treeSitterLanguage)
-        textView.setLanguageMode(languageMode)
-
-        textView.text = content.wrappedValue
         textView.isEditable = isEditable
         textView.isSelectable = isSelectable
+        setTextViewState(on: textView)
 
         NotificationCenter.default.addObserver(
             self,
@@ -80,6 +89,31 @@ final class EditorViewController: UIViewController {
             name: .textViewShouldUpdateSettings,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateTextViewTheme),
+            name: .textViewShouldUpdateTheme,
+            object: nil
+        )
+    }
+
+    private func setTextViewState(on textView: TextView) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let text = self.content.wrappedValue
+            let theme = UserDefaults.standard.theme.makeTheme()
+            let state = TextViewState(text: text, theme: theme, language: self.language.treeSitterLanguage)
+
+            DispatchQueue.main.async {
+                textView.setState(state)
+            }
+        }
+    }
+
+    @objc
+    private func updateTextViewTheme() {
+        let theme = UserDefaults.standard.theme.makeTheme()
+        textView.applyTheme(theme)
     }
 
     @objc

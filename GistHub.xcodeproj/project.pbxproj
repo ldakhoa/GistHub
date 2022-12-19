@@ -103,6 +103,12 @@
 		6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */; };
 		6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D1294F45A400F0A2BA /* SettingView.swift */; };
 		6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */; };
+		6AEE0DB12950D8B700EF376E /* TomorrowNightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE0DB02950D8B600EF376E /* TomorrowNightTheme.swift */; };
+		6AEE0DB32950D8C800EF376E /* TomorrowTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE0DB22950D8C800EF376E /* TomorrowTheme.swift */; };
+		6AEE0DB72950D91A00EF376E /* TomorrowThemeColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AEE0DB62950D91A00EF376E /* TomorrowThemeColors.xcassets */; };
+		6AEE0DB92950D9B500EF376E /* EditorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE0DB82950D9B500EF376E /* EditorTheme.swift */; };
+		6AEE0DBB2950D9C100EF376E /* HighlightName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE0DBA2950D9C100EF376E /* HighlightName.swift */; };
+		6AEE0DBD2950DC5000EF376E /* ThemeSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEE0DBC2950DC5000EF376E /* ThemeSetting.swift */; };
 		6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF29E5D294F72D8007546FE /* SettingAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -163,6 +169,12 @@
 		6AC4F2CE294E4CD800F0A2BA /* GitHubSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSessionManager.swift; sourceTree = "<group>"; };
 		6AC4F2D1294F45A400F0A2BA /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllers.swift; sourceTree = "<group>"; };
+		6AEE0DB02950D8B600EF376E /* TomorrowNightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomorrowNightTheme.swift; sourceTree = "<group>"; };
+		6AEE0DB22950D8C800EF376E /* TomorrowTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomorrowTheme.swift; sourceTree = "<group>"; };
+		6AEE0DB62950D91A00EF376E /* TomorrowThemeColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TomorrowThemeColors.xcassets; sourceTree = "<group>"; };
+		6AEE0DB82950D9B500EF376E /* EditorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTheme.swift; sourceTree = "<group>"; };
+		6AEE0DBA2950D9C100EF376E /* HighlightName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightName.swift; sourceTree = "<group>"; };
+		6AEE0DBC2950DC5000EF376E /* ThemeSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSetting.swift; sourceTree = "<group>"; };
 		6AF29E5D294F72D8007546FE /* SettingAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -382,6 +394,7 @@
 		6A7CF5982945FB7A007B7D68 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				6AEE0DAF2950D88C00EF376E /* Theme */,
 				6A7E4816294A0C4000D6964C /* EditorCodeSettingsView.swift */,
 				6A7E480E2949A52A00D6964C /* EditorDisplayView.swift */,
 				6A7E4810294A025A00D6964C /* EditorView.swift */,
@@ -433,6 +446,27 @@
 				6AF29E5D294F72D8007546FE /* SettingAccountView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		6AEE0DAF2950D88C00EF376E /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE0DB52950D8EE00EF376E /* TomorrowNightTheme */,
+				6AEE0DBC2950DC5000EF376E /* ThemeSetting.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		6AEE0DB52950D8EE00EF376E /* TomorrowNightTheme */ = {
+			isa = PBXGroup;
+			children = (
+				6AEE0DB62950D91A00EF376E /* TomorrowThemeColors.xcassets */,
+				6AEE0DB02950D8B600EF376E /* TomorrowNightTheme.swift */,
+				6AEE0DB22950D8C800EF376E /* TomorrowTheme.swift */,
+				6AEE0DB82950D9B500EF376E /* EditorTheme.swift */,
+				6AEE0DBA2950D9C100EF376E /* HighlightName.swift */,
+			);
+			path = TomorrowNightTheme;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -548,6 +582,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AEE0DB72950D91A00EF376E /* TomorrowThemeColors.xcassets in Resources */,
 				6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */,
 				6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */,
 			);
@@ -590,11 +625,13 @@
 				6A7CF55C294464F3007B7D68 /* ErrorDecoderMiddleware.swift in Sources */,
 				6AC4F2C1294CD28C00F0A2BA /* Secrets.swift in Sources */,
 				6A7E481E294A12EC00D6964C /* CodeSettingsStore.swift in Sources */,
+				6AEE0DB32950D8C800EF376E /* TomorrowTheme.swift in Sources */,
 				6AC4F2CD294DD30400F0A2BA /* URLBuilder.swift in Sources */,
 				6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
+				6AEE0DB12950D8B700EF376E /* TomorrowNightTheme.swift in Sources */,
 				6A7E4825294B696500D6964C /* EditorViewModel.swift in Sources */,
 				6A7CF57C2944867F007B7D68 /* Date+AgoString.swift in Sources */,
 				6A7CF55029445898007B7D68 /* UIColor+Extensions.swift in Sources */,
@@ -619,6 +656,7 @@
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
 				6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */,
+				6AEE0DBB2950D9C100EF376E /* HighlightName.swift in Sources */,
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */,
@@ -632,8 +670,10 @@
 				6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
 				6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */,
+				6AEE0DBD2950DC5000EF376E /* ThemeSetting.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A7CF59F29463C3A007B7D68 /* EditorViewController.swift in Sources */,
+				6AEE0DB92950D9B500EF376E /* EditorTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
