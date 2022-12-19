@@ -2,4 +2,4 @@
 1
 
 Test bitrise
-4
+5
