@@ -15,7 +15,7 @@ protocol EditorViewControllerDelegate: AnyObject {
 
 final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
-        let textView = TextView.makeConfigured(usingSettings: .standard)
+        let textView = TextView.makeConfigured(usingSettings: .standard, userInterfaceStyle: traitCollection.userInterfaceStyle)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
         return textView
@@ -98,6 +98,15 @@ final class EditorViewController: UIViewController {
         )
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.userInterfaceStyle == .dark {
+            textView.applyTheme(TomorrowNightTheme())
+        } else {
+            let theme = UserDefaults.standard.theme.makeTheme()
+            textView.applyTheme(theme)
+        }
+    }
+
     private func setTextViewState(on textView: TextView) {
         DispatchQueue.global(qos: .userInitiated).async {
             let text = self.content.wrappedValue
@@ -112,6 +121,8 @@ final class EditorViewController: UIViewController {
 
     @objc
     private func updateTextViewTheme() {
+        // Force dark mode if user interface style is dark
+        guard traitCollection.userInterfaceStyle == .light else { return }
         let theme = UserDefaults.standard.theme.makeTheme()
         textView.applyTheme(theme)
     }
