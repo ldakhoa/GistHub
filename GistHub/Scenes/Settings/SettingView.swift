@@ -47,6 +47,19 @@ struct SettingView: View {
                 }
                 .foregroundColor(Colors.danger.color)
             }
+
+            Section {
+
+            } header: {
+                HStack {
+                    Spacer()
+                    Text(Bundle.main.prettyVersionString)
+                        .font(.body)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                        .textCase(nil)
+                    Spacer()
+                }
+            }
         }
         .navigationTitle("Settings")
         .confirmationDialog("Are you sure?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
