@@ -116,7 +116,7 @@ extension File {
 
         var treeSitterLanguage: TreeSitterLanguage {
             switch self {
-            case .astro:return .astro
+            case .astro: return .astro
             case .bash: return .bash
             case .c: return .c
             case .cpp: return .cpp
