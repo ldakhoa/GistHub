@@ -4,7 +4,3 @@ The GistHub application lean on the [Human Interface Guidelines] and follow some
 
 [Human Interface Guidelines]: https://developer.apple.com/design/human-interface-guidelines/
 [GitHub Primer]: https://primer.style/design/
-
-Thank [@monodyle] for the÷ app icon.
-
-[@monodyle]: https://github.com/monodyle
