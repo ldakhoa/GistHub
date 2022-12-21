@@ -21,6 +21,7 @@ git clone https://github.com/ldakhoa/GistHub
 cd GistHub
 open GistHub.xcodeproj
 ```
+and setup project with these [instructions](./CONTRIBUTING.md).
 
 ## Documentation
 
