@@ -14,6 +14,13 @@ enum HighlightName: String {
     case punctuation
     case string
     case variableBuiltin = "variable.builtin"
+    case strong = "text.strong"
+    case emphasis = "text.emphasis"
+    case title = "text.title"
+    case reference = "text.reference"
+    case literal = "text.literal"
+    case uri = "text.uri"
+    case none
 
     public init?(_ rawHighlightName: String) {
         var comps = rawHighlightName.split(separator: ".")
