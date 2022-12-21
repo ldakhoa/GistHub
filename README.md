@@ -24,7 +24,7 @@ open GistHub.xcodeproj
 
 ## Documentation
 
-For more information, see the [Documentation](./Documentation/).
+For more information and road-map, see the [Documentation](./Documentation/).
 
 ## License
 
@@ -48,7 +48,7 @@ However, **please do not ship this app** under your own account.
 - [@monodyle] for the app icon
 - [@thien-do] for sponsor apple development account
 - [@GitHawk] for implementation design in User Session and AppController.
-- [@ng-hai] for Gist iOS cilent idea
+- [@ng-hai] for Gist iOS cilent idea and Sponsor
 
 [Runestone]: https://github.com/simonbs/Runestone
 [Networkable]: https://github.com/tphduy/Networkable

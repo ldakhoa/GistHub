@@ -13,7 +13,7 @@
 - [ ] Update gist
 	- [x] Content
   - [x] Description
-	- [ ] Filename + Language
+  - [ ] Filename + Language
   - [x] Delete file
 - [x] Alert when content different than before
 - [x] Share gists
@@ -25,15 +25,25 @@
 - [x] Write comment
 - [x] Delete comment
 - [x] Edit comment
+- [ ] Tag user and select tagged user in comment
 
 ### Editor
-- [ ] Keyboard tool view (Use for both Code Editor and Markdown Editor)
-- [ ] Markdown syntax highlighting
+- [ ] Keyboard tool view (Use for both Code Editor and Markdown Editor) (Currently working)
+- [ ] Markdown syntax highlighting (Currently working)
 - [x] Theme
+  - [ ] Choose theme
+  - [x] Default theme
   - [x] Tomorrow
   - [ ] GitHub
+  - [ ] Update template for contributor
 - [x] View/Edit mode
 - [x] Code Settings
+- [ ] Adjust text size
 
 ### Misc
 - [ ] Create GistHub issues in-app
+- [ ] Accessibility
+  - [x] Text size
+  - [ ] Reduce Motion
+  - [ ] Voice over
+- [ ] View other user's gists
