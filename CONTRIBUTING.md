@@ -3,7 +3,7 @@
 ## 1. Cloning the repo
 
 1. Tap the Fork button of this repo
-2. `git clone https://github.com/YourGitHubUsername/GistHub.git'
+2. `git clone https://github.com/YourGitHubUsername/GistHub.git`
 
 ## 2. Installing
 
