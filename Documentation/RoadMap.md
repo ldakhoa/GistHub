@@ -8,13 +8,13 @@
 - [ ] Multi user
 
 ### Gist
+- [ ] Create gists
 - [x] View gists
 - [ ] Update gist
 	- [x] Content
   - [x] Description
 	- [ ] Filename + Language
   - [x] Delete file
-- [ ] Create gists
 - [x] Alert when content different than before
 - [x] Share gists
 - [x] Star/Unstar gist
@@ -27,9 +27,11 @@
 - [x] Edit comment
 
 ### Editor
-- [ ] Keyboard tool view
+- [ ] Keyboard tool view (Use for both Code Editor and Markdown Editor)
 - [ ] Markdown syntax highlighting
-- [ ] Theme
+- [x] Theme
+  - [x] Tomorrow
+  - [ ] GitHub
 - [x] View/Edit mode
 - [x] Code Settings
 
