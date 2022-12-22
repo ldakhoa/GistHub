@@ -44,6 +44,7 @@ However, **please do not ship this app** under your own account.
 - [AlertToast] for Apple style alert and toast
 - [Kingfisher] for downloading and caching images from the web
 - [Inject] for hot reloading
+- [GistHubMarkdownEditor] for markdown editor
 
 ## Credits
 - [@monodyle] for the app icon
@@ -60,3 +61,4 @@ However, **please do not ship this app** under your own account.
 [@thien-do]: https://github.com/thien-do
 [@ng-hai]: https://github.com/ng-hai
 [@GitHawk]: https://github.com/GitHawkApp/GitHawk
+[GistHubMarkdownEditor]: https://github.com/ldakhoa/GistHubMarkdownEditor
