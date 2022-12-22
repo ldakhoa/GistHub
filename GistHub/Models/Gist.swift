@@ -8,7 +8,7 @@
 import Foundation
 import OrderedCollections
 
-struct Gist: Codable, Identifiable {
+struct Gist: Codable, Identifiable, Equatable {
     let url: String?
     let forksURL: String?
     let commitsURL: String?
@@ -66,6 +66,10 @@ struct Gist: Codable, Identifiable {
         case commentsURL = "comments_url"
         case owner = "owner"
         case truncated = "truncated"
+    }
+
+    static func == (lhs: Gist, rhs: Gist) -> Bool {
+        lhs.id == rhs.id
     }
 }
 

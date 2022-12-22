@@ -39,6 +39,7 @@
 - [x] View/Edit mode
 - [x] Code Settings
 - [ ] Adjust text size
+- [ ] Support upload image
 
 ### Misc
 - [ ] Create GistHub issues in-app
