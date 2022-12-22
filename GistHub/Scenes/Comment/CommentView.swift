@@ -62,6 +62,8 @@ struct CommentView: View {
                         } label: {
                             Image(systemName: "ellipsis")
                                 .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                .frame(width: 50, height: 40)
+                                .contentShape(Rectangle())
                         }
                     }
 
