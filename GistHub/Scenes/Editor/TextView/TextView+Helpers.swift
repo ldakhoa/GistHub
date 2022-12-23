@@ -27,7 +27,7 @@ extension TextView {
         textView.lineHeightMultiplier = 1.3
         textView.kern = 0.3
         textView.pageGuideColumn = 80
-//        textView.inputAccessoryView = KeyboardToolsView(textView: textView)
+        textView.inputAccessoryView = KeyboardToolsView(textView: textView)
         textView.applySettings(from: settings)
 
         // Force dark mode if user interface style is dark

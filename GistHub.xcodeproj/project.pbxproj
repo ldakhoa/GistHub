@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */; };
+		6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE32954FEEC00F50194 /* TextController.swift */; };
 		6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF66294786FA0018AC26 /* CommentView.swift */; };
 		6A6EEF69294789DE0018AC26 /* SizePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */; };
 		6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 6A6EEF6C2947AE330018AC26 /* AlertToast */; };
@@ -114,6 +116,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolView.swift; sourceTree = "<group>"; };
+		6A2AADE32954FEEC00F50194 /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		6A6EEF66294786FA0018AC26 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePreferenceKey.swift; sourceTree = "<group>"; };
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -406,6 +410,8 @@
 				6A7CF5A029463D07007B7D68 /* EditorViewRepresentable.swift */,
 				6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */,
 				6A7E481C294A0D2300D6964C /* TextView */,
+				6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */,
+				6A2AADE32954FEEC00F50194 /* TextController.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -454,8 +460,10 @@
 		6AEE0DAF2950D88C00EF376E /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				6AEE0DB52950D8EE00EF376E /* TomorrowNightTheme */,
+				6AEE0DB82950D9B500EF376E /* EditorTheme.swift */,
+				6AEE0DBA2950D9C100EF376E /* HighlightName.swift */,
 				6AEE0DBC2950DC5000EF376E /* ThemeSetting.swift */,
+				6AEE0DB52950D8EE00EF376E /* TomorrowNightTheme */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -466,8 +474,6 @@
 				6AEE0DB62950D91A00EF376E /* TomorrowThemeColors.xcassets */,
 				6AEE0DB02950D8B600EF376E /* TomorrowNightTheme.swift */,
 				6AEE0DB22950D8C800EF376E /* TomorrowTheme.swift */,
-				6AEE0DB82950D9B500EF376E /* EditorTheme.swift */,
-				6AEE0DBA2950D9C100EF376E /* HighlightName.swift */,
 			);
 			path = TomorrowNightTheme;
 			sourceTree = "<group>";
@@ -656,6 +662,7 @@
 				6A7CF5A129463D07007B7D68 /* EditorViewRepresentable.swift in Sources */,
 				6A7CF570294473B0007B7D68 /* GistHubAPIClient.swift in Sources */,
 				6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */,
+				6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */,
 				6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */,
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
@@ -676,6 +683,7 @@
 				6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */,
 				6AEE0DBD2950DC5000EF376E /* ThemeSetting.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
+				6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */,
 				6A7CF59F29463C3A007B7D68 /* EditorViewController.swift in Sources */,
 				6AEE0DB92950D9B500EF376E /* EditorTheme.swift in Sources */,
 			);
