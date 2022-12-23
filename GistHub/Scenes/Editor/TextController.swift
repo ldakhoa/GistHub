@@ -126,7 +126,15 @@ final class TextController {
 
     // MARK: - List
 
+    func unorderedList() {
+        textView.replace(left: "- ", right: nil, atLineStart: true)
+    }
+
     // MARK: - Todo
+
+    func todo() {
+        textView.replace(left: "- [ ] ", right: nil, atLineStart: true)
+    }
 
     // MARK: - Code
 
@@ -165,6 +173,14 @@ final class TextController {
     }
 
     // MARK: - Undo/Redo
+
+    func undo() {
+        textView.undoManager?.undo()
+    }
+
+    func redo() {
+        textView.undoManager?.redo()
+    }
 
     // MARK: - Private
 

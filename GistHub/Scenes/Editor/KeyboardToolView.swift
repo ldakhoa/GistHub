@@ -12,12 +12,17 @@ final class KeyboardToolsView: UIInputView {
 
     private weak var textView: TextView?
 
+    private lazy var undoButton = makeToolBarButtonItem(named: "undo", action: #selector(onUndo))
+    private lazy var redoButton = makeToolBarButtonItem(named: "redo", action: #selector(onRedo))
+
     init(textView: TextView) {
         self.textView = textView
         let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)
         super.init(frame: frame, inputViewStyle: .keyboard)
 
         addToolBar(toolbar: makeToolBar())
+
+        setupUndoManagerObserver()
     }
 
     required init?(coder: NSCoder) {
@@ -56,8 +61,6 @@ final class KeyboardToolsView: UIInputView {
         let linkButton = makeToolBarButtonItem(named: "link", action: #selector(onLink))
         let unorderedlistButton = makeToolBarButtonItem(named: "dash", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
-        let undoButton = makeToolBarButtonItem(named: "undo", action: #selector(onUndo))
-        let redoButton = makeToolBarButtonItem(named: "redo", action: #selector(onRedo))
 
         items = [
             boldButton,
@@ -143,31 +146,64 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onTodo() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.todo()
     }
 
     @objc
     private func onUnorderedList() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.unorderedList()
     }
 
     @objc
     private func onUndo() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.undo()
     }
 
     @objc
     private func onRedo() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.redo()
     }
 
     @objc
     private func onLink() {
         let textController = TextController(textView: textView!)
         textController.link()
+    }
+
+    private func setupUndoManagerObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateUndoRedoButtonStates),
+            name: .NSUndoManagerCheckpoint,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateUndoRedoButtonStates),
+            name: .NSUndoManagerDidUndoChange,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateUndoRedoButtonStates),
+            name: .NSUndoManagerDidRedoChange,
+            object: nil)
+    }
+
+    @objc
+    private func updateUndoRedoButtonStates() {
+        let undoManager = textView?.undoManager
+
+        let undoIcon = UIImage(named: "Keyboard_undo")?.withRenderingMode(.alwaysOriginal)
+        let undoImage = undoManager?.canUndo ?? false ? undoIcon : undoIcon?.alpha(0.5)
+        undoButton.isEnabled = undoManager?.canUndo ?? false
+        undoButton.image = undoImage
+
+        let redoIcon = UIImage(named: "Keyboard_redo")?.withRenderingMode(.alwaysOriginal)
+        let redoImage = undoManager?.canRedo ?? false ? redoIcon : redoIcon?.alpha(0.5)
+        redoButton.isEnabled = undoManager?.canRedo ?? false
+        redoButton.image = redoImage
     }
 }
 
