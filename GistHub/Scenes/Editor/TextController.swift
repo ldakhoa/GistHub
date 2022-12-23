@@ -93,7 +93,6 @@ final class TextController {
         }
 
         insertText("~~" + textInRange + "~~", selectRange: selectRange)
-
     }
 
     private func unStrike(range: NSRange) {
@@ -109,8 +108,8 @@ final class TextController {
         let text = "[" + textInRange + "]()"
         replaceWith(string: text)
 
-        if textInRange.count == 5 {
-            setSelectedRange(NSRange(location: range.location + 2, length: 0))
+        if textInRange.count == 4 {
+            setSelectedRange(NSRange(location: range.location + 1, length: 0))
         } else {
             setSelectedRange(NSRange(location: range.upperBound + 3, length: 0))
         }
@@ -118,11 +117,52 @@ final class TextController {
 
     // MARK: - Header
 
+    func header() {
+        let headingCharacter = "#"
+        // Runestone currently not support get textStorage of whole paragraph,
+        // so we have to use UITextPosition to insert at start line.
+        textView.replace(left: headingCharacter, right: nil, atLineStart: true)
+    }
+
     // MARK: - List
 
     // MARK: - Todo
 
     // MARK: - Code
+
+    func inlineCode() {
+        var selectRange = NSRange(location: range.location + 1, length: 0)
+        let length = textInRange.count
+
+        if length != 0 {
+            selectRange = NSRange(location: range.location, length: length + 2)
+        }
+
+        insertText("`" + textInRange + "`", selectRange: selectRange)
+    }
+
+    func codeBlock() {
+        let currentRange = textView.selectedRange
+
+        if currentRange.length > 0 {
+            let subText = textView.text(in: currentRange) ?? ""
+
+            var text = "```\n" + subText
+
+            if subText.last != "\n" {
+                text += "\n"
+            }
+
+            text += "```\n"
+
+            insertText(text, replacementRange: currentRange)
+            setSelectedRange(NSRange(location: currentRange.location + 3, length: 0))
+            return
+        }
+
+        insertText("```\n\n```\n")
+        setSelectedRange(NSRange(location: currentRange.location + 4, length: 0))
+    }
 
     // MARK: - Undo/Redo
 
@@ -174,5 +214,70 @@ final class TextController {
 
     private func setSelectedRange(_ range: NSRange) {
         textView.selectedRange = range
+    }
+}
+
+private extension TextView {
+    private func oneCharRange(pos: UITextPosition?) -> UITextRange? {
+        guard let pos = pos,
+            let position = self.position(from: pos, offset: 1) else { return nil }
+        return self.textRange(from: pos, to: position)
+    }
+
+    private func text(atPosition position: UITextPosition?) -> String? {
+        guard let position = position,
+            let range = oneCharRange(pos: position) else { return nil }
+        return text(in: range)
+    }
+
+    func startOfLine(forRange range: UITextRange) -> UITextPosition {
+        func previousPosition(pos: UITextPosition?) -> UITextPosition? {
+            guard let pos = pos else { return nil }
+            return self.position(from: pos, offset: -1)
+        }
+
+        var position: UITextPosition? =  previousPosition(pos: range.start)
+        while let text = text(atPosition: position), text != "\n" { // check if it's the EoL
+            position = previousPosition(pos: position) // move back 1 char
+        }
+
+        if let position = position, // we have a position
+            let pos = self.position(from: position, offset: 1) { // need to advance by one...
+            return pos
+        }
+        return beginningOfDocument // not found? Go to the beginning
+    }
+
+    static let cursorToken = ">|<"
+
+    func replace(left: String, right: String?, atLineStart: Bool) {
+        guard let range = selectedTextRange else { return }
+        let text = text(in: range) ?? "" // no selection = ""
+
+        let replacementText: String
+        if atLineStart {
+            replacementText = left
+        } else {
+            replacementText = "\(left)\(text)\(right ?? "")"
+        }
+
+        var insertionRange = range
+        if atLineStart {
+            let startLinePosition = startOfLine(forRange: range)
+            insertionRange = textRange(from: startLinePosition, to: startLinePosition) ?? range
+        }
+
+        let cursorPosition = (replacementText as NSString).range(of: TextView.cursorToken)
+        replace(insertionRange, withText: replacementText.replacingOccurrences(of: TextView.cursorToken, with: ""))
+
+        if range.start == range.end, // single cursor (no selection)
+            let position = position(from: range.start, // advance by the inserted before
+                offset: left.lengthOfBytes(using: .utf8)) {
+            selectedTextRange = textRange(from: position, to: position) // single cursor
+        } else if cursorPosition.location != NSNotFound,
+            let position = position(from: range.start, // advance by the inserted before
+            offset: cursorPosition.location) {
+            selectedTextRange = textRange(from: position, to: position) // single cursor {
+        }
     }
 }

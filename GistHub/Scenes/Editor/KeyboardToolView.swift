@@ -125,19 +125,19 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onHeading() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.header()
     }
 
     @objc
     private func onInlineCode() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.inlineCode()
     }
 
     @objc
     private func onCodeBlock() {
         let textController = TextController(textView: textView!)
-        textController.bold()
+        textController.codeBlock()
     }
 
     @objc
