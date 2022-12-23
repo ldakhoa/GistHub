@@ -54,11 +54,11 @@ public final class TomorrowNightTheme: EditorTheme {
         case .emphasis:
             return UIColor(namedInModule: "TomorrowNightForeground")
         case .title:
-            return UIColor(namedInModule: "TomorrowNightForeground")
+            return UIColor(namedInModule: "TomorrowNightBlue")
         case .reference:
             return UIColor(namedInModule: "TomorrowNightBlue")
         case .literal:
-            return UIColor(namedInModule: "TomorrowNightRed")
+            return UIColor(namedInModule: "TomorrowNightBlue")
         case .uri:
             return UIColor(namedInModule: "TomorrowNightBlue")
         case .none:

@@ -54,11 +54,11 @@ public final class TomorrowTheme: EditorTheme {
         case .emphasis:
             return UIColor(namedInModule: "TomorrowForeground")
         case .title:
-            return UIColor(namedInModule: "TomorrowForeground")
+            return UIColor(namedInModule: "TomorrowBlue")
         case .reference:
             return UIColor(namedInModule: "TomorrowBlue")
         case .literal:
-            return UIColor(namedInModule: "TomorrowRed")
+            return UIColor(namedInModule: "TomorrowBlue")
         case .uri:
             return UIColor(namedInModule: "TomorrowBlue")
         case .none:
@@ -69,11 +69,8 @@ public final class TomorrowTheme: EditorTheme {
     public func fontTraits(for rawHighlightName: String) -> FontTraits {
         if let highlightName = HighlightName(rawHighlightName) {
             if highlightName == .keyword ||
-               highlightName == .strong ||
                highlightName == .title {
                 return .bold
-            } else if highlightName == .emphasis {
-                return .italic
             } else {
                 return []
             }

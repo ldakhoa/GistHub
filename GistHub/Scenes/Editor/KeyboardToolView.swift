@@ -59,16 +59,16 @@ final class KeyboardToolsView: UIInputView {
         let codeBlockButton = makeToolBarButtonItem(named: "code_block", action: #selector(onCodeBlock))
         let headingButton = makeToolBarButtonItem(named: "header", action: #selector(onHeading))
         let linkButton = makeToolBarButtonItem(named: "link", action: #selector(onLink))
-        let unorderedlistButton = makeToolBarButtonItem(named: "dash", action: #selector(onUnorderedList))
+        let unorderedlistButton = makeToolBarButtonItem(named: "list", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
 
         items = [
             boldButton,
             italicButton,
             strikethroughButton,
+            headingButton,
             inlineButton,
             codeBlockButton,
-            headingButton,
             linkButton,
             todoButton,
             unorderedlistButton,
@@ -99,7 +99,7 @@ final class KeyboardToolsView: UIInputView {
     private func makeToolBarButtonItem(named: String, action: Selector?) -> UIBarButtonItem {
         let tintColor = Colors.button
         return UIBarButtonItem(
-            image: UIImage(named: "Keyboard_\(named)")?
+            image: UIImage(named: "keyboard_\(named)")?
                 .withTintColor(tintColor, renderingMode: .alwaysOriginal),
             style: .plain,
             target: self,
@@ -195,12 +195,12 @@ final class KeyboardToolsView: UIInputView {
     private func updateUndoRedoButtonStates() {
         let undoManager = textView?.undoManager
 
-        let undoIcon = UIImage(named: "Keyboard_undo")?.withRenderingMode(.alwaysOriginal)
+        let undoIcon = UIImage(named: "keyboard_undo")?.withRenderingMode(.alwaysOriginal)
         let undoImage = undoManager?.canUndo ?? false ? undoIcon : undoIcon?.alpha(0.5)
         undoButton.isEnabled = undoManager?.canUndo ?? false
         undoButton.image = undoImage
 
-        let redoIcon = UIImage(named: "Keyboard_redo")?.withRenderingMode(.alwaysOriginal)
+        let redoIcon = UIImage(named: "keyboard_redo")?.withRenderingMode(.alwaysOriginal)
         let redoImage = undoManager?.canRedo ?? false ? redoIcon : redoIcon?.alpha(0.5)
         redoButton.isEnabled = undoManager?.canRedo ?? false
         redoButton.image = redoImage
