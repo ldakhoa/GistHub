@@ -3,9 +3,10 @@
 <a href="https://apps.apple.com/app/gisthub/id1660465260" style="display: inline-block; overflow: hidden; border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1627603200&h=72b0c8495c2c0af1291efef280c4c2c1" alt="Download on the App Store" style="border-top-left-radius: 13px; border-top-right-radius: 13px; border-bottom-right-radius: 13px; border-bottom-left-radius: 13px; width: 250px; height: 83px;"></a>
 
 ## Feature
-- 📝 Manage your Gists
-- 💬 Comment faster than on Gist GitHub desktop
-- 📱 Native code editor and Native markdown editor
+- 📱 Put GitHub Gists in your pocket
+- 💬 Comment faster than on GitHub Gist desktop
+- ⌨️ Edit your Gist whenever you want
+- ⚡️ Native code editor and Native markdown editor
 - :octocat:	100% free and open source
 
 ## Installation
