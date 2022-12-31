@@ -15,7 +15,11 @@ protocol EditorViewControllerDelegate: AnyObject {
 
 final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
-        let textView = TextView.makeConfigured(usingSettings: .standard, userInterfaceStyle: traitCollection.userInterfaceStyle)
+        let textView = TextView.makeConfigured(
+            usingSettings: .standard,
+            userInterfaceStyle: traitCollection.userInterfaceStyle,
+            language: self.language
+        )
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
         return textView

@@ -29,7 +29,7 @@ struct EditorDisplayView: View {
     @ObserveInjection private var inject
 
     var body: some View {
-        EditorViewRepresentable(content: $content, language: language, isEditable: true)
+        EditorViewRepresentable(content: $content, language: language, isEditable: false)
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
