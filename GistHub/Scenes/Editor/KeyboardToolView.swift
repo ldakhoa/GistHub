@@ -54,7 +54,7 @@ final class KeyboardToolsView: UIInputView {
         self.addSubview(scrollView)
 
         let keyboardDismissButton = UIButton()
-        keyboardDismissButton.setImage(UIImage(named: "keyboard_dismiss"), for: .normal)
+        keyboardDismissButton.setImage(UIImage(named: "keyboard_dismiss")?.withTintColor(Colors.button, renderingMode: .alwaysOriginal), for: .normal)
         keyboardDismissButton.frame = .init(x: UIScreen.main.bounds.width - 44, y: 0, width: 40, height: toolbar.frame.height)
         keyboardDismissButton.addTarget(self, action: #selector(onDismissKeyboard), for: .touchUpInside)
 
@@ -77,6 +77,7 @@ final class KeyboardToolsView: UIInputView {
         let linkButton = makeToolBarButtonItem(named: "link", action: #selector(onLink))
         let unorderedlistButton = makeToolBarButtonItem(named: "list", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
+        let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
 
         items = [
             boldButton,
@@ -88,6 +89,7 @@ final class KeyboardToolsView: UIInputView {
             linkButton,
             todoButton,
             unorderedlistButton,
+            searchButton,
             undoButton,
             redoButton
         ]
@@ -219,12 +221,13 @@ final class KeyboardToolsView: UIInputView {
     private func updateUndoRedoButtonStates() {
         let undoManager = textView?.undoManager
 
-        let undoIcon = UIImage(named: "keyboard_undo")?.withRenderingMode(.alwaysOriginal)
+        let tintColor = Colors.button
+        let undoIcon = UIImage(named: "keyboard_undo")?.withTintColor(tintColor, renderingMode: .alwaysOriginal)
         let undoImage = undoManager?.canUndo ?? false ? undoIcon : undoIcon?.alpha(0.5)
         undoButton.isEnabled = undoManager?.canUndo ?? false
         undoButton.image = undoImage
 
-        let redoIcon = UIImage(named: "keyboard_redo")?.withRenderingMode(.alwaysOriginal)
+        let redoIcon = UIImage(named: "keyboard_redo")?.withTintColor(tintColor, renderingMode: .alwaysOriginal)
         let redoImage = undoManager?.canRedo ?? false ? redoIcon : redoIcon?.alpha(0.5)
         redoButton.isEnabled = undoManager?.canRedo ?? false
         redoButton.image = redoImage
@@ -233,6 +236,11 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onDismissKeyboard() {
         textView?.resignFirstResponder()
+    }
+
+    @objc
+    private func onSearch() {
+        textView?.findInteraction?.presentFindNavigator(showingReplace: false)
     }
 }
 

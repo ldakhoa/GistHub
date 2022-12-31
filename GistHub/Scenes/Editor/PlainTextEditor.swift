@@ -64,62 +64,45 @@ struct PlainTextEditorView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                TextEditor(text: $content)
-                    .focused($isFocused)
-                    .padding(8)
-                    .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
-                    .navigationTitle(navigationTitle)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar(.visible, for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button("Cancel") {
-                                if contentHasChanged {
-                                    showConfirmDialog.toggle()
-                                } else {
-                                    dismiss()
-                                }
+            EditorViewRepresentable(content: $content, language: .markdown)
+                .focused($isFocused)
+                .navigationTitle(navigationTitle)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(.visible, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Cancel") {
+                            if contentHasChanged {
+                                showConfirmDialog.toggle()
+                            } else {
+                                dismiss()
                             }
-                            .foregroundColor(Colors.accent.color)
                         }
-
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button {
-                                showLoadingSaveButton = true
-                                switch style {
-                                case .description: updateDescription()
-                                case .comment: createComment()
-                                case .updateComment: updateComment()
-                                }
-                            } label: {
-                                if showLoadingSaveButton {
-                                    ProgressView()
-                                        .tint(Colors.accent.color)
-                                } else {
-                                    Text("Save")
-                                }
-                            }
-                            .bold()
-                            .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.accentDisabled.color)
-                            .disabled(!contentHasChanged)
-                        }
-                }
-
-                VStack {
-                    HStack {
-                        Text(placeholderState)
-                            .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
-                            .foregroundColor(Colors.neutralEmphasis.color)
-                            .padding(.top, 16)
-                            .padding(.leading, 13)
-                        Spacer()
+                        .foregroundColor(Colors.accent.color)
                     }
-                    Spacer()
-                }
 
-            }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showLoadingSaveButton = true
+                            switch style {
+                            case .description: updateDescription()
+                            case .comment: createComment()
+                            case .updateComment: updateComment()
+                            }
+                        } label: {
+                            if showLoadingSaveButton {
+                                ProgressView()
+                                    .tint(Colors.accent.color)
+                            } else {
+                                Text("Save")
+                            }
+                        }
+                        .bold()
+                        .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.accentDisabled.color)
+                        .disabled(!contentHasChanged)
+                    }
+                }
         }
         .onAppear {
             self.originalContent = content

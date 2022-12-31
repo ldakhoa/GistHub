@@ -78,6 +78,8 @@ final class EditorViewController: UIViewController {
 
         textView.isEditable = isEditable
         textView.isSelectable = isSelectable
+        textView.isFindInteractionEnabled = true
+
         setTextViewState(on: textView)
 
         NotificationCenter.default.addObserver(
@@ -147,5 +149,12 @@ final class EditorViewController: UIViewController {
 extension EditorViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         delegate?.textViewDidChange(text: textView.text)
+    }
+
+    func textView(
+        _ textView: TextView,
+        canReplaceTextIn highlightedRange: HighlightedRange
+    ) -> Bool {
+        true
     }
 }

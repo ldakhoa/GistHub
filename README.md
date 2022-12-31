@@ -6,7 +6,7 @@
 - 📱 Put GitHub Gists in your pocket
 - 💬 Comment faster than on GitHub Gist desktop
 - ⌨️ Edit your Gist whenever you want
-- ⚡️ Native code editor and Native markdown editor
+- ⚡️ Native code editor
 - :octocat:	100% free and open source
 
 ## Installation
@@ -45,7 +45,7 @@ However, **please do not ship this app** under your own account.
 - [AlertToast] for Apple style alert and toast
 - [Kingfisher] for downloading and caching images from the web
 - [Inject] for hot reloading
-- [GistHubMarkdownEditor] for markdown editor
+- [GistHubMarkdownPreview] for markdown preview
 
 ## Credits
 - [@monodyle] for the app icon
@@ -62,4 +62,4 @@ However, **please do not ship this app** under your own account.
 [@thien-do]: https://github.com/thien-do
 [@ng-hai]: https://github.com/ng-hai
 [@GitHawk]: https://github.com/GitHawkApp/GitHawk
-[GistHubMarkdownEditor]: https://github.com/ldakhoa/GistHubMarkdownEditor
+[GistHubMarkdownPreview]: https://github.com/ldakhoa/GistHubMarkdownPreview
