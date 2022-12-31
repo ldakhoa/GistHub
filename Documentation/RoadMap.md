@@ -9,6 +9,7 @@
 
 ### Gist
 - [ ] Create gists
+- [ ] Search files in each gist
 - [x] View gists
 - [ ] Update gist
 	- [x] Content
