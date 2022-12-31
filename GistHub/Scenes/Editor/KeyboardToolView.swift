@@ -77,6 +77,7 @@ final class KeyboardToolsView: UIInputView {
         let linkButton = makeToolBarButtonItem(named: "link", action: #selector(onLink))
         let unorderedlistButton = makeToolBarButtonItem(named: "list", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
+        let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
 
         items = [
             boldButton,
@@ -88,6 +89,7 @@ final class KeyboardToolsView: UIInputView {
             linkButton,
             todoButton,
             unorderedlistButton,
+            searchButton,
             undoButton,
             redoButton
         ]
@@ -233,6 +235,11 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onDismissKeyboard() {
         textView?.resignFirstResponder()
+    }
+
+    @objc
+    private func onSearch() {
+        textView?.findInteraction?.presentFindNavigator(showingReplace: false)
     }
 }
 
