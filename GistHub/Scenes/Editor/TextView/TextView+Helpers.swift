@@ -11,7 +11,8 @@ import Runestone
 extension TextView {
     static func makeConfigured(
         usingSettings settings: UserDefaults,
-        userInterfaceStyle: UIUserInterfaceStyle
+        userInterfaceStyle: UIUserInterfaceStyle,
+        language: File.Language
     ) -> TextView {
         let textView = TextView()
         textView.alwaysBounceVertical = true
@@ -27,7 +28,13 @@ extension TextView {
         textView.lineHeightMultiplier = 1.3
         textView.kern = 0.3
         textView.pageGuideColumn = 80
-        textView.inputAccessoryView = KeyboardToolsView(textView: textView)
+
+        if language == .markdown {
+            textView.inputAccessoryView = KeyboardToolsView(
+                textView: textView,
+                language: .markdown)
+        }
+
         textView.applySettings(from: settings)
 
         // Force dark mode if user interface style is dark

@@ -15,13 +15,26 @@ final class KeyboardToolsView: UIInputView {
     private lazy var undoButton = makeToolBarButtonItem(named: "undo", action: #selector(onUndo))
     private lazy var redoButton = makeToolBarButtonItem(named: "redo", action: #selector(onRedo))
 
-    init(textView: TextView) {
+    init(
+        textView: TextView,
+        language: File.Language
+    ) {
         self.textView = textView
         let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)
         super.init(frame: frame, inputViewStyle: .keyboard)
 
-        addToolBar(toolbar: makeToolBar())
+        self.backgroundColor = Colors.listBackground
 
+        if language == .markdown {
+            addToolBar(toolbar: makeMarkdownToolBar())
+        } else {
+//            addToolBar(toolbar: makeCodeToolBar())
+        }
+
+        let topBorder = CALayer()
+        topBorder.frame = CGRect(x: -1000, y: 0, width: 9999, height: 1)
+        topBorder.backgroundColor = Colors.Palette.Gray.gray2.dynamicColor.cgColor
+        self.layer.addSublayer(topBorder)
         setupUndoManagerObserver()
     }
 
@@ -30,24 +43,27 @@ final class KeyboardToolsView: UIInputView {
     }
 
     private func addToolBar(toolbar: UIToolbar) {
-        let scrollFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: toolbar.frame.height)
+        let scrollWidth = UIScreen.main.bounds.width - 40 - 8 // keyboard dismiss button and 8 spacing
+
+        let scrollFrame = CGRect(x: 0, y: 0, width: scrollWidth, height: toolbar.frame.height)
         let scrollView = UIScrollView(frame: scrollFrame)
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.contentSize = .init(width: toolbar.frame.width, height: toolbar.frame.height)
         scrollView.addSubview(toolbar)
 
         self.addSubview(scrollView)
-        scrollView.backgroundColor = Colors.listBackground
 
-        let topBorder = CALayer()
-        topBorder.frame = CGRect(x: -1000, y: 0, width: 9999, height: 1)
-        topBorder.backgroundColor = Colors.Palette.Gray.gray2.dynamicColor.cgColor
-        scrollView.layer.addSublayer(topBorder)
+        let keyboardDismissButton = UIButton()
+        keyboardDismissButton.setImage(UIImage(named: "keyboard_dismiss"), for: .normal)
+        keyboardDismissButton.frame = .init(x: UIScreen.main.bounds.width - 44, y: 0, width: 40, height: toolbar.frame.height)
+        keyboardDismissButton.addTarget(self, action: #selector(onDismissKeyboard), for: .touchUpInside)
+
+        self.addSubview(keyboardDismissButton)
 
         textView?.inputAccessoryView = scrollView
     }
 
-    private func makeToolBar() -> UIToolbar {
+    private func makeMarkdownToolBar() -> UIToolbar {
         var items = [UIBarButtonItem]()
 
         let boldButton = makeToolBarButtonItem(named: "bold", action: #selector(onBold))
@@ -91,6 +107,14 @@ final class KeyboardToolsView: UIInputView {
         }
 
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: width, height: 40))
+        toolBar.setItems(items, animated: false)
+        toolBar.isTranslucent = false
+        return toolBar
+    }
+
+    private func makeCodeToolBar() -> UIToolbar {
+        var items = [UIBarButtonItem]()
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         toolBar.setItems(items, animated: false)
         toolBar.isTranslucent = false
         return toolBar
@@ -204,6 +228,11 @@ final class KeyboardToolsView: UIInputView {
         let redoImage = undoManager?.canRedo ?? false ? redoIcon : redoIcon?.alpha(0.5)
         redoButton.isEnabled = undoManager?.canRedo ?? false
         redoButton.image = redoImage
+    }
+
+    @objc
+    private func onDismissKeyboard() {
+        textView?.resignFirstResponder()
     }
 }
 
