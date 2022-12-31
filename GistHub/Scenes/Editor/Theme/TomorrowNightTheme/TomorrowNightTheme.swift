@@ -49,12 +49,34 @@ public final class TomorrowNightTheme: EditorTheme {
             return UIColor(namedInModule: "TomorrowNightPurple")
         case .variableBuiltin:
             return UIColor(namedInModule: "TomorrowNightRed")
+        case .strong:
+            return UIColor(namedInModule: "TomorrowNightForeground")
+        case .emphasis:
+            return UIColor(namedInModule: "TomorrowNightForeground")
+        case .title:
+            return UIColor(namedInModule: "TomorrowNightBlue")
+        case .reference:
+            return UIColor(namedInModule: "TomorrowNightBlue")
+        case .literal:
+            return UIColor(namedInModule: "TomorrowNightBlue")
+        case .uri:
+            return UIColor(namedInModule: "TomorrowNightBlue")
+        case .none:
+            return UIColor(namedInModule: "TomorrowNightForeground")
         }
     }
 
     public func fontTraits(for rawHighlightName: String) -> FontTraits {
-        if let highlightName = HighlightName(rawHighlightName), highlightName == .keyword {
-            return .bold
+        if let highlightName = HighlightName(rawHighlightName) {
+            if highlightName == .keyword ||
+               highlightName == .strong ||
+               highlightName == .title {
+                return .bold
+            } else if highlightName == .emphasis {
+                return .italic
+            } else {
+                return []
+            }
         } else {
             return []
         }

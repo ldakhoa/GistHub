@@ -55,6 +55,7 @@ struct GistListsView: View {
                     .listRowBackground(Colors.listBackground.color)
                 }
                 .listStyle(.plain)
+                .animation(.default, value: gists)
             case let .error(error):
                 Text(error)
                     .foregroundColor(Colors.danger.color)
