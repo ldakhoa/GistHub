@@ -12,9 +12,11 @@ final class HTML {
 
     var js: String = ""
     var baseCSS: String = ""
+    var css: String = ""
 
     private init() {
         loadCSS()
+        loadJS()
     }
 
     public func getHTML(with contents: String) -> String {
@@ -24,11 +26,12 @@ final class HTML {
               <head>
                 <style>
                 \(baseCSS)
+                \(css)
                   html, body { background: #ffffff; }
                   code { background: #f6f8fa !important }
                   p, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, table, tr { color: #24292f; }
                   table tr { background: #f6f8fa; }
-                  table tr:nth-child(2n) { background: #f6f8fa; }
+                  table tr:nth-child(2n) { background: #ffffff; }
                   table tr th, table tr td { border-color: #d0d7de }
                 </style>
                 <script>\(js)</script>
@@ -57,15 +60,25 @@ final class HTML {
         """
     }
 
+    private func loadJS() {
+        guard
+            let jsFile = Bundle.main.path(forResource: "highlight", ofType: "js"),
+            let jsResult = try? String(contentsOf: URL(fileURLWithPath: jsFile), encoding: .utf8)
+        else { return }
+
+        js = jsResult
+    }
+
     private func loadCSS() {
         guard
             let cssFile = Bundle.main.path(forResource: "markdown", ofType: "css"),
-            let cssContents = try? String(contentsOf: URL(fileURLWithPath: cssFile), encoding: .utf8)
+            let cssContents = try? String(contentsOf: URL(fileURLWithPath: cssFile), encoding: .utf8),
+            let cssThemeFile = Bundle.main.path(forResource: "github", ofType: "css"),
+            let cssThemeContents = try? String(contentsOf: URL(fileURLWithPath: cssThemeFile), encoding: .utf8)
         else { return }
 
         baseCSS = cssContents
+        css = cssThemeContents
     }
 
-    private func loadJS() {
-    }
 }
