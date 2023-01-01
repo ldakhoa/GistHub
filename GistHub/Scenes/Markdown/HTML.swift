@@ -25,11 +25,11 @@ final class HTML {
                 <style>
                 \(baseCSS)
                   html, body { background: #ffffff; }
-                  code { background: #000000 !important }
-                  p, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, table, tr { color: #000000; }
-                  table tr { background: #000000; }
-                  table tr:nth-child(2n) { background: #000000; }
-                  table tr th, table tr td { border-color: #000000 }
+                  code { background: #f6f8fa !important }
+                  p, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, table, tr { color: #24292f; }
+                  table tr { background: #f6f8fa; }
+                  table tr:nth-child(2n) { background: #f6f8fa; }
+                  table tr th, table tr td { border-color: #d0d7de }
                 </style>
                 <script>\(js)</script>
                 <script>hljs.initHighlightingOnLoad();</script>

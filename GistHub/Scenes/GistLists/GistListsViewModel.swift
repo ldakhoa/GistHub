@@ -37,7 +37,6 @@ import SwiftUI
     func search() {
         if searchText.isEmpty {
             contentState = .content(gists: self.gists)
-            print(gists.count)
         } else {
             let newGists = gists.filter {
                 if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {

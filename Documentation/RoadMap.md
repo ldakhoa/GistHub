@@ -9,7 +9,7 @@
 
 ### Gist
 - [ ] Create gists
-- [ ] Search files in each gist
+- [x] Search files in each gist
 - [x] View gists
 - [ ] Update gist
 	- [x] Content
@@ -29,8 +29,8 @@
 - [ ] Tag user and select tagged user in comment
 
 ### Editor
-- [ ] Keyboard tool view (Use for both Code Editor and Markdown Editor) (Currently working)
-- [ ] Markdown syntax highlighting (Currently working)
+- [x] Keyboard tool view (Use for both Code Editor and Markdown Editor)
+- [x] Markdown syntax highlighting
 - [x] Theme
   - [ ] Choose theme
   - [x] Default theme

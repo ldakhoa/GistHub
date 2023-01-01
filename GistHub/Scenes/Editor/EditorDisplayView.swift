@@ -32,6 +32,8 @@ struct EditorDisplayView: View {
         buildBodyView()
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
+            .toolbarBackground(Colors.listBackground.color, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     makeBackButtonItem()
