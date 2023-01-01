@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "gisthub-cmark-gfm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/gisthub-cmark-gfm-swift",
+      "state" : {
+        "revision" : "22c14c09d1e02b6cfaec5fbc90b0431fc1148d20",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "inject",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Inject",
