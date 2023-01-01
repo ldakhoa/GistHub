@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		6A20DEAA2961FE640040EBD0 /* BrowseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */; };
 		6A20DF11296202620040EBD0 /* github.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DEB6296202620040EBD0 /* github.css */; };
-		6A20DF62296202620040EBD0 /* highlight.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF07296202620040EBD0 /* highlight.js */; };
+		6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6629620FEC0040EBD0 /* highlight.js */; };
 		6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */; };
 		6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE32954FEEC00F50194 /* TextController.swift */; };
 		6A2AADE62955E84600F50194 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */; };
@@ -126,7 +126,8 @@
 /* Begin PBXFileReference section */
 		6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFilesView.swift; sourceTree = "<group>"; };
 		6A20DEB6296202620040EBD0 /* github.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = github.css; sourceTree = "<group>"; };
-		6A20DF07296202620040EBD0 /* highlight.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.js; sourceTree = "<group>"; };
+		6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GistHub.xcconfig; sourceTree = "<group>"; };
+		6A20DF6629620FEC0040EBD0 /* highlight.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.js; sourceTree = "<group>"; };
 		6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolView.swift; sourceTree = "<group>"; };
 		6A2AADE32954FEEC00F50194 /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -266,6 +267,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
 				6A9BF50029503C0300EBFF04 /* ci_scripts */,
 				6A7CF5302943CF33007B7D68 /* GistHub */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
@@ -463,9 +465,9 @@
 			children = (
 				6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */,
 				6A20DEB6296202620040EBD0 /* github.css */,
-				6A20DF07296202620040EBD0 /* highlight.js */,
 				6AA6DEA72961B1CA00C25455 /* HTML.swift */,
 				6AA6DEA92961B1EE00C25455 /* markdown.css */,
+				6A20DF6629620FEC0040EBD0 /* highlight.js */,
 			);
 			path = Markdown;
 			sourceTree = "<group>";
@@ -624,10 +626,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A20DF62296202620040EBD0 /* highlight.js in Resources */,
 				6AEE0DB72950D91A00EF376E /* TomorrowThemeColors.xcassets in Resources */,
 				6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */,
 				6A20DF11296202620040EBD0 /* github.css in Resources */,
+				6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */,
 				6AA6DEAA2961B1EE00C25455 /* markdown.css in Resources */,
 				6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */,
 			);
@@ -745,6 +747,7 @@
 /* Begin XCBuildConfiguration section */
 		6A7CF5402943CF35007B7D68 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -805,6 +808,7 @@
 		};
 		6A7CF5412943CF35007B7D68 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -859,6 +863,7 @@
 		};
 		6A7CF5432943CF35007B7D68 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -876,7 +881,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-interposable",
@@ -893,6 +897,7 @@
 		};
 		6A7CF5442943CF35007B7D68 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -910,7 +915,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-interposable",
