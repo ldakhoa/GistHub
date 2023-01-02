@@ -46,9 +46,6 @@ final class HTML {
 
                 <div>
                   <script>
-                    window.scrollTo(0, 0);
-                  </script>
-                  <script>
                     renderMathInElement(document.body, {delimiters: [
                       {left: "$$", right: "$$", display: true},
                       {left: "$", right: "$", display: false},

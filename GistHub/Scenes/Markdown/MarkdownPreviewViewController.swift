@@ -21,6 +21,8 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
 
     private let markdown: String
 
+    var scrollPercentage: Float?
+
     init(markdown: String) {
         self.markdown = markdown
         super.init(nibName: nil, bundle: nil)
@@ -86,6 +88,8 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         webView.loadHTMLString(headerHtml + html, baseURL: nil)
     }
 
+    // MARK: - WKNavigationDelegate
+
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
@@ -95,6 +99,22 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         await UIApplication.shared.open(url)
         return .allow
     }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.evaluateJavaScript("document.documentElement.scrollHeight") { (height, _) in
+            guard
+                let height = height as? Float,
+                let scrollPercentage = self.scrollPercentage
+            else { return }
+
+            let jsString = """
+                window.scrollTo(0, \(height) * \(scrollPercentage));
+            """
+
+            webView.evaluateJavaScript(jsString)
+        }
+    }
+
 }
 
 struct MarkdownPreviewView: UIViewControllerRepresentable {

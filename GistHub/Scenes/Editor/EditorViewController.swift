@@ -22,6 +22,7 @@ final class EditorViewController: UIViewController {
         )
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
+        textView.delegate = self
         return textView
     }()
 
@@ -37,6 +38,7 @@ final class EditorViewController: UIViewController {
     private let isEditable: Bool
     private let isSelectable: Bool
     private let language: File.Language
+    private var markdownPreviewScrollPercentage: Float = 0
 
     weak var delegate: EditorViewControllerDelegate?
 
@@ -165,6 +167,7 @@ final class EditorViewController: UIViewController {
     private func showMarkdownPreview() {
         let previewController = MarkdownPreviewViewController(markdown: self.textView.text)
         previewController.modalPresentationStyle = .fullScreen
+        previewController.scrollPercentage = self.markdownPreviewScrollPercentage
         navigationController?.pushViewController(previewController, animated: true)
     }
 
@@ -266,6 +269,16 @@ final class EditorViewController: UIViewController {
     @objc
     private func shiftDown() {
         textView.moveSelectedLinesDown()
+    }
+}
+
+extension EditorViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let yPos = scrollView.contentOffset.y
+        let height = textView.contentSize.height
+
+        let percentage = Float(yPos / height)
+        self.markdownPreviewScrollPercentage = percentage
     }
 }
 
