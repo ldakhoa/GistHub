@@ -49,7 +49,7 @@ struct GistDetailView: View {
                                 if let description = gist.description, !description.isEmpty {
                                     Text(description)
                                         .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
 
                                 if let createdAt = gist.createdAt,
