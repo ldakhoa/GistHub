@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A20DEAA2961FE640040EBD0 /* BrowseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */; };
+		6A20DF11296202620040EBD0 /* github.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DEB6296202620040EBD0 /* github.css */; };
+		6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6629620FEC0040EBD0 /* highlight.js */; };
+		6A20DF6A2962DF840040EBD0 /* KeyboardToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 6A20DF692962DF840040EBD0 /* KeyboardToolbar */; };
+		6A20DF6C2962E3050040EBD0 /* InsertTextKeyboardTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A20DF6B2962E3050040EBD0 /* InsertTextKeyboardTool.swift */; };
+		6A20DF6E296331530040EBD0 /* github-dark-dimmed.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */; };
 		6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */; };
 		6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE32954FEEC00F50194 /* TextController.swift */; };
 		6A2AADE62955E84600F50194 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */; };
@@ -95,6 +101,10 @@
 		6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */; };
 		6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */; };
 		6A7E482B294BC6DF00D6964C /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */; };
+		6AA6DEA32961B18200C25455 /* cmark-gfm-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 6AA6DEA22961B18200C25455 /* cmark-gfm-swift */; };
+		6AA6DEA62961B1B500C25455 /* MarkdownPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */; };
+		6AA6DEA82961B1CA00C25455 /* HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6DEA72961B1CA00C25455 /* HTML.swift */; };
+		6AA6DEAA2961B1EE00C25455 /* markdown.css in Resources */ = {isa = PBXBuildFile; fileRef = 6AA6DEA92961B1EE00C25455 /* markdown.css */; };
 		6AA6FCAB2950FEAE0035AEB4 /* Bundle+Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6FCAA2950FEAE0035AEB4 /* Bundle+Version.swift */; };
 		6AC4F2BE294CB8B300F0A2BA /* View+IsLastObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2BD294CB8B300F0A2BA /* View+IsLastObject.swift */; };
 		6AC4F2C1294CD28C00F0A2BA /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */; };
@@ -117,6 +127,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFilesView.swift; sourceTree = "<group>"; };
+		6A20DEB6296202620040EBD0 /* github.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = github.css; sourceTree = "<group>"; };
+		6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GistHub.xcconfig; sourceTree = "<group>"; };
+		6A20DF6629620FEC0040EBD0 /* highlight.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.js; sourceTree = "<group>"; };
+		6A20DF6B2962E3050040EBD0 /* InsertTextKeyboardTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertTextKeyboardTool.swift; sourceTree = "<group>"; };
+		6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "github-dark-dimmed.css"; sourceTree = "<group>"; };
 		6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolView.swift; sourceTree = "<group>"; };
 		6A2AADE32954FEEC00F50194 /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -165,6 +181,9 @@
 		6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAPIClient.swift; sourceTree = "<group>"; };
 		6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
+		6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownPreviewViewController.swift; sourceTree = "<group>"; };
+		6AA6DEA72961B1CA00C25455 /* HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTML.swift; sourceTree = "<group>"; };
+		6AA6DEA92961B1EE00C25455 /* markdown.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = markdown.css; sourceTree = "<group>"; };
 		6AA6FCAA2950FEAE0035AEB4 /* Bundle+Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Version.swift"; sourceTree = "<group>"; };
 		6AC4F2BD294CB8B300F0A2BA /* View+IsLastObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+IsLastObject.swift"; sourceTree = "<group>"; };
 		6AC4F2C0294CD28C00F0A2BA /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -213,6 +232,7 @@
 				6A7CF777294652D2007B7D68 /* TreeSitterSwiftRunestone in Frameworks */,
 				6A7CF55529446493007B7D68 /* Reachability in Frameworks */,
 				6A7CF709294652BE007B7D68 /* TreeSitterJavaScriptRunestone in Frameworks */,
+				6A20DF6A2962DF840040EBD0 /* KeyboardToolbar in Frameworks */,
 				6A7CF75F294652CD007B7D68 /* TreeSitterRubyRunestone in Frameworks */,
 				6A7CF717294652C0007B7D68 /* TreeSitterJSON5Runestone in Frameworks */,
 				6A7CF721294652C1007B7D68 /* TreeSitterJuliaRunestone in Frameworks */,
@@ -233,6 +253,7 @@
 				6A7CF755294652CB007B7D68 /* TreeSitterRegexRunestone in Frameworks */,
 				6A7CF6DF294652BA007B7D68 /* TreeSitterCSSRunestone in Frameworks */,
 				6A7CF6F7294652BC007B7D68 /* TreeSitterHaskellRunestone in Frameworks */,
+				6AA6DEA32961B18200C25455 /* cmark-gfm-swift in Frameworks */,
 				6A7CF6BB294652B9007B7D68 /* TreeSitterAstroRunestone in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +273,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
 				6A9BF50029503C0300EBFF04 /* ci_scripts */,
 				6A7CF5302943CF33007B7D68 /* GistHub */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
@@ -332,6 +354,7 @@
 		6A7CF55D29446530007B7D68 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				6AA6DEA42961B1AA00C25455 /* Markdown */,
 				6AC4F2BF294CD11700F0A2BA /* Login */,
 				6AC4F2D0294F459700F0A2BA /* Settings */,
 				6A6EEF6A2947A4220018AC26 /* Comment */,
@@ -386,6 +409,7 @@
 		6A7CF58A2944EF2E007B7D68 /* GistDetail */ = {
 			isa = PBXGroup;
 			children = (
+				6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */,
 				6A7CF58B2944EF37007B7D68 /* GistDetailView.swift */,
 				6A7CF592294527DF007B7D68 /* GistDetailViewModel.swift */,
 			);
@@ -414,6 +438,7 @@
 				6A7E4826294BAE8500D6964C /* PlainTextEditor.swift */,
 				6A7E481C294A0D2300D6964C /* TextView */,
 				6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */,
+				6A20DF6B2962E3050040EBD0 /* InsertTextKeyboardTool.swift */,
 				6A2AADE32954FEEC00F50194 /* TextController.swift */,
 			);
 			path = Editor;
@@ -440,6 +465,19 @@
 				6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */,
 			);
 			path = ci_scripts;
+			sourceTree = "<group>";
+		};
+		6AA6DEA42961B1AA00C25455 /* Markdown */ = {
+			isa = PBXGroup;
+			children = (
+				6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */,
+				6A20DEB6296202620040EBD0 /* github.css */,
+				6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */,
+				6AA6DEA72961B1CA00C25455 /* HTML.swift */,
+				6AA6DEA92961B1EE00C25455 /* markdown.css */,
+				6A20DF6629620FEC0040EBD0 /* highlight.js */,
+			);
+			path = Markdown;
 			sourceTree = "<group>";
 		};
 		6AC4F2BF294CD11700F0A2BA /* Login */ = {
@@ -542,6 +580,8 @@
 				6A7CF78E294652D9007B7D68 /* TreeSitterYAMLRunestone */,
 				6A6EEF6C2947AE330018AC26 /* AlertToast */,
 				6A7E4820294A4C0800D6964C /* OrderedCollections */,
+				6AA6DEA22961B18200C25455 /* cmark-gfm-swift */,
+				6A20DF692962DF840040EBD0 /* KeyboardToolbar */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -579,6 +619,8 @@
 				6A7CF66E29465255007B7D68 /* XCRemoteSwiftPackageReference "treesitterlanguages" */,
 				6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				6A7E481F294A4C0800D6964C /* XCRemoteSwiftPackageReference "swift-collections" */,
+				6AA6DEA12961B18200C25455 /* XCRemoteSwiftPackageReference "gisthub-cmark-gfm-swift" */,
+				6A20DF682962DF840040EBD0 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -596,6 +638,10 @@
 			files = (
 				6AEE0DB72950D91A00EF376E /* TomorrowThemeColors.xcassets in Resources */,
 				6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */,
+				6A20DF11296202620040EBD0 /* github.css in Resources */,
+				6A20DF6E296331530040EBD0 /* github-dark-dimmed.css in Resources */,
+				6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */,
+				6AA6DEAA2961B1EE00C25455 /* markdown.css in Resources */,
 				6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -629,6 +675,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6AA6DEA82961B1CA00C25455 /* HTML.swift in Sources */,
 				6A7E4813294A028200D6964C /* NSNotification+Name.swift in Sources */,
 				6A7CF5892944EED3007B7D68 /* GistListsMode.swift in Sources */,
 				6A7CF56C29447275007B7D68 /* User.swift in Sources */,
@@ -676,6 +723,7 @@
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6AC4F2CB294DC13100F0A2BA /* AccessTokenClient.swift in Sources */,
 				6A7CF59D2945FCC2007B7D68 /* NewGistView.swift in Sources */,
+				6A20DEAA2961FE640040EBD0 /* BrowseFilesView.swift in Sources */,
 				6A7E4811294A025A00D6964C /* EditorView.swift in Sources */,
 				6A7CF593294527DF007B7D68 /* GistDetailViewModel.swift in Sources */,
 				6A7CF58F2944F01E007B7D68 /* ProfilePage.swift in Sources */,
@@ -683,12 +731,14 @@
 				6A7CF56A2944720D007B7D68 /* Gist.swift in Sources */,
 				6A7CF54E2944586E007B7D68 /* ColorValue.swift in Sources */,
 				6AC4F2CF294E4CD800F0A2BA /* GitHubSessionManager.swift in Sources */,
+				6A20DF6C2962E3050040EBD0 /* InsertTextKeyboardTool.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
 				6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */,
 				6AEE0DBD2950DC5000EF376E /* ThemeSetting.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */,
 				6A7CF59F29463C3A007B7D68 /* EditorViewController.swift in Sources */,
+				6AA6DEA62961B1B500C25455 /* MarkdownPreviewViewController.swift in Sources */,
 				6AEE0DB92950D9B500EF376E /* EditorTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,6 +759,7 @@
 /* Begin XCBuildConfiguration section */
 		6A7CF5402943CF35007B7D68 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -769,6 +820,7 @@
 		};
 		6A7CF5412943CF35007B7D68 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -823,6 +875,7 @@
 		};
 		6A7CF5432943CF35007B7D68 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -840,7 +893,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-interposable",
@@ -857,6 +909,7 @@
 		};
 		6A7CF5442943CF35007B7D68 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -874,7 +927,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = (
 					"-Xlinker",
 					"-interposable",
@@ -913,6 +965,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6A20DF682962DF840040EBD0 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonbs/KeyboardToolbar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
 		6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast";
@@ -969,9 +1029,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6AA6DEA12961B18200C25455 /* XCRemoteSwiftPackageReference "gisthub-cmark-gfm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ldakhoa/gisthub-cmark-gfm-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6A20DF692962DF840040EBD0 /* KeyboardToolbar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A20DF682962DF840040EBD0 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */;
+			productName = KeyboardToolbar;
+		};
 		6A6EEF6C2947AE330018AC26 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */;
@@ -1186,6 +1259,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6A7E481F294A4C0800D6964C /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		6AA6DEA22961B18200C25455 /* cmark-gfm-swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6AA6DEA12961B18200C25455 /* XCRemoteSwiftPackageReference "gisthub-cmark-gfm-swift" */;
+			productName = "cmark-gfm-swift";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -29,7 +29,7 @@ struct EditorDisplayView: View {
     @ObserveInjection private var inject
 
     var body: some View {
-        EditorViewRepresentable(content: $content, language: language, isEditable: false)
+        buildBodyView()
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -122,6 +122,16 @@ struct EditorDisplayView: View {
                 )
             }
             .enableInjection()
+    }
+
+    func buildBodyView() -> some View {
+        Group {
+            if language == .markdown {
+                MarkdownPreviewView(markdown: content)
+            } else {
+                EditorViewRepresentable(content: $content, language: language, isEditable: false)
+            }
+        }
     }
 
     private func makeBackButtonItem() -> some View {

@@ -24,6 +24,7 @@ struct GistDetailView: View {
     @State private var showPlainTextEditorView = false
     @State private var showToastError = false
     @State private var gistDescription = ""
+    @State private var showBrowseFiles = false
 
     @EnvironmentObject var userStore: UserStore
 
@@ -48,7 +49,7 @@ struct GistDetailView: View {
                                 if let description = gist.description, !description.isEmpty {
                                     Text(description)
                                         .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
 
                                 if let createdAt = gist.createdAt,
@@ -391,10 +392,29 @@ struct GistDetailView: View {
     private func buildCodeSection(gist: Gist) -> some View {
         let fileNames = gist.files?.keys.map { String($0) } ?? []
         return VStack(alignment: .leading) {
-            Text(fileNames.count > 1 ? "Files" : "File")
-                .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
-                .foregroundColor(Colors.neutralEmphasisPlus.color)
-                .padding(.horizontal, 16)
+            HStack {
+                Text(fileNames.count > 1 ? "Files" : "File")
+                    .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
+                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                Spacer()
+
+                Button("Browse files") {
+                    showBrowseFiles.toggle()
+                }
+                .font(.callout)
+                .foregroundColor(Colors.accent.color)
+                .sheet(isPresented: $showBrowseFiles) {
+                    let files = gist.files?.values.map { $0 } ?? []
+                    BrowseFilesView(files: files, gist: gist) {
+                        Task {
+                            await viewModel.gist(gistID: gist.id)
+                        }
+                    }
+                    .environmentObject(userStore)
+                }
+            }
+            .padding(.horizontal, 16)
+
             LazyVStack(alignment: .leading) {
                 ForEach(fileNames, id: \.hashValue) { fileName in
                     buildFileNameView(gist: gist, fileName: fileName)

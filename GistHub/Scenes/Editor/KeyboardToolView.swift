@@ -8,7 +8,7 @@
 import UIKit
 import Runestone
 
-final class KeyboardToolsView: UIInputView {
+final class MarkdownKeyboardToolsView: UIInputView {
 
     private weak var textView: TextView?
 
@@ -16,8 +16,7 @@ final class KeyboardToolsView: UIInputView {
     private lazy var redoButton = makeToolBarButtonItem(named: "redo", action: #selector(onRedo))
 
     init(
-        textView: TextView,
-        language: File.Language
+        textView: TextView
     ) {
         self.textView = textView
         let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)
@@ -25,11 +24,7 @@ final class KeyboardToolsView: UIInputView {
 
         self.backgroundColor = Colors.listBackground
 
-        if language == .markdown {
-            addToolBar(toolbar: makeMarkdownToolBar())
-        } else {
-//            addToolBar(toolbar: makeCodeToolBar())
-        }
+        addToolBar(toolbar: makeMarkdownToolBar())
 
         let topBorder = CALayer()
         topBorder.frame = CGRect(x: -1000, y: 0, width: 9999, height: 1)
@@ -58,6 +53,15 @@ final class KeyboardToolsView: UIInputView {
         keyboardDismissButton.frame = .init(x: UIScreen.main.bounds.width - 44, y: 0, width: 40, height: toolbar.frame.height)
         keyboardDismissButton.addTarget(self, action: #selector(onDismissKeyboard), for: .touchUpInside)
 
+        if traitCollection.userInterfaceStyle == .light {
+            let keyboardDismissButtonGradientLayer = CAGradientLayer()
+            keyboardDismissButtonGradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+            keyboardDismissButtonGradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+            keyboardDismissButtonGradientLayer.colors = [UIColor(white: 1, alpha: 0).cgColor, UIColor.white.cgColor]
+            keyboardDismissButtonGradientLayer.frame = CGRect(x: -15, y: 0, width: 15, height: self.frame.height)
+            keyboardDismissButton.layer.addSublayer(keyboardDismissButtonGradientLayer)
+        }
+
         self.addSubview(keyboardDismissButton)
 
         textView?.inputAccessoryView = scrollView
@@ -66,6 +70,8 @@ final class KeyboardToolsView: UIInputView {
     private func makeMarkdownToolBar() -> UIToolbar {
         var items = [UIBarButtonItem]()
 
+        let previewButton = makeToolBarButtonItem(named: "preview", action: #selector(onPreview))
+        previewButton.tag = 0x02
         let boldButton = makeToolBarButtonItem(named: "bold", action: #selector(onBold))
         let italicButton = makeToolBarButtonItem(named: "italic", action: #selector(onItalic))
         italicButton.tag = 0x03
@@ -80,6 +86,7 @@ final class KeyboardToolsView: UIInputView {
         let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
 
         items = [
+            previewButton,
             boldButton,
             italicButton,
             strikethroughButton,
@@ -102,6 +109,9 @@ final class KeyboardToolsView: UIInputView {
             } else if item.tag == 0x05 {
                 item.width = 40
                 width += 40
+            } else if item.tag == 0x02 {
+                item.width = 60
+                width += 60
             } else {
                 item.width = 50
                 width += 50
@@ -115,7 +125,7 @@ final class KeyboardToolsView: UIInputView {
     }
 
     private func makeCodeToolBar() -> UIToolbar {
-        var items = [UIBarButtonItem]()
+        let items = [UIBarButtonItem]()
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         toolBar.setItems(items, animated: false)
         toolBar.isTranslucent = false
@@ -241,6 +251,11 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onSearch() {
         textView?.findInteraction?.presentFindNavigator(showingReplace: false)
+    }
+
+    @objc
+    private func onPreview() {
+        NotificationCenter.default.post(name: .textViewShouldShowMarkdownPreview, object: nil)
     }
 }
 

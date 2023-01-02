@@ -10,12 +10,30 @@
       }
     },
     {
+      "identity" : "gisthub-cmark-gfm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/gisthub-cmark-gfm-swift",
+      "state" : {
+        "revision" : "22c14c09d1e02b6cfaec5fbc90b0431fc1148d20",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "inject",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Inject",
       "state" : {
         "revision" : "04925668f57e74bc40f21b185a41c5585a84a9fe",
         "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/KeyboardToolbar",
+      "state" : {
+        "revision" : "5f95f8e9af98f6163a58caaceaadc3bf720fd7bd",
+        "version" : "0.1.1"
       }
     },
     {

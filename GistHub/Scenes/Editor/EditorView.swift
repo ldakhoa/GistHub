@@ -58,6 +58,9 @@ struct EditorView: View {
                                 try await viewModel.updateGist(gistID: gist.id, fileName: fileName, content: self.content) {
                                     self.dismiss()
                                     self.updateContentCompletion()
+                                    if language == .markdown {
+                                        NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
+                                    }
                                 }
                             } catch let updateError {
                                 error = updateError.localizedDescription
