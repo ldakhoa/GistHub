@@ -53,7 +53,7 @@ public struct ColorValue: Equatable {
     var a: CGFloat { CGFloat(hexValue & 0x000000FF) / 255.0 }
 
     // Value is stored in RGBA format.
-    private let hexValue: UInt32
+    let hexValue: UInt32
 }
 
 extension Color {

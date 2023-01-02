@@ -5,21 +5,19 @@
 //  Created by Khoa Le on 01/01/2023.
 //
 
-import Foundation
+import UIKit
 
 final class HTML {
-    static let shared = HTML()
+    private var js: String = ""
+    private var baseCSS: String = ""
+    private var css: String = ""
 
-    var js: String = ""
-    var baseCSS: String = ""
-    var css: String = ""
+    init() {}
 
-    private init() {
-        loadCSS()
+    public func getHTML(with contents: String, interfaceStyle: UIUserInterfaceStyle) -> String {
+        loadCSS(interfaceStyle: interfaceStyle)
         loadJS()
-    }
 
-    public func getHTML(with contents: String) -> String {
         return """
               <!DOCTYPE html>
               <html>
@@ -27,12 +25,12 @@ final class HTML {
                 <style>
                 \(baseCSS)
                 \(css)
-                  html, body { background: #ffffff; }
-                  code { background: #f6f8fa !important }
-                  p, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, table, tr { color: #24292f; }
-                  table tr { background: #f6f8fa; }
+                  html, body { background: \(Colors.background.hexString); }
+                  code { background: \(Colors.codeBackground.hexString) !important }
+                  p, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, table, tr { color: \(Colors.text.hexString); }
+                  table tr { background: \(Colors.background.hexString); }
                   table tr:nth-child(2n) { background: #ffffff; }
-                  table tr th, table tr td { border-color: #d0d7de }
+                  table tr th, table tr td { border-color: \(Colors.border.hexString) }
                 </style>
                 <script>\(js)</script>
                 <script>hljs.initHighlightingOnLoad();</script>
@@ -66,11 +64,13 @@ final class HTML {
         js = jsResult
     }
 
-    private func loadCSS() {
+    private func loadCSS(interfaceStyle: UIUserInterfaceStyle) {
         guard
             let cssFile = Bundle.main.path(forResource: "markdown", ofType: "css"),
             let cssContents = try? String(contentsOf: URL(fileURLWithPath: cssFile), encoding: .utf8),
-            let cssThemeFile = Bundle.main.path(forResource: "github", ofType: "css"),
+            let cssThemeFile = Bundle.main.path(
+                forResource: interfaceStyle == .light ? "github" : "github-dark-dimmed",
+                ofType: "css"),
             let cssThemeContents = try? String(contentsOf: URL(fileURLWithPath: cssThemeFile), encoding: .utf8)
         else { return }
 
@@ -78,4 +78,10 @@ final class HTML {
         css = cssThemeContents
     }
 
+}
+
+private extension Colors {
+    static let background = UIColor(light: .white, dark: Colors.Palette.Gray.gray9.dark)
+    static let codeBackground = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Gray.gray8.dark)
+    static let text = UIColor(light: Colors.Palette.Gray.gray9.light, dark: Colors.Palette.Gray.gray1.dark)
 }

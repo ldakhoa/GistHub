@@ -53,12 +53,14 @@ final class MarkdownKeyboardToolsView: UIInputView {
         keyboardDismissButton.frame = .init(x: UIScreen.main.bounds.width - 44, y: 0, width: 40, height: toolbar.frame.height)
         keyboardDismissButton.addTarget(self, action: #selector(onDismissKeyboard), for: .touchUpInside)
 
-        let keyboardDismissButtonGradientLayer = CAGradientLayer()
-        keyboardDismissButtonGradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        keyboardDismissButtonGradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        keyboardDismissButtonGradientLayer.colors = [UIColor(white: 1, alpha: 0).cgColor, UIColor.white.cgColor]
-        keyboardDismissButtonGradientLayer.frame = CGRect(x: -15, y: 0, width: 15, height: self.frame.height)
-        keyboardDismissButton.layer.addSublayer(keyboardDismissButtonGradientLayer)
+        if traitCollection.userInterfaceStyle == .light {
+            let keyboardDismissButtonGradientLayer = CAGradientLayer()
+            keyboardDismissButtonGradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+            keyboardDismissButtonGradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+            keyboardDismissButtonGradientLayer.colors = [UIColor(white: 1, alpha: 0).cgColor, UIColor.white.cgColor]
+            keyboardDismissButtonGradientLayer.frame = CGRect(x: -15, y: 0, width: 15, height: self.frame.height)
+            keyboardDismissButton.layer.addSublayer(keyboardDismissButtonGradientLayer)
+        }
 
         self.addSubview(keyboardDismissButton)
 

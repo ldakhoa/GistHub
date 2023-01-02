@@ -12,6 +12,7 @@
 		6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6629620FEC0040EBD0 /* highlight.js */; };
 		6A20DF6A2962DF840040EBD0 /* KeyboardToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 6A20DF692962DF840040EBD0 /* KeyboardToolbar */; };
 		6A20DF6C2962E3050040EBD0 /* InsertTextKeyboardTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A20DF6B2962E3050040EBD0 /* InsertTextKeyboardTool.swift */; };
+		6A20DF6E296331530040EBD0 /* github-dark-dimmed.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */; };
 		6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */; };
 		6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE32954FEEC00F50194 /* TextController.swift */; };
 		6A2AADE62955E84600F50194 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */; };
@@ -131,6 +132,7 @@
 		6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GistHub.xcconfig; sourceTree = "<group>"; };
 		6A20DF6629620FEC0040EBD0 /* highlight.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.js; sourceTree = "<group>"; };
 		6A20DF6B2962E3050040EBD0 /* InsertTextKeyboardTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertTextKeyboardTool.swift; sourceTree = "<group>"; };
+		6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "github-dark-dimmed.css"; sourceTree = "<group>"; };
 		6A2AADE12954EF6400F50194 /* KeyboardToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolView.swift; sourceTree = "<group>"; };
 		6A2AADE32954FEEC00F50194 /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 			children = (
 				6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */,
 				6A20DEB6296202620040EBD0 /* github.css */,
+				6A20DF6D296331530040EBD0 /* github-dark-dimmed.css */,
 				6AA6DEA72961B1CA00C25455 /* HTML.swift */,
 				6AA6DEA92961B1EE00C25455 /* markdown.css */,
 				6A20DF6629620FEC0040EBD0 /* highlight.js */,
@@ -636,6 +639,7 @@
 				6AEE0DB72950D91A00EF376E /* TomorrowThemeColors.xcassets in Resources */,
 				6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */,
 				6A20DF11296202620040EBD0 /* github.css in Resources */,
+				6A20DF6E296331530040EBD0 /* github-dark-dimmed.css in Resources */,
 				6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */,
 				6AA6DEAA2961B1EE00C25455 /* markdown.css in Resources */,
 				6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */,

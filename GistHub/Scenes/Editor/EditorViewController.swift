@@ -165,7 +165,7 @@ final class EditorViewController: UIViewController {
 
     @objc
     private func showMarkdownPreview() {
-        let previewController = MarkdownPreviewViewController(markdown: self.textView.text)
+        let previewController = MarkdownPreviewViewController(markdown: self.textView.text, mode: .editPreview)
         previewController.modalPresentationStyle = .fullScreen
         previewController.scrollPercentage = self.markdownPreviewScrollPercentage
         navigationController?.pushViewController(previewController, animated: true)

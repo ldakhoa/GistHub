@@ -10,21 +10,25 @@ import WebKit
 import cmark_gfm_swift
 import SwiftUI
 
-final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegate {
+final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate {
 
     private(set) lazy var webView: WKWebView = {
         let view = WKWebView()
         view.navigationDelegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.scrollView.delegate = self
         return view
     }()
 
     private let markdown: String
+    private let html = HTML()
+    private let mode: Mode
 
     var scrollPercentage: Float?
 
-    init(markdown: String) {
+    init(markdown: String, mode: Mode) {
         self.markdown = markdown
+        self.mode = mode
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -70,7 +74,8 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         DispatchQueue.global(qos: .userInitiated).async {
             if let parsed = Node(markdown: markdown)?.html {
                 DispatchQueue.main.async {
-                    let styledHTML = HTML.shared.getHTML(with: parsed)
+                    let interfaceStyle = self.traitCollection.userInterfaceStyle
+                    let styledHTML = self.html.getHTML(with: parsed, interfaceStyle: interfaceStyle)
                     self.setContent(with: styledHTML)
                 }
             }
@@ -115,6 +120,20 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         }
     }
 
+    // MARK: - UIScrollViewDelegate
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if mode == .preview {
+            self.scrollPercentage = Float(scrollView.contentOffset.y / scrollView.contentSize.height)
+        }
+    }
+}
+
+extension MarkdownPreviewViewController {
+    enum Mode {
+        case preview
+        case editPreview
+    }
 }
 
 struct MarkdownPreviewView: UIViewControllerRepresentable {
@@ -127,7 +146,7 @@ struct MarkdownPreviewView: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> MarkdownPreviewViewController {
-        let controller = MarkdownPreviewViewController(markdown: markdown)
+        let controller = MarkdownPreviewViewController(markdown: markdown, mode: .preview)
         return controller
     }
 
