@@ -42,7 +42,7 @@ final class HTML {
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc/contrib/auto-render.min.js"></script>
               </head>
               <body>
-                \(contents)
+                \(contents.replacingOccurrences(of: "class=\"language-objective-c", with: "class=\"language-objectivec"))
 
                 <div>
                   <script>
