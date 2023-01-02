@@ -66,6 +66,7 @@ final class KeyboardToolsView: UIInputView {
     private func makeMarkdownToolBar() -> UIToolbar {
         var items = [UIBarButtonItem]()
 
+        let previewButton = makeToolBarButtonItem(named: "preview", action: #selector(onPreview))
         let boldButton = makeToolBarButtonItem(named: "bold", action: #selector(onBold))
         let italicButton = makeToolBarButtonItem(named: "italic", action: #selector(onItalic))
         italicButton.tag = 0x03
@@ -80,6 +81,7 @@ final class KeyboardToolsView: UIInputView {
         let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
 
         items = [
+            previewButton,
             boldButton,
             italicButton,
             strikethroughButton,
@@ -241,6 +243,11 @@ final class KeyboardToolsView: UIInputView {
     @objc
     private func onSearch() {
         textView?.findInteraction?.presentFindNavigator(showingReplace: false)
+    }
+
+    @objc
+    private func onPreview() {
+        NotificationCenter.default.post(name: .textViewShouldShowMarkdownPreview, object: nil)
     }
 }
 

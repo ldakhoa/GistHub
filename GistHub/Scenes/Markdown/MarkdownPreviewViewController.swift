@@ -45,6 +45,13 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reloadMarkdown),
+            name: .markdownPreviewShouldReload,
+            object: nil
+        )
+
         load(markdown: markdown)
     }
 
@@ -56,6 +63,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         }
     }
 
+    @objc
     private func load(markdown: String) {
         DispatchQueue.global(qos: .userInitiated).async {
             if let parsed = Node(markdown: markdown)?.html {
@@ -65,6 +73,12 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
                 }
             }
         }
+    }
+
+    @objc
+    private func reloadMarkdown(notification: Notification) {
+        guard let content = notification.object as? String else { return }
+        load(markdown: content)
     }
 
     private func setContent(with html: String) {

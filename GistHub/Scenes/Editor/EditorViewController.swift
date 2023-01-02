@@ -102,6 +102,13 @@ final class EditorViewController: UIViewController {
             name: .textViewShouldUpdateTheme,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showMarkdownPreview),
+            name: .textViewShouldShowMarkdownPreview,
+            object: nil
+        )
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -143,6 +150,13 @@ final class EditorViewController: UIViewController {
     private func updateTextViewSettings() {
         let settings = UserDefaults.standard
         textView.applySettings(from: settings)
+    }
+
+    @objc
+    private func showMarkdownPreview() {
+        let previewController = MarkdownPreviewViewController(markdown: self.textView.text)
+        previewController.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(previewController, animated: true)
     }
 }
 
