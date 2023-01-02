@@ -8,6 +8,7 @@
 import UIKit
 import Runestone
 import SwiftUI
+import KeyboardToolbar
 
 protocol EditorViewControllerDelegate: AnyObject {
     func textViewDidChange(text: String)
@@ -17,13 +18,14 @@ final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
         let textView = TextView.makeConfigured(
             usingSettings: .standard,
-            userInterfaceStyle: traitCollection.userInterfaceStyle,
-            language: self.language
+            userInterfaceStyle: traitCollection.userInterfaceStyle
         )
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
         return textView
     }()
+
+    private lazy var keyboardToolbarView = KeyboardToolbarView()
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
@@ -75,6 +77,13 @@ final class EditorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if language == .markdown {
+            textView.inputAccessoryView = MarkdownKeyboardToolsView(textView: textView)
+        } else {
+            textView.inputAccessoryView = keyboardToolbarView
+            setupKeyboardTools()
+        }
 
         textView.isEditable = isEditable
         textView.isSelectable = isSelectable
@@ -158,11 +167,112 @@ final class EditorViewController: UIViewController {
         previewController.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(previewController, animated: true)
     }
+
+    private func setupKeyboardTools() {
+        let canUndo = textView.undoManager?.canUndo ?? false
+        let canRedo = textView.undoManager?.canRedo ?? false
+        keyboardToolbarView.groups = [
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "arrow.uturn.backward") { [weak self] in
+                    self?.textView.undoManager?.undo()
+                    self?.setupKeyboardTools()
+                }, isEnabled: canUndo),
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "arrow.uturn.forward") { [weak self] in
+                    self?.textView.undoManager?.redo()
+                    self?.setupKeyboardTools()
+                }, isEnabled: canRedo)
+            ]),
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(
+                    representativeTool: BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") {
+                        self.shiftRight()
+                    },
+                    tools: [
+                        BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") {
+                            self.shiftRight()
+                        },
+                        BlockKeyboardTool(symbolName: "arrow.left.to.line.compact") {
+                            self.shiftLeft()
+                        },
+                        BlockKeyboardTool(symbolName: "arrow.up.to.line.compact") {
+                            self.shiftUp()
+                        },
+                        BlockKeyboardTool(symbolName: "arrow.down.to.line.compact") {
+                            self.shiftDown()
+                        }
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "(", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "(", textView: textView),
+                    InsertTextKeyboardTool(text: "{", textView: textView),
+                    InsertTextKeyboardTool(text: "[", textView: textView),
+                    InsertTextKeyboardTool(text: "]", textView: textView),
+                    InsertTextKeyboardTool(text: "}", textView: textView),
+                    InsertTextKeyboardTool(text: ")", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: ".", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: ".", textView: textView),
+                    InsertTextKeyboardTool(text: ",", textView: textView),
+                    InsertTextKeyboardTool(text: ";", textView: textView),
+                    InsertTextKeyboardTool(text: "!", textView: textView),
+                    InsertTextKeyboardTool(text: "&", textView: textView),
+                    InsertTextKeyboardTool(text: "|", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "=", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "=", textView: textView),
+                    InsertTextKeyboardTool(text: "+", textView: textView),
+                    InsertTextKeyboardTool(text: "-", textView: textView),
+                    InsertTextKeyboardTool(text: "/", textView: textView),
+                    InsertTextKeyboardTool(text: "*", textView: textView),
+                    InsertTextKeyboardTool(text: "<", textView: textView),
+                    InsertTextKeyboardTool(text: ">", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "#", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "#", textView: textView),
+                    InsertTextKeyboardTool(text: "\"", textView: textView),
+                    InsertTextKeyboardTool(text: "'", textView: textView),
+                    InsertTextKeyboardTool(text: "$", textView: textView),
+                    InsertTextKeyboardTool(text: "\\", textView: textView),
+                    InsertTextKeyboardTool(text: "@", textView: textView),
+                    InsertTextKeyboardTool(text: "%", textView: textView),
+                    InsertTextKeyboardTool(text: "~", textView: textView)
+                ])
+            ]),
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "magnifyingglass") { [weak self] in
+                    self?.textView.findInteraction?.presentFindNavigator(showingReplace: false)
+                }),
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "keyboard.chevron.compact.down") { [weak self] in
+                    self?.textView.resignFirstResponder()
+                })
+            ])
+        ]
+    }
+
+    @objc
+    private func shiftLeft() {
+        textView.shiftLeft()
+    }
+
+    @objc
+    private func shiftRight() {
+        textView.shiftRight()
+    }
+
+    @objc
+    private func shiftUp() {
+        textView.moveSelectedLinesUp()
+    }
+
+    @objc
+    private func shiftDown() {
+        textView.moveSelectedLinesDown()
+    }
 }
 
 extension EditorViewController: TextViewDelegate {
     func textViewDidChange(_ textView: TextView) {
         delegate?.textViewDidChange(text: textView.text)
+        setupKeyboardTools()
     }
 
     func textView(

@@ -8,7 +8,7 @@
 import UIKit
 import Runestone
 
-final class KeyboardToolsView: UIInputView {
+final class MarkdownKeyboardToolsView: UIInputView {
 
     private weak var textView: TextView?
 
@@ -16,8 +16,7 @@ final class KeyboardToolsView: UIInputView {
     private lazy var redoButton = makeToolBarButtonItem(named: "redo", action: #selector(onRedo))
 
     init(
-        textView: TextView,
-        language: File.Language
+        textView: TextView
     ) {
         self.textView = textView
         let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)
@@ -25,11 +24,7 @@ final class KeyboardToolsView: UIInputView {
 
         self.backgroundColor = Colors.listBackground
 
-        if language == .markdown {
-            addToolBar(toolbar: makeMarkdownToolBar())
-        } else {
-//            addToolBar(toolbar: makeCodeToolBar())
-        }
+        addToolBar(toolbar: makeMarkdownToolBar())
 
         let topBorder = CALayer()
         topBorder.frame = CGRect(x: -1000, y: 0, width: 9999, height: 1)

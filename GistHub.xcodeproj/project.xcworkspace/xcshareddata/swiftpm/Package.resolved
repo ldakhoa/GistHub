@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/KeyboardToolbar",
+      "state" : {
+        "revision" : "5f95f8e9af98f6163a58caaceaadc3bf720fd7bd",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",

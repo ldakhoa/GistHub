@@ -11,14 +11,14 @@ import Runestone
 extension TextView {
     static func makeConfigured(
         usingSettings settings: UserDefaults,
-        userInterfaceStyle: UIUserInterfaceStyle,
-        language: File.Language
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> TextView {
         let textView = TextView()
         textView.alwaysBounceVertical = true
         textView.contentInsetAdjustmentBehavior = .always
         textView.backgroundColor = .systemBackground
         textView.autocorrectionType = .no
+        textView.spellCheckingType = .no
         textView.autocapitalizationType = .none
         textView.smartDashesType = .no
         textView.smartQuotesType = .no
@@ -28,12 +28,6 @@ extension TextView {
         textView.lineHeightMultiplier = 1.3
         textView.kern = 0.3
         textView.pageGuideColumn = 80
-
-        if language == .markdown {
-            textView.inputAccessoryView = KeyboardToolsView(
-                textView: textView,
-                language: .markdown)
-        }
 
         textView.applySettings(from: settings)
 
