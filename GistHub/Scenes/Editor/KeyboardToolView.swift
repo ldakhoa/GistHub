@@ -58,6 +58,13 @@ final class KeyboardToolsView: UIInputView {
         keyboardDismissButton.frame = .init(x: UIScreen.main.bounds.width - 44, y: 0, width: 40, height: toolbar.frame.height)
         keyboardDismissButton.addTarget(self, action: #selector(onDismissKeyboard), for: .touchUpInside)
 
+        let keyboardDismissButtonGradientLayer = CAGradientLayer()
+        keyboardDismissButtonGradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        keyboardDismissButtonGradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        keyboardDismissButtonGradientLayer.colors = [UIColor(white: 1, alpha: 0).cgColor, UIColor.white.cgColor]
+        keyboardDismissButtonGradientLayer.frame = CGRect(x: -15, y: 0, width: 15, height: self.frame.height)
+        keyboardDismissButton.layer.addSublayer(keyboardDismissButtonGradientLayer)
+
         self.addSubview(keyboardDismissButton)
 
         textView?.inputAccessoryView = scrollView
@@ -67,6 +74,7 @@ final class KeyboardToolsView: UIInputView {
         var items = [UIBarButtonItem]()
 
         let previewButton = makeToolBarButtonItem(named: "preview", action: #selector(onPreview))
+        previewButton.tag = 0x02
         let boldButton = makeToolBarButtonItem(named: "bold", action: #selector(onBold))
         let italicButton = makeToolBarButtonItem(named: "italic", action: #selector(onItalic))
         italicButton.tag = 0x03
@@ -104,6 +112,9 @@ final class KeyboardToolsView: UIInputView {
             } else if item.tag == 0x05 {
                 item.width = 40
                 width += 40
+            } else if item.tag == 0x02 {
+                item.width = 60
+                width += 60
             } else {
                 item.width = 50
                 width += 50
@@ -117,7 +128,7 @@ final class KeyboardToolsView: UIInputView {
     }
 
     private func makeCodeToolBar() -> UIToolbar {
-        var items = [UIBarButtonItem]()
+        let items = [UIBarButtonItem]()
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         toolBar.setItems(items, animated: false)
         toolBar.isTranslucent = false
