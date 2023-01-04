@@ -264,8 +264,13 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
             models.append(MarkdownQuoteModel(level: level, string: string))
 //        case .image(let title, let url):
 //
-//        case .html(let text):
-//
+        case .html(let text):
+            endRunningText(isLast)
+
+            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            guard !trimmed.isEmpty else { continue }
+            models.append(MarkdownHtmlModel(html: trimmed))
 //        case .table(let rows):
 //
 //        case .hr:

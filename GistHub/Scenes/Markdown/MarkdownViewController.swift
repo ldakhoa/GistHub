@@ -19,13 +19,17 @@ public final class MarkdownViewController: UIViewController {
         view.register(MarkdownTextCell.self, forCellWithReuseIdentifier: MarkdownTextCell.identifier)
         view.register(MarkdownQuoteCell.self, forCellWithReuseIdentifier: MarkdownQuoteCell.identifier)
         view.register(MarkdownCodeBlockCell.self, forCellWithReuseIdentifier: MarkdownCodeBlockCell.identifier)
+        view.register(MarkdownHtmlCell.self, forCellWithReuseIdentifier: MarkdownHtmlCell.identifier)
         view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
+        view.contentInset = .init(top: 16, left: 0, bottom: 16, right: 0)
         view.dataSource = self
         view.delegate = self
         return view
     }()
 
     private let inset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+
+    private static let webViewWidthCache = WidthCache<String, CGSize>()
 
     // MARK: - Dependencies
 
@@ -59,7 +63,7 @@ public final class MarkdownViewController: UIViewController {
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor)
         ])
     }
 
@@ -114,10 +118,17 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
         ) as? MarkdownCodeBlockCell, let context = model as? MarkdownCodeBlockModel {
             cell.configure(with: context)
             return cell
-        } else {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
+        } else if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MarkdownHtmlCell.identifier,
+            for: indexPath
+        ) as? MarkdownHtmlCell, let context = model as? MarkdownHtmlModel {
+            cell.delegate = self
+            cell.navigationDelegate = self
+            cell.imageDelegate = self
+            cell.configure(with: context)
+            return cell
         }
-
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
     }
 
     public func collectionView(
@@ -145,11 +156,41 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
                 width: width,
                 height: context.contentSize.height + inset.top + inset.bottom
             )
+        } else if let context = model as? MarkdownHtmlModel {
+            let width = collectionView.bounds.width - inset.left - inset.right
+            let height = MarkdownViewController.webViewWidthCache.data(key: context.html, width: width)?.height ?? 44
+
+            return CGSize(
+                width: width,
+                height: height
+            )
         }
 
-        else {
-            return CGSize(width: 200, height: 200)
+        return CGSize(width: collectionView.bounds.width, height: 200)
+    }
+}
+
+// MARK: - MarkdownHtmlCellDelegate, MarkdownHtmlCellImageDelegate, MarkdownHtmlCellNavigationDelegate
+
+extension MarkdownViewController: MarkdownHtmlCellDelegate,
+                                  MarkdownHtmlCellImageDelegate,
+                                  MarkdownHtmlCellNavigationDelegate {
+
+    func webViewDidResize(cell: MarkdownHtmlCell, html: String, cellWidth: CGFloat, size: CGSize) {
+        guard size != MarkdownViewController.webViewWidthCache.data(key: html, width: cellWidth) else { return }
+        MarkdownViewController.webViewWidthCache.set(data: size, key: html, width: cellWidth)
+
+        UIView.performWithoutAnimation {
+            self.collectionView.invalidateIntrinsicContentSize()
         }
+    }
+
+    func webViewDidTapImage(url: URL) {
+
+    }
+
+    func webViewWantsNavigate(url: URL) {
+
     }
 }
 
@@ -165,7 +206,7 @@ extension MarkdownViewController: MarkdownStyledTextViewDelegate {
             if let url = URL(string: "mailto:\(email)") {
                 UIApplication.shared.open(url)
             }
-        case .checkbox(let _):
+        case .checkbox:
             break
         }
     }

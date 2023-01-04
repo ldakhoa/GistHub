@@ -18,6 +18,7 @@ enum MarkdownText {
     
     static let body = TextStyle(size: 16, scalingTextStyle: .body)
     static let code = TextStyle(font: .name("Courier"), size: 16)
+    static let secondary = TextStyle(size: 13)
 }
 
 extension TextStyle {
