@@ -36,32 +36,32 @@ final class MarkdownHtmlCell: UICollectionViewCell, WKNavigationDelegate {
     private let webView = MarkdownHtmlCellWebView()
     private var body = ""
 
-    private static let htmlHead = """
+    private let htmlHead = """
     <!DOCTYPE html><html><head><style>
     * {margin: 0;padding: 0;}
     body{
     // html whitelist: https://github.com/jch/html-pipeline/blob/master/lib/html/pipeline/sanitization_filter.rb#L45-L49
     // lint compiled style with http://csslint.net/
     font-family: -apple-system; font-size: \(MarkdownText.body.preferredFont.pointSize)px;
-    color: #\(Colors.MarkdownColorStyle.foreground.hexString);
+    color: \(Colors.MarkdownColorStyle.foreground.hexString);
     padding: \(MarkdownSizes.columnSpacing)px 0 0;
     margin: 0;
-    background-color: #ffffff;
+    background-color: \(Colors.MarkdownColorStyle.background.hexString);
     }
     * { font-family: -apple-system; font-size: \(MarkdownText.body.preferredFont.pointSize)px; }
     b, strong{font-weight: 600;}
     i, em{font-style: italic;}
     a{color: #\(Colors.MarkdownColorStyle.accentForeground.hexString); text-decoration: none;}
-    h1{font-size: \(MarkdownText.h1.preferredFont.pointSize);}
-    h2{font-size: \(MarkdownText.h2.preferredFont.pointSize);}
-    h3{font-size: \(MarkdownText.h3.preferredFont.pointSize);}
-    h4{font-size: \(MarkdownText.h4.preferredFont.pointSize);}
-    h5{font-size: \(MarkdownText.h5.preferredFont.pointSize);}
-    h6, h7, h8{font-size: \(MarkdownText.h6.preferredFont.pointSize)px; color: #\(Colors.MarkdownColorStyle.foreground.hexString);}
+    h1{font-size: \(MarkdownText.h1.preferredFont.pointSize)px;}
+    h2{font-size: \(MarkdownText.h2.preferredFont.pointSize)px;}
+    h3{font-size: \(MarkdownText.h3.preferredFont.pointSize)px;}
+    h4{font-size: \(MarkdownText.h4.preferredFont.pointSize)px;}
+    h5{font-size: \(MarkdownText.h5.preferredFont.pointSize)px;}
+    h6, h7, h8{font-size: \(MarkdownText.h6.preferredFont.pointSize)px; color: \(Colors.MarkdownColorStyle.foreground.hexString);}
     dl dt{margin-top: 16px; font-style: italic; font-weight: 600;}
     dl dd{padding: 0 16px;}
-    blockquote{font-style: italic; color: #\(Colors.MarkdownColorStyle.mutedForeground.hexString);}
-    pre, code{background-color: #\(Colors.MarkdownColorStyle.canvasSubtle.hexString); font-family: Courier;}
+    blockquote{font-style: italic; color: \(Colors.MarkdownColorStyle.mutedForeground.hexString);}
+    pre, code{background-color: \(Colors.MarkdownColorStyle.canvasSubtle.hexString); font-family: Courier;}
     pre{padding: \(MarkdownSizes.columnSpacing)px 0;}
     sub{font-size: \(MarkdownText.secondary.preferredFont.pointSize)px;}
     sub a{font-size: \(MarkdownText.secondary.preferredFont.pointSize)px;}
@@ -72,7 +72,7 @@ final class MarkdownHtmlCell: UICollectionViewCell, WKNavigationDelegate {
     </style>
     </head><body>
     """
-    private static let htmlTail = """
+    private let htmlTail = """
     <script>
         document.documentElement.style.webkitUserSelect='none';
         document.documentElement.style.webkitTouchCallout='none';
@@ -154,7 +154,7 @@ final class MarkdownHtmlCell: UICollectionViewCell, WKNavigationDelegate {
         body = model.html
 
         let header = "<header><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'></header>"
-        let html = MarkdownHtmlCell.htmlHead + header + body + MarkdownHtmlCell.htmlTail
+        let html = htmlHead + header + body + htmlTail
         webView.loadHTMLString(html, baseURL: nil)
     }
 

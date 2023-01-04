@@ -16,8 +16,7 @@ extension StyledTextBuilder {
 
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: Colors.MarkdownColorStyle.foreground,
-            .paragraphStyle: paragraphStyle,
-            .backgroundColor: Colors.MarkdownColorStyle.background
+            .paragraphStyle: paragraphStyle
         ]
 
         let style = MarkdownText.body

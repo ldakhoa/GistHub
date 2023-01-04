@@ -28,13 +28,17 @@ final class MarkdownCodeBlockModel: NSObject, BlockNode {
     static func makeModel(
         text: String,
         language: String?,
-        contentSizeCategory: UIContentSizeCategory
+        contentSizeCategory: UIContentSizeCategory,
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> MarkdownCodeBlockModel {
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let fixedLanguage = language?.isEmpty == true ? nil : language
         let attributedString: NSAttributedString
         if let language = fixedLanguage,
-           let highlighted = GitHubHighlighting.highlight(trimmedText, as: language) {
+           let highlighted = GitHubHighlighting.highlight(
+            trimmedText,
+            as: language,
+            userInterfaceStyle: userInterfaceStyle) {
             attributedString = highlighted
         } else {
             attributedString = NSAttributedString(
@@ -50,7 +54,7 @@ final class MarkdownCodeBlockModel: NSObject, BlockNode {
         inset.left += MarkdownCodeBlockCell.scrollViewInset.left
         inset.right += MarkdownCodeBlockCell.scrollViewInset.right
 
-        let backgroundColor = Colors.MarkdownColorStyle.canvasSubtle
+        let backgroundColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray0.light : Colors.Palette.Gray.gray8.dark
         let builder = StyledTextBuilder(attributedText: attributedString)
             .add(attributes: [.backgroundColor: backgroundColor])
 

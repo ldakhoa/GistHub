@@ -35,7 +35,8 @@ private extension TextElement {
         _ builder: StyledTextBuilder,
         options: CMarkOptions,
         position: TextElementPosition,
-        context: CMarkContext = CMarkContext()
+        context: CMarkContext = CMarkContext(),
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> StyledTextBuilder {
         builder.save()
         defer {
@@ -58,28 +59,35 @@ private extension TextElement {
         case .lineBreak:
             builder.add(text: "\n")
         case .code(let text):
-            builder.add(styledText: StyledText(text: text))
+            let backgroundColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray0.light : Colors.Palette.Gray.gray8.dark
+            let foregroundColor: UIColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray9.light : Colors.Palette.Gray.gray1.dark
+            builder.add(styledText: StyledText(
+                text: text,
+                style: MarkdownText.code.with(foreground: foregroundColor, background: backgroundColor)
+            ))
         case .emphasis(let children):
             builder.add(traits: .traitItalic)
-            children.build(builder, options: options, context: context)
+            children.build(builder, options: options, context: context, userInterfaceStyle: userInterfaceStyle)
         case .strong(let children):
             builder.add(traits: .traitBold)
-            children.build(builder, options: options, context: context)
+            children.build(builder, options: options, context: context, userInterfaceStyle: userInterfaceStyle)
         case .strikethrough(let children):
             builder.add(attributes: [
                 .strikethroughStyle: NSUnderlineStyle.single.rawValue,
                 .strikethroughColor: builder.tipAttributes?[.foregroundColor] ?? Colors.MarkdownColorStyle.foreground as AnyHashable
             ])
-            children.build(builder, options: options, context: context)
+            children.build(builder, options: options, context: context, userInterfaceStyle: userInterfaceStyle)
         case .link(let children, _, let url):
+            let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.Palette.Gray.gray9.dark
             var attributes: [NSAttributedString.Key: AnyHashable] = [
                 .foregroundColor: Colors.MarkdownColorStyle.accentForeground as AnyHashable,
+                .backgroundColor: backgroundColor,
                 .highlight: true
             ]
 
             attributes[MarkdownAttribute.url] = url ?? ""
             builder.add(attributes: attributes)
-            children.build(builder, options: options, context: CMarkContext(inLink: true))
+            children.build(builder, options: options, context: CMarkContext(inLink: true), userInterfaceStyle: userInterfaceStyle)
 
 //        case .mention(let login):
         case .checkbox(let checked, let originalRange):
@@ -99,7 +107,8 @@ private extension Array where Iterator.Element == TextElement {
     func build(
         _ builder: StyledTextBuilder,
         options: CMarkOptions,
-        context: CMarkContext = CMarkContext()
+        context: CMarkContext = CMarkContext(),
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> StyledTextBuilder {
         for (i, el) in enumerated() {
             let position: TextElementPosition
@@ -112,7 +121,8 @@ private extension Array where Iterator.Element == TextElement {
                 builder,
                 options: options,
                 position: position,
-                context: context
+                context: context,
+                userInterfaceStyle: userInterfaceStyle
             )
         }
         return builder
@@ -121,12 +131,12 @@ private extension Array where Iterator.Element == TextElement {
 
 private extension ListElement {
     @discardableResult
-    func build(_ builder: StyledTextBuilder, options: CMarkOptions) -> StyledTextBuilder {
+    func build(_ builder: StyledTextBuilder, options: CMarkOptions, userInterfaceStyle: UIUserInterfaceStyle) -> StyledTextBuilder {
         switch self {
         case .text(let text):
-            text.build(builder, options: options)
+            text.build(builder, options: options, userInterfaceStyle: userInterfaceStyle)
         case .list(let childer, let type, let level):
-            childer.build(builder, options: options, type: type, level: level)
+            childer.build(builder, options: options, type: type, level: level, userInterfaceStyle: userInterfaceStyle)
         }
         return builder
     }
@@ -139,7 +149,8 @@ private extension Array where Iterator.Element == [ListElement] {
         _ builder: StyledTextBuilder,
         options: CMarkOptions,
         type: ListType,
-        level: Int = 0
+        level: Int = 0,
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> StyledTextBuilder {
         builder.save()
 
@@ -167,7 +178,7 @@ private extension Array where Iterator.Element == [ListElement] {
             builder.add(text: "\(spaces)\(tick) ")
 
             c.forEach({ cc in
-                cc.build(builder, options: options)
+                cc.build(builder, options: options, userInterfaceStyle: userInterfaceStyle)
             }, joined: { _ in
                 builder.add(text: newline)
             })
@@ -182,38 +193,44 @@ private extension Array where Iterator.Element == [ListElement] {
 }
 
 private extension Array where Iterator.Element == TableRow {
-    func build(options: CMarkOptions) -> [(cells: [StyledTextRenderer], fill: Bool)] {
+    func build(
+        options: CMarkOptions,
+        userInterfaceStyle: UIUserInterfaceStyle
+    ) -> [(cells: [StyledTextRenderer], fill: Bool)] {
         var rowIndex = 0
         return map {
             let fill = rowIndex % 2 == 1
             if case .row = $0 {
                 rowIndex += 1
             }
-            return ($0.build(options: options), fill)
+            return ($0.build(options: options, userInterfaceStyle: userInterfaceStyle), fill)
         }
     }
 }
 
 private extension TableRow {
-    func build(options: CMarkOptions) -> [StyledTextRenderer] {
-        let backgroundColor: UIColor = Colors.MarkdownColorStyle.background
+    func build(options: CMarkOptions, userInterfaceStyle: UIUserInterfaceStyle) -> [StyledTextRenderer] {
         let builders: [StyledTextBuilder]
+
+        let foregroundColor: UIColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray9.light : Colors.Palette.Gray.gray1.dark
 
         switch self {
         case .header(let cells):
             builders = cells.map {
                 $0.build(
                     StyledTextBuilder.markdownBase()
-                        .add(traits: .traitBold),
-                    options: options
+                        .add(traits: .traitBold, attributes: [.foregroundColor: foregroundColor]),
+                    options: options,
+                    userInterfaceStyle: userInterfaceStyle
                 )
             }
         case .row(let cells):
             builders = cells.map {
                 $0.build(
                     StyledTextBuilder.markdownBase()
-                        .add(attributes: [.backgroundColor: backgroundColor]),
-                    options: options
+                        .add(attributes: [.foregroundColor: foregroundColor]),
+                    options: options,
+                    userInterfaceStyle: userInterfaceStyle
                 )
             }
         }
@@ -223,8 +240,7 @@ private extension TableRow {
             StyledTextRenderer(
                 string: $0.build(),
                 contentSizeCategory: options.contentSizeCategory,
-                inset: MarkdownTableCollectionCell.inset,
-                backgroundColor: backgroundColor
+                inset: MarkdownTableCollectionCell.inset
             )
         }
     }
@@ -241,9 +257,10 @@ private extension Array {
     }
 }
 
-private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNode] {
+private func makeModels(elements: [Element], options: CMarkOptions, userInterfaceStyle: UIUserInterfaceStyle) -> [BlockNode] {
     var models = [BlockNode]()
     var runningBuilder: StyledTextBuilder?
+    let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.Palette.Gray.gray9.dark
 
     let makeBuilder: () -> StyledTextBuilder = {
         let builder: StyledTextBuilder
@@ -277,7 +294,9 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
 
         switch el {
         case .text(let items):
-            items.build(makeBuilder(), options: options)
+            let foregroundColor: UIColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray9.light : Colors.Palette.Gray.gray1.dark
+            let builder = makeBuilder().add(attributes: [.foregroundColor: foregroundColor, .backgroundColor: backgroundColor])
+            items.build(builder, options: options, userInterfaceStyle: userInterfaceStyle)
         case .heading(let text, let level):
             let style: TextStyle
             switch level {
@@ -294,22 +313,26 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
                 .save()
                 .add(style: style)
 
-            builder.add(attributes: [.baselineOffset: 12])
-            text.build(builder, options: options)
+            builder.add(attributes: [.baselineOffset: 12, .foregroundColor: Colors.MarkdownColorStyle.foreground])
+            text.build(builder, options: options, userInterfaceStyle: userInterfaceStyle)
 
             builder.restore()
         case .quote(let items, let level):
             endRunningText(isLast)
 
             let builder = StyledTextBuilder.markdownBase()
-                .add(attributes: [.foregroundColor: Colors.MarkdownColorStyle.mutedForeground])
+                .add(attributes: [
+                    .foregroundColor: Colors.MarkdownColorStyle.mutedForeground,
+                    .backgroundColor: backgroundColor
+                ])
 
             let string = StyledTextRenderer(
-                string: items.build(builder, options: options).build(),
+                string: items.build(builder, options: options, userInterfaceStyle: userInterfaceStyle).build(),
                 contentSizeCategory: options.contentSizeCategory,
                 inset: MarkdownQuoteCell.inset(quoteLevel: level),
-                backgroundColor: Colors.MarkdownColorStyle.background
+                backgroundColor: backgroundColor
             ).warm(width: options.width)
+
             models.append(MarkdownQuoteModel(level: level, string: string))
 //        case .image(let title, let url):
 //
@@ -326,7 +349,7 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
             var buckets = [TableBucket]()
             var rowHeights = [CGFloat]()
 
-            let results = rows.build(options: options)
+            let results = rows.build(options: options, userInterfaceStyle: userInterfaceStyle)
             results.forEach {
                 fillBuckets(rows: $0.cells, buckets: &buckets, rowHeights: &rowHeights, fill: $0.fill)
             }
@@ -339,10 +362,11 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
             models.append(MarkdownCodeBlockModel.makeModel(
                 text: text,
                 language: language,
-                contentSizeCategory: options.contentSizeCategory)
+                contentSizeCategory: options.contentSizeCategory,
+                userInterfaceStyle: userInterfaceStyle)
             )
         case .list(let items, let type):
-            items.build(makeBuilder(), options: options, type: type)
+            items.build(makeBuilder(), options: options, type: type, userInterfaceStyle: userInterfaceStyle)
         default: break
 
         }
@@ -358,7 +382,8 @@ struct MarkdownModels {
         _ markdown: String,
         width: CGFloat,
         viewerCanUpdate: Bool,
-        contentSizeCategory: UIContentSizeCategory
+        contentSizeCategory: UIContentSizeCategory,
+        userInterfaceStyle: UIUserInterfaceStyle
     ) -> [BlockNode] {
         let cleaned = markdown.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let node = Node(markdown: cleaned) else { return [] }
@@ -368,7 +393,7 @@ struct MarkdownModels {
             viewerCanUpdate: viewerCanUpdate,
             width: width)
 
-        let models = makeModels(elements: node.flatElements, options: options)
+        let models = makeModels(elements: node.flatElements, options: options, userInterfaceStyle: userInterfaceStyle)
 
         return models
     }

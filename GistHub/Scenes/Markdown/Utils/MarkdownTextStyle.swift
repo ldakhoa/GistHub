@@ -9,7 +9,7 @@ import UIKit
 import StyledTextKit
 
 enum MarkdownText {
-    static let h1 = TextStyle(font: .system(.bold), size: 24, scalingTextStyle: .title1)
+    static let h1 = TextStyle(font: .system(.bold), size: 28, scalingTextStyle: .title1)
     static let h2 = TextStyle(font: .system(.bold), size: 22, scalingTextStyle: .title2)
     static let h3 = TextStyle(font: .system(.bold), size: 20, scalingTextStyle: .title3)
     static let h4 = TextStyle(font: .system(.bold), size: 18, scalingTextStyle: .headline)

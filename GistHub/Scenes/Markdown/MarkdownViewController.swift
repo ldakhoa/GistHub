@@ -34,19 +34,20 @@ public final class MarkdownViewController: UIViewController {
 
     // MARK: - Dependencies
 
-    private let model: BlockModel
+    private var model: BlockModel!
     private let markdown: String
 
     public init(markdown: String) {
         self.markdown = markdown
+        super.init(nibName: nil, bundle: nil)
         let models = MarkdownModels().build(
             markdown,
             width: 0,
             viewerCanUpdate: true,
-            contentSizeCategory: UIApplication.shared.preferredContentSizeCategory
+            contentSizeCategory: UIApplication.shared.preferredContentSizeCategory,
+            userInterfaceStyle: traitCollection.userInterfaceStyle
         )
         self.model = BlockModel(nodes: models)
-        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -71,15 +72,27 @@ public final class MarkdownViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.MarkdownColorStyle.background
+        collectionView.backgroundColor = Colors.MarkdownColorStyle.background
 
         self.collectionView.reloadData()
     }
 
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
+        if traitCollection != previousTraitCollection {
+            let models = MarkdownModels().build(
+                markdown,
+                width: 0,
+                viewerCanUpdate: true,
+                contentSizeCategory: UIApplication.shared.preferredContentSizeCategory,
+                userInterfaceStyle: traitCollection.userInterfaceStyle
+            )
+            self.model = BlockModel(nodes: models)
+            self.collectionView.reloadData()
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource, UICollectionViewDelegateFlowLayout
@@ -194,7 +207,7 @@ extension MarkdownViewController: MarkdownHtmlCellDelegate,
         MarkdownViewController.webViewWidthCache.set(data: size, key: html, width: cellWidth)
 
         UIView.performWithoutAnimation {
-            self.collectionView.invalidateIntrinsicContentSize()
+            self.collectionView.collectionViewLayout.invalidateLayout()
         }
     }
 

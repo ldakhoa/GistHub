@@ -62,7 +62,7 @@ private extension UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
 
-        let size = 1.0 / UIScreen.main.scale
+        let size = 1.0
 
         switch position {
         case .top, .bottom:

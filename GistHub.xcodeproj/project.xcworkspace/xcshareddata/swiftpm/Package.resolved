@@ -21,10 +21,10 @@
     {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/raspu/Highlightr",
+      "location" : "https://github.com/ldakhoa/Highlightr",
       "state" : {
-        "revision" : "93199b9e434f04bda956a613af8f571933f9f037",
-        "version" : "2.1.2"
+        "revision" : "ef5856b43b8a50e4292bb39b905c7cbf615c856f",
+        "version" : "1.0.2"
       }
     },
     {

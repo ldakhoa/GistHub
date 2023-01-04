@@ -37,7 +37,6 @@
 		6A5D8CE82965523800BB4310 /* MarkdownCodeBlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CE72965523800BB4310 /* MarkdownCodeBlockCell.swift */; };
 		6A5D8CED2965539500BB4310 /* StyledTextBuilder+Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CEC2965539500BB4310 /* StyledTextBuilder+Checkbox.swift */; };
 		6A5D8CEF2965541800BB4310 /* StyledTextBuilder+NewBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CEE2965541800BB4310 /* StyledTextBuilder+NewBase.swift */; };
-		6A5D8CF22965552F00BB4310 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 6A5D8CF12965552F00BB4310 /* Highlightr */; };
 		6A5D8CF42965553C00BB4310 /* GitHubHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF32965553C00BB4310 /* GitHubHighlighting.swift */; };
 		6A5D8CF6296557D800BB4310 /* MarkdownHtmlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF5296557D800BB4310 /* MarkdownHtmlCell.swift */; };
 		6A5D8CF8296557DE00BB4310 /* MarkdownHtmlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF7296557DE00BB4310 /* MarkdownHtmlModel.swift */; };
@@ -46,6 +45,7 @@
 		6A5D8CFF2965974500BB4310 /* MarkdownTableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CFE2965974500BB4310 /* MarkdownTableModel.swift */; };
 		6A5D8D01296597BF00BB4310 /* MarkdownTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8D00296597BF00BB4310 /* MarkdownTableCell.swift */; };
 		6A5D8D032965A07F00BB4310 /* MarkdownTableCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8D022965A07F00BB4310 /* MarkdownTableCollectionCell.swift */; };
+		6A5D8D062965F4FE00BB4310 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 6A5D8D052965F4FE00BB4310 /* Highlightr */; };
 		6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF66294786FA0018AC26 /* CommentView.swift */; };
 		6A6EEF69294789DE0018AC26 /* SizePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */; };
 		6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 6A6EEF6C2947AE330018AC26 /* AlertToast */; };
@@ -271,7 +271,7 @@
 				6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */,
 				6A7CF73B294652C6007B7D68 /* TreeSitterOCamlRunestone in Frameworks */,
 				6A7CF6EB294652BB007B7D68 /* TreeSitterElmRunestone in Frameworks */,
-				6A5D8CF22965552F00BB4310 /* Highlightr in Frameworks */,
+				6A5D8D062965F4FE00BB4310 /* Highlightr in Frameworks */,
 				6A7CF6D3294652BA007B7D68 /* TreeSitterCRunestone in Frameworks */,
 				6A7CF72F294652C4007B7D68 /* TreeSitterLuaRunestone in Frameworks */,
 				6A7CF729294652C3007B7D68 /* TreeSitterLaTeXRunestone in Frameworks */,
@@ -743,7 +743,7 @@
 				6A20DF692962DF840040EBD0 /* KeyboardToolbar */,
 				6A5D8CB72965428200BB4310 /* StyledTextKit */,
 				6A5D8CDF296551AD00BB4310 /* HTMLString */,
-				6A5D8CF12965552F00BB4310 /* Highlightr */,
+				6A5D8D052965F4FE00BB4310 /* Highlightr */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -785,7 +785,7 @@
 				6A20DF682962DF840040EBD0 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
 				6A5D8CB62965428200BB4310 /* XCRemoteSwiftPackageReference "StyledTextKit" */,
 				6A5D8CDE296551AD00BB4310 /* XCRemoteSwiftPackageReference "HTMLString" */,
-				6A5D8CF02965552F00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */,
+				6A5D8D042965F4FE00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -1181,12 +1181,12 @@
 				minimumVersion = 6.0.0;
 			};
 		};
-		6A5D8CF02965552F00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */ = {
+		6A5D8D042965F4FE00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/raspu/Highlightr";
+			repositoryURL = "https://github.com/ldakhoa/Highlightr";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 		6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
@@ -1271,9 +1271,9 @@
 			package = 6A5D8CDE296551AD00BB4310 /* XCRemoteSwiftPackageReference "HTMLString" */;
 			productName = HTMLString;
 		};
-		6A5D8CF12965552F00BB4310 /* Highlightr */ = {
+		6A5D8D052965F4FE00BB4310 /* Highlightr */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6A5D8CF02965552F00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */;
+			package = 6A5D8D042965F4FE00BB4310 /* XCRemoteSwiftPackageReference "Highlightr" */;
 			productName = Highlightr;
 		};
 		6A6EEF6C2947AE330018AC26 /* AlertToast */ = {
