@@ -166,7 +166,7 @@ private extension Array where Iterator.Element == [ListElement] {
 
             builder.add(text: "\(spaces)\(tick) ")
 
-            c.forEach ({ cc in
+            c.forEach({ cc in
                 cc.build(builder, options: options)
             }, joined: { _ in
                 builder.add(text: newline)
@@ -178,6 +178,55 @@ private extension Array where Iterator.Element == [ListElement] {
             }
         }
         return builder
+    }
+}
+
+private extension Array where Iterator.Element == TableRow {
+    func build(options: CMarkOptions) -> [(cells: [StyledTextRenderer], fill: Bool)] {
+        var rowIndex = 0
+        return map {
+            let fill = rowIndex % 2 == 1
+            if case .row = $0 {
+                rowIndex += 1
+            }
+            return ($0.build(options: options), fill)
+        }
+    }
+}
+
+private extension TableRow {
+    func build(options: CMarkOptions) -> [StyledTextRenderer] {
+        let backgroundColor: UIColor = Colors.MarkdownColorStyle.background
+        let builders: [StyledTextBuilder]
+
+        switch self {
+        case .header(let cells):
+            builders = cells.map {
+                $0.build(
+                    StyledTextBuilder.markdownBase()
+                        .add(traits: .traitBold),
+                    options: options
+                )
+            }
+        case .row(let cells):
+            builders = cells.map {
+                $0.build(
+                    StyledTextBuilder.markdownBase()
+                        .add(attributes: [.backgroundColor: backgroundColor]),
+                    options: options
+                )
+            }
+        }
+
+        // don't warm, sized when building TableModel
+        return builders.map {
+            StyledTextRenderer(
+                string: $0.build(),
+                contentSizeCategory: options.contentSizeCategory,
+                inset: MarkdownTableCollectionCell.inset,
+                backgroundColor: backgroundColor
+            )
+        }
     }
 }
 
@@ -271,8 +320,18 @@ private func makeModels(elements: [Element], options: CMarkOptions) -> [BlockNod
 
             guard !trimmed.isEmpty else { continue }
             models.append(MarkdownHtmlModel(html: trimmed))
-//        case .table(let rows):
-//
+        case .table(let rows):
+            endRunningText(isLast)
+
+            var buckets = [TableBucket]()
+            var rowHeights = [CGFloat]()
+
+            let results = rows.build(options: options)
+            results.forEach {
+                fillBuckets(rows: $0.cells, buckets: &buckets, rowHeights: &rowHeights, fill: $0.fill)
+            }
+
+            models.append(MarkdownTableModel(buckets: buckets, rowHeights: rowHeights))
 //        case .hr:
 //
         case .codeBlock(let text, let language):
@@ -314,4 +373,3 @@ struct MarkdownModels {
         return models
     }
 }
-

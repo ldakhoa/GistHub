@@ -65,4 +65,3 @@ final class MarkdownCodeBlockCell: UICollectionViewCell {
         textView.configure(with: model.code, width: 0)
     }
 }
-

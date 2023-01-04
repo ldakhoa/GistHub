@@ -42,6 +42,10 @@
 		6A5D8CF6296557D800BB4310 /* MarkdownHtmlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF5296557D800BB4310 /* MarkdownHtmlCell.swift */; };
 		6A5D8CF8296557DE00BB4310 /* MarkdownHtmlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF7296557DE00BB4310 /* MarkdownHtmlModel.swift */; };
 		6A5D8CFA296558DE00BB4310 /* WidthCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CF9296558DE00BB4310 /* WidthCache.swift */; };
+		6A5D8CFD2965973200BB4310 /* TableBucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CFC2965973200BB4310 /* TableBucket.swift */; };
+		6A5D8CFF2965974500BB4310 /* MarkdownTableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8CFE2965974500BB4310 /* MarkdownTableModel.swift */; };
+		6A5D8D01296597BF00BB4310 /* MarkdownTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8D00296597BF00BB4310 /* MarkdownTableCell.swift */; };
+		6A5D8D032965A07F00BB4310 /* MarkdownTableCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D8D022965A07F00BB4310 /* MarkdownTableCollectionCell.swift */; };
 		6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF66294786FA0018AC26 /* CommentView.swift */; };
 		6A6EEF69294789DE0018AC26 /* SizePreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */; };
 		6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 6A6EEF6C2947AE330018AC26 /* AlertToast */; };
@@ -185,6 +189,10 @@
 		6A5D8CF5296557D800BB4310 /* MarkdownHtmlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHtmlCell.swift; sourceTree = "<group>"; };
 		6A5D8CF7296557DE00BB4310 /* MarkdownHtmlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHtmlModel.swift; sourceTree = "<group>"; };
 		6A5D8CF9296558DE00BB4310 /* WidthCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidthCache.swift; sourceTree = "<group>"; };
+		6A5D8CFC2965973200BB4310 /* TableBucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableBucket.swift; sourceTree = "<group>"; };
+		6A5D8CFE2965974500BB4310 /* MarkdownTableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTableModel.swift; sourceTree = "<group>"; };
+		6A5D8D00296597BF00BB4310 /* MarkdownTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTableCell.swift; sourceTree = "<group>"; };
+		6A5D8D022965A07F00BB4310 /* MarkdownTableCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTableCollectionCell.swift; sourceTree = "<group>"; };
 		6A6EEF66294786FA0018AC26 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		6A6EEF68294789DE0018AC26 /* SizePreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizePreferenceKey.swift; sourceTree = "<group>"; };
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -391,6 +399,17 @@
 				6A5D8CDA2965516D00BB4310 /* MarkdownCheckboxModel.swift */,
 			);
 			path = Checkbox;
+			sourceTree = "<group>";
+		};
+		6A5D8CFB2965972A00BB4310 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				6A5D8CFC2965973200BB4310 /* TableBucket.swift */,
+				6A5D8CFE2965974500BB4310 /* MarkdownTableModel.swift */,
+				6A5D8D00296597BF00BB4310 /* MarkdownTableCell.swift */,
+				6A5D8D022965A07F00BB4310 /* MarkdownTableCollectionCell.swift */,
+			);
+			path = Table;
 			sourceTree = "<group>";
 		};
 		6A6EEF6A2947A4220018AC26 /* Comment */ = {
@@ -602,6 +621,7 @@
 		6AA6DEA42961B1AA00C25455 /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
+				6A5D8CFB2965972A00BB4310 /* Table */,
 				6A5D8CBE2965491800BB4310 /* BlockNode.swift */,
 				6A5D8CEB2965538500BB4310 /* Checkbox */,
 				6A5D8CBA2965431500BB4310 /* CMarkParsing.swift */,
@@ -873,11 +893,13 @@
 				6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */,
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
+				6A5D8CFD2965973200BB4310 /* TableBucket.swift in Sources */,
 				6A5D8CEF2965541800BB4310 /* StyledTextBuilder+NewBase.swift in Sources */,
 				6AC4F2C9294CDB6300F0A2BA /* GitHubUserSession.swift in Sources */,
 				6A5D8CBF2965491800BB4310 /* BlockNode.swift in Sources */,
 				6AEE0DBB2950D9C100EF376E /* HighlightName.swift in Sources */,
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
+				6A5D8CFF2965974500BB4310 /* MarkdownTableModel.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6A5D8CD32965510500BB4310 /* MarkdownAttribute.swift in Sources */,
 				6A5D8CDB2965516D00BB4310 /* MarkdownCheckboxModel.swift in Sources */,
@@ -899,8 +921,10 @@
 				6A5D8CC929654FF600BB4310 /* MarkdownQuoteCell.swift in Sources */,
 				6A20DF6C2962E3050040EBD0 /* InsertTextKeyboardTool.swift in Sources */,
 				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
+				6A5D8D032965A07F00BB4310 /* MarkdownTableCollectionCell.swift in Sources */,
 				6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */,
 				6AEE0DBD2950DC5000EF376E /* ThemeSetting.swift in Sources */,
+				6A5D8D01296597BF00BB4310 /* MarkdownTableCell.swift in Sources */,
 				6A5D8CBD2965471E00BB4310 /* MarkdownTextStyle.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A2AADE22954EF6400F50194 /* KeyboardToolView.swift in Sources */,
