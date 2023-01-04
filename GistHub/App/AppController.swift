@@ -74,6 +74,7 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
             do {
                 let user = try await client.user()
                 await mainTabBarController.reset(viewControllers: [
+                    testRootViewController(),
                     homeRootViewController(user: user),
                     starredRootViewController(user: user),
                     profileRootViewController(user: user, sessionManager: sessionManager, delegate: self)
