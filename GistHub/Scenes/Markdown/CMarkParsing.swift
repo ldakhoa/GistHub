@@ -313,7 +313,11 @@ private func makeModels(elements: [Element], options: CMarkOptions, userInterfac
                 .save()
                 .add(style: style)
 
-            builder.add(attributes: [.baselineOffset: 12, .foregroundColor: Colors.MarkdownColorStyle.foreground])
+            builder.add(attributes: [
+                .baselineOffset: 12,
+                .foregroundColor: Colors.MarkdownColorStyle.foreground,
+                .backgroundColor: backgroundColor
+            ])
             text.build(builder, options: options, userInterfaceStyle: userInterfaceStyle)
 
             builder.restore()
@@ -334,8 +338,17 @@ private func makeModels(elements: [Element], options: CMarkOptions, userInterfac
             ).warm(width: options.width)
 
             models.append(MarkdownQuoteModel(level: level, string: string))
-//        case .image(let title, let url):
-//
+        case .image(let title, let href):
+            endRunningText(isLast)
+
+            guard let url = URL(string: href) else { continue }
+
+            if url.pathExtension.lowercased() == "svg" {
+
+            } else {
+                models.append(MarkdownImageModel(url: url, title: title))
+            }
+
         case .html(let text):
             endRunningText(isLast)
 

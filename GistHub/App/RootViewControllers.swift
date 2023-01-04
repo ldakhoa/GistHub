@@ -43,6 +43,14 @@ func testRootViewController() -> UIViewController {
 
      <img width="928" alt="image" src="https://user-images.githubusercontent.com/39718754/208992692-d8d642f2-545a-4f71-a831-246c8fdfef02.png">
 
+    ## Image 2
+
+    ![Image](https://user-images.githubusercontent.com/39718754/208992692-d8d642f2-545a-4f71-a831-246c8fdfef02.png)
+
+    ## GIF Image
+
+    ![Image](https://raw.githubusercontent.com/onevcat/Kingfisher-TestImages/master/DemoAppImage/GIF/GifHeavy.gif)
+
      `code inline`
 
      ```javascript

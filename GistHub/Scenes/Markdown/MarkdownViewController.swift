@@ -21,6 +21,7 @@ public final class MarkdownViewController: UIViewController {
         view.register(MarkdownCodeBlockCell.self, forCellWithReuseIdentifier: MarkdownCodeBlockCell.identifier)
         view.register(MarkdownHtmlCell.self, forCellWithReuseIdentifier: MarkdownHtmlCell.identifier)
         view.register(MarkdownTableCell.self, forCellWithReuseIdentifier: MarkdownTableCell.identifier)
+        view.register(MarkdownImageCell.self, forCellWithReuseIdentifier: MarkdownImageCell.identifier)
         view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
         view.contentInset = .init(top: 16, left: 0, bottom: 16, right: 0)
         view.dataSource = self
@@ -31,6 +32,7 @@ public final class MarkdownViewController: UIViewController {
     private let inset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
     private static let webViewWidthCache = WidthCache<String, CGSize>()
+    private static let imageWidthCache = WidthCache<URL, CGSize>()
 
     // MARK: - Dependencies
 
@@ -147,6 +149,13 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
         ) as? MarkdownTableCell, let context = model as? MarkdownTableModel {
             cell.configure(with: context)
             return cell
+        } else if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MarkdownImageCell.identifier,
+            for: indexPath
+        ) as? MarkdownImageCell, let context = model as? MarkdownImageModel {
+            cell.configure(with: context)
+            cell.heightDelegate = self
+            return cell
         }
         return collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
     }
@@ -190,6 +199,17 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
                 width: width,
                 height: context.size.height
             )
+        } else if let context = model as? MarkdownImageModel {
+            let width = collectionView.bounds.width - inset.left - inset.right
+            guard let size = MarkdownViewController.imageWidthCache.data(key: context.url, width: 0) else {
+                return CGSize(width: width, height: 200)
+            }
+            let height = BoundedImageSize(originalSize: size, containerWidth: width).height
+
+            return CGSize(
+                width: width,
+                height: height
+            )
         }
 
         return CGSize(width: collectionView.bounds.width, height: 200)
@@ -217,6 +237,19 @@ extension MarkdownViewController: MarkdownHtmlCellDelegate,
 
     func webViewWantsNavigate(url: URL) {
 
+    }
+}
+
+// MARK: - MarkdownImageHeightCellDelegate
+
+extension MarkdownViewController: MarkdownImageHeightCellDelegate {
+    func imageDidFinishLoad(url: URL, size: CGSize) {
+        guard size != MarkdownViewController.imageWidthCache.data(key: url, width: 0) else { return }
+        MarkdownViewController.imageWidthCache.set(data: size, key: url, width: 0)
+
+        UIView.performWithoutAnimation {
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
 }
 

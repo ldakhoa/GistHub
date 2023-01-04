@@ -10,4 +10,5 @@ import Foundation
 enum MarkdownSizes {
     static let rowSpacing: CGFloat = 8
     static let columnSpacing: CGFloat = 8
+    static let maxImageHeight: CGFloat = 300
 }
