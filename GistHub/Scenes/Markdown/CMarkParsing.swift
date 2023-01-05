@@ -382,8 +382,6 @@ private func makeModels(elements: [Element], options: CMarkOptions, userInterfac
             )
         case .list(let items, let type):
             items.build(makeBuilder(), options: options, type: type, userInterfaceStyle: userInterfaceStyle)
-        default: break
-
         }
     }
 

@@ -51,7 +51,7 @@ final class MarkdownHtmlCell: UICollectionViewCell, WKNavigationDelegate {
     * { font-family: -apple-system; font-size: \(MarkdownText.body.preferredFont.pointSize)px; }
     b, strong{font-weight: 600;}
     i, em{font-style: italic;}
-    a{color: #\(Colors.MarkdownColorStyle.accentForeground.hexString); text-decoration: none;}
+    a{color: \(Colors.MarkdownColorStyle.accentForeground.hexString); text-decoration: none;}
     h1{font-size: \(MarkdownText.h1.preferredFont.pointSize)px;}
     h2{font-size: \(MarkdownText.h2.preferredFont.pointSize)px;}
     h3{font-size: \(MarkdownText.h3.preferredFont.pointSize)px;}
@@ -69,6 +69,7 @@ final class MarkdownHtmlCell: UICollectionViewCell, WKNavigationDelegate {
     th, td{border: 1px solid #\(Colors.border.hexString); padding: 6px 13px;}
     th{font-weight: 600; text-align: center;}
     img{max-width:100%; box-sizing: border-box; max-height: 300px; object-fit: contain;}
+    hr{border: 1.5px solid \(Colors.border.hexString);}
     </style>
     </head><body>
     """

@@ -10,12 +10,12 @@ import UIKit
 final class MarkdownHrCell: UICollectionViewCell {
     static let identifier = "MarkdownHrCell"
 
-    static let inset = UIEdgeInsets(
-        top: 0,
-        left: MarkdownSizes.columnSpacing,
-        bottom: MarkdownSizes.rowSpacing,
-        right: MarkdownSizes.columnSpacing
-    )
+//    static let inset = UIEdgeInsets(
+//        top: 0,
+//        left: 0,
+//        bottom: MarkdownSizes.rowSpacing,
+//        right: MarkdownSizes.columnSpacing
+//    )
 
     private let hr = UIView()
 
@@ -26,10 +26,10 @@ final class MarkdownHrCell: UICollectionViewCell {
         hr.backgroundColor = Colors.border
         contentView.addSubview(hr)
         NSLayoutConstraint.activate([
-            hr.topAnchor.constraint(equalTo: contentView.topAnchor, constant: MarkdownHrCell.inset.top),
-            hr.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: MarkdownHrCell.inset.left),
-            hr.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: MarkdownHrCell.inset.right),
-            hr.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: MarkdownHrCell.inset.bottom)
+            hr.topAnchor.constraint(equalTo: contentView.topAnchor),
+            hr.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            hr.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            hr.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 

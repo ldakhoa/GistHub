@@ -162,6 +162,7 @@
 		6AEEE4542966CD5200767BD6 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 6AEEE4532966CD5200767BD6 /* emoji.json */; };
 		6AEEE4562966CF4F00767BD6 /* GitHubEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4552966CF4F00767BD6 /* GitHubEmoji.swift */; };
 		6AEEE4582966CF6F00767BD6 /* String+GitHubEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4572966CF6F00767BD6 /* String+GitHubEmoji.swift */; };
+		6AEEE45A2966D40400767BD6 /* MarkdownUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4592966D40400767BD6 /* MarkdownUI.swift */; };
 		6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF29E5D294F72D8007546FE /* SettingAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -277,6 +278,7 @@
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 		6AEEE4552966CF4F00767BD6 /* GitHubEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubEmoji.swift; sourceTree = "<group>"; };
 		6AEEE4572966CF6F00767BD6 /* String+GitHubEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+GitHubEmoji.swift"; sourceTree = "<group>"; };
+		6AEEE4592966D40400767BD6 /* MarkdownUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownUI.swift; sourceTree = "<group>"; };
 		6AF29E5D294F72D8007546FE /* SettingAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -657,6 +659,7 @@
 				6A5D8CD82965515400BB4310 /* MarkdownAttributeHandling.swift */,
 				6A5D8CCC2965501D00BB4310 /* MarkdownStyledTextView.swift */,
 				6A5D8CCE2965504000BB4310 /* MarkdownViewController.swift */,
+				6AEEE4592966D40400767BD6 /* MarkdownUI.swift */,
 				6A5D8CC42965494900BB4310 /* Quote */,
 				6A5D8CC12965493300BB4310 /* Text */,
 				6A5D8CC729654F7200BB4310 /* Utils */,
@@ -942,6 +945,7 @@
 				6AEE0DBB2950D9C100EF376E /* HighlightName.swift in Sources */,
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
 				6A5D8CFF2965974500BB4310 /* MarkdownTableModel.swift in Sources */,
+				6AEEE45A2966D40400767BD6 /* MarkdownUI.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,
 				6A5D8CD32965510500BB4310 /* MarkdownAttribute.swift in Sources */,
 				6A5D8CDB2965516D00BB4310 /* MarkdownCheckboxModel.swift in Sources */,

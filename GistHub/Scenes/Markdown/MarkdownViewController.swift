@@ -237,7 +237,7 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
             )
         } else if model is MarkdownHrModel {
             let width = collectionView.bounds.width - inset.left - inset.right
-            return CGSize(width: width, height: 30.0 + MarkdownHrCell.inset.top + MarkdownHrCell.inset.bottom)
+            return CGSize(width: width, height: 3.0)
         }
 
         return CGSize(width: collectionView.bounds.width, height: 200)
@@ -303,55 +303,5 @@ extension MarkdownViewController {
     public enum Mode {
         case comment
         case file
-    }
-}
-
-import SwiftUI
-
-public struct MarkdownUI: UIViewControllerRepresentable {
-
-    let markdown: String
-    let markdownHeight: Binding<CGFloat>?
-    let mode: MarkdownViewController.Mode
-
-    init(
-        markdown: String,
-        markdownHeight: Binding<CGFloat>? = nil,
-        mode: MarkdownViewController.Mode = .file
-    ) {
-        self.markdown = markdown
-        self.markdownHeight = markdownHeight
-        self.mode = mode
-    }
-
-    public typealias UIViewControllerType = MarkdownViewController
-
-    public func makeUIViewController(context: Context) -> MarkdownViewController {
-        let viewController = MarkdownViewController(markdown: markdown, mode: mode)
-        viewController.delegate = context.coordinator
-
-        return viewController
-    }
-
-    public func updateUIViewController(
-        _ uiViewController: MarkdownViewController,
-        context: Context
-    ) {
-    }
-
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(markdownHeight: markdownHeight)
-    }
-
-    public class Coordinator: MarkdownViewControllerDelegate {
-        let markdownHeight: Binding<CGFloat>?
-
-        init(markdownHeight: Binding<CGFloat>?) {
-            self.markdownHeight = markdownHeight
-        }
-
-        func collectionViewDidUpdateHeight(height: CGFloat) {
-            markdownHeight?.wrappedValue = height
-        }
     }
 }
