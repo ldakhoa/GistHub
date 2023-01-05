@@ -41,10 +41,11 @@ final class MarkdownCodeBlockModel: NSObject, BlockNode {
             userInterfaceStyle: userInterfaceStyle) {
             attributedString = highlighted
         } else {
+            let foregroundColor: UIColor = userInterfaceStyle == .light ? Colors.Palette.Gray.gray9.light : Colors.Palette.Gray.gray1.dark
             attributedString = NSAttributedString(
                 string: trimmedText,
                 attributes: [
-                    .foregroundColor: Colors.MarkdownColorStyle.foreground.color,
+                    .foregroundColor: foregroundColor,
                     .font: MarkdownText.code.font(contentSizeCategory: contentSizeCategory)
                 ]
             )
