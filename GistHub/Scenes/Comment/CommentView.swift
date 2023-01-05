@@ -20,6 +20,7 @@ struct CommentView: View {
     @State private var showPlainTextEditorView = false
     @State private var showQuoteCommentTextEditor = false
     @ObserveInjection private var inject
+    @State private var commentMarkdownHeight: CGFloat = 0
 
     init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
         self.comment = comment
@@ -29,7 +30,7 @@ struct CommentView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .center) {
+            HStack(alignment: .bottom) {
                 if
                     let avatarURLString = comment.user.avatarURL,
                     let url = URL(string: avatarURLString)
@@ -38,10 +39,10 @@ struct CommentView: View {
                         .url(url)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 40, height: 40)
+                        .frame(width: 44, height: 44)
                         .cornerRadius(24)
                 }
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: -6) {
                     HStack {
                         Text(comment.user.login ?? "")
                             .bold()
@@ -83,8 +84,13 @@ struct CommentView: View {
                 }
             }
             Spacer(minLength: 12)
-            Text(.init(comment.body ?? ""))
-                .font(.callout)
+
+            MarkdownUI(
+                markdown: comment.body ?? "",
+                markdownHeight: $commentMarkdownHeight,
+                mode: .comment)
+            .frame(height: commentMarkdownHeight)
+            .padding(.horizontal, -16)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
             if comment.user.id == userStore.user.id {
