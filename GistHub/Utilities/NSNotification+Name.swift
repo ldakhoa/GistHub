@@ -13,5 +13,4 @@ extension NSNotification.Name {
     static let textViewShouldUpdateTheme = NSNotification.Name("textViewShouldUpdateTheme")
     static let textViewShouldShowMarkdownPreview = NSNotification.Name("textViewShouldShowMarkdownPreview")
     static let markdownPreviewShouldReload = NSNotification.Name("markdownPreviewShouldReload")
-    static let markdownDidUpdateHeight = NSNotification.Name("markdownDidUpdateHeight")
 }

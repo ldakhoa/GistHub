@@ -139,10 +139,6 @@ struct CommentView: View {
                 placeholder: "Write a comment...",
                 commentViewModel: viewModel)
         }
-        .onReceive(.markdownDidUpdateHeight) { notification in
-            guard let height = notification.object as? CGFloat else { return }
-            commentMarkdownHeight = height
-        }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .enableInjection()
