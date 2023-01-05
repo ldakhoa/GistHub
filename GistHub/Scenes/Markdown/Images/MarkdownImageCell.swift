@@ -105,7 +105,8 @@ final class MarkdownImageCell: UICollectionViewCell {
 //        if let animatedImage = imageView.animatedImage {
 //            delegate?.didTapImage(image: image, animatedImageData: animatedImage.data)
 //        } else {
-//            delegate?.didTapImage(image: image, animatedImageData: nil)
+
+        delegate?.didTapImage(image: image, animatedImageData: nil)
 //        }
     }
 }

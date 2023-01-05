@@ -163,6 +163,8 @@
 		6AEEE4562966CF4F00767BD6 /* GitHubEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4552966CF4F00767BD6 /* GitHubEmoji.swift */; };
 		6AEEE4582966CF6F00767BD6 /* String+GitHubEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4572966CF6F00767BD6 /* String+GitHubEmoji.swift */; };
 		6AEEE45A2966D40400767BD6 /* MarkdownUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4592966D40400767BD6 /* MarkdownUI.swift */; };
+		6AEEE45F2966D9FE00767BD6 /* ImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE45E2966D9FE00767BD6 /* ImagePreviewViewController.swift */; };
+		6AEEE4612966DC0100767BD6 /* ScrollImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4602966DC0100767BD6 /* ScrollImageView.swift */; };
 		6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF29E5D294F72D8007546FE /* SettingAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -279,6 +281,8 @@
 		6AEEE4552966CF4F00767BD6 /* GitHubEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubEmoji.swift; sourceTree = "<group>"; };
 		6AEEE4572966CF6F00767BD6 /* String+GitHubEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+GitHubEmoji.swift"; sourceTree = "<group>"; };
 		6AEEE4592966D40400767BD6 /* MarkdownUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownUI.swift; sourceTree = "<group>"; };
+		6AEEE45E2966D9FE00767BD6 /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
+		6AEEE4602966DC0100767BD6 /* ScrollImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollImageView.swift; sourceTree = "<group>"; };
 		6AF29E5D294F72D8007546FE /* SettingAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -659,6 +663,8 @@
 				6A5D8CD82965515400BB4310 /* MarkdownAttributeHandling.swift */,
 				6A5D8CCC2965501D00BB4310 /* MarkdownStyledTextView.swift */,
 				6A5D8CCE2965504000BB4310 /* MarkdownViewController.swift */,
+				6AEEE45E2966D9FE00767BD6 /* ImagePreviewViewController.swift */,
+				6AEEE4602966DC0100767BD6 /* ScrollImageView.swift */,
 				6AEEE4592966D40400767BD6 /* MarkdownUI.swift */,
 				6A5D8CC42965494900BB4310 /* Quote */,
 				6A5D8CC12965493300BB4310 /* Text */,
@@ -916,6 +922,7 @@
 				6AC4F2C5294CD42000F0A2BA /* LoginViewModel.swift in Sources */,
 				6A7CF574294475DC007B7D68 /* ViewDidLoadModifier.swift in Sources */,
 				6AEEE4492966107200767BD6 /* MarkdownImageCell.swift in Sources */,
+				6AEEE4612966DC0100767BD6 /* ScrollImageView.swift in Sources */,
 				6A7CF558294464D2007B7D68 /* GitHubError.swift in Sources */,
 				6A5D8CF8296557DE00BB4310 /* MarkdownHtmlModel.swift in Sources */,
 				6A5D8CE82965523800BB4310 /* MarkdownCodeBlockCell.swift in Sources */,
@@ -957,6 +964,7 @@
 				6A7CF593294527DF007B7D68 /* GistDetailViewModel.swift in Sources */,
 				6A5D8CF6296557D800BB4310 /* MarkdownHtmlCell.swift in Sources */,
 				6A5D8CF42965553C00BB4310 /* GitHubHighlighting.swift in Sources */,
+				6AEEE45F2966D9FE00767BD6 /* ImagePreviewViewController.swift in Sources */,
 				6A5D8CC629654F6000BB4310 /* MarkdownConstants.swift in Sources */,
 				6A5D8CE62965520400BB4310 /* MarkdownCodeBlockModel.swift in Sources */,
 				6AEEE4562966CF4F00767BD6 /* GitHubEmoji.swift in Sources */,

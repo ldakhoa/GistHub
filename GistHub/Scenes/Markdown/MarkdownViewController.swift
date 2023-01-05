@@ -175,6 +175,7 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
         ) as? MarkdownImageCell, let context = model as? MarkdownImageModel {
             cell.configure(with: context)
             cell.heightDelegate = self
+            cell.delegate = self
             return cell
         } else if let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: MarkdownHrCell.identifier,
@@ -268,9 +269,14 @@ extension MarkdownViewController: MarkdownHtmlCellDelegate,
     }
 }
 
-// MARK: - MarkdownImageHeightCellDelegate
+// MARK: - MarkdownImageHeightCellDelegate, MarkdownImageCellDelegate
 
-extension MarkdownViewController: MarkdownImageHeightCellDelegate {
+extension MarkdownViewController: MarkdownImageHeightCellDelegate, MarkdownImageCellDelegate {
+    func didTapImage(image: UIImage, animatedImageData: Data?) {
+        let imagePreviewController = ImagePreviewViewController(image: image)
+        present(imagePreviewController, animated: true)
+    }
+
     func imageDidFinishLoad(url: URL, size: CGSize) {
         guard size != MarkdownViewController.imageWidthCache.data(key: url, width: 0) else { return }
         MarkdownViewController.imageWidthCache.set(data: size, key: url, width: 0)
