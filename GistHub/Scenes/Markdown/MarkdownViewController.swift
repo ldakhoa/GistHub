@@ -26,6 +26,7 @@ public final class MarkdownViewController: UIViewController {
         view.register(MarkdownHtmlCell.self, forCellWithReuseIdentifier: MarkdownHtmlCell.identifier)
         view.register(MarkdownTableCell.self, forCellWithReuseIdentifier: MarkdownTableCell.identifier)
         view.register(MarkdownImageCell.self, forCellWithReuseIdentifier: MarkdownImageCell.identifier)
+        view.register(MarkdownHrCell.self, forCellWithReuseIdentifier: MarkdownHrCell.identifier)
         view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
         view.contentInset = inset
         view.dataSource = self
@@ -175,6 +176,11 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.configure(with: context)
             cell.heightDelegate = self
             return cell
+        } else if let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: MarkdownHrCell.identifier,
+            for: indexPath
+        ) as? MarkdownHrCell {
+            return cell
         }
         return collectionView.dequeueReusableCell(withReuseIdentifier: "default", for: indexPath)
     }
@@ -229,6 +235,9 @@ extension MarkdownViewController: UICollectionViewDataSource, UICollectionViewDe
                 width: width,
                 height: height
             )
+        } else if model is MarkdownHrModel {
+            let width = collectionView.bounds.width - inset.left - inset.right
+            return CGSize(width: width, height: 30.0 + MarkdownHrCell.inset.top + MarkdownHrCell.inset.bottom)
         }
 
         return CGSize(width: collectionView.bounds.width, height: 200)

@@ -46,6 +46,7 @@ private extension TextElement {
         switch self {
         case .text(let text):
             let text = text
+                .replacingGithubEmoji
                 .strippingHTMLComments
                 .removingHTMLEntities()
             builder.add(text: text)
@@ -368,8 +369,9 @@ private func makeModels(elements: [Element], options: CMarkOptions, userInterfac
             }
 
             models.append(MarkdownTableModel(buckets: buckets, rowHeights: rowHeights))
-//        case .hr:
-//
+        case .hr:
+            endRunningText(isLast)
+            models.append(MarkdownHrModel())
         case .codeBlock(let text, let language):
             endRunningText(true)
             models.append(MarkdownCodeBlockModel.makeModel(
