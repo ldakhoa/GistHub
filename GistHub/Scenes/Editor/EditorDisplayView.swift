@@ -127,7 +127,7 @@ struct EditorDisplayView: View {
     func buildBodyView() -> some View {
         Group {
             if language == .markdown {
-                MarkdownPreviewView(markdown: content)
+                MarkdownUI(markdown: content)
             } else {
                 EditorViewRepresentable(content: $content, language: language, isEditable: false)
             }

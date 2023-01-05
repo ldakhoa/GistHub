@@ -20,6 +20,7 @@ struct CommentView: View {
     @State private var showPlainTextEditorView = false
     @State private var showQuoteCommentTextEditor = false
     @ObserveInjection private var inject
+    @State private var commentMarkdownHeight: CGFloat = 0
 
     init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
         self.comment = comment
@@ -83,8 +84,13 @@ struct CommentView: View {
                 }
             }
             Spacer(minLength: 12)
-            Text(.init(comment.body ?? ""))
-                .font(.callout)
+
+            MarkdownUI(
+                markdown: comment.body ?? "",
+                markdownHeight: $commentMarkdownHeight,
+                mode: .comment)
+            .frame(height: commentMarkdownHeight)
+            .padding(.horizontal, -16)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
             if comment.user.id == userStore.user.id {
@@ -132,6 +138,10 @@ struct CommentView: View {
                 navigationTitle: "Write Comment",
                 placeholder: "Write a comment...",
                 commentViewModel: viewModel)
+        }
+        .onReceive(.markdownDidUpdateHeight) { notification in
+            guard let height = notification.object as? CGFloat else { return }
+            commentMarkdownHeight = height
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

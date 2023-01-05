@@ -8,6 +8,10 @@
 import UIKit
 import StyledTextKit
 
+protocol MarkdownViewControllerDelegate: AnyObject {
+    func collectionViewDidUpdateHeight(height: CGFloat)
+}
+
 public final class MarkdownViewController: UIViewController {
     // MARK: - UIs
 
@@ -23,7 +27,7 @@ public final class MarkdownViewController: UIViewController {
         view.register(MarkdownTableCell.self, forCellWithReuseIdentifier: MarkdownTableCell.identifier)
         view.register(MarkdownImageCell.self, forCellWithReuseIdentifier: MarkdownImageCell.identifier)
         view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "default")
-        view.contentInset = .init(top: 16, left: 0, bottom: 16, right: 0)
+        view.contentInset = inset
         view.dataSource = self
         view.delegate = self
         return view
@@ -33,14 +37,18 @@ public final class MarkdownViewController: UIViewController {
 
     private static let webViewWidthCache = WidthCache<String, CGSize>()
     private static let imageWidthCache = WidthCache<URL, CGSize>()
+    private var currentCollectionHeight: CGFloat = 0
 
     // MARK: - Dependencies
 
     private var model: BlockModel!
     private let markdown: String
+    private let mode: Mode
+    weak var delegate: MarkdownViewControllerDelegate?
 
-    public init(markdown: String) {
+    init(markdown: String, mode: Mode) {
         self.markdown = markdown
+        self.mode = mode
         super.init(nibName: nil, bundle: nil)
         let models = MarkdownModels().build(
             markdown,
@@ -77,7 +85,18 @@ public final class MarkdownViewController: UIViewController {
         view.backgroundColor = Colors.MarkdownColorStyle.background
         collectionView.backgroundColor = Colors.MarkdownColorStyle.background
 
+        collectionView.isScrollEnabled = mode == .comment ? false : true
+        if mode == .file {
+            collectionView.contentInset.top = 16
+            collectionView.contentInset.bottom = 16
+        }
         self.collectionView.reloadData()
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let height = collectionView.collectionViewLayout.collectionViewContentSize.height
+        delegate?.collectionViewDidUpdateHeight(height: height)
     }
 
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -267,6 +286,63 @@ extension MarkdownViewController: MarkdownStyledTextViewDelegate {
             }
         case .checkbox:
             break
+        }
+    }
+}
+
+extension MarkdownViewController {
+    public enum Mode {
+        case comment
+        case file
+    }
+}
+
+import SwiftUI
+
+public struct MarkdownUI: UIViewControllerRepresentable {
+
+    let markdown: String
+    let markdownHeight: Binding<CGFloat>?
+    let mode: MarkdownViewController.Mode
+
+    init(
+        markdown: String,
+        markdownHeight: Binding<CGFloat>? = nil,
+        mode: MarkdownViewController.Mode = .file
+    ) {
+        self.markdown = markdown
+        self.markdownHeight = markdownHeight
+        self.mode = mode
+    }
+
+    public typealias UIViewControllerType = MarkdownViewController
+
+    public func makeUIViewController(context: Context) -> MarkdownViewController {
+        let viewController = MarkdownViewController(markdown: markdown, mode: mode)
+        viewController.delegate = context.coordinator
+
+        return viewController
+    }
+
+    public func updateUIViewController(
+        _ uiViewController: MarkdownViewController,
+        context: Context
+    ) {
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(markdownHeight: markdownHeight)
+    }
+
+    public class Coordinator: MarkdownViewControllerDelegate {
+        let markdownHeight: Binding<CGFloat>?
+
+        init(markdownHeight: Binding<CGFloat>?) {
+            self.markdownHeight = markdownHeight
+        }
+
+        func collectionViewDidUpdateHeight(height: CGFloat) {
+            markdownHeight?.wrappedValue = height
         }
     }
 }

@@ -72,7 +72,7 @@ final class MarkdownImageCell: UICollectionViewCell {
 
     func configure(with model: MarkdownImageModel) {
         imageView.image = nil
-        imageView.backgroundColor = Colors.MarkdownColorStyle.canvasSubtle
+        imageView.backgroundColor = Colors.MarkdownColorStyle.background
 
         spinner.startAnimating()
 

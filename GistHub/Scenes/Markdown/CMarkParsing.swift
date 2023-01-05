@@ -78,7 +78,7 @@ private extension TextElement {
             ])
             children.build(builder, options: options, context: context, userInterfaceStyle: userInterfaceStyle)
         case .link(let children, _, let url):
-            let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.Palette.Gray.gray9.dark
+            let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.systemGroupedBackgroundDark
             var attributes: [NSAttributedString.Key: AnyHashable] = [
                 .foregroundColor: Colors.MarkdownColorStyle.accentForeground as AnyHashable,
                 .backgroundColor: backgroundColor,
@@ -260,7 +260,7 @@ private extension Array {
 private func makeModels(elements: [Element], options: CMarkOptions, userInterfaceStyle: UIUserInterfaceStyle) -> [BlockNode] {
     var models = [BlockNode]()
     var runningBuilder: StyledTextBuilder?
-    let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.Palette.Gray.gray9.dark
+    let backgroundColor = userInterfaceStyle == .light ? UIColor.white : Colors.systemGroupedBackgroundDark
 
     let makeBuilder: () -> StyledTextBuilder = {
         let builder: StyledTextBuilder

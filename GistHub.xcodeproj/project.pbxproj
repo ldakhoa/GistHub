@@ -156,6 +156,7 @@
 		6AEEE44729660DF200767BD6 /* MarkdownImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE44629660DF200767BD6 /* MarkdownImageModel.swift */; };
 		6AEEE4492966107200767BD6 /* MarkdownImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE4482966107200767BD6 /* MarkdownImageCell.swift */; };
 		6AEEE44B296615A200767BD6 /* BoundedImageSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE44A296615A200767BD6 /* BoundedImageSize.swift */; };
+		6AEEE44D2966AD1E00767BD6 /* View+OnReceive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEE44C2966AD1E00767BD6 /* View+OnReceive.swift */; };
 		6AF29E5E294F72D8007546FE /* SettingAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF29E5D294F72D8007546FE /* SettingAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -265,6 +266,7 @@
 		6AEEE44629660DF200767BD6 /* MarkdownImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownImageModel.swift; sourceTree = "<group>"; };
 		6AEEE4482966107200767BD6 /* MarkdownImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownImageCell.swift; sourceTree = "<group>"; };
 		6AEEE44A296615A200767BD6 /* BoundedImageSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundedImageSize.swift; sourceTree = "<group>"; };
+		6AEEE44C2966AD1E00767BD6 /* View+OnReceive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnReceive.swift"; sourceTree = "<group>"; };
 		6AF29E5D294F72D8007546FE /* SettingAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -562,6 +564,7 @@
 				6AC4F2CC294DD30400F0A2BA /* URLBuilder.swift */,
 				6AA6FCAA2950FEAE0035AEB4 /* Bundle+Version.swift */,
 				6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */,
+				6AEEE44C2966AD1E00767BD6 /* View+OnReceive.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -902,6 +905,7 @@
 				6A7CF56729446F3E007B7D68 /* GistListsView.swift in Sources */,
 				6A2AADE42954FEEC00F50194 /* TextController.swift in Sources */,
 				6AC4F2D2294F45A400F0A2BA /* SettingView.swift in Sources */,
+				6AEEE44D2966AD1E00767BD6 /* View+OnReceive.swift in Sources */,
 				6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */,
 				6A7E4827294BAE8500D6964C /* PlainTextEditor.swift in Sources */,
 				6A5D8CFD2965973200BB4310 /* TableBucket.swift in Sources */,
