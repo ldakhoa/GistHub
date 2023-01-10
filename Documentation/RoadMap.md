@@ -15,6 +15,7 @@
 	- [x] Content
   - [x] Description
   - [ ] Filename + Language
+  - [ ] Add image
   - [x] Delete file
 - [x] Alert when content different than before
 - [x] Share gists
