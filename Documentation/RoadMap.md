@@ -8,7 +8,7 @@
 - [ ] Multi user
 
 ### Gist
-- [ ] Create gists
+- [ ] Create gists (working)
 - [x] Search files in each gist
 - [x] View gists
 - [ ] Update gist
