@@ -9,6 +9,9 @@ import Foundation
 import Networkable
 
 protocol GistHubAPIClient {
+    /// Allows you to add a new gist with one or more files.
+    func create(description: String?, files: [String: File]) async throws -> Gist
+
     /// List gists for the authenticated user.
     func gists() async throws -> [Gist]
 
@@ -58,8 +61,12 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         self.session = session
     }
 
+    func create(description: String?, files: [String: File]) async throws -> Gist {
+        try await session.data(for: API.create(description: description, files: files))
+    }
+
     func gists() async throws -> [Gist] {
-        return try await session.data(for: API.gists)
+        try await session.data(for: API.gists)
     }
 
     func starredGists() async throws -> [Gist] {
@@ -114,6 +121,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
 
 extension DefaultGistHubAPIClient {
     enum API: Request {
+        case create(description: String?, files: [String: File])
         case gists
         case starredGists
         case user
@@ -143,7 +151,7 @@ extension DefaultGistHubAPIClient {
 
         var url: String {
             switch self {
-            case .gists:
+            case .create, .gists:
                 return "/gists"
             case .starredGists:
                 return "/gists/starred"
@@ -163,6 +171,8 @@ extension DefaultGistHubAPIClient {
 
         var method: Networkable.Method {
             switch self {
+            case .create:
+                return .post
             case .gists, .starredGists, .user, .isStarred, .gist:
                 return .get
             case .starGist:
@@ -176,6 +186,17 @@ extension DefaultGistHubAPIClient {
 
         func body() throws -> Data? {
             switch self {
+            case let .create(description, files):
+                struct Request: Codable {
+                    let files: [String: File]
+                    let description: String?
+                    func toData() throws -> Data? {
+                        return try? JSONEncoder().encode(self)
+                    }
+                }
+                let request = Request(files: files, description: description)
+                return try? request.toData()
+
             case let .updateGist(_, fileName, content):
                 struct Request: Codable {
                     let files: [String: FileValue]?
@@ -192,6 +213,7 @@ extension DefaultGistHubAPIClient {
                 let files: [String: Request.FileValue] = [fileName ?? "": content]
                 let request = Request(files: files)
                 return try? request.toData()
+
             case let .updateGistDescription(_, description):
                 struct Request: Codable {
                     let description: String?

@@ -121,7 +121,7 @@ struct CommentView: View {
             }
         }
         .sheet(isPresented: $showPlainTextEditorView) {
-            PlainTextEditorView(
+            MarkdownTextEditorView(
                 style: .updateComment,
                 content: comment.body ?? "",
                 gistID: gistID,
@@ -131,8 +131,8 @@ struct CommentView: View {
                 commentViewModel: viewModel)
         }
         .sheet(isPresented: $showQuoteCommentTextEditor) {
-            PlainTextEditorView(
-                style: .comment,
+            MarkdownTextEditorView(
+                style: .writeComment,
                 content: quoteBody(body: comment.body ?? ""),
                 gistID: gistID,
                 navigationTitle: "Write Comment",

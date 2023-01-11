@@ -191,8 +191,8 @@ struct GistDetailView: View {
             Text("Are you positive you want to delete this Gist?")
         }
         .sheet(isPresented: $showPlainTextEditorView) {
-            PlainTextEditorView(
-                style: .description,
+            MarkdownTextEditorView(
+                style: .changeDescription,
                 content: viewModel.gist.description ?? "",
                 gistID: gist.id,
                 navigationTitle: "Edit Description",
@@ -205,8 +205,8 @@ struct GistDetailView: View {
             }
         }
         .sheet(isPresented: $showCommentTextEditor) {
-            PlainTextEditorView(
-                style: .comment,
+            MarkdownTextEditorView(
+                style: .writeComment,
                 gistID: gist.id,
                 navigationTitle: "Write Comment",
                 placeholder: "Write a comment...",

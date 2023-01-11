@@ -55,6 +55,22 @@ struct File: Codable, Identifiable, Hashable {
     let size: Int?
     let content: String?
 
+    init(
+        filename: String? = nil,
+        type: String? = nil,
+        language: Language? = nil,
+        rawURL: String? = nil,
+        size: Int? = nil,
+        content: String? = nil
+    ) {
+        self.filename = filename
+        self.type = type
+        self.language = language
+        self.rawURL = rawURL
+        self.size = size
+        self.content = content
+    }
+
     enum CodingKeys: String, CodingKey {
         case filename
         case type

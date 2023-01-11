@@ -10,18 +10,21 @@ import SwiftUI
 import Inject
 
 /// A view that uses for write comments and descriptions.
-struct PlainTextEditorView: View {
+struct MarkdownTextEditorView: View {
 
     // MARK: - Dependencies
 
     private let style: Style
     @State private var content: String
-    private let gistID: String
+    private let gistID: String?
     private let commentID: Int?
     private let navigationTitle: String
     private let placeholder: String
-    @ObservedObject var commentViewModel: CommentViewModel
+    @ObservedObject private var commentViewModel: CommentViewModel
+    @State private var files: [String: File]?
+//    private var files: Binding<[String: File]>?
     private let completion: (() -> Void)?
+    private let createGistCompletion: ((File) -> Void)?
 
     // MARK: - State
 
@@ -45,12 +48,14 @@ struct PlainTextEditorView: View {
     init(
         style: Style,
         content: String = "",
-        gistID: String,
+        gistID: String? = nil,
         commentID: Int? = nil,
         navigationTitle: String,
         placeholder: String = "",
-        commentViewModel: CommentViewModel,
-        completion: (() -> Void)? = nil
+        commentViewModel: CommentViewModel? = nil,
+        files: [String: File]? = nil,
+        completion: (() -> Void)? = nil,
+        createGistCompletion: ((File) -> Void)? = nil
     ) {
         self.style = style
         _content = State(initialValue: content)
@@ -58,8 +63,10 @@ struct PlainTextEditorView: View {
         self.commentID = commentID
         self.navigationTitle = navigationTitle
         self.placeholder = placeholder
-        self.commentViewModel = commentViewModel
+        self.commentViewModel = commentViewModel ?? CommentViewModel()
+        _files = State(wrappedValue: files)
         self.completion = completion
+        self.createGistCompletion = createGistCompletion
     }
 
     var body: some View {
@@ -70,9 +77,10 @@ struct PlainTextEditorView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(.visible, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
+                .navigationBarBackButtonHidden()
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button("Cancel") {
+                        Button(style == .createGist ? "Back" : "Cancel") {
                             if contentHasChanged {
                                 showConfirmDialog.toggle()
                             } else {
@@ -86,8 +94,9 @@ struct PlainTextEditorView: View {
                         Button {
                             showLoadingSaveButton = true
                             switch style {
-                            case .description: updateDescription()
-                            case .comment: createComment()
+                            case .createGist: createFile()
+                            case .changeDescription: updateDescription()
+                            case .writeComment: createComment()
                             case .updateComment: updateComment()
                             }
                         } label: {
@@ -140,7 +149,16 @@ struct PlainTextEditorView: View {
         .enableInjection()
     }
 
+    private func createFile() {
+        let fileName = navigationTitle
+//        self.files?[fileName] = File(filename: fileName, content: self.content
+        let file = File(filename: fileName, content: self.content)
+        dismiss()
+        createGistCompletion!(file)
+    }
+
     private func updateDescription() {
+        guard let gistID = gistID else { return }
         Task {
             do {
                 try await viewModel.updateDescription(content, gistID: gistID) {
@@ -156,6 +174,7 @@ struct PlainTextEditorView: View {
     }
 
     private func createComment() {
+        guard let gistID = gistID else { return }
         Task {
             do {
                 await commentViewModel.createComment(gistID: gistID, body: content) {
@@ -167,6 +186,7 @@ struct PlainTextEditorView: View {
     }
 
     private func updateComment() {
+        guard let gistID = gistID else { return }
         Task {
             do {
                 guard let commentID = commentID else { return }
@@ -183,10 +203,11 @@ struct PlainTextEditorView: View {
     }
 }
 
-extension PlainTextEditorView {
+extension MarkdownTextEditorView {
     enum Style {
-        case description
-        case comment
+        case createGist
+        case changeDescription
+        case writeComment
         case updateComment
     }
 }

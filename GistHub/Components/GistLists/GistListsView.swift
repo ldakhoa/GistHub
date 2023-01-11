@@ -63,16 +63,18 @@ struct GistListsView: View {
         }
         .navigationTitle(Text(listsMode.navigationTitle))
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    showingNewGistView.toggle()
-                } label: {
-                    Image(systemName: "plus.circle")
-                        .renderingMode(.template)
-                        .foregroundColor(Colors.accent.color)
-                }
-                .sheet(isPresented: $showingNewGistView) {
-                    NewGistView()
+            if listsMode == .allGists {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingNewGistView.toggle()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .renderingMode(.template)
+                            .foregroundColor(Colors.accent.color)
+                    }
+                    .sheet(isPresented: $showingNewGistView) {
+                        NewGistView()
+                    }
                 }
             }
         }
