@@ -79,14 +79,7 @@ struct EditorView: View {
                 NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
                 contentHasChanged = newValue != originalContent ? true : false
             }
-            .toast(isPresenting: $showErrorToast, duration: 2.5) {
-                AlertToast(
-                    displayMode: .banner(.pop),
-                    type: .error(Colors.danger.color),
-                    title: error,
-                    style: .style(backgroundColor: Colors.errorToastBackground.color)
-                )
-            }
+            .toastError(isPresenting: $showErrorToast, error: error)
             .onAppear {
                 self.originalContent = self.content
             }

@@ -22,7 +22,6 @@ struct MarkdownTextEditorView: View {
     private let placeholder: String
     @ObservedObject private var commentViewModel: CommentViewModel
     @State private var files: [String: File]?
-//    private var files: Binding<[String: File]>?
     private let completion: (() -> Void)?
     private let createGistCompletion: ((File) -> Void)?
 
@@ -129,22 +128,8 @@ struct MarkdownTextEditorView: View {
         } message: {
             Text("Your changes will be discarded.")
         }
-        .toast(isPresenting: $showErrorToast, duration: 2.5) {
-            AlertToast(
-                displayMode: .banner(.pop),
-                type: .error(Colors.danger.color),
-                title: error,
-                style: .style(backgroundColor: Colors.errorToastBackground.color)
-            )
-        }
-        .toast(isPresenting: $commentViewModel.showErrorToast, duration: 2.5) {
-            AlertToast(
-                displayMode: .banner(.pop),
-                type: .error(Colors.danger.color),
-                title: commentViewModel.errorToastTitle,
-                style: .style(backgroundColor: Colors.errorToastBackground.color)
-            )
-        }
+        .toastError(isPresenting: $showErrorToast, error: error)
+        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
         .enableInjection()
     }

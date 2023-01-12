@@ -14,11 +14,13 @@ import SwiftUI
         self.client = client
     }
 
+    @discardableResult
     func createGist(
         description: String? = nil,
-        files: [String: File]
-    ) async {
-        _ = try? await client.create(description: description, files: files)
+        files: [String: File],
+        public: Bool
+    ) async throws -> Gist {
+        try await client.create(description: description, files: files, public: `public`)
     }
 
 }

@@ -34,6 +34,11 @@ import SwiftUI
         }
     }
 
+    func insert(_ gist: Gist) {
+        gists.insert(gist, at: 0)
+        contentState = .content(gists: gists)
+    }
+
     func search() {
         if searchText.isEmpty {
             contentState = .content(gists: self.gists)

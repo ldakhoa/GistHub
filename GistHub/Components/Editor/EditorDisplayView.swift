@@ -113,14 +113,7 @@ struct EditorDisplayView: View {
                 self.completion()
                 dismiss()
             }
-            .toast(isPresenting: $showErrorToast, duration: 2.5) {
-                AlertToast(
-                    displayMode: .banner(.pop),
-                    type: .error(Colors.danger.color),
-                    title: error,
-                    style: .style(backgroundColor: Colors.errorToastBackground.color)
-                )
-            }
+            .toastError(isPresenting: $showErrorToast, error: error)
             .enableInjection()
     }
 

@@ -7,12 +7,14 @@
 
 import SwiftUI
 import Inject
+import AlertToast
 
 struct NewGistView: View {
     @ObserveInjection private var inject
 
     @Environment(\.dismiss) private var dismiss
 
+    @StateObject private var viewModel = NewGistViewModel()
     @State private var description: String = ""
     @State private var presentNewFileAlert = false
     @State private var presentCreateDialog = false
@@ -21,12 +23,17 @@ struct NewGistView: View {
     @State private var enableCreateNewGist = false
     @State private var showCancelConfirmDialog = false
     @State private var files = [String: File]()
+    @State private var error = ""
+    @State private var showErrorToast = false
+
+    @State var completion: ((Gist) -> Void)?
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     TextField("Gist description (Optional)", text: $description)
+                        .autocorrectionDisabled()
                 } header: {
                     Text("Gist Description")
                 }
@@ -102,8 +109,30 @@ struct NewGistView: View {
                     }
                     .disabled(!enableCreateNewGist)
                     .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
-                        Button("Create secret gist") {}
-                        Button("Create public gist") {}
+                        Button("Create secret gist") {
+                            Task {
+                                do {
+                                    let gist = try await viewModel.createGist(description: description, files: files, public: false)
+                                    dismiss()
+                                    completion!(gist)
+                                } catch let createError {
+                                    error = createError.localizedDescription
+                                    self.showErrorToast.toggle()
+                                }
+                            }
+                        }
+                        Button("Create public gist") {
+                            Task {
+                                do {
+                                    let gist = try await viewModel.createGist(description: description, files: files, public: true)
+                                    dismiss()
+                                    completion!(gist)
+                                } catch let createError {
+                                    error = createError.localizedDescription
+                                    self.showErrorToast.toggle()
+                                }
+                            }
+                        }
                     } message: {
                         Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
                     }
@@ -125,6 +154,7 @@ struct NewGistView: View {
         } message: {
             Text("Your changes will be discarded.")
         }
+        .toastError(isPresenting: $showErrorToast, error: error)
         .enableInjection()
     }
 }

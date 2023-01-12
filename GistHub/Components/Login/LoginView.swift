@@ -77,14 +77,7 @@ struct LoginView: View {
                 self.error = error
             }
         }
-        .toast(isPresenting: $showErrorToast, duration: 2.5) {
-            AlertToast(
-                displayMode: .hud,
-                type: .error(Colors.danger.color),
-                title: error,
-                style: .style(backgroundColor: Colors.errorToastBackground.color)
-            )
-        }
+        .toastError(isPresenting: $showErrorToast, error: error, displayMode: .hud)
         .alert("Personal Access Token", isPresented: $showLoginAlertField) {
             SecureField("Personal Access Token", text: $accessToken)
                 .font(.callout)

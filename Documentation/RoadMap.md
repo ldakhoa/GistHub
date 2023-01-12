@@ -8,13 +8,14 @@
 - [ ] Multi user
 
 ### Gist
-- [ ] Create gists (working)
+- [x] Create gists
 - [x] Search files in each gist
 - [x] View gists
 - [ ] Update gist
 	- [x] Content
   - [x] Description
-  - [ ] Filename + Language
+  - [ ] Change filename + language
+  - [ ] Add files
   - [ ] Add image
   - [x] Delete file
 - [x] Alert when content different than before
@@ -50,3 +51,4 @@
   - [ ] Reduce Motion
   - [ ] Voice over
 - [ ] View other user's gists
+- [ ] Use new navigation stack

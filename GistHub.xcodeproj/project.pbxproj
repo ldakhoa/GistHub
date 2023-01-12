@@ -131,6 +131,7 @@
 		6A7E4827294BAE8500D6964C /* MarkdownTextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4826294BAE8500D6964C /* MarkdownTextEditorView.swift */; };
 		6A7E4829294BBE2600D6964C /* CommentAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */; };
 		6A7E482B294BC6DF00D6964C /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */; };
+		6A85756A296FCC00001498A4 /* View+AlertToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A857569296FCC00001498A4 /* View+AlertToast.swift */; };
 		6AA6DEA32961B18200C25455 /* cmark-gfm-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 6AA6DEA22961B18200C25455 /* cmark-gfm-swift */; };
 		6AA6DEA62961B1B500C25455 /* MarkdownPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */; };
 		6AA6DEA82961B1CA00C25455 /* HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA6DEA72961B1CA00C25455 /* HTML.swift */; };
@@ -250,6 +251,7 @@
 		6A7E4826294BAE8500D6964C /* MarkdownTextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextEditorView.swift; sourceTree = "<group>"; };
 		6A7E4828294BBE2600D6964C /* CommentAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAPIClient.swift; sourceTree = "<group>"; };
 		6A7E482A294BC6DF00D6964C /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		6A857569296FCC00001498A4 /* View+AlertToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+AlertToast.swift"; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6AA6DEA52961B1B500C25455 /* MarkdownPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownPreviewViewController.swift; sourceTree = "<group>"; };
 		6AA6DEA72961B1CA00C25455 /* HTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTML.swift; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 				6AA6FCAA2950FEAE0035AEB4 /* Bundle+Version.swift */,
 				6A2AADE52955E84600F50194 /* UIImage+Extensions.swift */,
 				6AEEE44C2966AD1E00767BD6 /* View+OnReceive.swift */,
+				6A857569296FCC00001498A4 /* View+AlertToast.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -935,6 +938,7 @@
 				6AEEE4492966107200767BD6 /* MarkdownImageCell.swift in Sources */,
 				6AEEE4612966DC0100767BD6 /* ScrollImageView.swift in Sources */,
 				6A7CF558294464D2007B7D68 /* GitHubError.swift in Sources */,
+				6A85756A296FCC00001498A4 /* View+AlertToast.swift in Sources */,
 				6A5D8CF8296557DE00BB4310 /* MarkdownHtmlModel.swift in Sources */,
 				6A5D8CE82965523800BB4310 /* MarkdownCodeBlockCell.swift in Sources */,
 				6A7CF54A294455B9007B7D68 /* Colors.swift in Sources */,

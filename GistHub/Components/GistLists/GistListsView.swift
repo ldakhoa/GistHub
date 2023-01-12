@@ -13,9 +13,20 @@ struct GistListsView: View {
     @ObserveInjection private var inject
     @StateObject private var viewModel = GistListsViewModel()
     @State private var showingNewGistView = false
+    @State private var showingGistDetail = false
+    @State private var selectedGist: Gist?
 
-    let listsMode: GistListsMode
-    let user: User
+    // MARK: - Dependencies
+
+    private let listsMode: GistListsMode
+    private let user: User
+
+    // MARK: - Initializer
+
+    init(listsMode: GistListsMode, user: User) {
+        self.listsMode = listsMode
+        self.user = user
+    }
 
     var body: some View {
         ZStack {
@@ -56,6 +67,18 @@ struct GistListsView: View {
                 }
                 .listStyle(.plain)
                 .animation(.default, value: gists)
+                // HACK, research and apply new NavigationStack
+                if let selectedGist = selectedGist {
+                    NavigationLink(
+                        destination: GistDetailView(
+                            gist: selectedGist,
+                            shouldReloadGistListsView: { fetchGists() })
+                        .environmentObject(UserStore(user: user)),
+                        isActive: $showingGistDetail
+                    ) {
+                        EmptyView()
+                    }
+                }
             case let .error(error):
                 Text(error)
                     .foregroundColor(Colors.danger.color)
@@ -73,7 +96,11 @@ struct GistListsView: View {
                             .foregroundColor(Colors.accent.color)
                     }
                     .sheet(isPresented: $showingNewGistView) {
-                        NewGistView()
+                        NewGistView { newGist in
+                            viewModel.insert(newGist)
+                            selectedGist = newGist
+                            showingGistDetail.toggle()
+                        }
                     }
                 }
             }

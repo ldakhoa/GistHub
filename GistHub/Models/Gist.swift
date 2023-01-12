@@ -8,7 +8,7 @@
 import Foundation
 import OrderedCollections
 
-struct Gist: Codable, Identifiable, Equatable {
+struct Gist: Codable, Identifiable, Equatable, Hashable {
     let url: String?
     let forksURL: String?
     let commitsURL: String?
@@ -70,6 +70,10 @@ struct Gist: Codable, Identifiable, Equatable {
 
     static func == (lhs: Gist, rhs: Gist) -> Bool {
         lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 

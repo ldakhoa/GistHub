@@ -10,7 +10,7 @@ import Networkable
 
 protocol GistHubAPIClient {
     /// Allows you to add a new gist with one or more files.
-    func create(description: String?, files: [String: File]) async throws -> Gist
+    func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
     /// List gists for the authenticated user.
     func gists() async throws -> [Gist]
@@ -61,8 +61,8 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         self.session = session
     }
 
-    func create(description: String?, files: [String: File]) async throws -> Gist {
-        try await session.data(for: API.create(description: description, files: files))
+    func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
+        try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
     func gists() async throws -> [Gist] {
@@ -121,7 +121,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
 
 extension DefaultGistHubAPIClient {
     enum API: Request {
-        case create(description: String?, files: [String: File])
+        case create(description: String?, files: [String: File], public: Bool)
         case gists
         case starredGists
         case user
@@ -186,15 +186,17 @@ extension DefaultGistHubAPIClient {
 
         func body() throws -> Data? {
             switch self {
-            case let .create(description, files):
+            case let .create(description, files, `public`):
                 struct Request: Codable {
                     let files: [String: File]
                     let description: String?
+                    let `public`: Bool
+
                     func toData() throws -> Data? {
                         return try? JSONEncoder().encode(self)
                     }
                 }
-                let request = Request(files: files, description: description)
+                let request = Request(files: files, description: description, public: `public`)
                 return try? request.toData()
 
             case let .updateGist(_, fileName, content):
