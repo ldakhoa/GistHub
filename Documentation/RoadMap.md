@@ -46,6 +46,7 @@
 
 ### Misc
 - [ ] Create GistHub issues in-app
+- [ ] Open GistHub from safari
 - [ ] Accessibility
   - [x] Text size
   - [ ] Reduce Motion
