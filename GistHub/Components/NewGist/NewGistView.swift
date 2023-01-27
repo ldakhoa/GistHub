@@ -52,6 +52,7 @@ struct NewGistView: View {
                         }
                     }
                     Button("Add file") {
+                        hideKeyboard()
                         presentNewFileAlert = true
                     }
                     .alert("New file", isPresented: $presentNewFileAlert) {
@@ -61,10 +62,7 @@ struct NewGistView: View {
                             .font(.subheadline)
 
                         NavigationLink("Create") {
-                            if let index = newFileTitle.firstIndex(of: ".") {
-                                let language = String(newFileTitle.suffix(from: index))
-                                    .replacingOccurrences(of: ".", with: "")
-
+                            if let language = newFileTitle.getFileExtension() {
                                 if language == "md" || language == "markdown" {
                                     MarkdownTextEditorView(
                                         style: .createGist,
@@ -73,8 +71,13 @@ struct NewGistView: View {
                                             self.files[file.filename ?? ""] = file
                                             newFileTitle = ""
                                         })
+                                } else if language.isEmpty {
+                                    
                                 } else {
-                                    MarkdownTextEditorView(style: .createGist, navigationTitle: newFileTitle)
+                                    EditorView(
+                                        style: .create,
+                                        fileName: newFileTitle,
+                                        language: File.Language(rawValue: language) ?? .javaScript)
                                 }
                             }
                         }
