@@ -20,6 +20,7 @@ struct EditorView: View {
     private let gist: Gist?
     private let navigationTitle: String
     private let updateContentCompletion: (() -> Void)?
+    private let createGistCompletion: ((File) -> Void)?
 
     // Only need if style is create
     @State private var files: [String: File]?
@@ -46,7 +47,8 @@ struct EditorView: View {
         gist: Gist? = nil,
         navigationTitle: String = "Edit",
         files: [String: File]? = nil,
-        updateContentCompletion: (() -> Void)? = nil
+        updateContentCompletion: (() -> Void)? = nil,
+        createGistCompletion: ((File) -> Void)? = nil
     ) {
         self.style = style
         self.fileName = fileName
@@ -56,6 +58,7 @@ struct EditorView: View {
         self.navigationTitle = navigationTitle
         _files = State(wrappedValue: files)
         self.updateContentCompletion = updateContentCompletion
+        self.createGistCompletion = createGistCompletion
     }
 
     var body: some View {
@@ -85,19 +88,11 @@ struct EditorView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(style == .update ? "Update" : "Save") {
-                        Task {
-                            do {
-                                try await viewModel.updateGist(gistID: gist?.id ?? "", fileName: fileName, content: self.content) {
-                                    self.dismiss()
-                                    self.updateContentCompletion!()
-                                    if language == .markdown {
-                                        NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
-                                    }
-                                }
-                            } catch let updateError {
-                                error = updateError.localizedDescription
-                                showErrorToast.toggle()
-                            }
+                        switch style {
+                        case .createFile:
+                            createGist()
+                        case .update:
+                            updateGist()
                         }
                     }
                     .bold()
@@ -117,11 +112,34 @@ struct EditorView: View {
             }
             .interactiveDismissDisabled(contentHasChanged)
     }
+
+    private func updateGist() {
+        Task {
+            do {
+                try await viewModel.updateGist(gistID: gist?.id ?? "", fileName: fileName, content: self.content) {
+                    self.dismiss()
+                    self.updateContentCompletion!()
+                    if language == .markdown {
+                        NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
+                    }
+                }
+            } catch let updateError {
+                error = updateError.localizedDescription
+                showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func createGist() {
+        let file = File(filename: fileName, content: self.content)
+        dismiss()
+        createGistCompletion!(file)
+    }
 }
 
 extension EditorView {
     enum Style {
-        case create
+        case createFile
         case update
     }
 }

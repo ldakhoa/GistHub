@@ -41,14 +41,28 @@ struct NewGistView: View {
                 Section {
                     ForEach(files.keys.sorted(), id: \.self) { fileName in
                         let file = files[fileName]
+
                         NavigationLink(fileName) {
-                            MarkdownTextEditorView(
-                                style: .createGist,
-                                content: file?.content ?? "",
-                                navigationTitle: file?.filename ?? "",
-                                createGistCompletion: { newFile in
-                                    self.files[newFile.filename ?? ""] = newFile
-                                })
+                            if let language = fileName.getFileExtension() {
+                                if language == "md" || language == "markdown" {
+                                    MarkdownTextEditorView(
+                                        style: .createGist,
+                                        content: file?.content ?? "",
+                                        navigationTitle: file?.filename ?? "",
+                                        createGistCompletion: { newFile in
+                                            self.files[newFile.filename ?? ""] = newFile
+                                        })
+                                } else {
+                                    EditorView(
+                                        style: .createFile,
+                                        fileName: fileName,
+                                        content: file?.content ?? "",
+                                        language: File.Language(rawValue: language) ?? .javaScript,
+                                        createGistCompletion: { file in
+                                            self.files[file.filename ?? ""] = file
+                                        })
+                                }
+                            }
                         }
                     }
                     Button("Add file") {
@@ -72,12 +86,16 @@ struct NewGistView: View {
                                             newFileTitle = ""
                                         })
                                 } else if language.isEmpty {
-                                    
+                                    // TODO: Handle case language is empty
                                 } else {
                                     EditorView(
-                                        style: .create,
+                                        style: .createFile,
                                         fileName: newFileTitle,
-                                        language: File.Language(rawValue: language) ?? .javaScript)
+                                        language: File.Language(rawValue: language) ?? .javaScript,
+                                        createGistCompletion: { file in
+                                            self.files[file.filename ?? ""] = file
+                                            newFileTitle = ""
+                                        })
                                 }
                             }
                         }
