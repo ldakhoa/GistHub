@@ -19,6 +19,24 @@
       }
     },
     {
+      "identity" : "highlightr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/Highlightr",
+      "state" : {
+        "revision" : "ef5856b43b8a50e4292bb39b905c7cbf615c856f",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "htmlstring",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexaubry/HTMLString",
+      "state" : {
+        "revision" : "04613a3b0f40a91e554b5174c0a10657f1a26357",
+        "version" : "6.0.1"
+      }
+    },
+    {
       "identity" : "inject",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Inject",
@@ -61,6 +79,15 @@
       "state" : {
         "revision" : "e9d220ae1a00b5ef00a7b6146d77f660f9e5dbe2",
         "version" : "0.2.10"
+      }
+    },
+    {
+      "identity" : "styledtextkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/StyledTextKit",
+      "state" : {
+        "revision" : "f4e75310e524797e8e750829e90c3620cb0f8dce",
+        "version" : "1.0.0"
       }
     },
     {

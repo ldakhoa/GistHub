@@ -419,6 +419,16 @@ final class Colors {
         }
     }
 
+    enum MarkdownColorStyle {
+        static let foreground = UIColor(light: Colors.Palette.Gray.gray9.light, dark: Colors.Palette.Gray.gray1.dark)
+        static let accentForeground = Colors.accent
+        static let background = UIColor(light: .white, dark: Colors.systemGroupedBackgroundDark)
+        static let mutedForeground = UIColor(light: Colors.Palette.Gray.gray6.light, dark: Colors.Palette.Gray.gray3.dark) // quote
+        static let canvasSubtle = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Gray.gray8.dark) // code background
+    }
+
+    static var systemGroupedBackgroundDark = UIColor(colorValue: ColorValue(0x1C1C1E))
+
     static var accent = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark)
     static var accentDisabled = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark).withAlphaComponent(0.5)
     static var success = Palette.Green.green5.dynamicColor
