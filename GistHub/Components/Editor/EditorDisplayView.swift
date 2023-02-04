@@ -68,6 +68,7 @@ struct EditorDisplayView: View {
                     .sheet(isPresented: $showEditorInEditMode) {
                         NavigationView {
                             EditorView(
+                                style: .update,
                                 fileName: fileName,
                                 content: content,
                                 language: language,

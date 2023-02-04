@@ -10,25 +10,60 @@ import SwiftUI
 import Inject
 
 struct EditorView: View {
-    let fileName: String
-    @State var content: String = ""
-    let language: File.Language
-    let gist: Gist
+
+    // MARK: - Dependencies
+
+    private let style: Style
+    private let fileName: String
+    @State private var content: String
+    private let language: File.Language
+    private let gist: Gist?
+    private let navigationTitle: String
+    private let updateContentCompletion: (() -> Void)?
+    private let createGistCompletion: ((File) -> Void)?
+
+    // Only need if style is create
+    @State private var files: [String: File]?
+
+    // MARK: - State
 
     @Environment(\.dismiss) private var dismiss
     @ObserveInjection private var inject
     @StateObject private var viewModel = EditorViewModel()
     @State var originalContent: String = ""
-    @State var updateContentCompletion: () -> Void
 
     @State private var contentHasChanged = false
     @State private var showErrorToast = false
     @State private var showConfirmDialog = false
     @State private var error = ""
 
+    // MARK: - Initializer
+
+    init(
+        style: Style,
+        fileName: String,
+        content: String = "",
+        language: File.Language,
+        gist: Gist? = nil,
+        navigationTitle: String = "Edit",
+        files: [String: File]? = nil,
+        updateContentCompletion: (() -> Void)? = nil,
+        createGistCompletion: ((File) -> Void)? = nil
+    ) {
+        self.style = style
+        self.fileName = fileName
+        _content = State(initialValue: content)
+        self.language = language
+        self.gist = gist
+        self.navigationTitle = navigationTitle
+        _files = State(wrappedValue: files)
+        self.updateContentCompletion = updateContentCompletion
+        self.createGistCompletion = createGistCompletion
+    }
+
     var body: some View {
         EditorViewRepresentable(content: $content, language: language, isEditable: true)
-            .navigationTitle("Edit")
+            .navigationTitle(style == .update ? "Edit" : fileName)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -52,20 +87,12 @@ struct EditorView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Update") {
-                        Task {
-                            do {
-                                try await viewModel.updateGist(gistID: gist.id, fileName: fileName, content: self.content) {
-                                    self.dismiss()
-                                    self.updateContentCompletion()
-                                    if language == .markdown {
-                                        NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
-                                    }
-                                }
-                            } catch let updateError {
-                                error = updateError.localizedDescription
-                                showErrorToast.toggle()
-                            }
+                    Button(style == .update ? "Update" : "Save") {
+                        switch style {
+                        case .createFile:
+                            createGist()
+                        case .update:
+                            updateGist()
                         }
                     }
                     .bold()
@@ -84,5 +111,35 @@ struct EditorView: View {
                 self.originalContent = self.content
             }
             .interactiveDismissDisabled(contentHasChanged)
+    }
+
+    private func updateGist() {
+        Task {
+            do {
+                try await viewModel.updateGist(gistID: gist?.id ?? "", fileName: fileName, content: self.content) {
+                    self.dismiss()
+                    self.updateContentCompletion!()
+                    if language == .markdown {
+                        NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
+                    }
+                }
+            } catch let updateError {
+                error = updateError.localizedDescription
+                showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func createGist() {
+        let file = File(filename: fileName, content: self.content)
+        dismiss()
+        createGistCompletion!(file)
+    }
+}
+
+extension EditorView {
+    enum Style {
+        case createFile
+        case update
     }
 }
