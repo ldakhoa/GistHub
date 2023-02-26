@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01EE851D29AB619F006AB86E /* EditGistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE851C29AB619F006AB86E /* EditGistView.swift */; };
+		01EE851F29AB61F0006AB86E /* EditGistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE851E29AB61F0006AB86E /* EditGistViewModel.swift */; };
 		6A20DEAA2961FE640040EBD0 /* BrowseFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */; };
 		6A20DF11296202620040EBD0 /* github.css in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DEB6296202620040EBD0 /* github.css */; };
 		6A20DF6729620FEC0040EBD0 /* highlight.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A20DF6629620FEC0040EBD0 /* highlight.js */; };
@@ -173,6 +175,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01EE851C29AB619F006AB86E /* EditGistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGistView.swift; sourceTree = "<group>"; };
+		01EE851E29AB61F0006AB86E /* EditGistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGistViewModel.swift; sourceTree = "<group>"; };
 		6A20DEA92961FE640040EBD0 /* BrowseFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseFilesView.swift; sourceTree = "<group>"; };
 		6A20DEB6296202620040EBD0 /* github.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = github.css; sourceTree = "<group>"; };
 		6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GistHub.xcconfig; sourceTree = "<group>"; };
@@ -353,6 +357,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01EE851B29AB6192006AB86E /* EditGist */ = {
+			isa = PBXGroup;
+			children = (
+				01EE851C29AB619F006AB86E /* EditGistView.swift */,
+				01EE851E29AB61F0006AB86E /* EditGistViewModel.swift */,
+			);
+			path = EditGist;
+			sourceTree = "<group>";
+		};
 		6A5D8CB92965428C00BB4310 /* WebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -543,6 +556,7 @@
 		6A7CF55D29446530007B7D68 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				01EE851B29AB6192006AB86E /* EditGist */,
 				6AA8734A296F4148005DD300 /* NewGist */,
 				6A6EEF6A2947A4220018AC26 /* Comment */,
 				6A7CF5982945FB7A007B7D68 /* Editor */,
@@ -925,6 +939,7 @@
 				6A5D8CE4296551D900BB4310 /* String+NSRange.swift in Sources */,
 				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
 				6A7CF572294474E8007B7D68 /* GistListsViewModel.swift in Sources */,
+				01EE851F29AB61F0006AB86E /* EditGistViewModel.swift in Sources */,
 				6A5D8CCD2965501D00BB4310 /* MarkdownStyledTextView.swift in Sources */,
 				6A7CF5912944F044007B7D68 /* ProfileViewModel.swift in Sources */,
 				6AEE0DB12950D8B700EF376E /* TomorrowNightTheme.swift in Sources */,
@@ -974,6 +989,7 @@
 				6A5D8CBF2965491800BB4310 /* BlockNode.swift in Sources */,
 				6AEE0DBB2950D9C100EF376E /* HighlightName.swift in Sources */,
 				6AC4F2C3294CD3BD00F0A2BA /* LoginView.swift in Sources */,
+				01EE851D29AB619F006AB86E /* EditGistView.swift in Sources */,
 				6A5D8CFF2965974500BB4310 /* MarkdownTableModel.swift in Sources */,
 				6AEEE45A2966D40400767BD6 /* MarkdownUI.swift in Sources */,
 				6A7CF56E29447285007B7D68 /* File.swift in Sources */,

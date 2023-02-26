@@ -50,6 +50,14 @@ protocol GistHubAPIClient {
         description: String?
     ) async throws -> Gist
 
+    /// Update multiple Gist files
+    @discardableResult
+    func updateGist(
+        fromGistID gistID: String,
+        description: String?,
+        files: [String: String?]
+    ) async throws -> Gist
+
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
 }
@@ -105,8 +113,8 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     ) async throws -> Gist {
         try await session.data(for: API.updateGist(
             gistID: gistID,
-            fileName: fileName,
-            content: content
+            description: nil,
+            files: [fileName ?? "": content]
         ))
     }
 
@@ -115,6 +123,19 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.updateGistDescription(
             gistID: gistID,
             description: description
+        ))
+    }
+
+    @discardableResult
+    func updateGist(
+        fromGistID gistID: String,
+        description: String?,
+        files: [String: String?]
+    ) async throws -> Gist {
+        try await session.data(for: API.updateGist(
+            gistID: gistID,
+            description: description,
+            files: files
         ))
     }
 }
@@ -131,8 +152,8 @@ extension DefaultGistHubAPIClient {
         case gist(gistID: String)
         case updateGist(
             gistID: String,
-            fileName: String?,
-            content: String?
+            description: String?,
+            files: [String: String?]
         )
         case updateGistDescription(
             gistID: String,
@@ -199,10 +220,10 @@ extension DefaultGistHubAPIClient {
                 let request = Request(files: files, description: description, public: `public`)
                 return try? request.toData()
 
-            case let .updateGist(_, fileName, content):
+            case let .updateGist(_, description, updatedFiles):
                 struct Request: Codable {
+                    let description: String?
                     let files: [String: FileValue]?
-
                     struct FileValue: Codable {
                         let content: String?
                     }
@@ -211,9 +232,11 @@ extension DefaultGistHubAPIClient {
                         return try? JSONEncoder().encode(self)
                     }
                 }
-                let content = Request.FileValue(content: content)
-                let files: [String: Request.FileValue] = [fileName ?? "": content]
-                let request = Request(files: files)
+                var files = [String: Request.FileValue]()
+                for file in updatedFiles {
+                    files[file.key] = Request.FileValue(content: file.value)
+                }
+                let request = Request(description: description, files: files)
                 return try? request.toData()
 
             case let .updateGistDescription(_, description):
