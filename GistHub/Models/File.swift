@@ -43,7 +43,7 @@ import TreeSitterTSXRunestone
 import TreeSitterTypeScriptRunestone
 import TreeSitterYAMLRunestone
 
-struct File: Codable, Identifiable, Hashable {
+struct File: Codable, Identifiable, Hashable, Equatable {
     var id: String {
         rawURL ?? ""
     }

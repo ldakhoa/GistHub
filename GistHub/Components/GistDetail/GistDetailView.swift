@@ -233,10 +233,8 @@ struct GistDetailView: View {
             }
         )
         .sheet(isPresented: $showEditGist) {
-            EditGistView(gist: viewModel.gist) {
-                Task {
-                    await viewModel.gist(gistID: gist.id)
-                }
+            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
+                viewModel.gist = gist
             }
         }
         .enableInjection()

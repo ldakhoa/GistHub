@@ -96,7 +96,7 @@ struct GistListsView: View {
                             .foregroundColor(Colors.accent.color)
                     }
                     .sheet(isPresented: $showingNewGistView) {
-                        NewGistView { newGist in
+                        ComposeGistView(style: .createGist) { newGist in
                             viewModel.insert(newGist)
                             selectedGist = newGist
                             showingGistDetail.toggle()

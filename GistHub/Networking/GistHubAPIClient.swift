@@ -55,7 +55,7 @@ protocol GistHubAPIClient {
     func updateGist(
         fromGistID gistID: String,
         description: String?,
-        files: [String: String?]
+        files: [String: File?]
     ) async throws -> Gist
 
     /// Delete a gist.
@@ -114,7 +114,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.updateGist(
             gistID: gistID,
             description: nil,
-            files: [fileName ?? "": content]
+            files: [fileName ?? "": File(content: content)]
         ))
     }
 
@@ -130,7 +130,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     func updateGist(
         fromGistID gistID: String,
         description: String?,
-        files: [String: String?]
+        files: [String: File?]
     ) async throws -> Gist {
         try await session.data(for: API.updateGist(
             gistID: gistID,
@@ -153,7 +153,7 @@ extension DefaultGistHubAPIClient {
         case updateGist(
             gistID: String,
             description: String?,
-            files: [String: String?]
+            files: [String: File?]
         )
         case updateGistDescription(
             gistID: String,
@@ -223,20 +223,12 @@ extension DefaultGistHubAPIClient {
             case let .updateGist(_, description, updatedFiles):
                 struct Request: Codable {
                     let description: String?
-                    let files: [String: FileValue]?
-                    struct FileValue: Codable {
-                        let content: String?
-                    }
-
+                    let files: [String: File?]?
                     func toData() throws -> Data? {
                         return try? JSONEncoder().encode(self)
                     }
                 }
-                var files = [String: Request.FileValue]()
-                for file in updatedFiles {
-                    files[file.key] = Request.FileValue(content: file.value)
-                }
-                let request = Request(description: description, files: files)
+                let request = Request(description: description, files: updatedFiles)
                 return try? request.toData()
 
             case let .updateGistDescription(_, description):
