@@ -164,7 +164,7 @@ struct ComposeGistView: View {
             switch style {
             case .createGist:
                 enableCreateNewGist = !newFiles.isEmpty
-            case .update(let gist):
+            case .update:
                 filesChanged = originalFiles != newFiles
             }
         }

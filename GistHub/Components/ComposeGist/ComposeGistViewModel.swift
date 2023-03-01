@@ -12,7 +12,7 @@ import OrderedCollections
     init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
         self.client = client
     }
-    
+
     @discardableResult
     func createGist(
         description: String? = nil,

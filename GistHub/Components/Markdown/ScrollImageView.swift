@@ -7,7 +7,8 @@
 
 import UIKit
 
-@objc public protocol ImageScrollViewDelegate: UIScrollViewDelegate {
+@objc
+public protocol ImageScrollViewDelegate: UIScrollViewDelegate {
     func imageScrollViewDidChangeOrientation(imageScrollView: ImageScrollView)
 }
 
