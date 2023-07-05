@@ -66,7 +66,7 @@
     {
       "identity" : "networkable",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tphduy/Networkable",
+      "location" : "https://github.com/duytph/Networkable",
       "state" : {
         "revision" : "8e514e65d81a8ed7a67f718e3cc9399ce2094be4",
         "version" : "2.0.0"

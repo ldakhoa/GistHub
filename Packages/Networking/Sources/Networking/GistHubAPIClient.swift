@@ -7,6 +7,7 @@
 
 import Foundation
 import Networkable
+import Models
 
 protocol GistHubAPIClient {
     /// Allows you to add a new gist with one or more files.
@@ -48,14 +49,6 @@ protocol GistHubAPIClient {
     func updateDescription(
         fromGistID gistID: String,
         description: String?
-    ) async throws -> Gist
-
-    /// Update multiple Gist files
-    @discardableResult
-    func updateGist(
-        fromGistID gistID: String,
-        description: String?,
-        files: [String: File?]
     ) async throws -> Gist
 
     /// Delete a gist.
@@ -113,8 +106,8 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     ) async throws -> Gist {
         try await session.data(for: API.updateGist(
             gistID: gistID,
-            description: nil,
-            files: [fileName ?? "": File(content: content)]
+            fileName: fileName,
+            content: content
         ))
     }
 
@@ -123,19 +116,6 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.updateGistDescription(
             gistID: gistID,
             description: description
-        ))
-    }
-
-    @discardableResult
-    func updateGist(
-        fromGistID gistID: String,
-        description: String?,
-        files: [String: File?]
-    ) async throws -> Gist {
-        try await session.data(for: API.updateGist(
-            gistID: gistID,
-            description: description,
-            files: files
         ))
     }
 }
@@ -152,8 +132,8 @@ extension DefaultGistHubAPIClient {
         case gist(gistID: String)
         case updateGist(
             gistID: String,
-            description: String?,
-            files: [String: File?]
+            fileName: String?,
+            content: String?
         )
         case updateGistDescription(
             gistID: String,
@@ -220,15 +200,21 @@ extension DefaultGistHubAPIClient {
                 let request = Request(files: files, description: description, public: `public`)
                 return try? request.toData()
 
-            case let .updateGist(_, description, updatedFiles):
+            case let .updateGist(_, fileName, content):
                 struct Request: Codable {
-                    let description: String?
-                    let files: [String: File?]?
+                    let files: [String: FileValue]?
+
+                    struct FileValue: Codable {
+                        let content: String?
+                    }
+
                     func toData() throws -> Data? {
                         return try? JSONEncoder().encode(self)
                     }
                 }
-                let request = Request(description: description, files: updatedFiles)
+                let content = Request.FileValue(content: content)
+                let files: [String: Request.FileValue] = [fileName ?? "": content]
+                let request = Request(files: files)
                 return try? request.toData()
 
             case let .updateGistDescription(_, description):

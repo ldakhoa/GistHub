@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "styledtextkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/StyledTextKit",
+      "state" : {
+        "revision" : "f4e75310e524797e8e750829e90c3620cb0f8dce",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}
