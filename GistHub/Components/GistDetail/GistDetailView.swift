@@ -25,6 +25,7 @@ struct GistDetailView: View {
     @State private var showToastError = false
     @State private var gistDescription = ""
     @State private var showBrowseFiles = false
+    @State private var showEditGist = false
 
     @EnvironmentObject var userStore: UserStore
 
@@ -148,6 +149,9 @@ struct GistDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     if userStore.user.id == gist.owner?.id {
+                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
+                            showEditGist.toggle()
+                        }
                         makeMenuButton(title: "Edit Description", systemImage: "pencil") {
                             showPlainTextEditorView.toggle()
                         }
@@ -228,6 +232,11 @@ struct GistDetailView: View {
                 self.dismiss()
             }
         )
+        .sheet(isPresented: $showEditGist) {
+            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
+                viewModel.gist = gist
+            }
+        }
         .enableInjection()
     }
 

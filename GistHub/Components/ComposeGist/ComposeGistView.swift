@@ -1,20 +1,22 @@
 //
-//  NewGistView.swift
+//  ComposeGitView.swift
 //  GistHub
 //
-//  Created by Khoa Le on 11/12/2022.
+//  Created by Hung Dao on 27/02/2023.
 //
 
+import Foundation
 import SwiftUI
 import Inject
 import AlertToast
+import OrderedCollections
 
-struct NewGistView: View {
+struct ComposeGistView: View {
     @ObserveInjection private var inject
 
     @Environment(\.dismiss) private var dismiss
 
-    @StateObject private var viewModel = NewGistViewModel()
+    @StateObject private var viewModel = ComposeGistViewModel()
     @State private var description: String = ""
     @State private var presentNewFileAlert = false
     @State private var presentCreateDialog = false
@@ -25,9 +27,25 @@ struct NewGistView: View {
     @State private var files = [String: File]()
     @State private var error = ""
     @State private var showErrorToast = false
-
-    @State var completion: ((Gist) -> Void)?
-
+    @State private var descriptionChanged = false
+    @State private var filesChanged = false
+    var completion: ((Gist) -> Void)?
+    private let style: ComposeGistView.Style
+    private var originalFiles = [String: File]()
+    init(
+        style: ComposeGistView.Style,
+        completion: ((Gist) -> Void)? = nil
+    ) {
+        self.style = style
+        self.completion = completion
+        if case let .update(gist) = style {
+            for file in gist.files ?? [:] {
+                originalFiles[file.key] = File(filename: file.key, content: file.value.content)
+            }
+            _description = State(initialValue: gist.description ?? "")
+            _files = State(initialValue: originalFiles)
+        }
+    }
     var body: some View {
         NavigationStack {
             Form {
@@ -37,11 +55,9 @@ struct NewGistView: View {
                 } header: {
                     Text("Gist Description")
                 }
-
                 Section {
                     ForEach(files.keys.sorted(), id: \.self) { fileName in
                         let file = files[fileName]
-
                         NavigationLink(fileName) {
                             if let language = fileName.getFileExtension() {
                                 if language == "md" || language == "markdown" {
@@ -111,58 +127,51 @@ struct NewGistView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Create a new gist")
+            .navigationTitle(style.navigationTitle)
             .toolbar(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        if enableCreateNewGist {
-                            self.enableCreateNewGist.toggle()
-                        } else {
-                            dismiss()
+                        switch style {
+                        case .createGist:
+                            if enableCreateNewGist {
+                                showCancelConfirmDialog = true
+                            } else {
+                                dismiss()
+                            }
+                        case .update:
+                            if descriptionChanged || filesChanged {
+                                showCancelConfirmDialog = true
+                            } else {
+                                dismiss()
+                            }
                         }
                     }
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Create") {
-                        presentCreateDialog = true
-                    }
-                    .disabled(!enableCreateNewGist)
-                    .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
-                        Button("Create secret gist") {
-                            Task {
-                                do {
-                                    let gist = try await viewModel.createGist(description: description, files: files, public: false)
-                                    dismiss()
-                                    completion!(gist)
-                                } catch let createError {
-                                    error = createError.localizedDescription
-                                    self.showErrorToast.toggle()
-                                }
-                            }
-                        }
-                        Button("Create public gist") {
-                            Task {
-                                do {
-                                    let gist = try await viewModel.createGist(description: description, files: files, public: true)
-                                    dismiss()
-                                    completion!(gist)
-                                } catch let createError {
-                                    error = createError.localizedDescription
-                                    self.showErrorToast.toggle()
-                                }
-                            }
-                        }
-                    } message: {
-                        Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
+                    switch style {
+                    case .createGist:
+                        buildCreateButton()
+                    case .update(let gist):
+                        buildUpdateButton(gistID: gist.id)
                     }
                 }
             }
             .tint(Colors.accent.color)
         }
         .onChange(of: files) { newFiles in
-            self.enableCreateNewGist = !newFiles.isEmpty
+            switch style {
+            case .createGist:
+                enableCreateNewGist = !newFiles.isEmpty
+            case .update:
+                filesChanged = originalFiles != newFiles
+            }
+        }
+        .onChange(of: description) { newDescription in
+            if case .update(let gist) = style {
+                descriptionChanged = gist.description != newDescription
+            }
         }
         .confirmationDialog(
             "Are you sure you want to cancel?",
@@ -177,5 +186,70 @@ struct NewGistView: View {
         }
         .toastError(isPresenting: $showErrorToast, error: error)
         .enableInjection()
+    }
+
+    private func buildUpdateButton(gistID: String) -> some View {
+        Button("Update") {
+            Task {
+                do {
+                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
+                    completion!(gist)
+                    dismiss()
+                } catch let updateError {
+                    error = updateError.localizedDescription
+                    self.showErrorToast.toggle()
+                }
+            }
+        }
+        .disabled(!(filesChanged || descriptionChanged))
+    }
+
+    private func buildCreateButton() -> some View {
+        Button("Create") {
+            presentCreateDialog = true
+        }
+        .disabled(!enableCreateNewGist)
+        .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
+            Button("Create secret gist") {
+                Task {
+                    do {
+                        let gist = try await viewModel.createGist(description: description, files: files, public: false)
+                        dismiss()
+                        completion!(gist)
+                    } catch let createError {
+                        error = createError.localizedDescription
+                        self.showErrorToast.toggle()
+                    }
+                }
+            }
+            Button("Create public gist") {
+                Task {
+                    do {
+                        let gist = try await viewModel.createGist(description: description, files: files, public: true)
+                        dismiss()
+                        completion!(gist)
+                    } catch let createError {
+                        error = createError.localizedDescription
+                        self.showErrorToast.toggle()
+                    }
+                }
+            }
+        } message: {
+            Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
+        }
+    }
+}
+
+extension ComposeGistView {
+    enum Style {
+        case createGist
+        case update(gist: Gist)
+
+        var navigationTitle: String {
+            switch self {
+            case .createGist: return "Create a new gist"
+            case .update: return "Edit gist"
+            }
+        }
     }
 }
