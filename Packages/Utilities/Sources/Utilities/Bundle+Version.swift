@@ -16,7 +16,7 @@ extension Bundle {
         return infoDictionary?["CFBundleVersion"] as? String
     }
 
-    var prettyVersionString: String {
+    public var prettyVersionString: String {
         let version = versionNumber ?? "Unknown"
         let build = buildNumber ?? "0"
         let format = NSLocalizedString("Version %@ (%@)", comment: "")

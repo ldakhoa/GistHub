@@ -10,6 +10,8 @@ import Inject
 import AppAccount
 import Models
 import DesignSystem
+import Editor
+import Utilities
 
 public struct SettingView: View {
     let user: User

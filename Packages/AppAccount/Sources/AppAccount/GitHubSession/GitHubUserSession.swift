@@ -19,10 +19,10 @@ public class GitHubUserSession: NSObject, NSCoding, Identifiable {
         case pat
     }
 
-    let token: String
-    let authMethod: AuthMethod
+    public let token: String
+    public let authMethod: AuthMethod
 
-    var username: String?
+    public var username: String?
 
     public init(
         token: String,

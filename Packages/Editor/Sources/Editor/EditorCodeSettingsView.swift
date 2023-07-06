@@ -8,8 +8,8 @@
 import SwiftUI
 import Inject
 
-struct EditorCodeSettingsView: View {
-    @ObservedObject var codeSettingsStore = CodeSettingsStore()
+public struct EditorCodeSettingsView: View {
+    @ObservedObject private var codeSettingsStore = CodeSettingsStore()
 
     @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
@@ -23,7 +23,9 @@ struct EditorCodeSettingsView: View {
         }
         """
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         List {
             Section {
                 EditorViewRepresentable(content: $codeSample, language: .javaScript, isEditable: true, isSelectable: true)

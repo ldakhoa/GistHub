@@ -20,8 +20,8 @@ let package = Package(
         .package(name: "Networking", path: "../Networking"),
         .package(name: "AppAccount", path: "../AppAccount"),
         .package(name: "Models", path: "../Models"),
-        .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
+        .package(name: "Editor", path: "../Editor"),
     ],
     targets: [
         .target(
@@ -42,7 +42,9 @@ let package = Package(
                 "Networking",
                 "Models",
                 "AppAccount",
-                "DesignSystem"
+                "DesignSystem",
+                "Editor",
+                "Utilities"
             ]
         ),
     ]

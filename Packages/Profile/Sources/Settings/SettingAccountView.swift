@@ -7,6 +7,9 @@
 
 import Inject
 import SwiftUI
+import Models
+import DesignSystem
+import AppAccount
 
 struct SettingAccountView: View {
     @ObserveInjection private var inject
