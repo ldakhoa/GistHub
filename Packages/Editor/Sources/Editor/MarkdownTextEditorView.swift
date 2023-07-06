@@ -46,7 +46,7 @@ public struct MarkdownTextEditorView: View {
 
     // MARK: - Initializer
 
-    init(
+    public init(
         style: Style,
         content: String = "",
         gistID: String? = nil,
@@ -70,7 +70,7 @@ public struct MarkdownTextEditorView: View {
         self.createGistCompletion = createGistCompletion
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             EditorViewRepresentable(content: $content, language: .markdown)
                 .focused($isFocused)
@@ -191,7 +191,7 @@ public struct MarkdownTextEditorView: View {
 }
 
 extension MarkdownTextEditorView {
-    enum Style {
+    public enum Style {
         case createGist
         case changeDescription
         case writeComment

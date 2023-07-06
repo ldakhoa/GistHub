@@ -16,15 +16,13 @@ let package = Package(
         ),
     ],
     dependencies: [
-        // Local package dependencies
         .package(name: "Models", path: "../Models"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Networking", path: "../Networking"),
         .package(name: "Markdown", path: "../Markdown"),
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
-        // Third package dependencies
-        // .package(url: "url", from: "1.0.0"),
+        .package(name: "Editor", path: "../Editor"),
     ],
     targets: [
         .target(
@@ -51,7 +49,8 @@ let package = Package(
                 "Networking",
                 "Markdown",
                 "Environment",
-                "Utilities"
+                "Utilities",
+                "Editor"
             ]
         ),
     ]

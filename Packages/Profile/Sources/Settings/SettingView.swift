@@ -21,6 +21,18 @@ public struct SettingView: View {
     @ObserveInjection private var inject
     @State private var showConfirmationDialog = false
 
+    public init(
+        user: User,
+        sessionManager: GitHubSessionManager,
+        logoutAction: @escaping () -> Void,
+        showConfirmationDialog: Bool = false
+    ) {
+        self.user = user
+        self.sessionManager = sessionManager
+        self.logoutAction = logoutAction
+        self.showConfirmationDialog = showConfirmationDialog
+    }
+
     public var body: some View {
         List {
             Section {

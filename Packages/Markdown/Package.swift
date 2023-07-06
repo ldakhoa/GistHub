@@ -14,6 +14,7 @@ let package = Package(
     dependencies: [
          .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
          .package(url: "https://github.com/ldakhoa/gisthub-cmark-gfm-swift", from: "1.0.2"),
+         .package(url: "https://github.com/ldakhoa/Highlightr", from: "1.0.2"),
          .package(url: "https://github.com/alexaubry/HTMLString", from: "6.0.0"),
          .package(name: "DesignSystem", path: "../DesignSystem"),
          .package(name: "Models", path: "../Models"),
@@ -28,7 +29,8 @@ let package = Package(
                 "HTMLString",
                 "DesignSystem",
                 "Models",
-                "Environment"
+                "Environment",
+                "Highlightr"
             ]
         ),
         .testTarget(

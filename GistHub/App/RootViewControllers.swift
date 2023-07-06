@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Gist
 
 @MainActor
 func homeRootViewController(user: User) -> UIViewController {

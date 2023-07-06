@@ -29,7 +29,8 @@ let package = Package(
             dependencies: [
                 "Networking",
                 "Models",
-                "Settings"
+                "Settings",
+                "DesignSystem"
             ]
         ),
         .testTarget(

@@ -77,12 +77,7 @@ public struct ProfilePage: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 12) {
                 if let avatarURLString = user.avatarURL, let url = URL(string: avatarURLString) {
-                    KFImage
-                        .url(url)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 70, height: 70)
-                        .cornerRadius(35)
+                    GistHubImage(url: url, width: 70, height: 70, cornerRadius: 35)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {

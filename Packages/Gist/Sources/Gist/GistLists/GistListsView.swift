@@ -7,13 +7,12 @@
 
 import SwiftUI
 import Inject
-import Kingfisher
 import Models
 import Environment
 import DesignSystem
 import Utilities
 
-struct GistListsView: View {
+public struct GistListsView: View {
     @ObserveInjection private var inject
     @StateObject private var viewModel = GistListsViewModel()
     @State private var showingNewGistView = false
@@ -27,12 +26,12 @@ struct GistListsView: View {
 
     // MARK: - Initializer
 
-    init(listsMode: GistListsMode, user: User) {
+    public init(listsMode: GistListsMode, user: User) {
         self.listsMode = listsMode
         self.user = user
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             switch viewModel.contentState {
             case .loading:
@@ -140,12 +139,7 @@ private struct GistListDetailView: View {
                         let avatarURLString = gist.owner?.avatarURL,
                         let url = URL(string: avatarURLString)
                     {
-                        KFImage
-                            .url(url)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 24, height: 24)
-                            .cornerRadius(12)
+                        GistHubImage(url: url)
                     }
                     Text(gist.owner?.login ?? "")
                         .font(.subheadline)

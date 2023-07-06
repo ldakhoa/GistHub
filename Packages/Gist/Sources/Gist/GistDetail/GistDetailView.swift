@@ -8,7 +8,7 @@
 import AlertToast
 import SwiftUI
 import Inject
-import Kingfisher
+import DesignSystem
 
 struct GistDetailView: View {
     @ObserveInjection private var inject
@@ -247,12 +247,7 @@ struct GistDetailView: View {
                     let avatarURLString = gist.owner?.avatarURL,
                     let url = URL(string: avatarURLString)
                 {
-                    KFImage
-                        .url(url)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 24, height: 24)
-                        .cornerRadius(12)
+                    GistHubImage(url: url)
                 }
                 Text(gist.owner?.login ?? "")
                     .bold()

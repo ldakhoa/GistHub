@@ -12,15 +12,28 @@ let package = Package(
         ),
     ],
     dependencies: [
-        // Local package dependencies
-        // .package(name: "Package name", path: "../Package name"),
-        // Third package dependencies
-        // .package(url: "url", from: "1.0.0"),
+        .package(name: "Models", path: "../Models"),
+        .package(name: "Environment", path: "../Environment"),
+        .package(name: "Utilities", path: "../Utilities"),
+        .package(
+            url: "https://github.com/simonbs/Runestone",
+            .upToNextMajor(from: "0.2.9")
+        ),
+        .package(
+            url: "https://github.com/simonbs/KeyboardToolbar",
+            .upToNextMajor(from: "0.1.1")
+        ),
     ],
     targets: [
         .target(
             name: "Editor",
-            dependencies: []
+            dependencies: [
+                "Runestone",
+                "Models",
+                "Environment",
+                "Utilities",
+                "KeyboardToolbar"
+            ]
         ),
         .testTarget(
             name: "EditorTests",
