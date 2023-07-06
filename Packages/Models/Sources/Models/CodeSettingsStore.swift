@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Utilities
 
 class CodeSettingsStore: ObservableObject {
     let settings = UserDefaults.standard

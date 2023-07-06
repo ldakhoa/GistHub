@@ -1,12 +1,6 @@
-//
-//  View+AlertToast.swift
-//  GistHub
-//
-//  Created by Khoa Le on 12/01/2023.
-//
-
 import SwiftUI
 import AlertToast
+import DesignSystem
 
 extension View {
     func toastError(

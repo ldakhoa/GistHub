@@ -13,12 +13,16 @@ let package = Package(
     ],
     dependencies: [
          .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
+         .package(url: "https://github.com/ldakhoa/gisthub-cmark-gfm-swift", from: "1.0.2"),
+         .package(url: "https://github.com/alexaubry/HTMLString", from: "6.0.0")
     ],
     targets: [
         .target(
             name: "Markdown",
             dependencies: [
-                "StyledTextKit"
+                "StyledTextKit",
+                .product(name: "cmark-gfm-swift", package: "gisthub-cmark-gfm-swift"),
+                "HTMLString"
             ]
         ),
         .testTarget(

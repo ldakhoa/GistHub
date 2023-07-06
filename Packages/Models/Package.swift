@@ -23,7 +23,8 @@ let package = Package(
         .package(
             url: "https://github.com/simonbs/Runestone",
             .upToNextMajor(from: "0.2.9")
-        )
+        ),
+        .package(name: "Utilities", path: "../Utilities")
     ],
     targets: [
         .target(
@@ -65,7 +66,8 @@ let package = Package(
                 .product(name: "TreeSitterTSXRunestone", package: "treesitterlanguages"),
                 .product(name: "TreeSitterTypeScriptRunestone", package: "treesitterlanguages"),
                 .product(name: "TreeSitterYAMLRunestone", package: "treesitterlanguages"),
-                "Runestone"
+                "Runestone",
+                "Utilities"
             ]
         ),
         .testTarget(

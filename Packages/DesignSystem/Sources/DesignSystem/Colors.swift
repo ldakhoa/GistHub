@@ -1,16 +1,14 @@
-//
-//  Colors.swift
-//  GistHub
-//
-//  Created by Khoa Le on 10/12/2022.
-//
-
+#if canImport(UIKit)
 import UIKit
-import SwiftUI
+#endif
 
-final class Colors {
+#if canImport(SwiftUI)
+import SwiftUI
+#endif
+
+public final class Colors {
     public enum Palette {
-        enum Blue {
+        public enum Blue {
             case blue0
             case blue1
             case blue2
@@ -57,7 +55,7 @@ final class Colors {
             }
         }
 
-        enum Gray {
+        public enum Gray {
             case gray0
             case gray1
             case gray2
@@ -104,7 +102,7 @@ final class Colors {
             }
         }
 
-        enum Green {
+        public enum Green {
             case green0
             case green1
             case green2
@@ -149,7 +147,7 @@ final class Colors {
             }
         }
 
-        enum Pink {
+        public enum Pink {
             case pink0
             case pink1
             case pink2
@@ -196,7 +194,7 @@ final class Colors {
             }
         }
 
-        enum Purple {
+        public enum Purple {
             case purple0
             case purple1
             case purple2
@@ -243,7 +241,7 @@ final class Colors {
             }
         }
 
-        enum Red {
+        public enum Red {
             case red0
             case red1
             case red2
@@ -290,7 +288,7 @@ final class Colors {
             }
         }
 
-        enum Yellow {
+        public enum Yellow {
             case yellow0
             case yellow1
             case yellow2
@@ -337,7 +335,7 @@ final class Colors {
             }
         }
 
-        enum Orange {
+        public enum Orange {
             case orange0
             case orange1
             case orange2
@@ -384,7 +382,7 @@ final class Colors {
             }
         }
 
-        enum Black {
+        public enum Black {
             case black0
             var light: UIColor {
                 switch self {
@@ -401,7 +399,7 @@ final class Colors {
             }
         }
 
-        enum White {
+        public enum White {
             case white0
             var light: UIColor {
                 switch self {
@@ -419,7 +417,7 @@ final class Colors {
         }
     }
 
-    enum MarkdownColorStyle {
+    public enum MarkdownColorStyle {
         static let foreground = UIColor(light: Colors.Palette.Gray.gray9.light, dark: Colors.Palette.Gray.gray1.dark)
         static let accentForeground = Colors.accent
         static let background = UIColor(light: .white, dark: Colors.systemGroupedBackgroundDark)
@@ -427,31 +425,31 @@ final class Colors {
         static let canvasSubtle = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Gray.gray8.dark) // code background
     }
 
-    static var systemGroupedBackgroundDark = UIColor(colorValue: ColorValue(0x1C1C1E))
+    public static var systemGroupedBackgroundDark = UIColor(colorValue: ColorValue(0x1C1C1E))
 
-    static var accent = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark)
-    static var accentDisabled = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark).withAlphaComponent(0.5)
-    static var success = Palette.Green.green5.dynamicColor
-    static var danger = Palette.Red.red5.dynamicColor
-    static var neutralEmphasisPlus = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
-    static var neutralEmphasis = Palette.Gray.gray5.dynamicColor
-    static var listBackground = UIColor.secondarySystemGroupedBackground
+    public static var accent = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark)
+    public static var accentDisabled = UIColor(light: Palette.Blue.blue5.light, dark: Palette.Blue.blue3.dark).withAlphaComponent(0.5)
+    public static var success = Palette.Green.green5.dynamicColor
+    public static var danger = Palette.Red.red5.dynamicColor
+    public static var neutralEmphasisPlus = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
+    public static var neutralEmphasis = Palette.Gray.gray5.dynamicColor
+    public static var listBackground = UIColor.secondarySystemGroupedBackground
 
-    static var buttonBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
-    static var buttonForeground = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
-    static var buttonBorder = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
+    public static var buttonBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
+    public static var buttonForeground = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
+    public static var buttonBorder = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
 
-    static var border = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
+    public static var border = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)
 
-    static let toastBackground = UIColor(light: Colors.Palette.White.white0.light, dark: Colors.Palette.Black.black0.dark)
-    static let errorToastBackground = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Black.black0.dark)
+    public static let toastBackground = UIColor(light: Colors.Palette.White.white0.light, dark: Colors.Palette.Black.black0.dark)
+    public static let errorToastBackground = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Black.black0.dark)
 
-    static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
-    static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
-    static let badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
+    public static let badgeBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
+    public static let badgeForeground = UIColor(light: Palette.Gray.gray6.light, dark: Palette.Gray.gray0.dark)
+    public static let badgeBorder = UIColor(light: Palette.Gray.gray2.light, dark: .clear)
 }
 
-extension UIColor {
+public extension UIColor {
     var color: Color {
         Color(self)
     }

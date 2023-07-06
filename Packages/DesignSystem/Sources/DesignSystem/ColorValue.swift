@@ -5,7 +5,9 @@
 //  Created by Khoa Le on 10/12/2022.
 //
 
+#if canImport(SwiftUI)
 import SwiftUI
+#endif
 
 /// A platform-agnostic representation of a 32-bit RGBA color value.
 public struct ColorValue: Equatable {
