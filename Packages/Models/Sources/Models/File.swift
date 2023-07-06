@@ -43,19 +43,19 @@ import TreeSitterTSXRunestone
 import TreeSitterTypeScriptRunestone
 import TreeSitterYAMLRunestone
 
-struct File: Codable, Identifiable, Hashable, Equatable {
-    var id: String {
+public struct File: Codable, Identifiable, Hashable, Equatable {
+    public var id: String {
         rawURL ?? ""
     }
 
-    let filename: String?
-    let type: String?
-    let language: Language?
-    let rawURL: String?
-    let size: Int?
-    let content: String?
+    public let filename: String?
+    public let type: String?
+    public let language: Language?
+    public let rawURL: String?
+    public let size: Int?
+    public let content: String?
 
-    init(
+    public init(
         filename: String? = nil,
         type: String? = nil,
         language: Language? = nil,
@@ -82,7 +82,7 @@ struct File: Codable, Identifiable, Hashable, Equatable {
 }
 
 extension File {
-    enum Language: String, Codable {
+    public enum Language: String, Codable {
         case astro
         case bash = "shell"
         case c
@@ -120,7 +120,7 @@ extension File {
         case yaml
         case unknown
 
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
             let rawString = try container.decode(String.self)
             if let language = Language(rawValue: rawString.lowercased()) {
@@ -130,7 +130,7 @@ extension File {
             }
         }
 
-        var treeSitterLanguage: TreeSitterLanguage {
+        public var treeSitterLanguage: TreeSitterLanguage {
             switch self {
             case .astro: return .astro
             case .bash: return .bash

@@ -7,11 +7,12 @@
 
 import Foundation
 
-enum GistListsMode {
+// TODO: Move to Gist
+public enum GistListsMode {
     case allGists
     case starred
 
-    var navigationTitle: String {
+    public var navigationTitle: String {
         switch self {
         case .allGists:
             return "All Gists"
@@ -20,7 +21,7 @@ enum GistListsMode {
         }
     }
 
-    var promptSearchText: String {
+    public var promptSearchText: String {
         switch self {
         case .allGists:
             return "Search Gists"

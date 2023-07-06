@@ -8,26 +8,26 @@
 import Foundation
 import OrderedCollections
 
-struct Gist: Codable, Identifiable, Equatable, Hashable {
-    let url: String?
-    let forksURL: String?
-    let commitsURL: String?
-    let id: String
-    let nodeID: String?
-    let gitPullURL: String?
-    let gitPushURL: String?
-    let htmlURL: String?
-    let files: OrderedDictionary<String, File>?
-    let `public`: Bool?
-    let createdAt: Date?
-    let updatedAt: Date?
-    let description: String?
-    let comments: Int?
-    let commentsURL: String?
-    let owner: User?
-    let truncated: Bool?
+public struct Gist: Codable, Identifiable, Equatable, Hashable {
+    public let url: String?
+    public let forksURL: String?
+    public let commitsURL: String?
+    public let id: String
+    public let nodeID: String?
+    public let gitPullURL: String?
+    public let gitPushURL: String?
+    public let htmlURL: String?
+    public let files: OrderedDictionary<String, File>?
+    public let `public`: Bool?
+    public let createdAt: Date?
+    public let updatedAt: Date?
+    public let description: String?
+    public let comments: Int?
+    public let commentsURL: String?
+    public let owner: User?
+    public let truncated: Bool?
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.url = try container.decodeIfPresent(String.self, forKey: .url)
         self.forksURL = try container.decodeIfPresent(String.self, forKey: .forksURL)
@@ -68,16 +68,16 @@ struct Gist: Codable, Identifiable, Equatable, Hashable {
         case truncated = "truncated"
     }
 
-    static func == (lhs: Gist, rhs: Gist) -> Bool {
+    public static func == (lhs: Gist, rhs: Gist) -> Bool {
         lhs.id == rhs.id
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
 
-extension OrderedDictionary {
+private extension OrderedDictionary {
     var fileName: String? {
         if let fileName = self.keys.first as? String {
             return fileName

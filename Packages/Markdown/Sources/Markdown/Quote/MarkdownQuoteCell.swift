@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DesignSystem
 
 final class MarkdownQuoteCell: UICollectionViewCell {
     static let identifier = "MarkdownQuoteCell"

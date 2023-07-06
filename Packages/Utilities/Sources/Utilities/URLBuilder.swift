@@ -7,44 +7,44 @@
 
 import Foundation
 
-final class URLBuilder {
+public final class URLBuilder {
     private var components = URLComponents()
     private var pathComponents = [String]()
 
-    init(host: String, scheme: String) {
+    public init(host: String, scheme: String) {
         components.host = host
         components.scheme = scheme
     }
 
-    convenience init(host: String, https: Bool = true) {
+    public convenience init(host: String, https: Bool = true) {
         self.init(host: host, scheme: https ? "https" : "http")
     }
 
-    static func github() -> URLBuilder {
+    public static func github() -> URLBuilder {
         return URLBuilder(host: "github.com", https: true)
     }
 
     @discardableResult
-    func add(path: LosslessStringConvertible) -> URLBuilder {
+    public func add(path: LosslessStringConvertible) -> URLBuilder {
         pathComponents.append(String(describing: path))
         return self
     }
 
     @discardableResult
-    func add(paths: [LosslessStringConvertible]) -> URLBuilder {
+    public func add(paths: [LosslessStringConvertible]) -> URLBuilder {
         paths.forEach { self.add(path: $0) }
         return self
     }
 
     @discardableResult
-    func add(item: String, value: LosslessStringConvertible) -> URLBuilder {
+    public func add(item: String, value: LosslessStringConvertible) -> URLBuilder {
         var items = components.queryItems ?? []
         items.append(URLQueryItem(name: item, value: String(describing: value)))
         components.queryItems = items
         return self
     }
 
-    var url: URL? {
+    public var url: URL? {
         var components = self.components
         if !pathComponents.isEmpty {
             components.path = "/" + pathComponents.joined(separator: "/")

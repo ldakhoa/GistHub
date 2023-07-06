@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum ThemeSetting: String, CaseIterable, Hashable {
+public enum ThemeSetting: String, CaseIterable, Hashable {
     case tomorrow
     case tomorrowNight
 
-    func makeTheme() -> EditorTheme {
+    public func makeTheme() -> EditorTheme {
         switch self {
         case .tomorrow:
             return TomorrowTheme()

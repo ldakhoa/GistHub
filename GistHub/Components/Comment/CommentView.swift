@@ -8,6 +8,9 @@
 import SwiftUI
 import Kingfisher
 import Inject
+import Models
+import DesignSystem
+import Markdown
 
 struct CommentView: View {
     private let comment: Comment

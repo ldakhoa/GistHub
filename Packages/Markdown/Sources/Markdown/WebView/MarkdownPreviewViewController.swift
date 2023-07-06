@@ -10,7 +10,7 @@ import WebKit
 import cmark_gfm_swift
 import SwiftUI
 
-final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate {
+public final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate {
 
     private(set) lazy var webView: WKWebView = {
         let view = WKWebView()
@@ -26,7 +26,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
 
     var scrollPercentage: Float?
 
-    init(markdown: String, mode: Mode) {
+    public init(markdown: String, mode: Mode) {
         self.markdown = markdown
         self.mode = mode
         super.init(nibName: nil, bundle: nil)
@@ -36,7 +36,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
+    public override func loadView() {
         super.loadView()
 
         view.addSubview(webView)
@@ -48,7 +48,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         ])
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(
@@ -61,7 +61,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         load(markdown: markdown)
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
@@ -95,7 +95,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
 
     // MARK: - WKNavigationDelegate
 
-    func webView(
+    public func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
     ) async -> WKNavigationActionPolicy {
@@ -105,7 +105,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
         return .allow
     }
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.evaluateJavaScript("document.documentElement.scrollHeight") { (height, _) in
             guard
                 let height = height as? Float,
@@ -122,7 +122,7 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
 
     // MARK: - UIScrollViewDelegate
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if mode == .preview {
             self.scrollPercentage = Float(scrollView.contentOffset.y / scrollView.contentSize.height)
         }
@@ -130,27 +130,27 @@ final class MarkdownPreviewViewController: UIViewController, WKNavigationDelegat
 }
 
 extension MarkdownPreviewViewController {
-    enum Mode {
+    public enum Mode {
         case preview
         case editPreview
     }
 }
 
-struct MarkdownPreviewView: UIViewControllerRepresentable {
+public struct MarkdownPreviewView: UIViewControllerRepresentable {
     typealias UIViewControllerType = MarkdownPreviewViewController
 
     let markdown: String
 
-    init(markdown: String) {
+    public init(markdown: String) {
         self.markdown = markdown
     }
 
-    func makeUIViewController(context: Context) -> MarkdownPreviewViewController {
+    public func makeUIViewController(context: Context) -> MarkdownPreviewViewController {
         let controller = MarkdownPreviewViewController(markdown: markdown, mode: .preview)
         return controller
     }
 
-    func updateUIViewController(
+    public func updateUIViewController(
         _ uiViewController: MarkdownPreviewViewController,
         context: Context
     ) {

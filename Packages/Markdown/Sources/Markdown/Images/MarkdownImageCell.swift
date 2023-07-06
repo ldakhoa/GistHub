@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import DesignSystem
 
 protocol MarkdownImageCellDelegate: AnyObject {
     func didTapImage(image: UIImage, animatedImageData: Data?)

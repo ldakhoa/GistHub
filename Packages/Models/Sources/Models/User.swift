@@ -7,29 +7,29 @@
 
 import Foundation
 
-struct User: Codable {
-    let login: String?
-    let id: Int?
-    let nodeID: String?
-    let avatarURL: String?
-    let gravatarID: String?
-    let url: String?
-    let htmlURL: String?
-    let gistsURL: String?
-    let starredURL: String?
-    let reposURL: String?
-    let eventsURL: String?
-    let receivedEventsURL: String?
-    let type: String?
-    let siteAdmin: Bool?
-    let name: String?
-    let location: String?
-    let company: String?
-    let followers: Int?
-    let following: Int?
-    let email: String?
-    let bio: String?
-    let twitterUsername: String?
+public struct User: Codable {
+    public let login: String?
+    public let id: Int?
+    public let nodeID: String?
+    public let avatarURL: String?
+    public let gravatarID: String?
+    public let url: String?
+    public let htmlURL: String?
+    public let gistsURL: String?
+    public let starredURL: String?
+    public let reposURL: String?
+    public let eventsURL: String?
+    public let receivedEventsURL: String?
+    public let type: String?
+    public let siteAdmin: Bool?
+    public let name: String?
+    public let location: String?
+    public let company: String?
+    public let followers: Int?
+    public let following: Int?
+    public let email: String?
+    public let bio: String?
+    public let twitterUsername: String?
 
     enum CodingKeys: String, CodingKey {
         case login = "login"
@@ -57,8 +57,8 @@ struct User: Codable {
     }
 }
 
-class UserStore: ObservableObject {
-    var user: User
+public class UserStore: ObservableObject {
+    public var user: User
 
     init(user: User) {
         self.user = user

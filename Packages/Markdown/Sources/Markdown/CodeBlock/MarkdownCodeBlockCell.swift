@@ -7,6 +7,7 @@
 
 import UIKit
 import StyledTextKit
+import DesignSystem
 
 final class MarkdownCodeBlockCell: UICollectionViewCell {
     static let identifier = "MarkdownCodeBlockCell"

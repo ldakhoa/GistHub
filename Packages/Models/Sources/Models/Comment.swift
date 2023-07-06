@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct Comment: Codable {
-    let url: String
-    let id: Int?
-    let nodeID: String?
-    let user: User
-    let authorAssociation: String?
-    let createdAt: Date?
-    let updatedAt: Date?
-    let body: String?
+public struct Comment: Codable {
+    public let url: String
+    public let id: Int?
+    public let nodeID: String?
+    public let user: User
+    public let authorAssociation: String?
+    public let createdAt: Date?
+    public let updatedAt: Date?
+    public let body: String?
 
     enum CodingKeys: String, CodingKey {
         case url
@@ -30,7 +30,7 @@ struct Comment: Codable {
 }
 
 extension Comment: Equatable {
-    static func == (lhs: Comment, rhs: Comment) -> Bool {
+    public static func == (lhs: Comment, rhs: Comment) -> Bool {
         lhs.id == rhs.id
     }
 }

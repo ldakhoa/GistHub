@@ -7,6 +7,8 @@
 
 import UIKit
 import StyledTextKit
+import DesignSystem
+import Utilities
 
 extension StyledTextBuilder {
     func addCheckbox(checked: Bool, range: NSRange, viewerCanUpdate: Bool) {

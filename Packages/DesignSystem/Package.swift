@@ -11,10 +11,15 @@ let package = Package(
             targets: ["DesignSystem"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/elai950/AlertToast", from: "1.3.9")
+    ],
     targets: [
         .target(
             name: "DesignSystem",
-            dependencies: []
+            dependencies: [
+                "AlertToast"
+            ]
         )
     ]
 )

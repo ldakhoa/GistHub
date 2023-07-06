@@ -9,12 +9,15 @@ import UIKit
 import Runestone
 import SwiftUI
 import KeyboardToolbar
+import Models
+import Environment
+import Utilities
 
-protocol EditorViewControllerDelegate: AnyObject {
+public protocol EditorViewControllerDelegate: AnyObject {
     func textViewDidChange(text: String)
 }
 
-final class EditorViewController: UIViewController {
+public final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
         let textView = TextView.makeConfigured(
             usingSettings: .standard,
@@ -40,9 +43,9 @@ final class EditorViewController: UIViewController {
     private let language: File.Language
     private var markdownPreviewScrollPercentage: Float = 0
 
-    weak var delegate: EditorViewControllerDelegate?
+    public weak var delegate: EditorViewControllerDelegate?
 
-    init(
+    public init(
         content: Binding<String>,
         isEditable: Bool,
         isSelectable: Bool = true,
@@ -59,7 +62,7 @@ final class EditorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
+    public override func loadView() {
         super.loadView()
 
         view.addSubview(textView)
@@ -77,7 +80,7 @@ final class EditorViewController: UIViewController {
         ])
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         if language == .markdown {
@@ -122,7 +125,7 @@ final class EditorViewController: UIViewController {
         )
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.userInterfaceStyle == .dark {
             textView.applyTheme(TomorrowNightTheme())
         } else {
@@ -273,7 +276,7 @@ final class EditorViewController: UIViewController {
 }
 
 extension EditorViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yPos = scrollView.contentOffset.y
         let height = textView.contentSize.height
 
@@ -283,12 +286,12 @@ extension EditorViewController: UIScrollViewDelegate {
 }
 
 extension EditorViewController: TextViewDelegate {
-    func textViewDidChange(_ textView: TextView) {
+    public func textViewDidChange(_ textView: TextView) {
         delegate?.textViewDidChange(text: textView.text)
         setupKeyboardTools()
     }
 
-    func textView(
+    public func textView(
         _ textView: TextView,
         canReplaceTextIn highlightedRange: HighlightedRange
     ) -> Bool {

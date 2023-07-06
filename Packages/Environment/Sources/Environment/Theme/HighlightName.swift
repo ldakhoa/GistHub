@@ -4,7 +4,7 @@ import Foundation
 private var previousUnrecognizedHighlightNames: [String] = []
 #endif
 
-enum HighlightName: String {
+public enum HighlightName: String {
     case comment
     case function
     case keyword

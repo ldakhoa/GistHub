@@ -8,65 +8,65 @@
 import Foundation
 import Utilities
 
-class CodeSettingsStore: ObservableObject {
-    let settings = UserDefaults.standard
+public class CodeSettingsStore: ObservableObject {
+    public let settings = UserDefaults.standard
 
-    @Published var text: String = UserDefaults.standard.string(forKey: Key.text) ?? "" {
+    @Published public var text: String = UserDefaults.standard.string(forKey: Key.text) ?? "" {
         didSet {
             settings.text = text
         }
     }
 
-    @Published var showLineNumbers: Bool = UserDefaults.standard.bool(forKey: Key.showLineNumbers) {
+    @Published public var showLineNumbers: Bool = UserDefaults.standard.bool(forKey: Key.showLineNumbers) {
         didSet {
             settings.showLineNumbers = showLineNumbers
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var showInvisibleCharacters: Bool = UserDefaults.standard.bool(forKey: Key.showInvisibleCharacters) {
+    @Published public var showInvisibleCharacters: Bool = UserDefaults.standard.bool(forKey: Key.showInvisibleCharacters) {
         didSet {
             settings.showInvisibleCharacters = showInvisibleCharacters
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var wrapLines: Bool = UserDefaults.standard.bool(forKey: Key.wrapLines) {
+    @Published public var wrapLines: Bool = UserDefaults.standard.bool(forKey: Key.wrapLines) {
         didSet {
             settings.wrapLines = wrapLines
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var showTabs: Bool = UserDefaults.standard.bool(forKey: Key.showTabs) {
+    @Published public var showTabs: Bool = UserDefaults.standard.bool(forKey: Key.showTabs) {
         didSet {
             settings.showTabs = showTabs
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var showSpaces: Bool = UserDefaults.standard.bool(forKey: Key.showSpaces) {
+    @Published public var showSpaces: Bool = UserDefaults.standard.bool(forKey: Key.showSpaces) {
         didSet {
             settings.showSpaces = showSpaces
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var highlightSelectedLine: Bool = UserDefaults.standard.bool(forKey: Key.highlightSelectedLine) {
+    @Published public var highlightSelectedLine: Bool = UserDefaults.standard.bool(forKey: Key.highlightSelectedLine) {
         didSet {
             settings.highlightSelectedLine = highlightSelectedLine
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var showPageGuide: Bool = UserDefaults.standard.bool(forKey: Key.showPageGuide) {
+    @Published public var showPageGuide: Bool = UserDefaults.standard.bool(forKey: Key.showPageGuide) {
         didSet {
             settings.showPageGuide = showPageGuide
             NotificationCenter.default.post(name: .textViewShouldUpdateSettings, object: nil)
         }
     }
 
-    @Published var forceDarkTheme: Bool = UserDefaults.standard.bool(forKey: Key.darkTheme) {
+    @Published public var forceDarkTheme: Bool = UserDefaults.standard.bool(forKey: Key.darkTheme) {
         didSet {
             settings.forceDarkTheme = forceDarkTheme
             settings.theme = forceDarkTheme ? .tomorrowNight : .tomorrow
@@ -89,7 +89,7 @@ enum Key {
 }
 
 extension UserDefaults {
-    var text: String? {
+    public var text: String? {
         get {
             return string(forKey: Key.text)
         }
@@ -97,7 +97,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.text)
         }
     }
-    var showLineNumbers: Bool {
+    public var showLineNumbers: Bool {
         get {
             return bool(forKey: Key.showLineNumbers)
         }
@@ -105,7 +105,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.showLineNumbers)
         }
     }
-    var showInvisibleCharacters: Bool {
+    public var showInvisibleCharacters: Bool {
         get {
             return bool(forKey: Key.showInvisibleCharacters)
         }
@@ -113,7 +113,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.showInvisibleCharacters)
         }
     }
-    var showTabs: Bool {
+    public var showTabs: Bool {
         get {
             return bool(forKey: Key.showTabs)
         }
@@ -121,7 +121,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.showTabs)
         }
     }
-    var showSpaces: Bool {
+    public var showSpaces: Bool {
         get {
             return bool(forKey: Key.showSpaces)
         }
@@ -129,7 +129,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.showSpaces)
         }
     }
-    var wrapLines: Bool {
+    public var wrapLines: Bool {
         get {
             return bool(forKey: Key.wrapLines)
         }
@@ -137,7 +137,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.wrapLines)
         }
     }
-    var highlightSelectedLine: Bool {
+    public var highlightSelectedLine: Bool {
         get {
             return bool(forKey: Key.highlightSelectedLine)
         }
@@ -145,7 +145,7 @@ extension UserDefaults {
             set(newValue, forKey: Key.highlightSelectedLine)
         }
     }
-    var showPageGuide: Bool {
+    public var showPageGuide: Bool {
         get {
             return bool(forKey: Key.showPageGuide)
         }
@@ -154,7 +154,7 @@ extension UserDefaults {
         }
     }
 
-    var forceDarkTheme: Bool {
+    public var forceDarkTheme: Bool {
         get {
             return bool(forKey: Key.darkTheme)
         }
@@ -163,7 +163,7 @@ extension UserDefaults {
         }
     }
 
-    var theme: ThemeSetting {
+    public var theme: ThemeSetting {
         get {
             if let rawValue = string(forKey: Key.theme), let setting = ThemeSetting(rawValue: rawValue) {
                 return setting
@@ -176,7 +176,7 @@ extension UserDefaults {
         }
     }
 
-    func registerDefaults() {
+    public func registerDefaults() {
         register(defaults: [
             Key.showLineNumbers: true,
             Key.wrapLines: false,

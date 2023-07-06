@@ -67,7 +67,7 @@ public final class Colors {
             case gray8
             case gray9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .gray0: return UIColor(colorValue: ColorValue(0xf6f8fa))
                 case .gray1: return UIColor(colorValue: ColorValue(0xeaeef2))
@@ -82,7 +82,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .gray0: return UIColor(colorValue: ColorValue(0xcdd9e5))
                 case .gray1: return UIColor(colorValue: ColorValue(0xadbac7))
@@ -97,7 +97,7 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -114,7 +114,7 @@ public final class Colors {
             case green8
             case green9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .green0: return UIColor(colorValue: ColorValue(0xdafbe1))
                 case .green1: return UIColor(colorValue: ColorValue(0xaceebb))
@@ -128,7 +128,7 @@ public final class Colors {
                 case .green9: return UIColor(colorValue: ColorValue(0x002d11))
                 }
             }
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .green0: return UIColor(colorValue: ColorValue(0xb4f1b4))
                 case .green1: return UIColor(colorValue: ColorValue(0x8ddb8c))
@@ -142,7 +142,7 @@ public final class Colors {
                 case .green9: return UIColor(colorValue: ColorValue(0x113417))
                 }
             }
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -159,7 +159,7 @@ public final class Colors {
             case pink8
             case pink9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .pink0: return UIColor(colorValue: ColorValue(0xffeff7))
                 case .pink1: return UIColor(colorValue: ColorValue(0xffd3eb))
@@ -174,7 +174,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .pink0: return UIColor(colorValue: ColorValue(0xffd7eb))
                 case .pink1: return UIColor(colorValue: ColorValue(0xffb3d8))
@@ -189,7 +189,7 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -206,7 +206,7 @@ public final class Colors {
             case purple8
             case purple9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .purple0: return UIColor(colorValue: ColorValue(0xfbefff))
                 case .purple1: return UIColor(colorValue: ColorValue(0xecd8ff))
@@ -221,7 +221,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .purple0: return UIColor(colorValue: ColorValue(0xeedcff))
                 case .purple1: return UIColor(colorValue: ColorValue(0xdcbdfb))
@@ -236,7 +236,7 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -253,7 +253,7 @@ public final class Colors {
             case red8
             case red9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .red0: return UIColor(colorValue: ColorValue(0xffebe9))
                 case .red1: return UIColor(colorValue: ColorValue(0xffcecb))
@@ -268,7 +268,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .red0: return UIColor(colorValue: ColorValue(0xffd8d3))
                 case .red1: return UIColor(colorValue: ColorValue(0xffb8b0))
@@ -283,7 +283,7 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -300,7 +300,7 @@ public final class Colors {
             case yellow8
             case yellow9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .yellow0: return UIColor(colorValue: ColorValue(0xfff8c5))
                 case .yellow1: return UIColor(colorValue: ColorValue(0xfae17d))
@@ -315,7 +315,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .yellow0: return UIColor(colorValue: ColorValue(0xfbe090))
                 case .yellow1: return UIColor(colorValue: ColorValue(0xeac55f))
@@ -330,7 +330,7 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
@@ -347,7 +347,7 @@ public final class Colors {
             case orange8
             case orange9
 
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .orange0: return UIColor(colorValue: ColorValue(0xfff1e5))
                 case .orange1: return UIColor(colorValue: ColorValue(0xffd8b5))
@@ -362,7 +362,7 @@ public final class Colors {
                 }
             }
 
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .orange0: return UIColor(colorValue: ColorValue(0xffddb0))
                 case .orange1: return UIColor(colorValue: ColorValue(0xffbc6f))
@@ -377,52 +377,52 @@ public final class Colors {
                 }
             }
 
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
 
         public enum Black {
             case black0
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .black0: return UIColor(colorValue: ColorValue(0x1b1f24))
                 }
             }
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .black0: return UIColor(colorValue: ColorValue(0x1c2128))
                 }
             }
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
 
         public enum White {
             case white0
-            var light: UIColor {
+            public var light: UIColor {
                 switch self {
                 case .white0: return UIColor.white
                 }
             }
-            var dark: UIColor {
+            public var dark: UIColor {
                 switch self {
                 case .white0: return UIColor(colorValue: ColorValue(0xcdd9e5))
                 }
             }
-            var dynamicColor: UIColor {
+            public var dynamicColor: UIColor {
                 UIColor(light: self.light, dark: self.dark)
             }
         }
     }
 
     public enum MarkdownColorStyle {
-        static let foreground = UIColor(light: Colors.Palette.Gray.gray9.light, dark: Colors.Palette.Gray.gray1.dark)
-        static let accentForeground = Colors.accent
-        static let background = UIColor(light: .white, dark: Colors.systemGroupedBackgroundDark)
-        static let mutedForeground = UIColor(light: Colors.Palette.Gray.gray6.light, dark: Colors.Palette.Gray.gray3.dark) // quote
-        static let canvasSubtle = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Gray.gray8.dark) // code background
+        public static let foreground = UIColor(light: Colors.Palette.Gray.gray9.light, dark: Colors.Palette.Gray.gray1.dark)
+        public static let accentForeground = Colors.accent
+        public static let background = UIColor(light: .white, dark: Colors.systemGroupedBackgroundDark)
+        public static let mutedForeground = UIColor(light: Colors.Palette.Gray.gray6.light, dark: Colors.Palette.Gray.gray3.dark) // quote
+        public static let canvasSubtle = UIColor(light: Colors.Palette.Gray.gray0.light, dark: Colors.Palette.Gray.gray8.dark) // code background
     }
 
     public static var systemGroupedBackgroundDark = UIColor(colorValue: ColorValue(0x1C1C1E))

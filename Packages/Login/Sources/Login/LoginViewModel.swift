@@ -8,6 +8,9 @@
 import AuthenticationServices
 import SwiftUI
 import Combine
+import AppAccount
+import Networking
+import Utilities
 
 protocol LoginDelegate: AnyObject {
     func finishLogin(token: String, authMethod: GitHubUserSession.AuthMethod, username: String)

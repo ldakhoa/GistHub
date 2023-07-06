@@ -7,14 +7,14 @@
 
 import Foundation
 
-class GitHubUserSession: NSObject, NSCoding, Identifiable {
-    enum Keys {
+public class GitHubUserSession: NSObject, NSCoding, Identifiable {
+    public enum Keys {
         static let token = "token"
         static let authMethod = "authMethod"
         static let username = "username"
     }
 
-    enum AuthMethod: String {
+    public enum AuthMethod: String {
         case oauth
         case pat
     }
@@ -34,7 +34,7 @@ class GitHubUserSession: NSObject, NSCoding, Identifiable {
         self.username = username
     }
 
-    convenience required init?(coder: NSCoder) {
+    convenience required public init?(coder: NSCoder) {
         guard let token = coder.decodeObject(forKey: Keys.token) as? String else { return nil }
         let storedAuthMethod = coder.decodeObject(forKey: Keys.authMethod) as? String
         let authMethod = storedAuthMethod.flatMap(AuthMethod.init) ?? .oauth
@@ -46,7 +46,7 @@ class GitHubUserSession: NSObject, NSCoding, Identifiable {
         )
     }
 
-    func encode(with coder: NSCoder) {
+    public func encode(with coder: NSCoder) {
         coder.encode(token, forKey: Keys.token)
         coder.encode(authMethod.rawValue, forKey: Keys.authMethod)
         coder.encode(username, forKey: Keys.username)

@@ -5,9 +5,9 @@
 //  Created by Khoa Le on 16/12/2022.
 //
 
-import AlertToast
 import SwiftUI
 import Inject
+import DesignSystem
 
 struct LoginView: View {
     @ObserveInjection private var inject

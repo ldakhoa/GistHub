@@ -13,7 +13,7 @@ public struct MarkdownUI: UIViewControllerRepresentable {
     let markdownHeight: Binding<CGFloat>?
     let mode: MarkdownViewController.Mode
 
-    init(
+    public init(
         markdown: String,
         markdownHeight: Binding<CGFloat>? = nil,
         mode: MarkdownViewController.Mode = .file

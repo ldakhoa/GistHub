@@ -7,6 +7,7 @@
 
 import UIKit
 import StyledTextKit
+import DesignSystem
 
 final class MarkdownCodeBlockModel: NSObject, BlockNode {
     var identifier: String {

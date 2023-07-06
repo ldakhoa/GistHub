@@ -7,6 +7,7 @@
 
 import UIKit
 import StyledTextKit
+import DesignSystem
 
 extension StyledTextBuilder {
     static func markdownBase() -> StyledTextBuilder {

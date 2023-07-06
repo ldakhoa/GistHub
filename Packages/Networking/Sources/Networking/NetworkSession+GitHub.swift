@@ -1,7 +1,7 @@
 import Foundation
 import Networkable
 
-extension NetworkSession {
+public extension NetworkSession {
     static var github: NetworkSession {
         buildSession(urlString: "https://api.github.com")
     }

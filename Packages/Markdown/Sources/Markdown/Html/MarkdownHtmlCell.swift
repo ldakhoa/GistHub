@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import DesignSystem
 
 protocol MarkdownHtmlCellDelegate: AnyObject {
     func webViewDidResize(cell: MarkdownHtmlCell, html: String, cellWidth: CGFloat, size: CGSize)

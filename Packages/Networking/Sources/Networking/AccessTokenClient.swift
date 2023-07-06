@@ -8,13 +8,15 @@
 import Foundation
 import Combine
 import Networkable
+import Models
+import Environment
 
-struct AccessTokenUser: Codable {
+public struct AccessTokenUser: Codable {
     let token: String
     let username: String
 }
 
-protocol AccessTokenClient {
+public protocol AccessTokenClient {
     func requestAccessToken(
         code: String,
         promise: @escaping (Result<AccessTokenUser, Error>) -> Void
@@ -23,14 +25,14 @@ protocol AccessTokenClient {
     func verifyPersonalAccessTokenRequest(token: String) async throws -> User
 }
 
-struct DefaultAccessTokenClient: AccessTokenClient {
+public struct DefaultAccessTokenClient: AccessTokenClient {
     private let session: NetworkableSession
 
-    init(session: NetworkableSession = NetworkSession.accessToken) {
+    public init(session: NetworkableSession = NetworkSession.accessToken) {
         self.session = session
     }
 
-    func requestAccessToken(
+    public func requestAccessToken(
         code: String,
         promise: @escaping (Result<AccessTokenUser, Error>) -> Void
     ) {
@@ -56,7 +58,7 @@ struct DefaultAccessTokenClient: AccessTokenClient {
         }
     }
 
-    func verifyPersonalAccessTokenRequest(token: String) async throws -> User {
+    public func verifyPersonalAccessTokenRequest(token: String) async throws -> User {
         try await session.data(
             for: API.user(token: token),
             decoder: JSONDecoder())

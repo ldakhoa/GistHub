@@ -7,6 +7,7 @@
 
 import UIKit
 import StyledTextKit
+import DesignSystem
 
 protocol MarkdownViewControllerDelegate: AnyObject {
     func collectionViewDidUpdateHeight(height: CGFloat)

@@ -1,9 +1,8 @@
 import SwiftUI
 import AlertToast
-import DesignSystem
 
 extension View {
-    func toastError(
+    public func toastError(
         isPresenting: Binding<Bool>,
         error: String,
         displayMode: AlertToast.DisplayMode = .banner(.pop),

@@ -9,6 +9,7 @@ import UIKit
 import StyledTextKit
 import cmark_gfm_swift
 import HTMLString
+import DesignSystem
 
 private struct CMarkOptions {
     let contentSizeCategory: UIContentSizeCategory
