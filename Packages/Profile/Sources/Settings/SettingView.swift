@@ -7,8 +7,11 @@
 
 import SwiftUI
 import Inject
+import AppAccount
+import Models
+import DesignSystem
 
-struct SettingView: View {
+public struct SettingView: View {
     let user: User
     let sessionManager: GitHubSessionManager
     let logoutAction: () -> Void
@@ -16,7 +19,7 @@ struct SettingView: View {
     @ObserveInjection private var inject
     @State private var showConfirmationDialog = false
 
-    var body: some View {
+    public var body: some View {
         List {
             Section {
                 NavigationLink("Manage Accounts") {

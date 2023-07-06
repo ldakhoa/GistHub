@@ -10,7 +10,7 @@ import Networkable
 import Models
 import AppAccount
 
-protocol CommentAPIClient {
+public protocol CommentAPIClient {
     /// Get comments of the gist.
     func comments(gistID: String) async throws -> [Comment]
 
@@ -24,26 +24,26 @@ protocol CommentAPIClient {
     func deleteComment(gistID: String, commentID: Int) async throws
 }
 
-final class DefaultCommentAPIClient: CommentAPIClient {
+public final class DefaultCommentAPIClient: CommentAPIClient {
     private let session: NetworkSession
 
-    init(session: NetworkSession = .github) {
+    public init(session: NetworkSession = .github) {
         self.session = session
     }
 
-    func comments(gistID: String) async throws -> [Comment] {
+    public func comments(gistID: String) async throws -> [Comment] {
         try await session.data(for: API.comments(gistID: gistID))
     }
 
-    func createComment(gistID: String, body: String) async throws -> Comment {
+    public func createComment(gistID: String, body: String) async throws -> Comment {
         try await session.data(for: API.createComment(gistID: gistID, body: body))
     }
 
-    func updateComment(gistID: String, commentID: Int, body: String) async throws -> Comment {
+    public func updateComment(gistID: String, commentID: Int, body: String) async throws -> Comment {
         try await session.data(for: API.updateComment(gistID: gistID, commentID: commentID, body: body))
     }
 
-    func deleteComment(gistID: String, commentID: Int) async throws {
+    public func deleteComment(gistID: String, commentID: Int) async throws {
         try await session.data(for: API.deleteComment(gistID: gistID, commentID: commentID))
     }
 }

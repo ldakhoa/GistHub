@@ -6,6 +6,8 @@
 //
 
 import Combine
+import Networking
+import Models
 
 @MainActor final class GistDetailViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading

@@ -10,6 +10,8 @@ import SwiftUI
 import Inject
 import AlertToast
 import OrderedCollections
+import Models
+import DesignSystem
 
 struct ComposeGistView: View {
     @ObserveInjection private var inject

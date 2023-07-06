@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Models
+import Networking
 
-@MainActor final class CommentViewModel: ObservableObject {
+@MainActor
+public final class CommentViewModel: ObservableObject {
     @Published var showLoading = false
     @Published var comments = [Comment]()
     @Published var contentState: ContentState = .loading

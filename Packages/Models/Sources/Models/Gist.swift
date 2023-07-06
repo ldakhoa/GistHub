@@ -77,8 +77,8 @@ public struct Gist: Codable, Identifiable, Equatable, Hashable {
     }
 }
 
-private extension OrderedDictionary {
-    var fileName: String? {
+extension OrderedDictionary {
+    public var fileName: String? {
         if let fileName = self.keys.first as? String {
             return fileName
         }

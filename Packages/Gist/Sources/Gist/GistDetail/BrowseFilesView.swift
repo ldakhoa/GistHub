@@ -7,8 +7,11 @@
 
 import SwiftUI
 import Inject
+import DesignSystem
+import Models
+import Environment
 
-struct BrowseFilesView: View {
+public struct BrowseFilesView: View {
     @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = ViewModel()
@@ -18,7 +21,7 @@ struct BrowseFilesView: View {
     let gist: Gist
     let dismissAction: () -> Void
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             ZStack {
                 switch viewModel.contentState {

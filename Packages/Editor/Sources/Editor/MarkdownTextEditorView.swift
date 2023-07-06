@@ -12,7 +12,7 @@ import Models
 import DesignSystem
 
 /// A view that uses for write comments and descriptions.
-struct MarkdownTextEditorView: View {
+public struct MarkdownTextEditorView: View {
 
     // MARK: - Dependencies
 

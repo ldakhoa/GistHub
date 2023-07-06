@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Models
+import Networking
 
 @MainActor final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading

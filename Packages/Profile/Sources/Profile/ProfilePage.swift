@@ -11,6 +11,7 @@ import Kingfisher
 import DesignSystem
 import Models
 import AppAccount
+import Settings
 
 public struct ProfilePage: View {
     @ObserveInjection private var inject

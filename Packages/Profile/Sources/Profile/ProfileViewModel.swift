@@ -6,8 +6,10 @@
 //
 
 import Combine
+import Networking
+import Models
 
-protocol ProfileDelegate: AnyObject {
+public protocol ProfileDelegate: AnyObject {
     func shouldLogout()
 }
 
