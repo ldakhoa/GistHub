@@ -8,6 +8,7 @@
 import Foundation
 import Networkable
 import Models
+import AppAccount
 
 protocol CommentAPIClient {
     /// Get comments of the gist.

@@ -9,7 +9,7 @@ import SwiftUI
 import Inject
 import DesignSystem
 
-struct LoginView: View {
+public struct LoginView: View {
     @ObserveInjection private var inject
     @ObservedObject private var viewModel = LoginViewModel()
     @State private var showErrorToast = false
@@ -19,11 +19,11 @@ struct LoginView: View {
     @State private var showLoginAlertField = false
     @State private var accessToken = ""
 
-    init(delegate: LoginDelegate) {
+    public init(delegate: LoginDelegate) {
         viewModel.delegate = delegate
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 24) {
             Spacer()
 

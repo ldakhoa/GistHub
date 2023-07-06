@@ -8,8 +8,9 @@
 import Foundation
 import Networkable
 import Models
+import AppAccount
 
-protocol GistHubAPIClient {
+public protocol GistHubAPIClient {
     /// Allows you to add a new gist with one or more files.
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
@@ -55,51 +56,51 @@ protocol GistHubAPIClient {
     func deleteGist(fromGistID gistID: String) async throws
 }
 
-final class DefaultGistHubAPIClient: GistHubAPIClient {
+public final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
 
-    init(session: NetworkSession = .github) {
+    public init(session: NetworkSession = .github) {
         self.session = session
     }
 
-    func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
+    public func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
-    func gists() async throws -> [Gist] {
+    public func gists() async throws -> [Gist] {
         try await session.data(for: API.gists)
     }
 
-    func starredGists() async throws -> [Gist] {
+    public func starredGists() async throws -> [Gist] {
         try await session.data(for: API.starredGists)
     }
 
-    func user() async throws -> User {
+    public func user() async throws -> User {
         try await session.data(for: API.user)
     }
 
-    func starGist(gistID: String) async throws {
+    public func starGist(gistID: String) async throws {
         try await session.data(for: API.starGist(gistID: gistID))
     }
 
-    func unstarGist(gistID: String) async throws {
+    public func unstarGist(gistID: String) async throws {
         try await session.data(for: API.unstarGist(gistID: gistID))
     }
 
-    func isStarred(gistID: String) async throws {
+    public func isStarred(gistID: String) async throws {
         try await session.data(for: API.isStarred(gistID: gistID))
     }
 
-    func gist(fromGistID gistID: String) async throws -> Gist {
+    public func gist(fromGistID gistID: String) async throws -> Gist {
         try await session.data(for: API.gist(gistID: gistID))
     }
 
-    func deleteGist(fromGistID gistID: String) async throws {
+    public func deleteGist(fromGistID gistID: String) async throws {
         try await session.data(for: API.deleteGist(gistID: gistID))
     }
 
     @discardableResult
-    func updateGist(
+    public func updateGist(
         fromGistID gistID: String,
         fileName: String?,
         content: String?
@@ -112,7 +113,7 @@ final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     @discardableResult
-    func updateDescription(fromGistID gistID: String, description: String?) async throws -> Gist {
+    public func updateDescription(fromGistID gistID: String, description: String?) async throws -> Gist {
         try await session.data(for: API.updateGistDescription(
             gistID: gistID,
             description: description

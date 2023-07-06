@@ -20,6 +20,9 @@
 		6A641C3A2A568C870095334B /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C392A568C870095334B /* Models */; };
 		6A641C3C2A568C870095334B /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C3B2A568C870095334B /* Networking */; };
 		6A641C3E2A568C870095334B /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C3D2A568C870095334B /* Utilities */; };
+		6A641C432A56E22B0095334B /* AppAccount in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C422A56E22B0095334B /* AppAccount */; };
+		6A641C452A56E22B0095334B /* Environment in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C442A56E22B0095334B /* Environment */; };
+		6A641C472A56E24B0095334B /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C462A56E24B0095334B /* Login */; };
 		6A6EEF67294786FA0018AC26 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6EEF66294786FA0018AC26 /* CommentView.swift */; };
 		6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 6A6EEF6C2947AE330018AC26 /* AlertToast */; };
 		6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5312943CF33007B7D68 /* AppDelegate.swift */; };
@@ -104,8 +107,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A641C3C2A568C870095334B /* Networking in Frameworks */,
+				6A641C432A56E22B0095334B /* AppAccount in Frameworks */,
 				6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */,
+				6A641C472A56E24B0095334B /* Login in Frameworks */,
 				6A5D8D062965F4FE00BB4310 /* Highlightr in Frameworks */,
+				6A641C452A56E22B0095334B /* Environment in Frameworks */,
 				6A641C3E2A568C870095334B /* Utilities in Frameworks */,
 				6A641C3A2A568C870095334B /* Models in Frameworks */,
 				6A7CF5872944EB0C007B7D68 /* Kingfisher in Frameworks */,
@@ -205,7 +211,6 @@
 				6A7CF5982945FB7A007B7D68 /* Editor */,
 				6A7CF58A2944EF2E007B7D68 /* GistDetail */,
 				6A7CF56529446F19007B7D68 /* GistLists */,
-				6AC4F2BF294CD11700F0A2BA /* Login */,
 				6A7CF58D2944F016007B7D68 /* Profile */,
 				6AC4F2D0294F459700F0A2BA /* Settings */,
 			);
@@ -281,13 +286,6 @@
 			path = ci_scripts;
 			sourceTree = "<group>";
 		};
-		6AC4F2BF294CD11700F0A2BA /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
 		6AC4F2D0294F459700F0A2BA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -325,6 +323,9 @@
 				6A641C392A568C870095334B /* Models */,
 				6A641C3B2A568C870095334B /* Networking */,
 				6A641C3D2A568C870095334B /* Utilities */,
+				6A641C422A56E22B0095334B /* AppAccount */,
+				6A641C442A56E22B0095334B /* Environment */,
+				6A641C462A56E24B0095334B /* Login */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -736,6 +737,18 @@
 		6A641C3D2A568C870095334B /* Utilities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Utilities;
+		};
+		6A641C422A56E22B0095334B /* AppAccount */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppAccount;
+		};
+		6A641C442A56E22B0095334B /* Environment */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Environment;
+		};
+		6A641C462A56E24B0095334B /* Login */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Login;
 		};
 		6A6EEF6C2947AE330018AC26 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

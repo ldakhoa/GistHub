@@ -11,8 +11,9 @@ import Combine
 import AppAccount
 import Networking
 import Utilities
+import Environment
 
-protocol LoginDelegate: AnyObject {
+public protocol LoginDelegate: AnyObject {
     func finishLogin(token: String, authMethod: GitHubUserSession.AuthMethod, username: String)
 }
 
@@ -29,7 +30,7 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
 
     private let callbackURLScheme = "gisthub"
 
-    weak var delegate: LoginDelegate?
+    public weak var delegate: LoginDelegate?
 
     // MARK: - Utils
 

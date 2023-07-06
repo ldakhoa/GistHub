@@ -7,6 +7,10 @@
 
 import UIKit
 import SwiftUI
+import Environment
+import AppAccount
+import Login
+import Networking
 
 final class AppController: NSObject, LoginDelegate, GitHubSessionListener, ProfileDelegate {
 

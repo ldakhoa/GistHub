@@ -137,9 +137,9 @@ extension MarkdownPreviewViewController {
 }
 
 public struct MarkdownPreviewView: UIViewControllerRepresentable {
-    typealias UIViewControllerType = MarkdownPreviewViewController
+    public typealias UIViewControllerType = MarkdownPreviewViewController
 
-    let markdown: String
+    private let markdown: String
 
     public init(markdown: String) {
         self.markdown = markdown

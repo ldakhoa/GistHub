@@ -12,8 +12,8 @@ import Models
 import Environment
 
 public struct AccessTokenUser: Codable {
-    let token: String
-    let username: String
+    public let token: String
+    public let username: String
 }
 
 public protocol AccessTokenClient {

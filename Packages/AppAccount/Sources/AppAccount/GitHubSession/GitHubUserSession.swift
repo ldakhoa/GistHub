@@ -24,7 +24,7 @@ public class GitHubUserSession: NSObject, NSCoding, Identifiable {
 
     var username: String?
 
-    init(
+    public init(
         token: String,
         authMethod: AuthMethod,
         username: String?
@@ -54,7 +54,7 @@ public class GitHubUserSession: NSObject, NSCoding, Identifiable {
 }
 
 extension GitHubUserSession {
-    var authorizationHeader: String {
+    public var authorizationHeader: String {
         switch authMethod {
         case .oauth:
             return "Bearer \(token)"

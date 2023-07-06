@@ -7,24 +7,24 @@
 
 import Foundation
 
-protocol GitHubSessionListener: AnyObject {
+public protocol GitHubSessionListener: AnyObject {
     func didFocus()
 }
 
 /// An object that manages user sessions.
 ///
 /// This will support multi user sessions later
-class GitHubSessionManager: NSObject {
+public class GitHubSessionManager: NSObject {
     private let _userSessions = NSMutableOrderedSet()
     private let defaults: UserDefaults
 
     private let sessionKeys = "com.github.sessionmanager.shared.session"
 
-    weak var listener: GitHubSessionListener?
+    public weak var listener: GitHubSessionListener?
 
     // MARK: - Initializers
 
-    override init() {
+    public override init() {
         defaults = UserDefaults(suiteName: "space.khoale.gisthub") ?? .standard
 
         // Workaround why new method not works
@@ -38,19 +38,19 @@ class GitHubSessionManager: NSObject {
 
     // MARK: - Public API
 
-    var focusedUserSession: GitHubUserSession? {
+    public var focusedUserSession: GitHubUserSession? {
         return _userSessions.firstObject as? GitHubUserSession
     }
 
-    func focus(_ userSession: GitHubUserSession) {
+    public func focus(_ userSession: GitHubUserSession) {
         update(oldUserSession: userSession, newUserSession: userSession)
     }
 
-    var userSessions: [GitHubUserSession] {
+    public var userSessions: [GitHubUserSession] {
         return _userSessions.array as? [GitHubUserSession] ?? []
     }
 
-    func logout() {
+    public func logout() {
         _userSessions.removeAllObjects()
         save()
     }

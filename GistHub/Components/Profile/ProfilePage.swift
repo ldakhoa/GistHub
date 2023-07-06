@@ -8,8 +8,11 @@
 import SwiftUI
 import Inject
 import Kingfisher
+import DesignSystem
+import Models
+import AppAccount
 
-struct ProfilePage: View {
+public struct ProfilePage: View {
     @ObserveInjection private var inject
 
     let user: User?
@@ -17,13 +20,13 @@ struct ProfilePage: View {
     @ObservedObject private var viewModel = ProfileViewModel()
     let sessionManager: GitHubSessionManager
 
-    init(user: User, delegate: ProfileDelegate, sessionManager: GitHubSessionManager) {
+    public init(user: User, delegate: ProfileDelegate, sessionManager: GitHubSessionManager) {
         self.user = user
         self.sessionManager = sessionManager
         viewModel.delegate = delegate
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             if let user = user {
                 makeMainView(user: user)
