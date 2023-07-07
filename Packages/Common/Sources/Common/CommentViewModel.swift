@@ -11,20 +11,20 @@ import Networking
 
 @MainActor
 public final class CommentViewModel: ObservableObject {
-    @Published var showLoading = false
-    @Published var comments = [Comment]()
-    @Published var contentState: ContentState = .loading
-    @Published var shouldScrollToComment = false
-    @Published var errorToastTitle = ""
-    @Published var showErrorToast = false
+    @Published public var showLoading = false
+    @Published public var comments = [Comment]()
+    @Published public var contentState: ContentState = .loading
+    @Published public var shouldScrollToComment = false
+    @Published public var errorToastTitle = ""
+    @Published public var showErrorToast = false
 
     private let client: CommentAPIClient
 
-    init(client: CommentAPIClient = DefaultCommentAPIClient()) {
+    public init(client: CommentAPIClient = DefaultCommentAPIClient()) {
         self.client = client
     }
 
-    func fetchComments(gistID: String) async {
+    public func fetchComments(gistID: String) async {
         do {
             let comments = try await client.comments(gistID: gistID)
             self.comments = comments
@@ -35,7 +35,7 @@ public final class CommentViewModel: ObservableObject {
         }
     }
 
-    func createComment(gistID: String, body: String, completion: () -> Void) async {
+    public func createComment(gistID: String, body: String, completion: () -> Void) async {
         do {
             let comment = try await client.createComment(gistID: gistID, body: body)
             self.comments.append(comment)
@@ -48,7 +48,7 @@ public final class CommentViewModel: ObservableObject {
         }
     }
 
-    func updateComment(
+    public func updateComment(
         gistID: String,
         commentID: Int,
         body: String,
@@ -68,7 +68,7 @@ public final class CommentViewModel: ObservableObject {
         }
     }
 
-    func deleteComments(gistID: String, commentID: Int) async {
+    public func deleteComments(gistID: String, commentID: Int) async {
         do {
             try await client.deleteComment(gistID: gistID, commentID: commentID)
             self.comments.removeAll { $0.id == commentID }
@@ -79,7 +79,7 @@ public final class CommentViewModel: ObservableObject {
         }
     }
 
-    enum ContentState {
+    public enum ContentState {
         case loading
         case showContent
         case error(error: String)

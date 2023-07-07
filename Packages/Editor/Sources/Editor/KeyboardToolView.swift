@@ -7,6 +7,7 @@
 
 import UIKit
 import Runestone
+import DesignSystem
 
 final class MarkdownKeyboardToolsView: UIInputView {
 

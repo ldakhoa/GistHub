@@ -51,6 +51,7 @@
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6AC4F2C6294CD78F00F0A2BA /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllers.swift; sourceTree = "<group>"; };
+		6AE6C95B2A573BA500A4DA87 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = Packages/Common; sourceTree = "<group>"; };
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +80,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6AE6C95B2A573BA500A4DA87 /* Common */,
 				6A641C4B2A570EB60095334B /* Gist */,
 				6A641C402A56A91B0095334B /* AppAccount */,
 				6A641C332A5687A50095334B /* DesignSystem */,

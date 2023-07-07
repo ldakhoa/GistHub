@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Inject
 import Models
 
 struct EditorViewRepresentable: UIViewControllerRepresentable {

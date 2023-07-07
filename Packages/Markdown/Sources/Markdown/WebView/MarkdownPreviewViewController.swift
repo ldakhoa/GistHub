@@ -24,7 +24,7 @@ public final class MarkdownPreviewViewController: UIViewController, WKNavigation
     private let html = HTML()
     private let mode: Mode
 
-    var scrollPercentage: Float?
+    public var scrollPercentage: Float?
 
     public init(markdown: String, mode: Mode) {
         self.markdown = markdown

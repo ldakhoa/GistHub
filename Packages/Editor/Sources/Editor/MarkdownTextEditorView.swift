@@ -7,9 +7,9 @@
 
 import AlertToast
 import SwiftUI
-import Inject
 import Models
 import DesignSystem
+import Common
 
 /// A view that uses for write comments and descriptions.
 public struct MarkdownTextEditorView: View {
@@ -41,7 +41,6 @@ public struct MarkdownTextEditorView: View {
 
     // MARK: - Environments
 
-    @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
 
     // MARK: - Initializer
@@ -133,7 +132,6 @@ public struct MarkdownTextEditorView: View {
         .toastError(isPresenting: $showErrorToast, error: error)
         .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
-        .enableInjection()
     }
 
     private func createFile() {

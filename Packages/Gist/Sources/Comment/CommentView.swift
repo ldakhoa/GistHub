@@ -11,6 +11,8 @@ import Inject
 import Models
 import DesignSystem
 import Markdown
+import Common
+import Editor
 
 struct CommentView: View {
     private let comment: Comment

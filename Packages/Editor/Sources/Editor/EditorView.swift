@@ -7,7 +7,8 @@
 
 import AlertToast
 import SwiftUI
-import Inject
+import Models
+import DesignSystem
 
 struct EditorView: View {
 
@@ -28,7 +29,6 @@ struct EditorView: View {
     // MARK: - State
 
     @Environment(\.dismiss) private var dismiss
-    @ObserveInjection private var inject
     @StateObject private var viewModel = EditorViewModel()
     @State var originalContent: String = ""
 
@@ -101,7 +101,6 @@ struct EditorView: View {
                 }
             }
             .toolbarBackground(.visible, for: .navigationBar)
-            .enableInjection()
             .onChange(of: content) { newValue in
                 NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
                 contentHasChanged = newValue != originalContent ? true : false

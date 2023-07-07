@@ -5,9 +5,11 @@
 //  Created by Khoa Le on 14/12/2022.
 //
 
-import AlertToast
 import SwiftUI
-import Inject
+import Models
+import DesignSystem
+import Environment
+import Markdown
 
 struct EditorDisplayView: View {
     @EnvironmentObject var userStore: UserStore
@@ -26,7 +28,6 @@ struct EditorDisplayView: View {
 
     @StateObject private var viewModel = EditorViewModel()
     @Environment(\.dismiss) private var dismiss
-    @ObserveInjection private var inject
 
     var body: some View {
         buildBodyView()
@@ -103,19 +104,11 @@ struct EditorDisplayView: View {
                     }
                 }
             }
-            .toast(isPresenting: $showSuccessToast, duration: 0.8) {
-                AlertToast(
-                    displayMode: .banner(.pop),
-                    type: .complete(Colors.success.color),
-                    title: "Deleted File",
-                    style: .style(backgroundColor: Colors.toastBackground.color)
-                )
-            } completion: {
+            .toastSuccess(isPresenting: $showSuccessToast, title: "Deleted File") {
                 self.completion()
                 dismiss()
             }
             .toastError(isPresenting: $showErrorToast, error: error)
-            .enableInjection()
     }
 
     func buildBodyView() -> some View {

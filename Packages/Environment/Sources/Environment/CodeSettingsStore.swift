@@ -11,6 +11,8 @@ import Utilities
 public class CodeSettingsStore: ObservableObject {
     public let settings = UserDefaults.standard
 
+    public init() {}
+
     @Published public var text: String = UserDefaults.standard.string(forKey: Key.text) ?? "" {
         didSet {
             settings.text = text

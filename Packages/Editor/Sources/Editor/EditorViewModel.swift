@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Networking
 
 @MainActor final class EditorViewModel: ObservableObject {
     private let client: GistHubAPIClient

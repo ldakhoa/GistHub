@@ -8,6 +8,8 @@
 import UIKit
 import SwiftUI
 import Gist
+import Profile
+import DesignSystem
 
 @MainActor
 func homeRootViewController(user: User) -> UIViewController {

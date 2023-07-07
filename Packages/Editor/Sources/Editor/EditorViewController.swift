@@ -12,6 +12,7 @@ import KeyboardToolbar
 import Models
 import Environment
 import Utilities
+import Markdown
 
 public protocol EditorViewControllerDelegate: AnyObject {
     func textViewDidChange(text: String)

@@ -23,6 +23,7 @@ let package = Package(
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
         .package(name: "Editor", path: "../Editor"),
+        .package(name: "Common", path: "../Common")
     ],
     targets: [
         .target(
@@ -50,7 +51,8 @@ let package = Package(
                 "Markdown",
                 "Environment",
                 "Utilities",
-                "Editor"
+                "Editor",
+                "Common"
             ]
         ),
     ]

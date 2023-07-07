@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
-import Inject
+import Environment
+import DesignSystem
 
 public struct EditorCodeSettingsView: View {
     @ObservedObject private var codeSettingsStore = CodeSettingsStore()
 
-    @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
 
     @State private var codeSample: String =
@@ -62,7 +62,6 @@ public struct EditorCodeSettingsView: View {
             }
         }
         .toolbarBackground(.visible, for: .navigationBar)
-        .enableInjection()
     }
 
     private func makeToggleView(isOn: Binding<Bool>, title: String) -> some View {
