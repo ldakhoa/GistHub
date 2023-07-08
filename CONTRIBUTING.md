@@ -32,6 +32,16 @@ To add the Client ID and Client Secret to the App, follow these steps:
 
 🎉 The project is officially set up! 🎉
 
-# Create new package
+# Modularization
 
-`swift Packages/PackageGenerator.swift <Package Name>`
+## Add new Module
+
+1. Create the new module by `swift Packages/PackageGenerator.swift <Package Name>`
+2. Drag new module to GistHub.xcodepro
+
+## Resolve all Modules
+
+```bash
+cd GistHub/
+sh Scripts/resolve_packages.sh
+```
