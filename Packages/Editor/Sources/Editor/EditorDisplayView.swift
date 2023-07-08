@@ -48,9 +48,9 @@ public struct EditorDisplayView: View {
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    makeBackButtonItem()
-//                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    makeBackButtonItem()
+                }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
