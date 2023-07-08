@@ -31,3 +31,17 @@ To add the Client ID and Client Secret to the App, follow these steps:
 8. Add your Client ID (`GITHUB_CLIENT_ID` as key) and Client Secret (`GITHUB_CLIENT_SECRET`) to the Environment Variables.
 
 🎉 The project is officially set up! 🎉
+
+# Modularization
+
+## Add new Module
+
+1. Create the new module by `swift Packages/PackageGenerator.swift <Package Name>`
+2. Drag new module to `GistHub.xcodeproj`
+
+## Resolve all Modules
+
+```bash
+cd GistHub/
+sh Scripts/resolve_packages.sh
+```

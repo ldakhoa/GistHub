@@ -7,6 +7,11 @@
 
 import UIKit
 import SwiftUI
+import Gist
+import Profile
+import DesignSystem
+import Models
+import AppAccount
 
 @MainActor
 func homeRootViewController(user: User) -> UIViewController {

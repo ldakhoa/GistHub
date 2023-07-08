@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import DesignSystem
 
 final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
