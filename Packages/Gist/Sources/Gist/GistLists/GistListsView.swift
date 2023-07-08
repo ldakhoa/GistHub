@@ -70,7 +70,7 @@ public struct GistListsView: View {
                 }
                 .listStyle(.plain)
                 .animation(.default, value: gists)
-                // HACK, research and apply new NavigationStack
+                // TODO: Research and apply new NavigationStack
                 if let selectedGist = selectedGist {
                     NavigationLink(
                         destination: GistDetailView(
@@ -88,27 +88,26 @@ public struct GistListsView: View {
             }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
-        .toolbar {
-            if listsMode == .allGists {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showingNewGistView.toggle()
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .renderingMode(.template)
-                            .foregroundColor(Colors.accent.color)
-                    }
-                    .sheet(isPresented: $showingNewGistView) {
+//        .toolbar {
+//            if listsMode == .allGists {
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        showingNewGistView.toggle()
+//                    } label: {
+//                        Image(systemName: "plus.circle")
+//                            .renderingMode(.template)
+//                            .foregroundColor(Colors.accent.color)
+//                    }
+//                    .sheet(isPresented: $showingNewGistView) {
 //                        ComposeGistView(style: .createGist) { newGist in
 //                            viewModel.insert(newGist)
 //                            selectedGist = newGist
 //                            showingGistDetail.toggle()
 //                        }
-                        EmptyView()
-                    }
-                }
-            }
-        }
+//                    }
+//                }
+//            }
+//        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)

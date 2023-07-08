@@ -88,7 +88,7 @@ public struct ProfilePage: View {
                 }
             }
 
-            HStack {
+            HStack(alignment: .center) {
                 if let company = user.company {
                     imageText(imageName: "organization", title: company)
                 }

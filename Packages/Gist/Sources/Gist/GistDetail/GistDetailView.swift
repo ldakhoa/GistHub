@@ -153,9 +153,9 @@ struct GistDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     if userStore.user.id == gist.owner?.id {
-                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
-                            showEditGist.toggle()
-                        }
+//                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
+//                            showEditGist.toggle()
+//                        }
                         makeMenuButton(title: "Edit Description", systemImage: "pencil") {
                             showPlainTextEditorView.toggle()
                         }
