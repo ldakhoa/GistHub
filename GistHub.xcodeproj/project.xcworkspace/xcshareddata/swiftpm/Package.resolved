@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Inject",
       "state" : {
-        "revision" : "abcc4b091fd384cfd09b149a60298b75dc87c5b9",
-        "version" : "1.2.3"
+        "revision" : "04925668f57e74bc40f21b185a41c5585a84a9fe",
+        "version" : "1.2.2"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/Runestone",
       "state" : {
-        "revision" : "1d0e79051a18d79f12882e9fad0b130e47d4a06b",
-        "version" : "0.3.0"
+        "revision" : "e9d220ae1a00b5ef00a7b6146d77f660f9e5dbe2",
+        "version" : "0.2.10"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/treesitterlanguages",
       "state" : {
-        "revision" : "a15ab30453d14097355d7d78ec7c0feb008cfbba",
-        "version" : "0.1.7"
+        "revision" : "f23b8872561daf747e233ba7d6130d9e680f52e1",
+        "version" : "0.1.4"
       }
     }
   ],
