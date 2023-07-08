@@ -1,5 +1,6 @@
 import SwiftUI
 import Kingfisher
+import UIKit
 
 public struct GistHubImage: View {
     let url: URL

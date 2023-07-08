@@ -35,7 +35,8 @@ let package = Package(
                 "Markdown",
                 "Environment",
                 "Utilities",
-                "Comment"
+                "Comment",
+                "Editor"
             ]
         ),
         .testTarget(

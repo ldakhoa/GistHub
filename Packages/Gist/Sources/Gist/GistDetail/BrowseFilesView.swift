@@ -10,6 +10,7 @@ import Inject
 import DesignSystem
 import Models
 import Environment
+import Editor
 
 public struct BrowseFilesView: View {
     @ObserveInjection private var inject

@@ -12,13 +12,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-         .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
-         .package(url: "https://github.com/ldakhoa/gisthub-cmark-gfm-swift", from: "1.0.2"),
-         .package(url: "https://github.com/ldakhoa/Highlightr", from: "1.0.2"),
-         .package(url: "https://github.com/alexaubry/HTMLString", from: "6.0.0"),
-         .package(name: "DesignSystem", path: "../DesignSystem"),
-         .package(name: "Models", path: "../Models"),
-         .package(name: "Environment", path: "../Environment")
+        .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
+        .package(url: "https://github.com/ldakhoa/gisthub-cmark-gfm-swift", from: "1.0.2"),
+        .package(url: "https://github.com/ldakhoa/Highlightr", from: "1.0.2"),
+        .package(url: "https://github.com/alexaubry/HTMLString", from: "6.0.0"),
+        .package(url: "https://github.com/onevcat/Kingfisher", .upToNextMajor(from: "7.0.0")),
+        .package(name: "DesignSystem", path: "../DesignSystem"),
+        .package(name: "Models", path: "../Models"),
+        .package(name: "Environment", path: "../Environment")
     ],
     targets: [
         .target(
@@ -30,7 +31,8 @@ let package = Package(
                 "DesignSystem",
                 "Models",
                 "Environment",
-                "Highlightr"
+                "Highlightr",
+                "Kingfisher"
             ]
         ),
         .testTarget(

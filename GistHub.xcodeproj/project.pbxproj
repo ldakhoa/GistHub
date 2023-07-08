@@ -16,13 +16,13 @@
 		6A641C452A56E22B0095334B /* Environment in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C442A56E22B0095334B /* Environment */; };
 		6A641C472A56E24B0095334B /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C462A56E24B0095334B /* Login */; };
 		6A641C4F2A570EC10095334B /* Gist in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C4E2A570EC10095334B /* Gist */; };
-		6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 6A6EEF6C2947AE330018AC26 /* AlertToast */; };
 		6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5312943CF33007B7D68 /* AppDelegate.swift */; };
 		6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */; };
 		6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53A2943CF35007B7D68 /* Assets.xcassets */; };
 		6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53C2943CF35007B7D68 /* LaunchScreen.storyboard */; };
 		6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF55E29446967007B7D68 /* MainTabBarController.swift */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
+		6AAEBBF62A59515300CD52FF /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 6AAEBBF52A59515300CD52FF /* Profile */; };
 		6AC4F2C7294CD78F00F0A2BA /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C6294CD78F00F0A2BA /* AppController.swift */; };
 		6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */; };
 		6AEEE4542966CD5200767BD6 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 6AEEE4532966CD5200767BD6 /* emoji.json */; };
@@ -61,8 +61,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A641C3C2A568C870095334B /* Networking in Frameworks */,
+				6AAEBBF62A59515300CD52FF /* Profile in Frameworks */,
 				6A641C432A56E22B0095334B /* AppAccount in Frameworks */,
-				6A6EEF6D2947AE330018AC26 /* AlertToast in Frameworks */,
 				6A641C472A56E24B0095334B /* Login in Frameworks */,
 				6A641C452A56E22B0095334B /* Environment in Frameworks */,
 				6A641C3E2A568C870095334B /* Utilities in Frameworks */,
@@ -174,7 +174,6 @@
 			name = GistHub;
 			packageProductDependencies = (
 				6A7CF56129446B0D007B7D68 /* Inject */,
-				6A6EEF6C2947AE330018AC26 /* AlertToast */,
 				6A641C352A568C870095334B /* DesignSystem */,
 				6A641C372A568C870095334B /* Markdown */,
 				6A641C392A568C870095334B /* Models */,
@@ -184,6 +183,7 @@
 				6A641C442A56E22B0095334B /* Environment */,
 				6A641C462A56E24B0095334B /* Login */,
 				6A641C4E2A570EC10095334B /* Gist */,
+				6AAEBBF52A59515300CD52FF /* Profile */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -215,7 +215,6 @@
 			mainGroup = 6A7CF5252943CF33007B7D68;
 			packageReferences = (
 				6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */,
-				6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -432,6 +431,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = all;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -466,6 +469,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = all;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -496,14 +503,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/elai950/AlertToast";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzysztofzablocki/Inject";
@@ -551,15 +550,14 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Gist;
 		};
-		6A6EEF6C2947AE330018AC26 /* AlertToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6A6EEF6B2947AE320018AC26 /* XCRemoteSwiftPackageReference "AlertToast" */;
-			productName = AlertToast;
-		};
 		6A7CF56129446B0D007B7D68 /* Inject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
+		};
+		6AAEBBF52A59515300CD52FF /* Profile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Profile;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,6 +9,10 @@ import AlertToast
 import SwiftUI
 import Inject
 import DesignSystem
+import Common
+import Models
+import Editor
+import Comment
 
 struct GistDetailView: View {
     @ObserveInjection private var inject
@@ -217,21 +221,10 @@ struct GistDetailView: View {
                 commentViewModel: self.commentViewModel
             )
         }
-        .toast(
-            isPresenting: $showToastAlert,
-            duration: 1.0,
-            alert: {
-                AlertToast(
-                    displayMode: .banner(.pop),
-                    type: .complete(Colors.success.color),
-                    title: "Deleted Gist",
-                    style: .style(backgroundColor: Colors.toastBackground.color, titleColor: nil)
-                )
-            }, completion: {
-                shouldReloadGistListsView()
-                self.dismiss()
-            }
-        )
+        .toastSuccess(isPresenting: $showToastAlert, title: "Deleted Gist", duration: 1.0) {
+            shouldReloadGistListsView()
+            self.dismiss()
+        }
         .sheet(isPresented: $showEditGist) {
             ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
                 viewModel.gist = gist

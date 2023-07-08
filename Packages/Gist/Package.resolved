@@ -37,12 +37,30 @@
       }
     },
     {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/KeyboardToolbar",
+      "state" : {
+        "revision" : "5f95f8e9af98f6163a58caaceaadc3bf720fd7bd",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
         "revision" : "c1f60c63f356d364f4284ba82961acbe7de79bcc",
         "version" : "7.8.1"
+      }
+    },
+    {
+      "identity" : "networkable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/duytph/Networkable",
+      "state" : {
+        "revision" : "8e514e65d81a8ed7a67f718e3cc9399ce2094be4",
+        "version" : "2.0.0"
       }
     },
     {

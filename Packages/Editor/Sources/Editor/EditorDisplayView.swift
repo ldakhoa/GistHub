@@ -11,7 +11,7 @@ import DesignSystem
 import Environment
 import Markdown
 
-struct EditorDisplayView: View {
+public struct EditorDisplayView: View {
     @EnvironmentObject var userStore: UserStore
     @State var content: String = ""
     @State var fileName: String = ""
@@ -29,14 +29,28 @@ struct EditorDisplayView: View {
     @StateObject private var viewModel = EditorViewModel()
     @Environment(\.dismiss) private var dismiss
 
-    var body: some View {
+    public init(
+        content: String,
+        fileName: String,
+        gist: Gist,
+        language: File.Language,
+        completion: @escaping () -> Void
+    ) {
+        _content = State(initialValue: content)
+        _fileName = State(initialValue: fileName)
+        self.gist = gist
+        self.language = language
+        self.completion = completion
+    }
+
+    public var body: some View {
         buildBodyView()
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    makeBackButtonItem()
-                }
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    makeBackButtonItem()
+//                }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
@@ -81,7 +95,7 @@ struct EditorDisplayView: View {
                     }
                     .sheet(isPresented: $showCodeSettings) {
                         NavigationView {
-                            EditorCodeSettingsView(codeSettingsStore: CodeSettingsStore())
+                            EditorCodeSettingsView()
                         }
                     }
                     .confirmationDialog(

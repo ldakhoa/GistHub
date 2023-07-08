@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 import Inject
 import Models
 import DesignSystem
@@ -14,7 +13,7 @@ import Markdown
 import Common
 import Editor
 
-struct CommentView: View {
+public struct CommentView: View {
     private let comment: Comment
     private let gistID: String
     @ObservedObject private var viewModel: CommentViewModel
@@ -27,25 +26,24 @@ struct CommentView: View {
     @ObserveInjection private var inject
     @State private var commentMarkdownHeight: CGFloat = 0
 
-    init(comment: Comment, gistID: String, viewModel: CommentViewModel) {
+    public init(
+        comment: Comment,
+        gistID: String,
+        viewModel: CommentViewModel
+    ) {
         self.comment = comment
         self.gistID = gistID
         self.viewModel = viewModel
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .bottom) {
                 if
                     let avatarURLString = comment.user.avatarURL,
                     let url = URL(string: avatarURLString)
                 {
-                    KFImage
-                        .url(url)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 44, height: 44)
-                        .cornerRadius(24)
+                    GistHubImage(url: url, width: 44, height: 44, cornerRadius: 24)
                 }
                 VStack(alignment: .leading, spacing: -6) {
                     HStack {

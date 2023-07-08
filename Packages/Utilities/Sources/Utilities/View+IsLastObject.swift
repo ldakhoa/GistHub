@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func isLastObject<T: Codable & Equatable>(objects: [T], object: T) -> Bool {
+    public func isLastObject<T: Codable & Equatable>(objects: [T], object: T) -> Bool {
         let objectsCount = objects.count
         if let index = objects.firstIndex(of: object) {
             if index + 1 != objectsCount {

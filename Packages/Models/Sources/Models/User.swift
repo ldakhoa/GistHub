@@ -60,7 +60,7 @@ public struct User: Codable {
 public class UserStore: ObservableObject {
     public var user: User
 
-    init(user: User) {
+    public init(user: User) {
         self.user = user
     }
 }

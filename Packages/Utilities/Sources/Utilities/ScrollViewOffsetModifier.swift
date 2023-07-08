@@ -40,7 +40,7 @@ struct ScrollViewOffsetModifier: ViewModifier {
 }
 
 extension View {
-    func readingScrollView(
+    public func readingScrollView(
         from coordinateSpace: String,
         into binding: Binding<CGPoint>
     ) -> some View {

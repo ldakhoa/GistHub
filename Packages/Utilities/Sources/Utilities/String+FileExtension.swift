@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    func getFileExtension() -> String? {
+    public func getFileExtension() -> String? {
         if let index = self.firstIndex(of: ".") {
             let language = String(self.suffix(from: index))
                 .replacingOccurrences(of: ".", with: "")

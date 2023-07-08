@@ -12,6 +12,8 @@ import AlertToast
 import OrderedCollections
 import Models
 import DesignSystem
+import Editor
+import Utilities
 
 struct ComposeGistView: View {
     @ObserveInjection private var inject
@@ -34,6 +36,7 @@ struct ComposeGistView: View {
     var completion: ((Gist) -> Void)?
     private let style: ComposeGistView.Style
     private var originalFiles = [String: File]()
+
     init(
         style: ComposeGistView.Style,
         completion: ((Gist) -> Void)? = nil
@@ -48,6 +51,7 @@ struct ComposeGistView: View {
             _files = State(initialValue: originalFiles)
         }
     }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -61,25 +65,8 @@ struct ComposeGistView: View {
                     ForEach(files.keys.sorted(), id: \.self) { fileName in
                         let file = files[fileName]
                         NavigationLink(fileName) {
-                            if let language = fileName.getFileExtension() {
-                                if language == "md" || language == "markdown" {
-                                    MarkdownTextEditorView(
-                                        style: .createGist,
-                                        content: file?.content ?? "",
-                                        navigationTitle: file?.filename ?? "",
-                                        createGistCompletion: { newFile in
-                                            self.files[newFile.filename ?? ""] = newFile
-                                        })
-                                } else {
-                                    EditorView(
-                                        style: .createFile,
-                                        fileName: fileName,
-                                        content: file?.content ?? "",
-                                        language: File.Language(rawValue: language) ?? .javaScript,
-                                        createGistCompletion: { file in
-                                            self.files[file.filename ?? ""] = file
-                                        })
-                                }
+                            FileEditorView(file: file, fileName: fileName) { [weak self] newFile in
+                                self?.files[newFile.filename ?? ""] = newFile
                             }
                         }
                     }
@@ -194,8 +181,8 @@ struct ComposeGistView: View {
         Button("Update") {
             Task {
                 do {
-                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
-                    completion!(gist)
+//                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
+//                    completion!(gist)
                     dismiss()
                 } catch let updateError {
                     error = updateError.localizedDescription
@@ -238,6 +225,37 @@ struct ComposeGistView: View {
             }
         } message: {
             Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
+        }
+    }
+}
+
+struct FileEditorView: View {
+    let file: File?
+    let fileName: String
+    let completion: ((File) -> Void)? = nil
+
+    var body: some View {
+        if let language = fileName.getFileExtension() {
+            if language == "md" || language == "markdown" {
+                MarkdownTextEditorView(
+                    style: .createGist,
+                    content: file?.content ?? "",
+                    navigationTitle: file?.filename ?? "",
+                    createGistCompletion: { newFile in
+                        self.completion!(newFile)
+//                        self.files[newFile.filename ?? ""] = newFile
+                    })
+            } else {
+                EditorView(
+                    style: .createFile,
+                    fileName: fileName,
+                    content: file?.content ?? "",
+                    language: File.Language(rawValue: language) ?? .javaScript,
+                    createGistCompletion: { file in
+                        self.completion!(file)
+//                        self.files[file.filename ?? ""] = file
+                    })
+            }
         }
     }
 }

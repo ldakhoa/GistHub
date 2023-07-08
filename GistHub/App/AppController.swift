@@ -11,6 +11,7 @@ import Environment
 import AppAccount
 import Login
 import Networking
+import Profile
 
 final class AppController: NSObject, LoginDelegate, GitHubSessionListener, ProfileDelegate {
 

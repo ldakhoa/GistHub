@@ -10,7 +10,7 @@ import SwiftUI
 import Models
 import DesignSystem
 
-struct EditorView: View {
+public struct EditorView: View {
 
     // MARK: - Dependencies
 
@@ -30,7 +30,7 @@ struct EditorView: View {
 
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditorViewModel()
-    @State var originalContent: String = ""
+    @State private var originalContent: String = ""
 
     @State private var contentHasChanged = false
     @State private var showErrorToast = false
@@ -39,7 +39,7 @@ struct EditorView: View {
 
     // MARK: - Initializer
 
-    init(
+    public init(
         style: Style,
         fileName: String,
         content: String = "",
@@ -61,7 +61,7 @@ struct EditorView: View {
         self.createGistCompletion = createGistCompletion
     }
 
-    var body: some View {
+    public var body: some View {
         EditorViewRepresentable(content: $content, language: language, isEditable: true)
             .navigationTitle(style == .update ? "Edit" : fileName)
             .navigationBarTitleDisplayMode(.inline)
@@ -137,7 +137,7 @@ struct EditorView: View {
 }
 
 extension EditorView {
-    enum Style {
+    public enum Style {
         case createFile
         case update
     }
