@@ -226,9 +226,10 @@ struct GistDetailView: View {
             self.dismiss()
         }
         .sheet(isPresented: $showEditGist) {
-            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
-                viewModel.gist = gist
-            }
+            EmptyView()
+//            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
+//                viewModel.gist = gist
+//            }
         }
         .enableInjection()
     }

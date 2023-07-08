@@ -99,11 +99,12 @@ public struct GistListsView: View {
                             .foregroundColor(Colors.accent.color)
                     }
                     .sheet(isPresented: $showingNewGistView) {
-                        ComposeGistView(style: .createGist) { newGist in
-                            viewModel.insert(newGist)
-                            selectedGist = newGist
-                            showingGistDetail.toggle()
-                        }
+//                        ComposeGistView(style: .createGist) { newGist in
+//                            viewModel.insert(newGist)
+//                            selectedGist = newGist
+//                            showingGistDetail.toggle()
+//                        }
+                        EmptyView()
                     }
                 }
             }
