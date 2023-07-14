@@ -8,16 +8,32 @@
 import SwiftUI
 import Models
 
-struct EditorViewRepresentable: UIViewControllerRepresentable {
-    typealias UIViewControllerType = EditorViewController
+public struct EditorViewRepresentable: UIViewControllerRepresentable {
+    public typealias UIViewControllerType = EditorViewController
 
-    let content: Binding<String>
-    let language: File.Language
-    @State var isEditable = true
-    @State var isSelectable = true
+    private let content: Binding<String>
+    private let language: File.Language
+    private let style: EditorViewController.Style
+    @State private var isEditable = true
+    @State private var isSelectable = true
 
-    func makeUIViewController(context: Context) -> EditorViewController {
+    public init(
+        style: EditorViewController.Style = .normal,
+        content: Binding<String>,
+        language: File.Language,
+        isEditable: Bool = true,
+        isSelectable: Bool = true
+    ) {
+        self.style = style
+        self.content = content
+        self.language = language
+        self.isEditable = isEditable
+        self.isSelectable = isSelectable
+    }
+
+    public func makeUIViewController(context: Context) -> EditorViewController {
         let viewController = EditorViewController(
+            style: style,
             content: content,
             isEditable: isEditable,
             isSelectable: isSelectable,
@@ -26,29 +42,29 @@ struct EditorViewRepresentable: UIViewControllerRepresentable {
         return viewController
     }
 
-    func updateUIViewController(
+    public func updateUIViewController(
         _ uiViewController: EditorViewController,
         context: Context
     ) {
 
     }
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(content: content)
     }
 }
 
 extension EditorViewRepresentable {
-    class Coordinator: EditorViewControllerDelegate {
+    public class Coordinator: EditorViewControllerDelegate {
         var parentObserver: NSKeyValueObservation?
         let content: Binding<String>
 
-        init(parentObserver: NSKeyValueObservation? = nil, content: Binding<String>) {
+        public init(parentObserver: NSKeyValueObservation? = nil, content: Binding<String>) {
             self.parentObserver = parentObserver
             self.content = content
         }
 
-        func textViewDidChange(text: String) {
+        public func textViewDidChange(text: String) {
             content.wrappedValue = text
         }
      }

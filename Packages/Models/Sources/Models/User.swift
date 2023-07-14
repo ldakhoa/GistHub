@@ -31,6 +31,54 @@ public struct User: Codable {
     public let bio: String?
     public let twitterUsername: String?
 
+    public init(
+        login: String? = nil,
+        id: Int? = nil,
+        nodeID: String? = nil,
+        avatarURL: String? = nil,
+        gravatarID: String? = nil,
+        url: String? = nil,
+        htmlURL: String? = nil,
+        gistsURL: String? = nil,
+        starredURL: String? = nil,
+        reposURL: String? = nil,
+        eventsURL: String? = nil,
+        receivedEventsURL: String? = nil,
+        type: String? = nil,
+        siteAdmin: Bool? = nil,
+        name: String? = nil,
+        location: String? = nil,
+        company: String? = nil,
+        followers: Int? = nil,
+        following: Int? = nil,
+        email: String? = nil,
+        bio: String? = nil,
+        twitterUsername: String? = nil
+    ) {
+        self.login = login
+        self.id = id
+        self.nodeID = nodeID
+        self.avatarURL = avatarURL
+        self.gravatarID = gravatarID
+        self.url = url
+        self.htmlURL = htmlURL
+        self.gistsURL = gistsURL
+        self.starredURL = starredURL
+        self.reposURL = reposURL
+        self.eventsURL = eventsURL
+        self.receivedEventsURL = receivedEventsURL
+        self.type = type
+        self.siteAdmin = siteAdmin
+        self.name = name
+        self.location = location
+        self.company = company
+        self.followers = followers
+        self.following = following
+        self.email = email
+        self.bio = bio
+        self.twitterUsername = twitterUsername
+    }
+
     enum CodingKeys: String, CodingKey {
         case login = "login"
         case id = "id"
@@ -62,5 +110,25 @@ public class UserStore: ObservableObject {
 
     public init(user: User) {
         self.user = user
+    }
+}
+
+public extension User {
+    static var stubbed: User {
+        User(
+            login: "octocat",
+            id: 1,
+            nodeID: "MDQ6VXNlcjE=",
+            avatarURL: "https://github.com/images/error/octocat_happy.gif",
+            url: "https://api.github.com/users/octocat",
+            htmlURL: "https://github.com/octocat",
+            gistsURL: "https://api.github.com/users/octocat/gists{/gist_id}",
+            starredURL: "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            reposURL: "https://api.github.com/users/octocat/repos",
+            eventsURL: "https://api.github.com/users/octocat/events{/privacy}",
+            receivedEventsURL: "https://api.github.com/users/octocat/received_events",
+            type: "User",
+            siteAdmin: false
+        )
     }
 }

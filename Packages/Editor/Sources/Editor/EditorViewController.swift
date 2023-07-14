@@ -47,6 +47,7 @@ public final class EditorViewController: UIViewController {
     public weak var delegate: EditorViewControllerDelegate?
 
     public init(
+        style: EditorViewController.Style,
         content: Binding<String>,
         isEditable: Bool,
         isSelectable: Bool = true,
@@ -57,6 +58,12 @@ public final class EditorViewController: UIViewController {
         self.language = language
         self.isSelectable = isSelectable
         super.init(nibName: nil, bundle: nil)
+
+        if style == .issue {
+            textView.showLineNumbers = false
+            textView.isLineWrappingEnabled = true
+            textView.lineSelectionDisplayType = .disabled
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -297,5 +304,12 @@ extension EditorViewController: TextViewDelegate {
         canReplaceTextIn highlightedRange: HighlightedRange
     ) -> Bool {
         true
+    }
+}
+
+extension EditorViewController {
+    public enum Style {
+        case normal
+        case issue
     }
 }
