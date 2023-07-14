@@ -36,10 +36,14 @@ To add the Client ID and Client Secret to the App, follow these steps:
 
 ## Add new Module
 
-1. Create the new module by `swift Packages/PackageGenerator.swift <Package Name>`
-2. Drag new module to `GistHub.xcodeproj`
+GistHub is modular via SPM (Swift Package Manager). This means that the app is divided into smaller modules or packages that can be developed and tested independently. Here's how you can add a new module to GistHub:
+
+1. Create the new module by `sh Scripts/generate_package.sh <Package Name>`. Replace <Package Name> with the name of your new package. For example, sh Scripts/generate_package.sh MyNewPackage.
+2. Drag the new module to `GistHub.xcodeproj` to add it to the Xcode project.
 
 ## Resolve all Modules
+
+After adding a new module and its dependencies, you need to resolve all the modules to update their dependencies and ensure that they can be built. To do this, run the following command in the terminal:
 
 ```bash
 cd GistHub/
