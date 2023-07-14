@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Git tag and push
-        run: sh ci_scripts/tag_when_release.sh
+        run: sh Scripts/tag_when_release.sh
