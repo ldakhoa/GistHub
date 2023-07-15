@@ -153,9 +153,9 @@ struct GistDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     if userStore.user.id == gist.owner?.id {
-//                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
-//                            showEditGist.toggle()
-//                        }
+                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
+                            showEditGist.toggle()
+                        }
                         makeMenuButton(title: "Edit Description", systemImage: "pencil") {
                             showPlainTextEditorView.toggle()
                         }
@@ -227,9 +227,9 @@ struct GistDetailView: View {
         }
         .sheet(isPresented: $showEditGist) {
             EmptyView()
-//            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
-//                viewModel.gist = gist
-//            }
+            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
+                viewModel.gist = gist
+            }
         }
         .enableInjection()
     }
