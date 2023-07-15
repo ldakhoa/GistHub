@@ -88,26 +88,26 @@ public struct GistListsView: View {
             }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
-//        .toolbar {
-//            if listsMode == .allGists {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        showingNewGistView.toggle()
-//                    } label: {
-//                        Image(systemName: "plus.circle")
-//                            .renderingMode(.template)
-//                            .foregroundColor(Colors.accent.color)
-//                    }
-//                    .sheet(isPresented: $showingNewGistView) {
-//                        ComposeGistView(style: .createGist) { newGist in
-//                            viewModel.insert(newGist)
-//                            selectedGist = newGist
-//                            showingGistDetail.toggle()
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        .toolbar {
+            if listsMode == .allGists {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingNewGistView.toggle()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .renderingMode(.template)
+                            .foregroundColor(Colors.accent.color)
+                    }
+                    .sheet(isPresented: $showingNewGistView) {
+                        ComposeGistView(style: .createGist) { newGist in
+                            viewModel.insert(newGist)
+                            selectedGist = newGist
+                            showingGistDetail.toggle()
+                        }
+                    }
+                }
+            }
+        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)

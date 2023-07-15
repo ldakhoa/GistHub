@@ -26,17 +26,17 @@ import Models
         try await client.create(description: description, files: files, public: `public`)
     }
 
-//    @discardableResult
-//    func updateGist(
-//        gistID: String,
-//        description: String?,
-//        files: [String: File]
-//    ) async throws -> Gist {
-//        try await client.updateGist(
-//            fromGistID: gistID,
-//            description: description,
-//            files: files
-//        )
-//    }
+    @discardableResult
+    func updateGist(
+        gistID: String,
+        description: String?,
+        files: [String: File]
+    ) async throws -> Gist {
+        try await client.updateGist(
+            fromGistID: gistID,
+            description: description,
+            files: files
+        )
+    }
 
 }
