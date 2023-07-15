@@ -25,7 +25,7 @@ extension View {
         duration: Double = 0.8,
         displayMode: AlertToast.DisplayMode = .banner(.pop),
         type: AlertToast.AlertType = .complete(Colors.success.color),
-        completion: (() -> ())? = nil
+        completion: (() -> Void)? = nil
     ) -> some View {
         self.toast(isPresenting: isPresenting, duration: duration) {
             AlertToast(

@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "AppAccount",
             targets: ["AppAccount"]
-        ),
+        )
     ],
     dependencies: [
         // Local package dependencies
@@ -25,6 +25,6 @@ let package = Package(
         .testTarget(
             name: "AppAccountTests",
             dependencies: ["AppAccount"]
-        ),
+        )
     ]
 )

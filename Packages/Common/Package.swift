@@ -9,11 +9,11 @@ let package = Package(
         .library(
             name: "Common",
             targets: ["Common"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Networking", path: "../Networking"),
-        .package(name: "Models", path: "../Models"),
+        .package(name: "Models", path: "../Models")
     ],
     targets: [
         .target(
@@ -26,6 +26,6 @@ let package = Package(
         .testTarget(
             name: "CommonTests",
             dependencies: ["Common"]
-        ),
+        )
     ]
 )

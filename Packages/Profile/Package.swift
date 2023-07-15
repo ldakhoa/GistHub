@@ -13,7 +13,7 @@ let package = Package(
         .library(
             name: "Settings",
             targets: ["Settings"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "DesignSystem", path: "../DesignSystem"),
@@ -21,7 +21,7 @@ let package = Package(
         .package(name: "AppAccount", path: "../AppAccount"),
         .package(name: "Models", path: "../Models"),
         .package(name: "Utilities", path: "../Utilities"),
-        .package(name: "Editor", path: "../Editor"),
+        .package(name: "Editor", path: "../Editor")
     ],
     targets: [
         .target(
@@ -47,6 +47,6 @@ let package = Package(
                 "Editor",
                 "Utilities"
             ]
-        ),
+        )
     ]
 )

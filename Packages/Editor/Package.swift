@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "Editor",
             targets: ["Editor"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Models", path: "../Models"),
@@ -25,7 +25,7 @@ let package = Package(
         .package(
             url: "https://github.com/simonbs/KeyboardToolbar",
             .upToNextMajor(from: "0.1.1")
-        ),
+        )
     ],
     targets: [
         .target(
@@ -44,6 +44,6 @@ let package = Package(
         .testTarget(
             name: "EditorTests",
             dependencies: ["Editor"]
-        ),
+        )
     ]
 )

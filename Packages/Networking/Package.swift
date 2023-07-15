@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "Networking",
             targets: ["Networking"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Models", path: "../Models"),
@@ -30,6 +30,6 @@ let package = Package(
         ),
         .testTarget(
             name: "NetworkingTests",
-            dependencies: ["Networking"]),
+            dependencies: ["Networking"])
     ]
 )

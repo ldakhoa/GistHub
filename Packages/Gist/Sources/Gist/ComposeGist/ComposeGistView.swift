@@ -1,21 +1,21 @@
-////
-////  ComposeGitView.swift
-////  GistHub
-////
-////  Created by Hung Dao on 27/02/2023.
-////
 //
-//import Foundation
-//import SwiftUI
-//import Inject
-//import AlertToast
-//import OrderedCollections
-//import Models
-//import DesignSystem
-//import Editor
-//import Utilities
+//  ComposeGitView.swift
+//  GistHub
 //
-//struct ComposeGistView: View {
+//  Created by Hung Dao on 27/02/2023.
+//
+
+// import Foundation
+// import SwiftUI
+// import Inject
+// import AlertToast
+// import OrderedCollections
+// import Models
+// import DesignSystem
+// import Editor
+// import Utilities
+//
+// struct ComposeGistView: View {
 //    @ObserveInjection private var inject
 //
 //    @Environment(\.dismiss) private var dismiss
@@ -85,28 +85,6 @@
 //                                self.files[file.filename ?? ""] = file
 //                                newFileTitle = ""
 //                            }
-////                            if let language = newFileTitle.getFileExtension() {
-////                                if language == "md" || language == "markdown" {
-////                                    MarkdownTextEditorView(
-////                                        style: .createGist,
-////                                        navigationTitle: newFileTitle,
-////                                        createGistCompletion: { file in
-////                                            self.files[file.filename ?? ""] = file
-////                                            newFileTitle = ""
-////                                        })
-////                                } else if language.isEmpty {
-////                                    // TODO: Handle case language is empty
-////                                } else {
-////                                    EditorView(
-////                                        style: .createFile,
-////                                        fileName: newFileTitle,
-////                                        language: File.Language(rawValue: language) ?? .javaScript,
-////                                        createGistCompletion: { file in
-////                                            self.files[file.filename ?? ""] = file
-////                                            newFileTitle = ""
-////                                        })
-////                                }
-////                            }
 //                        }
 //
 //                        Button("Cancel", role: .cancel) {
@@ -185,8 +163,8 @@
 //        Button("Update") {
 //            Task {
 //                do {
-////                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
-////                    completion!(gist)
+// //                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
+// //                    completion!(gist)
 //                    dismiss()
 //                } catch let updateError {
 //                    error = updateError.localizedDescription
@@ -251,9 +229,9 @@
 //        }
 //        return AnyView(EmptyView())
 //    }
-//}
+// }
 //
-//struct FileEditorView: View {
+// struct FileEditorView: View {
 //    let file: File?
 //    let fileName: String
 //    let completion: ((File) -> Void)? = nil
@@ -267,7 +245,7 @@
 //                    navigationTitle: file?.filename ?? "",
 //                    createGistCompletion: { newFile in
 //                        self.completion!(newFile)
-////                        self.files[newFile.filename ?? ""] = newFile
+// //                        self.files[newFile.filename ?? ""] = newFile
 //                    })
 //            } else {
 //                EditorView(
@@ -277,14 +255,14 @@
 //                    language: File.Language(rawValue: language) ?? .javaScript,
 //                    createGistCompletion: { file in
 //                        self.completion!(file)
-////                        self.files[file.filename ?? ""] = file
+// //                        self.files[file.filename ?? ""] = file
 //                    })
 //            }
 //        }
 //    }
-//}
+// }
 //
-//extension ComposeGistView {
+// extension ComposeGistView {
 //    enum Style {
 //        case createGist
 //        case update(gist: Gist)
@@ -296,4 +274,4 @@
 //            }
 //        }
 //    }
-//}
+// }

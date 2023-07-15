@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "Utilities",
             targets: ["Utilities"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "DesignSystem", path: "../DesignSystem"),
@@ -26,6 +26,6 @@ let package = Package(
         .testTarget(
             name: "UtilitiesTests",
             dependencies: ["Utilities"]
-        ),
+        )
     ]
 )

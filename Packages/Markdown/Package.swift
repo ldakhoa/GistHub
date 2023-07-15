@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "Markdown",
             targets: ["Markdown"]
-        ),
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
@@ -38,6 +38,6 @@ let package = Package(
         .testTarget(
             name: "MarkdownTests",
             dependencies: ["Markdown"]
-        ),
+        )
     ]
 )

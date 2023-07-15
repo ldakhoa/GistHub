@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "Login",
             targets: ["Login"]
-        ),
+        )
     ],
     dependencies: [
         // Local package dependencies
@@ -17,7 +17,7 @@ let package = Package(
          .package(name: "Networking", path: "../Networking"),
          .package(name: "AppAccount", path: "../AppAccount"),
          .package(name: "Environment", path: "../Environment"),
-         .package(name: "Utilities", path: "../Utilities"),
+         .package(name: "Utilities", path: "../Utilities")
         // Third package dependencies
         // .package(url: "url", from: "1.0.0"),
     ],
@@ -35,6 +35,6 @@ let package = Package(
         .testTarget(
             name: "LoginTests",
             dependencies: ["Login"]
-        ),
+        )
     ]
 )

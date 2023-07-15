@@ -9,7 +9,7 @@ let package = Package(
         .library(
             name: "Environment",
             targets: ["Environment"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Utilities", path: "../Utilities"),
@@ -20,7 +20,7 @@ let package = Package(
         .package(
             url: "https://github.com/simonbs/Runestone",
             .upToNextMajor(from: "0.2.9")
-        ),
+        )
     ],
     targets: [
         .target(
@@ -33,6 +33,6 @@ let package = Package(
         .testTarget(
             name: "EnvironmentTests",
             dependencies: ["Environment"]
-        ),
+        )
     ]
 )

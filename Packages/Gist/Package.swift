@@ -13,7 +13,7 @@ let package = Package(
         .library(
             name: "Comment",
             targets: ["Comment"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Models", path: "../Models"),
@@ -55,6 +55,6 @@ let package = Package(
                 "Editor",
                 "Common"
             ]
-        ),
+        )
     ]
 )

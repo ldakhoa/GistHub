@@ -12,12 +12,20 @@ disabled_rules:
   - large_tuple
   - nesting
   - unused_setter_value
+  - todo
 opt_in_rules:
 - attributes
 attributes:
   always_on_line_above: ["@objc", "@nonobjc"]
-
+line_length: 160
+nesting:
+  type_level: 2
+function_body_length:
+  warning: 80
+cyclomatic_complexity:
+  warning: 15
 included:
   - GistHub
+  - Packages
 excluded:
-  - Pods
+  - Packages/**/Tests

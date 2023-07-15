@@ -27,13 +27,13 @@ let package = Package(
         .library(
             name: "$packageName",
             targets: ["$packageName"]
-        ),
+        )
     ],
     dependencies: [
         // Local package dependencies
-        // .package(name: "Package name", path: "../Package name"),
+        // .package(name: "Package name", path: "../Package name")
         // Third package dependencies
-        // .package(url: "url", from: "1.0.0"),
+        // .package(url: "url", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -43,7 +43,7 @@ let package = Package(
         .testTarget(
             name: "${packageName}Tests",
             dependencies: ["$packageName"]
-        ),
+        )
     ]
 )
 EOF
