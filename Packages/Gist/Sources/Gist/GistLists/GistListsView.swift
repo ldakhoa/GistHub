@@ -98,13 +98,6 @@ public struct GistListsView: View {
                             .renderingMode(.template)
                             .foregroundColor(Colors.accent.color)
                     }
-                    .sheet(isPresented: $showingNewGistView) {
-                        ComposeGistView(style: .createGist) { newGist in
-                            viewModel.insert(newGist)
-                            selectedGist = newGist
-                            showingGistDetail.toggle()
-                        }
-                    }
                 }
             }
         }
@@ -114,6 +107,13 @@ public struct GistListsView: View {
         .scrollDismissesKeyboard(.interactively)
         .onChange(of: viewModel.searchText) { _ in
             viewModel.search()
+        }
+        .sheet(isPresented: $showingNewGistView) {
+            ComposeGistView(style: .createGist) { newGist in
+                viewModel.insert(newGist)
+                selectedGist = newGist
+                showingGistDetail.toggle()
+            }
         }
         .enableInjection()
     }
