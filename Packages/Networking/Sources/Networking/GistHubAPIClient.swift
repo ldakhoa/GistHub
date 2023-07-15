@@ -54,6 +54,12 @@ public protocol GistHubAPIClient {
 
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
+
+    /// Create an issue.
+    /// - Parameters:
+    ///   - title: The title of the issue.
+    ///   - content: The contents of the issue.
+    func createIssue(withTitle title: String, content: String?) async throws
 }
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -113,15 +119,27 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     @discardableResult
-    public func updateDescription(fromGistID gistID: String, description: String?) async throws -> Gist {
+    public func updateDescription(
+        fromGistID gistID: String,
+        description: String?
+    ) async throws -> Gist {
         try await session.data(for: API.updateGistDescription(
             gistID: gistID,
             description: description
         ))
     }
+
+    public func createIssue(withTitle title: String, content: String?) async throws {
+        try await session.data(for: API.createIssue(title: title, content: content))
+    }
 }
 
 extension DefaultGistHubAPIClient {
+    enum Constants {
+        static let repo = "GistHub"
+        static let owner = "ldakhoa"
+    }
+
     enum API: Request {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
@@ -141,6 +159,7 @@ extension DefaultGistHubAPIClient {
             description: String?
         )
         case deleteGist(gistID: String)
+        case createIssue(title: String, content: String?)
 
         var headers: [String: String]? {
             let userSessionManager = GitHubSessionManager()
@@ -168,12 +187,14 @@ extension DefaultGistHubAPIClient {
                 let .updateGist(gistID, _, _),
                 let .updateGistDescription(gistID, _):
                 return "/gists/\(gistID)"
+            case .createIssue:
+                return "/repos/\(Constants.owner)/\(Constants.repo)/issues"
             }
         }
 
         var method: Networkable.Method {
             switch self {
-            case .create:
+            case .create, .createIssue:
                 return .post
             case .gists, .starredGists, .user, .isStarred, .gist:
                 return .get
@@ -223,6 +244,14 @@ extension DefaultGistHubAPIClient {
                     let description: String?
                 }
                 let request = Request(description: description)
+                return try? JSONEncoder().encode(request)
+            case let .createIssue(title, content):
+                struct Request: Codable {
+                    let title: String
+                    let body: String?
+                    let labels: [String]?
+                }
+                let request = Request(title: title, body: content, labels: ["bug"])
                 return try? JSONEncoder().encode(request)
             default:
                 return nil

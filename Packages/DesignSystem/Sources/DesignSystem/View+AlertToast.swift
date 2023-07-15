@@ -39,4 +39,14 @@ extension View {
             completion?()
         }
     }
+
+    public func toastLoading(
+        isPresenting: Binding<Bool>,
+        title: String? = nil,
+        subTitle: String? = nil
+    ) -> some View {
+        self.toast(isPresenting: isPresenting) {
+            AlertToast(type: .loading, title: title, subTitle: subTitle)
+        }
+    }
 }

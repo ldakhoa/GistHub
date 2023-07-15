@@ -14,12 +14,21 @@ import Editor
 import Utilities
 
 public struct SettingView: View {
-    let user: User
-    let sessionManager: GitHubSessionManager
-    let logoutAction: () -> Void
+
+    // MARK: - Dependencies
+
+    private let user: User
+    private let sessionManager: GitHubSessionManager
+    private let logoutAction: () -> Void
 
     @ObserveInjection private var inject
-    @State private var showConfirmationDialog = false
+
+    // MARK: - Misc
+
+    @State private var showConfirmationDialog: Bool = false
+    @State private var showReportABug: Bool = false
+
+    // MARK: - Initializer
 
     public init(
         user: User,
@@ -45,6 +54,23 @@ public struct SettingView: View {
             }
 
             Section {
+                Button {
+                    showReportABug.toggle()
+                } label: {
+                    HStack {
+                        Text("Report a Bug")
+                            .foregroundColor(Colors.foreground.color)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 14))
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color(UIColor.tertiaryLabel))
+                    }
+                }
+                .sheet(isPresented: $showReportABug) {
+                    ReportABugView()
+                }
+
                 Link(destination: URL(string: "https://github.com/ldakhoa/GistHub")!) {
                     HStack {
                         Text("View GistHub Repo")
