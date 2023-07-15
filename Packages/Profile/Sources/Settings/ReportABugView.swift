@@ -41,7 +41,7 @@ struct ReportABugView: View {
             .toolbar(.visible, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         if !title.isEmpty || !content.isEmpty {
                             showConfirmDismissAlert.toggle()
@@ -53,7 +53,7 @@ struct ReportABugView: View {
                     .foregroundColor(Colors.accent.color)
                 }
 
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Submit") {
                         Task {
                             await handleSubmit()
