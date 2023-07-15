@@ -251,12 +251,7 @@ extension DefaultGistHubAPIClient {
                     let body: String?
                     let labels: [String]?
                 }
-                var body: String?
-                if let content {
-                    body = content + "\n\n_Sent with GistHub_"
-                }
-
-                let request = Request(title: title, body: body, labels: ["bug"])
+                let request = Request(title: title, body: content, labels: ["bug"])
                 return try? JSONEncoder().encode(request)
             default:
                 return nil

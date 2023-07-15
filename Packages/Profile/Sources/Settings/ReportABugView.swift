@@ -10,6 +10,8 @@ struct ReportABugView: View {
 
     @State private var showConfirmDismissAlert: Bool = false
     @State private var showErrorToast: Bool = false
+    @State private var showSuccessToast: Bool = false
+    @State private var showLoadingToast: Bool = false
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var networkError: String = ""
@@ -69,7 +71,11 @@ struct ReportABugView: View {
             } message: {
                 Text("Are you sure you want to discard this new issues? Your messages will be lost.")
             }
+            .toastLoading(isPresenting: $showLoadingToast)
             .toastError(isPresenting: $showErrorToast, error: networkError)
+            .toastSuccess(isPresenting: $showSuccessToast, title: "Created the new issue") {
+                dismiss()
+            }
             .interactiveDismissDisabled(!title.isEmpty || (!title.isEmpty && !content.isEmpty))
         }
         .enableInjection()
@@ -77,11 +83,14 @@ struct ReportABugView: View {
 
     @MainActor
     private func handleSubmit() async {
+        showLoadingToast = true
         do {
             try await client.createIssue(withTitle: title, content: content)
+            showSuccessToast.toggle()
         } catch {
             networkError = error.localizedDescription
             showErrorToast.toggle()
         }
+        showLoadingToast = false
     }
 }
