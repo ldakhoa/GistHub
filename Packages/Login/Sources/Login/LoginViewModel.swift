@@ -25,7 +25,7 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
     private let loginURL = URLBuilder.github()
         .add(paths: ["login", "oauth", "authorize"])
         .add(item: "client_id", value: Secrets.GitHub.clientId)
-        .add(item: "scope", value: "user+gist+notifications")
+        .add(item: "scope", value: "user+repo+gist+notifications")
         .url!
 
     private let callbackURLScheme = "gisthub"
