@@ -45,12 +45,12 @@ public protocol GistHubAPIClient {
         content: String?
     ) async throws -> Gist
 
-    /// Update multiple files of a gist
+    /// Update multiple files of a gist.
     ///
     /// - Parameters:
-    /// - fromGistID: The ID of the gist you want to update
-    /// - description: Your desired new description
-    /// - files: The new list of files
+    /// - gistID: The ID of the gist you want to update.
+    /// - description: Your desired new description.
+    /// - files: The new list of files.
     @discardableResult
     func updateGist(
         fromGistID gistID: String,
