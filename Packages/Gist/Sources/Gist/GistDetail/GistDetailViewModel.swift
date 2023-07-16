@@ -55,8 +55,8 @@ import Models
     func gist(gistID: String) async {
         do {
             async let gist = gistHubClient.gist(fromGistID: gistID)
-            contentState = try await .content(gist: gist)
             self.gist = try await gist
+            contentState = try await .content(gist: gist)
         } catch {
             contentState = .error(error: error.localizedDescription)
         }

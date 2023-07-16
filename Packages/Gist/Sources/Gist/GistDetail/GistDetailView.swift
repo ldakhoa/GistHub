@@ -14,7 +14,7 @@ import Models
 import Editor
 import Comment
 
-public struct GistDetailView: View, UIViewControllerHostedView {
+public struct GistDetailView: View {
     @ObserveInjection private var inject
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.dismiss) private var dismiss
@@ -124,13 +124,15 @@ public struct GistDetailView: View, UIViewControllerHostedView {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
+                await viewModel.gist(gistID: gist.id)
                 await viewModel.isStarred(gistID: gist.id)
+                await commentViewModel.fetchComments(gistID: gist.id)
             }
         }
         .onLoad {
             Task {
-                await commentViewModel.fetchComments(gistID: gist.id)
-                await viewModel.gist(gistID: gist.id)
+//                await commentViewModel.fetchComments(gistID: gist.id)
+//                await viewModel.gist(gistID: gist.id)
             }
         }
         .refreshable {
@@ -357,10 +359,7 @@ public struct GistDetailView: View, UIViewControllerHostedView {
 
     private func makeLeadingToolbarButton() -> some View {
         Button(action: {
-//            print(123123)
-//            dismiss()
-            dismissHostedView(presentationMode: presentationMode)
-
+            presentationMode.wrappedValue.dismiss()
         }, label: {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 18))
@@ -530,75 +529,4 @@ fileprivate extension Colors {
     static let itemBackground = UIColor.secondarySystemGroupedBackground.color
     static let commentButton = UIColor(light: Colors.Palette.Black.black0.light, dark: Palette.Gray.gray7.dark)
     static let fileNameForeground = UIColor(light: Colors.Palette.Black.black0.light, dark: .white)
-}
-
-import UIKit
-
-public protocol UIViewControllerHostedView where Self: View {
-
-    /// A method which should be triggered whenever dismiss is needed.
-    /// - Note: Since `presentationMode & isPresented` are not working for presented UIHostingControllers on lower iOS versions than 15.
-    ///   You must call, this method whenever you want to dismiss the presented SwiftUI.
-    func dismissHostedView(presentationMode: Binding<PresentationMode>)
-}
-
-public extension UIViewControllerHostedView {
-    func dismissHostedView(presentationMode: Binding<PresentationMode>) {
-        presentationMode.wrappedValue.dismiss()
-    }
-}
-
-public extension View {
-    weak var topViewController: UIViewController? {
-        UIApplication.shared.topViewController
-    }
-}
-
-public extension UIWindow {
-
-    // Credits: - https://gist.github.com/matteodanelli/b8dcdfef39e3417ec7116a2830ff67cf
-    func visibleViewController() -> UIViewController? {
-        if let rootViewController: UIViewController = self.rootViewController {
-            return UIWindow.getVisibleViewControllerFrom(vc: rootViewController)
-        }
-        return nil
-    }
-
-    class func getVisibleViewControllerFrom(vc: UIViewController) -> UIViewController {
-        switch vc {
-        case is UINavigationController:
-            let navigationController = vc as! UINavigationController
-            return UIWindow.getVisibleViewControllerFrom( vc: navigationController.visibleViewController!)
-
-        case is UITabBarController:
-            let tabBarController = vc as! UITabBarController
-            return UIWindow.getVisibleViewControllerFrom(vc: tabBarController.selectedViewController!)
-
-        default:
-            if let presentedViewController = vc.presentedViewController {
-                if let presentedViewController2 = presentedViewController.presentedViewController {
-                    return UIWindow.getVisibleViewControllerFrom(vc: presentedViewController2)
-                } else {
-                    return vc
-                }
-            } else {
-                return vc
-            }
-        }
-
-    }
-
-}
-
-@objc public extension UIApplication {
-
-    /// LCUIComponents: Returns the current visible top most window of the app.
-    var topWindow: UIWindow? {
-        return windows.first(where: { $0.isKeyWindow })
-    }
-
-    var topViewController: UIViewController? {
-        return topWindow?.visibleViewController()
-    }
-
 }

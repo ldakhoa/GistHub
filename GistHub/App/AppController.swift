@@ -57,33 +57,25 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
     }
 
     // Should be handled by AppRouter
+    //
+    // The url component will be like this ["/", "<username>", "gist_id", "..."]
     func open(url: URL) {
-            let client: GistHubAPIClient = DefaultGistHubAPIClient()
-            Task { @MainActor in
-                do {
-                    let topVC = UIApplication.shared.topViewController
+        let client: GistHubAPIClient = DefaultGistHubAPIClient()
+        Task { @MainActor in
+            do {
+                let user = try await client.user()
+                // https://gist.github.com/ldakhoa/020ac54241d11e8616bea97f7a4292bc
+                // https://gist.github.com/chriseidhof/e1a8b3efad617fe35eb9e8814f04de9d
+                let gist = Gist(id: url.pathComponents[2])
 
-                    let user = try await client.user()
-                    // ["/", "<username>", "gist_id"]
-                    // https://gist.github.com/ldakhoa/020ac54241d11e8616bea97f7a4292bc
-                    // https://gist.github.com/chriseidhof/e1a8b3efad617fe35eb9e8814f04de9d
-                    print("Present url: \(url)")
-                    print(url.pathComponents.count)
-                    let gist = Gist(id: url.pathComponents[2])
+                let gistDetailView = GistDetailView(gist: gist)
+                    .environmentObject(UserStore(user: user))
 
-                    let gistDetailView = GistDetailView(gist: gist) {
-                        topVC?.dismiss(animated: true)
-                    }.environmentObject(UserStore(user: user))
-
-                    let viewController = UIHostingController(rootView: gistDetailView)
-                    let navigationController = UINavigationController(rootViewController: viewController)
-
-                    topVC?.present(navigationController, animated: true, completion: nil)
-
-                }
-
+                let viewController = UIHostingController(rootView: gistDetailView)
+                let topViewController = UIApplication.shared.topViewController
+                topViewController?.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
-
     }
 
     // MARK: - Side Effects
