@@ -12,6 +12,8 @@ import AppAccount
 import Login
 import Networking
 import Profile
+import Gist
+import Models
 
 final class AppController: NSObject, LoginDelegate, GitHubSessionListener, ProfileDelegate {
 
@@ -52,6 +54,36 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
         // dont need to login if there's a user session
         guard sessionManager.focusedUserSession == nil && loginViewController == nil else { return }
         showLogin(animated: false)
+    }
+
+    // Should be handled by AppRouter
+    func open(url: URL) {
+            let client: GistHubAPIClient = DefaultGistHubAPIClient()
+            Task { @MainActor in
+                do {
+                    let topVC = UIApplication.shared.topViewController
+
+                    let user = try await client.user()
+                    // ["/", "<username>", "gist_id"]
+                    // https://gist.github.com/ldakhoa/020ac54241d11e8616bea97f7a4292bc
+                    // https://gist.github.com/chriseidhof/e1a8b3efad617fe35eb9e8814f04de9d
+                    print("Present url: \(url)")
+                    print(url.pathComponents.count)
+                    let gist = Gist(id: url.pathComponents[2])
+
+                    let gistDetailView = GistDetailView(gist: gist) {
+                        topVC?.dismiss(animated: true)
+                    }.environmentObject(UserStore(user: user))
+
+                    let viewController = UIHostingController(rootView: gistDetailView)
+                    let navigationController = UINavigationController(rootViewController: viewController)
+
+                    topVC?.present(navigationController, animated: true, completion: nil)
+
+                }
+
+        }
+
     }
 
     // MARK: - Side Effects

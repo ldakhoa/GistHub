@@ -16,8 +16,7 @@ final class ActionRequestHandler: NSObject, NSExtensionRequestHandling, Sendable
         Task {
             do {
                 let url = try await url(from: context)
-                print("URL from extension \(url)")
-                
+
                 guard url.isGistGitHubInstance else {
                     throw Error.notGistInstance
                 }

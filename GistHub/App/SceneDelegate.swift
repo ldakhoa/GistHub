@@ -25,9 +25,19 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = appController.boostrapWindow(from: scene)
         // Share the window to the `AppDelegate`.
         appDelegate.window = window
+
+        if let url = connectionOptions.urlContexts.first?.url {
+            appController.open(url: url)
+        }
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         appController.appDidBecomeActive()
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            appController.open(url: url)
+        }
     }
 }
