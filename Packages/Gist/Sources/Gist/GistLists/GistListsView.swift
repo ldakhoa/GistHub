@@ -40,7 +40,7 @@ public struct GistListsView: View {
                 List {
                     ForEach(gists) { gist in
                         PlainNavigationLink {
-                            GistDetailView(gist: gist) {
+                            GistDetailView(gistId: gist.id) {
                                 fetchGists()
                             }
                             .environmentObject(UserStore(user: user))
@@ -58,7 +58,7 @@ public struct GistListsView: View {
                         } preview: {
                             // Put in NavigationStack to solve size issues
                             NavigationStack {
-                                GistDetailView(gist: gist) {}
+                                GistDetailView(gistId: gist.id) {}
                                     .environmentObject(UserStore(user: user))
                                     .toolbarBackground(.visible, for: .navigationBar)
                                     .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
@@ -74,7 +74,7 @@ public struct GistListsView: View {
                 if let selectedGist = selectedGist {
                     NavigationLink(
                         destination: GistDetailView(
-                            gist: selectedGist,
+                            gistId: selectedGist.id,
                             shouldReloadGistListsView: { fetchGists() })
                         .environmentObject(UserStore(user: user)),
                         isActive: $showingGistDetail

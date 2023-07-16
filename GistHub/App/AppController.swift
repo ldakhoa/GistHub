@@ -62,15 +62,13 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
     func open(url: URL) {
         // Only handle present GistDetailView if satisfy
         guard url.pathComponents.count >= 3 else { return }
+
         let client: GistHubAPIClient = DefaultGistHubAPIClient()
         Task { @MainActor in
             do {
                 let user = try await client.user()
-                // https://gist.github.com/ldakhoa/020ac54241d11e8616bea97f7a4292bc
-                // https://gist.github.com/chriseidhof/e1a8b3efad617fe35eb9e8814f04de9d
-                let gist = Gist(id: url.pathComponents[2])
 
-                let gistDetailView = GistDetailView(gist: gist)
+                let gistDetailView = GistDetailView(gistId: url.pathComponents[2])
                     .environmentObject(UserStore(user: user))
 
                 let viewController = UIHostingController(rootView: gistDetailView)
