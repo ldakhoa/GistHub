@@ -11,6 +11,9 @@ import Models
 import Environment
 
 public protocol ImgurAPIClient {
+    /// Upload an image under base64 format to Imgur
+    /// - Parameter base64Image: The base64 encoded string of the image
+    /// - Returns: Image object which contains the image URL
     func upload(base64Image: String) async throws -> ImgurImage
 }
 
@@ -30,6 +33,7 @@ extension DefaultImgurAPIClient {
     enum Constants {
         static var boundary = UUID().uuidString
     }
+
     enum API: Request {
         case upload(base64Image: String)
         var headers: [String: String]? {

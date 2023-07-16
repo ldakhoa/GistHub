@@ -173,7 +173,7 @@ final class TextController {
     }
 
     // MARK: - Image
-    func imageUploadPlacholder() {
+    func insertImageUploadPlaceholder() {
         let currentRange = textView.selectedRange
         let text = "[Uploading image...]"
         insertText(text)

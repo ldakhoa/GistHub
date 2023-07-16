@@ -305,7 +305,7 @@ public final class EditorViewController: UIViewController {
     private func performImageUpload(base64Image: String) {
         Task { @MainActor in
             let textController = TextController(textView: textView)
-            textController.imageUploadPlacholder()
+            textController.insertImageUploadPlaceholder()
             do {
                 let imageData = try await viewModel.uploadImage(base64Image: base64Image)
                 textController.insertImage(url: imageData.link)
@@ -356,16 +356,18 @@ extension EditorViewController {
 extension EditorViewController: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
-                if let itemProvider = results.first?.itemProvider,
-                   itemProvider.canLoadObject(ofClass: UIImage.self) {
-                    itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                        if let error {
-                            self?.showErrorAlert(title: error.localizedDescription)
-                        } else if let image = image as? UIImage,
-                                  let base64String = image.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
-                            self?.performImageUpload(base64Image: base64String)
-                        }
-                    }
-                }
+        guard let itemProvider = results.first?.itemProvider,
+              itemProvider.canLoadObject(ofClass: UIImage.self) else {
+            showErrorAlert(title: "Failed to select image")
+            return
+        }
+        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            if let error {
+                self?.showErrorAlert(title: error.localizedDescription)
+            } else if let image = image as? UIImage,
+                      let base64String = image.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
+                self?.performImageUpload(base64Image: base64String)
+            }
+        }
     }
 }

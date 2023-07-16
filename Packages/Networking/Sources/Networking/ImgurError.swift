@@ -11,6 +11,7 @@ struct ImgurError: LocalizedError, Codable {
     let message: String
 
     public var errorDescription: String? { message }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: RootKeys.self)
         let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)

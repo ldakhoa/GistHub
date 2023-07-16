@@ -2,22 +2,27 @@ import Foundation
 import Networkable
 
 public extension NetworkSession {
+
     static var github: NetworkSession {
-        buildSession(urlString: "https://api.github.com")
+        buildSession(urlString: "https://api.github.com", errorType: GitHubError.self)
     }
 
     static var accessToken: NetworkSession {
-        buildSession(urlString: "https://github.com")
+        buildSession(urlString: "https://github.com", errorType: GitHubError.self)
     }
 
-    private static func buildSession(urlString: String) -> NetworkSession {
+    static var imgur: NetworkSession {
+        buildSession(urlString: "https://api.imgur.com/3/", errorType: ImgurError.self)
+    }
+
+    private static func buildSession<Failure>(urlString: String, errorType: Failure.Type) -> NetworkSession where Failure: Error & Decodable {
         let baseURL = URL(string: urlString)
         let requestBuilder = URLRequestBuilder(baseURL: baseURL)
         let logging = LoggingMiddleware(type: .info)
         let statusCodeValidation = StatusCodeValidationMiddleware()
         let middlewares: [Middleware] = [
             logging,
-            ErrorDecoderMiddleware<GitHubError>(),
+            ErrorDecoderMiddleware<Failure>(),
             statusCodeValidation
         ]
         let result = NetworkSession(requestBuilder: requestBuilder, middlewares: middlewares)

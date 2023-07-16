@@ -12,6 +12,7 @@ import Models
 @MainActor final class EditorViewModel: ObservableObject {
     private let client: GistHubAPIClient
     private let imgurClient: ImgurAPIClient
+
     init(
         client: GistHubAPIClient = DefaultGistHubAPIClient(),
         imgurClient: ImgurAPIClient = DefaultImgurAPIClient()
