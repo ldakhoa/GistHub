@@ -58,8 +58,10 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
 
     // Should be handled by AppRouter
     //
-    // The url component will be like this ["/", "<username>", "gist_id", "..."]
+    // The url component will be like this ["/", "<username>", "gist_id", "..."].
     func open(url: URL) {
+        // Only handle present GistDetailView if satisfy
+        guard url.pathComponents.count >= 3 else { return }
         let client: GistHubAPIClient = DefaultGistHubAPIClient()
         Task { @MainActor in
             do {
