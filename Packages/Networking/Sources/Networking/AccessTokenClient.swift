@@ -128,12 +128,6 @@ struct GitHubAccessTokenRequest: Encodable {
     let clientId: String
     let clienSecret: String
 
-    init(code: String, clientId: String, clienSecret: String) {
-        self.code = code
-        self.clientId = clientId
-        self.clienSecret = clienSecret
-    }
-
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.code, forKey: .code)
