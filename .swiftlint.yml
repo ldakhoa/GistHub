@@ -12,10 +12,7 @@ disabled_rules:
   - nesting
   - unused_setter_value
   - todo
-opt_in_rules:
-- attributes
-attributes:
-  always_on_line_above: ["@objc", "@nonobjc"]
+  - attributes
 line_length: 180
 included:
   - GistHub
