@@ -316,6 +316,9 @@ public final class EditorViewController: UIViewController {
     }
 
     private func showErrorAlert(title: String) {
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(alert, animated: true)
     }
 }
 
@@ -358,7 +361,8 @@ extension EditorViewController: PHPickerViewControllerDelegate {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                         if let error {
                             print(error.localizedDescription)
-                        } else if let image = image as? UIImage, let base64String = image.pngData()?.base64EncodedString() {
+                        } else if let image = image as? UIImage,
+                                  let base64String = image.jpegData(compressionQuality: 0.5)?.base64EncodedString(options: .lineLength64Characters) {
                             self?.performImageUpload(base64Image: base64String)
                         }
                     }

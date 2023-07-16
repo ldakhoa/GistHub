@@ -27,16 +27,20 @@ public final class DefaultImgurAPIClient: ImgurAPIClient {
 }
 
 extension DefaultImgurAPIClient {
+    enum Constants {
+        static var boundary = UUID().uuidString
+    }
     enum API: Request {
         case upload(base64Image: String)
         var headers: [String: String]? {
             return [
-                "Authoriazation": "Client-ID \(Secrets.Imgur.clientId)"
+                "Authorization": "Client-ID \(Secrets.Imgur.clientId)",
+                "Content-Type": "multipart/form-data; boundary=\(Constants.boundary)"
             ]
         }
 
         var url: String {
-            return "/3/image"
+            return "image"
         }
 
         var method: Networkable.Method {
@@ -46,14 +50,12 @@ extension DefaultImgurAPIClient {
         func body() throws -> Data? {
             switch self {
             case let .upload(base64Image):
-                struct Request: Codable {
-                    let image: String
-                    func toData() throws -> Data? {
-                        return try JSONEncoder().encode(self)
-                    }
-                }
-                let request = Request(image: base64Image)
-                return try? request.toData()
+                var body = ""
+                body += "--\(Constants.boundary)\r\n"
+                body += "Content-Disposition:form-data; name=\"image\""
+                body += "\r\n\r\n\(base64Image)\r\n"
+                body += "--\(Constants.boundary)--\r\n"
+                return body.data(using: .utf8)
             }
         }
     }
