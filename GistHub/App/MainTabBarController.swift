@@ -5,13 +5,8 @@
 //  Created by Khoa Le on 10/12/2022.
 //
 
-import Foundation
 import UIKit
-import SwiftUI
 import DesignSystem
-import Models
-import Gist
-import Networking
 
 final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
