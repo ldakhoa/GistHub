@@ -360,9 +360,9 @@ extension EditorViewController: PHPickerViewControllerDelegate {
                    itemProvider.canLoadObject(ofClass: UIImage.self) {
                     itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                         if let error {
-                            print(error.localizedDescription)
+                            self?.showErrorAlert(title: error.localizedDescription)
                         } else if let image = image as? UIImage,
-                                  let base64String = image.jpegData(compressionQuality: 0.5)?.base64EncodedString(options: .lineLength64Characters) {
+                                  let base64String = image.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
                             self?.performImageUpload(base64Image: base64String)
                         }
                     }
