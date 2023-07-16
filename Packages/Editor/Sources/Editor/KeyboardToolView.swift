@@ -85,9 +85,10 @@ final class MarkdownKeyboardToolsView: UIInputView {
         let unorderedlistButton = makeToolBarButtonItem(named: "list", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
         let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
-
+        let imageButton = makeToolBarButtonItem(named: "preview", action: #selector(onImage))
         items = [
             previewButton,
+            imageButton,
             boldButton,
             italicButton,
             strikethroughButton,
@@ -120,14 +121,6 @@ final class MarkdownKeyboardToolsView: UIInputView {
         }
 
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: width, height: 40))
-        toolBar.setItems(items, animated: false)
-        toolBar.isTranslucent = false
-        return toolBar
-    }
-
-    private func makeCodeToolBar() -> UIToolbar {
-        let items = [UIBarButtonItem]()
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         toolBar.setItems(items, animated: false)
         toolBar.isTranslucent = false
         return toolBar
@@ -208,6 +201,11 @@ final class MarkdownKeyboardToolsView: UIInputView {
     private func onLink() {
         let textController = TextController(textView: textView!)
         textController.link()
+    }
+
+    @objc
+    private func onImage() {
+        NotificationCenter.default.post(name: .textViewShouldShowPhotoPicker, object: nil)
     }
 
     private func setupUndoManagerObserver() {
