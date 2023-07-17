@@ -371,8 +371,10 @@ extension EditorViewController {
 extension EditorViewController: PHPickerViewControllerDelegate {
     public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         dismiss(animated: true)
-        guard let itemProvider = results.first?.itemProvider,
-              itemProvider.canLoadObject(ofClass: UIImage.self) else {
+        guard
+            let itemProvider = results.first?.itemProvider,
+            itemProvider.canLoadObject(ofClass: UIImage.self)
+        else {
             showErrorAlert(message: "Failed to select image")
             return
         }
