@@ -34,4 +34,11 @@ public extension NetworkSession {
         decoder.dateDecodingStrategy = .iso8601
         return try await self.data(for: request, decoder: decoder)
     }
+
+    func imgurData<T: Codable>(for request: Request) async throws -> T {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        let response: ImgurResponse<T> = try await self.data(for: request, decoder: decoder)
+        return response.data
+    }
 }

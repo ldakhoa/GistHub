@@ -69,4 +69,8 @@ import Models
     func uploadImage(base64Image: String) async throws -> ImgurImage {
         try await imgurClient.upload(base64Image: base64Image)
     }
+
+    func getCredits() async throws -> ImgurCredits {
+        try await imgurClient.credits()
+    }
 }

@@ -26,6 +26,7 @@ public struct MarkdownTextEditorView: View {
     @State private var files: [String: File]?
     private let completion: (() -> Void)?
     private let createGistCompletion: ((File) -> Void)?
+    private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
 
     // MARK: - State
 
@@ -132,6 +133,11 @@ public struct MarkdownTextEditorView: View {
         .toastError(isPresenting: $showErrorToast, error: error)
         .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
+        .onReceive(alertPublisher, perform: { notification in
+            guard let errorMessage = notification.object as? String else { return }
+            error = errorMessage
+            showErrorToast.toggle()
+        })
     }
 
     private func createFile() {

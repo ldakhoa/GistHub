@@ -302,6 +302,21 @@ public final class EditorViewController: UIViewController {
         textView.moveSelectedLinesDown()
     }
 
+    private func checkCreditsAndUpload(base64Image: String) {
+        Task {
+            do {
+                let imgurCredits = try await viewModel.getCredits()
+                guard !imgurCredits.reachedLimit else {
+                    showErrorAlert(message: "Imgur API limit reached, please try again on \(imgurCredits.resetTime.agoString())")
+                    return
+                }
+                performImageUpload(base64Image: base64Image)
+            } catch {
+                showErrorAlert(message: error.localizedDescription)
+            }
+        }
+    }
+
     private func performImageUpload(base64Image: String) {
         Task { @MainActor in
             let textController = TextController(textView: textView)
@@ -310,15 +325,14 @@ public final class EditorViewController: UIViewController {
                 let imageData = try await viewModel.uploadImage(base64Image: base64Image)
                 textController.insertImage(url: imageData.link)
             } catch {
-                showErrorAlert(title: error.localizedDescription)
+                textController.clearImageUploadPlaceholder()
+                showErrorAlert(message: error.localizedDescription)
             }
         }
     }
 
-    private func showErrorAlert(title: String) {
-        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-        present(alert, animated: true)
+    private func showErrorAlert(message: String) {
+        NotificationCenter.default.post(name: .markdownEditorViewShouldShowAlert, object: message)
     }
 }
 
@@ -358,15 +372,15 @@ extension EditorViewController: PHPickerViewControllerDelegate {
         dismiss(animated: true)
         guard let itemProvider = results.first?.itemProvider,
               itemProvider.canLoadObject(ofClass: UIImage.self) else {
-            showErrorAlert(title: "Failed to select image")
+            showErrorAlert(message: "Failed to select image")
             return
         }
         itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
             if let error {
-                self?.showErrorAlert(title: error.localizedDescription)
+                self?.showErrorAlert(message: error.localizedDescription)
             } else if let image = image as? UIImage,
                       let base64String = image.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
-                self?.performImageUpload(base64Image: base64String)
+                self?.checkCreditsAndUpload(base64Image: base64String)
             }
         }
     }

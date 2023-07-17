@@ -15,6 +15,8 @@ public protocol ImgurAPIClient {
     /// - Parameter base64Image: The base64 encoded string of the image
     /// - Returns: Image object which contains the image URL
     func upload(base64Image: String) async throws -> ImgurImage
+
+    func credits() async throws -> ImgurCredits
 }
 
 public final class DefaultImgurAPIClient: ImgurAPIClient {
@@ -25,7 +27,11 @@ public final class DefaultImgurAPIClient: ImgurAPIClient {
     }
 
     public func upload(base64Image: String) async throws -> ImgurImage {
-        try await session.data(for: API.upload(base64Image: base64Image))
+        try await session.imgurData(for: API.upload(base64Image: base64Image))
+    }
+
+    public func credits() async throws -> ImgurCredits {
+        try await session.imgurData(for: API.credits)
     }
 }
 
@@ -36,31 +42,59 @@ extension DefaultImgurAPIClient {
 
     enum API: Request {
         case upload(base64Image: String)
+        case credits
+
         var headers: [String: String]? {
-            return [
-                "Authorization": "Client-ID \(Secrets.Imgur.clientId)",
-                "Content-Type": "multipart/form-data; boundary=\(Constants.boundary)"
-            ]
+            switch self {
+            case .upload:
+                return [
+                    "Authorization": "Client-ID \(Secrets.Imgur.clientId)",
+                    "Content-Type": "multipart/form-data; boundary=\(Constants.boundary)"
+                ]
+            default:
+                return [
+                    "Authorization": "Client-ID \(Secrets.Imgur.clientId)"
+                ]
+            }
         }
 
         var url: String {
-            return "image"
+            switch self {
+            case .upload:
+                return "image"
+            case .credits:
+                return "credits"
+            }
         }
 
         var method: Networkable.Method {
-            return .post
+            switch self {
+            case .upload:
+                return .post
+            case .credits:
+                return .get
+            }
         }
 
         func body() throws -> Data? {
             switch self {
             case let .upload(base64Image):
-                var body = ""
-                body += "--\(Constants.boundary)\r\n"
-                body += "Content-Disposition:form-data; name=\"image\""
-                body += "\r\n\r\n\(base64Image)\r\n"
-                body += "--\(Constants.boundary)--\r\n"
-                return body.data(using: .utf8)
+                var data = Data()
+                data.appendString("--\(Constants.boundary)\r\n")
+                data.appendString("Content-Disposition:form-data; name=\"image\"")
+                data.appendString("\r\n\r\n\(base64Image)\r\n")
+                data.appendString("--\(Constants.boundary)--\r\n")
+                return data
+            default:
+                return nil
             }
         }
+    }
+}
+
+private extension Data {
+    mutating func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
     }
 }
