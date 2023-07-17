@@ -94,7 +94,9 @@ extension DefaultImgurAPIClient {
 
 private extension Data {
     mutating func appendString(_ string: String) {
-        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
-        append(data!)
+        guard let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true) else {
+            return
+        }
+        append(data)
     }
 }

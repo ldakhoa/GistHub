@@ -133,11 +133,11 @@ public struct MarkdownTextEditorView: View {
         .toastError(isPresenting: $showErrorToast, error: error)
         .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
-        .onReceive(alertPublisher, perform: { notification in
+        .onReceive(alertPublisher) { notification in
             guard let errorMessage = notification.object as? String else { return }
             error = errorMessage
             showErrorToast.toggle()
-        })
+        }
     }
 
     private func createFile() {

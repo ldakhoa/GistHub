@@ -15,4 +15,22 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage!
     }
+
+    /// Compressed and Encodes in Base64 the given image.
+    public func compressAndEncode(compression: CGFloat = 0.65) async throws -> String {
+        let data: Data = try await withCheckedThrowingContinuation { continuation in
+            guard let result = self.jpegData(compressionQuality: compression) else {
+                continuation.resume(throwing: CompressionError())
+                return
+            }
+            continuation.resume(returning: result)
+        }
+        return data.base64EncodedString()
+    }
+}
+
+struct CompressionError: LocalizedError {
+    var errorDescription: String? {
+        return "Error compressing image"
+    }
 }

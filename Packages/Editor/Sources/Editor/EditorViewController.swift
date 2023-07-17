@@ -302,26 +302,27 @@ public final class EditorViewController: UIViewController {
         textView.moveSelectedLinesDown()
     }
 
-    private func checkCreditsAndUpload(base64Image: String) {
+    private func checkCreditsAndUpload(image: UIImage) {
         Task {
             do {
                 let imgurCredits = try await viewModel.getCredits()
                 guard !imgurCredits.reachedLimit else {
-                    showErrorAlert(message: "Imgur API limit reached, please try again on \(imgurCredits.resetTime.agoString())")
+                    showErrorAlert(message: "Rate Limit reached, please try again on \(imgurCredits.resetTime.agoString())")
                     return
                 }
-                performImageUpload(base64Image: base64Image)
+                performImageUpload(image: image)
             } catch {
                 showErrorAlert(message: error.localizedDescription)
             }
         }
     }
 
-    private func performImageUpload(base64Image: String) {
+    private func performImageUpload(image: UIImage) {
         Task { @MainActor in
             let textController = TextController(textView: textView)
             textController.insertImageUploadPlaceholder()
             do {
+                let base64Image = try await image.compressAndEncode()
                 let imageData = try await viewModel.uploadImage(base64Image: base64Image)
                 textController.insertImage(url: imageData.link)
             } catch {
@@ -378,9 +379,8 @@ extension EditorViewController: PHPickerViewControllerDelegate {
         itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
             if let error {
                 self?.showErrorAlert(message: error.localizedDescription)
-            } else if let image = image as? UIImage,
-                      let base64String = image.jpegData(compressionQuality: 0.8)?.base64EncodedString(options: .lineLength64Characters) {
-                self?.checkCreditsAndUpload(base64Image: base64String)
+            } else if let image = image as? UIImage {
+                self?.checkCreditsAndUpload(image: image)
             }
         }
     }
