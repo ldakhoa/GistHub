@@ -85,14 +85,15 @@ final class MarkdownKeyboardToolsView: UIInputView {
         let unorderedlistButton = makeToolBarButtonItem(named: "list", action: #selector(onUnorderedList))
         let todoButton = makeToolBarButtonItem(named: "todo", action: #selector(onTodo))
         let searchButton = makeToolBarButtonItem(named: "search", action: #selector(onSearch))
-        let imageButton = makeToolBarButtonItem(named: "preview", action: #selector(onImage))
+        let imageButton = makeToolBarButtonItem(named: "image", action: #selector(onImage))
+
         items = [
             previewButton,
-            imageButton,
             boldButton,
             italicButton,
             strikethroughButton,
             headingButton,
+            imageButton,
             inlineButton,
             codeBlockButton,
             linkButton,
