@@ -18,14 +18,14 @@ extension UIImage {
 
     /// Compressed and Encodes in Base64 the given image.
     public func compressAndEncode(compression: CGFloat = 0.65) async throws -> String {
-        let data: Data = try await withCheckedThrowingContinuation { continuation in
-            guard let result = self.jpegData(compressionQuality: compression) else {
-                continuation.resume(throwing: CompressionError())
-                return
+        let task = Task(priority: .background) {
+            guard let data = self.jpegData(compressionQuality: compression) else {
+                throw CompressionError()
             }
-            continuation.resume(returning: result)
+            return data
         }
-        return data.base64EncodedString()
+        let result = try await task.value
+        return result.base64EncodedString()
     }
 }
 

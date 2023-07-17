@@ -178,15 +178,15 @@ final class TextController {
         let currentRange = textView.selectedRange
         let text = "[Uploading image...]"
         insertText(text)
-        setSelectedRange(NSRange(location: currentRange.location, length: text.count))
+        range = NSRange(location: currentRange.location, length: text.count)
     }
 
     func clearImageUploadPlaceholder() {
-        replaceWith(string: "")
+        replaceWith(string: "", range: range)
     }
 
     func insertImage(url: String) {
-        replaceWith(string: "")
+        replaceWith(string: "", range: range)
         insertText("![Image](\(url))")
     }
 
