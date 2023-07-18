@@ -22,6 +22,7 @@ public struct EditorView: View {
     private let navigationTitle: String
     private let updateContentCompletion: (() -> Void)?
     private let createGistCompletion: ((File) -> Void)?
+    private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
 
     // Only need if style is create
     @State private var files: [String: File]?
@@ -110,6 +111,11 @@ public struct EditorView: View {
                 self.originalContent = self.content
             }
             .interactiveDismissDisabled(contentHasChanged)
+            .onReceive(alertPublisher) { notification in
+                guard let errorMessage = notification.object as? String else { return }
+                error = errorMessage
+                showErrorToast.toggle()
+            }
     }
 
     private func updateGist() {
