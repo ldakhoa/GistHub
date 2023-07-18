@@ -14,7 +14,6 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Models", path: "../Models"),
-        .package(name: "Environment", path: "../Environment"),
         .package(name: "AppAccount", path: "../AppAccount"),
         .package(url: "https://github.com/duytph/Networkable", from: "2.0.0")
     ],
@@ -24,7 +23,6 @@ let package = Package(
             dependencies: [
                 "Models",
                 "Networkable",
-                "Environment",
                 "AppAccount"
             ]
         ),

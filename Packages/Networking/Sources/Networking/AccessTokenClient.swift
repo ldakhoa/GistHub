@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import Networkable
 import Models
-import Environment
 
 public struct AccessTokenUser: Codable {
     public let token: String

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DesignSystem
 
 @main
 struct GistHubApp: App {
@@ -32,6 +33,7 @@ struct GistHubApp: App {
                     .tag(tab)
             }
         }
+        .tint(Colors.accent.color)
     }
 
 }

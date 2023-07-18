@@ -17,11 +17,11 @@ enum Tab: Int, Identifiable, Hashable {
     func makeContentView() -> some View {
         switch self {
         case .home:
-            Text("home")
+            HomeTab()
         case .starred:
-            Text("starred")
+            StarredTab()
         case .profile:
-            Text("Profile")
+            ProfileTab()
         }
     }
 

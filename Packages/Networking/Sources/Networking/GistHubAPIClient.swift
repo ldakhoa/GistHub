@@ -10,7 +10,7 @@ import Networkable
 import Models
 import AppAccount
 
-public protocol GistHubAPIClient {
+public protocol GistHubAPIClient: Client {
     /// Allows you to add a new gist with one or more files.
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
