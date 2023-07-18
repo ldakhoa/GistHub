@@ -12,6 +12,8 @@ import AppAccount
 import Login
 import Networking
 import Profile
+import Gist
+import Models
 
 final class AppController: NSObject, LoginDelegate, GitHubSessionListener, ProfileDelegate {
 
@@ -52,6 +54,28 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
         // dont need to login if there's a user session
         guard sessionManager.focusedUserSession == nil && loginViewController == nil else { return }
         showLogin(animated: false)
+    }
+
+    // Should be handled by AppRouter
+    //
+    // The url component will be like this ["/", "<username>", "gist_id", "..."].
+    func open(url: URL) {
+        // Only handle present GistDetailView if satisfy
+        guard url.pathComponents.count >= 3 else { return }
+
+        let client: GistHubAPIClient = DefaultGistHubAPIClient()
+        Task { @MainActor in
+            do {
+                let user = try await client.user()
+
+                let gistDetailView = GistDetailView(gistId: url.pathComponents[2])
+                    .environmentObject(UserStore(user: user))
+
+                let viewController = UIHostingController(rootView: gistDetailView)
+                let topViewController = UIApplication.shared.topViewController
+                topViewController?.navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
     }
 
     // MARK: - Side Effects

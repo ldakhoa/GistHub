@@ -14,8 +14,9 @@ import Models
 import Editor
 import Comment
 
-struct GistDetailView: View {
+public struct GistDetailView: View {
     @ObserveInjection private var inject
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
@@ -25,18 +26,25 @@ struct GistDetailView: View {
     @State private var showToastAlert = false
     @State private var showCommentTextEditor = false
     @State private var showDeleteAlert = false
-    @State private var showPlainTextEditorView = false
     @State private var showToastError = false
     @State private var gistDescription = ""
     @State private var showBrowseFiles = false
     @State private var showEditGist = false
 
-    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject public var userStore: UserStore
 
-    let gist: Gist
-    let shouldReloadGistListsView: () -> Void
+    private let gistId: String
+    private let shouldReloadGistListsView: (() -> Void)?
 
-    var body: some View {
+    public init(
+        gistId: String,
+        shouldReloadGistListsView: (() -> Void)? = nil
+    ) {
+        self.gistId = gistId
+        self.shouldReloadGistListsView = shouldReloadGistListsView
+    }
+
+    public var body: some View {
         ZStack {
             switch viewModel.contentState {
             case .loading:
@@ -115,20 +123,20 @@ struct GistDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             Task {
-                await viewModel.isStarred(gistID: gist.id)
+                await viewModel.isStarred(gistID: gistId)
             }
         }
         .onLoad {
             Task {
-                await commentViewModel.fetchComments(gistID: gist.id)
-                await viewModel.gist(gistID: gist.id)
+                await commentViewModel.fetchComments(gistID: gistId)
+                await viewModel.gist(gistID: gistId)
             }
         }
         .refreshable {
             Task {
-                await viewModel.gist(gistID: gist.id)
-                await commentViewModel.fetchComments(gistID: gist.id)
-                await viewModel.isStarred(gistID: gist.id)
+                await viewModel.gist(gistID: gistId)
+                await commentViewModel.fetchComments(gistID: gistId)
+                await viewModel.isStarred(gistID: gistId)
             }
         }
         .toolbar {
@@ -138,7 +146,7 @@ struct GistDetailView: View {
             if scrollOffset.y >= 15 {
                 ToolbarItem(placement: .principal) {
                     VStack(alignment: .center) {
-                        Text(gist.owner?.login ?? "")
+                        Text(viewModel.gist.owner?.login ?? "")
                         Text("\(fileName())")
                             .fontWeight(.medium)
                             .lineLimit(1)
@@ -151,46 +159,47 @@ struct GistDetailView: View {
             }
 
             ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    if userStore.user.id == gist.owner?.id {
-                        makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
-                            showEditGist.toggle()
+                if viewModel.isFetchingGist {
+                    ProgressView()
+                } else {
+                    Menu {
+                        if userStore.user.id == viewModel.gist.owner?.id {
+                            makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
+                                showEditGist.toggle()
+                            }
                         }
-                        makeMenuButton(title: "Edit Description", systemImage: "pencil") {
-                            showPlainTextEditorView.toggle()
+
+                        if let htmlUrl = viewModel.gist.htmlURL,
+                           let url = URL(string: htmlUrl) {
+                            Link(destination: url) {
+                                Label("Open In Browser", systemImage: "globe")
+                            }
                         }
-                    }
 
-                    if let htmlUrl = gist.htmlURL,
-                       let url = URL(string: htmlUrl) {
-                        Link(destination: url) {
-                            Label("Open In Browser", systemImage: "globe")
+                        // ShareLink in Menu currently works on iOS 16.1
+                        if #available(iOS 16.1, *) {
+                            let titlePreview = "\(viewModel.gist.owner?.login ?? "")/\(viewModel.gist.files?.fileName ?? "")"
+                            makeShareLink(itemString: viewModel.gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share")
                         }
-                    }
 
-                    // ShareLink in Menu currently works on iOS 16.1
-                    if #available(iOS 16.1, *) {
-                        let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-                        makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share")
-                    }
+                        Divider()
 
-                    Divider()
-
-                    if userStore.user.id == gist.owner?.id {
-                        makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
-                            showDeleteAlert.toggle()
+                        if userStore.user.id == viewModel.gist.owner?.id {
+                            makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
+                                showDeleteAlert.toggle()
+                            }
                         }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(Colors.accent.color)
                     }
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .foregroundColor(Colors.accent.color)
                 }
             }
         }
         .confirmationDialog("Delete Gist?", isPresented: $showDeleteAlert) {
             Button("Delete", role: .destructive) {
                 Task {
-                    await viewModel.deleteGist(gistID: gist.id)
+                    await viewModel.deleteGist(gistID: viewModel.gist.id)
                 }
                 showToastAlert.toggle()
             }
@@ -198,31 +207,17 @@ struct GistDetailView: View {
         } message: {
             Text("Are you positive you want to delete this Gist?")
         }
-        .sheet(isPresented: $showPlainTextEditorView) {
-            MarkdownTextEditorView(
-                style: .changeDescription,
-                content: viewModel.gist.description ?? "",
-                gistID: gist.id,
-                navigationTitle: "Edit Description",
-                placeholder: "Enter a description...",
-                commentViewModel: self.commentViewModel
-            ) {
-                Task {
-                    await viewModel.gist(gistID: gist.id)
-                }
-            }
-        }
         .sheet(isPresented: $showCommentTextEditor) {
             MarkdownTextEditorView(
                 style: .writeComment,
-                gistID: gist.id,
+                gistID: gistId,
                 navigationTitle: "Write Comment",
                 placeholder: "Write a comment...",
                 commentViewModel: self.commentViewModel
             )
         }
         .toastSuccess(isPresenting: $showToastAlert, title: "Deleted Gist", duration: 1.0) {
-            shouldReloadGistListsView()
+            shouldReloadGistListsView?()
             self.dismiss()
         }
         .sheet(isPresented: $showEditGist) {
@@ -263,7 +258,7 @@ struct GistDetailView: View {
     }
 
     private func fileName() -> String {
-        if let files = gist.files, let fileName = files.keys.first {
+        if let files = viewModel.gist.files, let fileName = files.keys.first {
             return fileName
         }
         return ""
@@ -305,9 +300,9 @@ struct GistDetailView: View {
         Button {
             Task {
                 if isStarred {
-                    await viewModel.unstarGist(gistID: gist.id)
+                    await viewModel.unstarGist(gistID: gistId)
                 } else {
-                    await viewModel.starGist(gistID: gist.id)
+                    await viewModel.starGist(gistID: gistId)
                 }
             }
         } label: {
@@ -347,7 +342,9 @@ struct GistDetailView: View {
     }
 
     private func makeLeadingToolbarButton() -> some View {
-        Button(action: { dismiss() }, label: {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }, label: {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 18))
                 .foregroundColor(Colors.accent.color)
@@ -371,7 +368,7 @@ struct GistDetailView: View {
                         .padding(.horizontal, 16)
                     LazyVStack(alignment: .leading) {
                         ForEach(comments, id: \.id) { comment in
-                            CommentView(comment: comment, gistID: gist.id, viewModel: commentViewModel)
+                            CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
                                 .id(comment.id)
                                 .environmentObject(userStore)
                             if !isLastObject(objects: comments, object: comment) {

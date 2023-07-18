@@ -5,9 +5,7 @@
 //  Created by Khoa Le on 10/12/2022.
 //
 
-import Foundation
 import UIKit
-import SwiftUI
 import DesignSystem
 
 final class MainTabBarController: UITabBarController {

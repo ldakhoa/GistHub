@@ -27,6 +27,44 @@ public struct Gist: Codable, Identifiable, Equatable, Hashable {
     public let owner: User?
     public let truncated: Bool?
 
+    public init(
+        id: String,
+        url: String? = nil,
+        forksURL: String? = nil,
+        commitsURL: String? = nil,
+        nodeID: String? = nil,
+        gitPullURL: String? = nil,
+        gitPushURL: String? = nil,
+        htmlURL: String? = nil,
+        files: OrderedDictionary<String, File>? = nil,
+        isPublic: Bool? = nil,
+        createdAt: Date? = nil,
+        updatedAt: Date? = nil,
+        description: String? = nil,
+        comments: Int? = nil,
+        commentsURL: String? = nil,
+        owner: User? = nil,
+        isTruncated: Bool = false
+    ) {
+        self.id = id
+        self.url = url
+        self.forksURL = forksURL
+        self.commitsURL = commitsURL
+        self.nodeID = nodeID
+        self.gitPullURL = gitPullURL
+        self.gitPushURL = gitPushURL
+        self.htmlURL = htmlURL
+        self.files = files
+        self.public = isPublic
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.description = description
+        self.comments = comments
+        self.commentsURL = commentsURL
+        self.owner = owner
+        self.truncated = isTruncated
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.url = try container.decodeIfPresent(String.self, forKey: .url)

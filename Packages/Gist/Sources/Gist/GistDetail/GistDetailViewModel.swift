@@ -13,6 +13,7 @@ import Models
     @Published var contentState: ContentState = .loading
     @Published var starButtonState: StarButtonState = .idling
     @Published var gist: Gist!
+    @Published var isFetchingGist: Bool = true
 
     private let gistHubClient: GistHubAPIClient
     private let commentClient: CommentAPIClient
@@ -55,8 +56,9 @@ import Models
     func gist(gistID: String) async {
         do {
             async let gist = gistHubClient.gist(fromGistID: gistID)
-            contentState = try await .content(gist: gist)
             self.gist = try await gist
+            contentState = try await .content(gist: gist)
+            isFetchingGist = false
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
