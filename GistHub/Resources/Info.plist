@@ -19,6 +19,8 @@
 	<string>ID</string>
 	<key>GITHUBSECRET</key>
 	<string>SECRET</string>
+	<key>IMGURID</key>
+	<string>ID</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>

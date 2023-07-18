@@ -13,6 +13,7 @@ import Models
 import Environment
 import Utilities
 import Markdown
+import PhotosUI
 
 public protocol EditorViewControllerDelegate: AnyObject {
     func textViewDidChange(text: String)
@@ -43,6 +44,7 @@ public final class EditorViewController: UIViewController {
     private let isSelectable: Bool
     private let language: File.Language
     private var markdownPreviewScrollPercentage: Float = 0
+    private let viewModel: EditorViewModel = EditorViewModel()
 
     public weak var delegate: EditorViewControllerDelegate?
 
@@ -131,6 +133,12 @@ public final class EditorViewController: UIViewController {
             name: .textViewShouldShowMarkdownPreview,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showPhotoPicker),
+            name: .textViewShouldShowPhotoPicker,
+            object: nil)
     }
 
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -180,6 +188,18 @@ public final class EditorViewController: UIViewController {
         previewController.modalPresentationStyle = .fullScreen
         previewController.scrollPercentage = self.markdownPreviewScrollPercentage
         navigationController?.pushViewController(previewController, animated: true)
+    }
+
+    @objc
+    private func showPhotoPicker() {
+        textView.resignFirstResponder()
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+        configuration.selectionLimit = 1
+        configuration.preferredAssetRepresentationMode = .automatic
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
     private func setupKeyboardTools() {
@@ -281,6 +301,40 @@ public final class EditorViewController: UIViewController {
     private func shiftDown() {
         textView.moveSelectedLinesDown()
     }
+
+    private func checkCreditsAndUpload(image: UIImage) {
+        Task {
+            do {
+                let imgurCredits = try await viewModel.getCredits()
+                guard !imgurCredits.reachedLimit else {
+                    showErrorAlert(message: "Rate Limit reached, please try again on \(imgurCredits.resetTime.agoString())")
+                    return
+                }
+                performImageUpload(image: image)
+            } catch {
+                showErrorAlert(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func performImageUpload(image: UIImage) {
+        Task { @MainActor in
+            let textController = TextController(textView: textView)
+            textController.insertImageUploadPlaceholder()
+            do {
+                let base64Image = try await image.compressAndEncode()
+                let imageData = try await viewModel.uploadImage(base64Image: base64Image)
+                textController.insertImage(url: imageData.link)
+            } catch {
+                textController.clearImageUploadPlaceholder()
+                showErrorAlert(message: error.localizedDescription)
+            }
+        }
+    }
+
+    private func showErrorAlert(message: String) {
+        NotificationCenter.default.post(name: .markdownEditorViewShouldShowAlert, object: message)
+    }
 }
 
 extension EditorViewController: UIScrollViewDelegate {
@@ -311,5 +365,25 @@ extension EditorViewController {
     public enum Style {
         case normal
         case issue
+    }
+}
+
+extension EditorViewController: PHPickerViewControllerDelegate {
+    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        dismiss(animated: true)
+        guard
+            let itemProvider = results.first?.itemProvider,
+            itemProvider.canLoadObject(ofClass: UIImage.self)
+        else {
+            showErrorAlert(message: "Failed to select image")
+            return
+        }
+        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            if let error {
+                self?.showErrorAlert(message: error.localizedDescription)
+            } else if let image = image as? UIImage {
+                self?.checkCreditsAndUpload(image: image)
+            }
+        }
     }
 }
