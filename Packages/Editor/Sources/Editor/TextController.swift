@@ -172,6 +172,24 @@ final class TextController {
         setSelectedRange(NSRange(location: currentRange.location + 4, length: 0))
     }
 
+    // MARK: - Image
+
+    func insertImageUploadPlaceholder() {
+        let currentRange = textView.selectedRange
+        let text = "[Uploading image...]"
+        insertText(text)
+        range = NSRange(location: currentRange.location, length: text.count)
+    }
+
+    func clearImageUploadPlaceholder() {
+        replaceWith(string: "", range: range)
+    }
+
+    func insertImage(url: String) {
+        replaceWith(string: "", range: range)
+        insertText("![Image](\(url))")
+    }
+
     // MARK: - Undo/Redo
 
     func undo() {

@@ -7,12 +7,18 @@
 
 import SwiftUI
 import Networking
+import Models
 
 @MainActor final class EditorViewModel: ObservableObject {
     private let client: GistHubAPIClient
+    private let imgurClient: ImgurAPIClient
 
-    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+    init(
+        client: GistHubAPIClient = DefaultGistHubAPIClient(),
+        imgurClient: ImgurAPIClient = DefaultImgurAPIClient()
+    ) {
         self.client = client
+        self.imgurClient = imgurClient
     }
 
     func updateGist(
@@ -58,5 +64,13 @@ import Networking
         if gist.url != nil {
             completion!()
         }
+    }
+
+    func uploadImage(base64Image: String) async throws -> ImgurImage {
+        try await imgurClient.upload(base64Image: base64Image)
+    }
+
+    func getCredits() async throws -> ImgurCredits {
+        try await imgurClient.credits()
     }
 }
