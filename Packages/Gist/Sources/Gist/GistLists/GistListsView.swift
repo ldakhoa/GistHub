@@ -17,8 +17,9 @@ public struct GistListsView: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
     @StateObject private var routerPath = RouterPath()
     @StateObject private var viewModel: GistListsViewModel
-    @State private var showingNewGistView = false
-    @State private var showingGistDetail = false
+    @State private var showingNewGistView: Bool = false
+    @State private var showingGistDetail: Bool = false
+    @State private var showingErrorToast: Bool = false
     @State private var selectedGist: Gist?
 
     // MARK: - Dependencies
@@ -76,9 +77,14 @@ public struct GistListsView: View {
                             EmptyView()
                         }
                     }
-                case let .error(error):
-                    Text(error)
-                        .foregroundColor(Colors.danger.color)
+                case .error:
+                    ErrorView(
+                        title: "Cannot Connect",
+                        message: "Something went wrong. Please try again."
+                    ) {
+                        fetchGists()
+                    }
+                    .listRowSeparator(.hidden)
                 }
             }
         }
