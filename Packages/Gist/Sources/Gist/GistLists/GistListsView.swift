@@ -82,7 +82,7 @@ public struct GistListsView: View {
                 }
             }
         }
-        .listRowBackground(Colors.danger.color)
+        .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
         .navigationTitle(Text(listsMode.navigationTitle))
