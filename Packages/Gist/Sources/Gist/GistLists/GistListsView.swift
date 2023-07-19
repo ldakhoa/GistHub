@@ -19,7 +19,6 @@ public struct GistListsView: View {
     // MARK: - Dependencies
 
     private let listsMode: GistListsMode
-    private let user: User
     @StateObject private var viewModel: GistListsViewModel
 
     // MARK: - Initializer
@@ -27,11 +26,9 @@ public struct GistListsView: View {
     // StateObject accepts an @autoclosure which only allocates the view model once when the view gets on screen.
     public init(
         listsMode: GistListsMode,
-        user: User,
         viewModel: @escaping () -> GistListsViewModel
     ) {
         self.listsMode = listsMode
-        self.user = user
         _viewModel = StateObject(wrappedValue: viewModel())
     }
 

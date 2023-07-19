@@ -7,14 +7,18 @@
 
 import SwiftUI
 import Environment
-import Profile
+import Gist
 
 struct StarredTab: View {
     @StateObject private var routerPath: RouterPath = RouterPath()
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            Text("Starred")
+            GistListsView(listsMode: .starred) {
+                GistListsViewModel(routerPath: routerPath)
+            }
+            .withAppRouter()
+            .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
     }
 }

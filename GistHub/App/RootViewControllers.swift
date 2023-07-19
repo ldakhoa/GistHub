@@ -15,7 +15,7 @@ import AppAccount
 
 @MainActor
 func homeRootViewController(user: User) -> UIViewController {
-    let controller = UIHostingController(rootView: GistListsView(listsMode: .allGists, user: user, viewModel: {
+    let controller = UIHostingController(rootView: GistListsView(listsMode: .allGists, viewModel: {
         GistListsViewModel(routerPath: .init())
     }))
     return createNavController(
@@ -28,7 +28,7 @@ func homeRootViewController(user: User) -> UIViewController {
 
 @MainActor
 func starredRootViewController(user: User) -> UIViewController {
-    let controller = UIHostingController(rootView: GistListsView(listsMode: .starred, user: user, viewModel: {
+    let controller = UIHostingController(rootView: GistListsView(listsMode: .starred, viewModel: {
         GistListsViewModel(routerPath: .init())
     }))
     return createNavController(
