@@ -8,7 +8,6 @@
 import Foundation
 import Networkable
 import Models
-import Environment
 
 public protocol ImgurAPIClient {
     /// Upload an image under base64 format to Imgur

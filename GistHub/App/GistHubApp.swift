@@ -8,12 +8,15 @@
 import SwiftUI
 import DesignSystem
 import AppAccount
+import Environment
+import Login
 
 @main
 struct GistHubApp: App {
-    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+//    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
     @State private var selectedTab: Tab = .home
+    @StateObject private var currentAccount = CurrentAccount.shared
 
     private var tabs: [Tab] = Tab.loggedInTabs()
 
@@ -22,11 +25,20 @@ struct GistHubApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if sessionManager.focusedUserSession != nil {
-                tabBarView
-            } else {
-                // show login
-            }
+            appView
+                .onAppear {
+                    setupEnv()
+                }
+                .environmentObject(currentAccount)
+        }
+    }
+
+    @ViewBuilder
+    private var appView: some View {
+        if sessionManager.focusedUserSession != nil {
+            tabBarView
+        } else {
+            // show login
         }
     }
 
@@ -44,4 +56,9 @@ struct GistHubApp: App {
         .tint(Colors.accent.color)
     }
 
+    private func setupEnv() {
+        Task {
+            await currentAccount.fetchCurrentUser()
+        }
+    }
 }

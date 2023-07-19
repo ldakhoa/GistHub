@@ -8,16 +8,18 @@
 import SwiftUI
 import Models
 import Networking
+import Environment
 
-@MainActor final class GistListsViewModel: ObservableObject {
+@MainActor
+public final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var searchText = ""
 
-    @Published private var gists = [Gist]()
+    @Published var gists = [Gist]()
     private let client: GistHubAPIClient
     private let routerPath: RouterPath
 
-    init(
+    public init(
         routerPath: RouterPath,
         client: GistHubAPIClient = DefaultGistHubAPIClient()
     ) {
@@ -61,6 +63,10 @@ import Networking
             }
             contentState = .content(gists: newGists)
         }
+    }
+
+    func navigateToDetail(gistId: String) {
+        routerPath.navigate(to: .gistDetail(gistId: gistId))
     }
 }
 

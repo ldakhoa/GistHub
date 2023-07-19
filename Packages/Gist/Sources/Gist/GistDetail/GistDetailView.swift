@@ -13,6 +13,7 @@ import Common
 import Models
 import Editor
 import Comment
+import Environment
 
 public struct GistDetailView: View {
     @ObserveInjection private var inject
@@ -20,6 +21,8 @@ public struct GistDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
+//    @EnvironmentObject private var currentAccount: CurrentAccount
+
     @State private var scrollOffset: CGPoint = .zero
     @State private var floatingButtonSize: CGSize = .zero
 
@@ -31,7 +34,7 @@ public struct GistDetailView: View {
     @State private var showBrowseFiles = false
     @State private var showEditGist = false
 
-    @EnvironmentObject public var userStore: UserStore
+    @EnvironmentObject public var currentAccount: CurrentAccount
 
     private let gistId: String
     private let shouldReloadGistListsView: (() -> Void)?
@@ -163,7 +166,7 @@ public struct GistDetailView: View {
                     ProgressView()
                 } else {
                     Menu {
-                        if userStore.user.id == viewModel.gist.owner?.id {
+                        if currentAccount.user?.id == viewModel.gist.owner?.id {
                             makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                                 showEditGist.toggle()
                             }
@@ -184,7 +187,7 @@ public struct GistDetailView: View {
 
                         Divider()
 
-                        if userStore.user.id == viewModel.gist.owner?.id {
+                        if currentAccount.user?.id == viewModel.gist.owner?.id {
                             makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
                                 showDeleteAlert.toggle()
                             }
@@ -370,7 +373,7 @@ public struct GistDetailView: View {
                         ForEach(comments, id: \.id) { comment in
                             CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
                                 .id(comment.id)
-                                .environmentObject(userStore)
+//                                .environmentObject(userStore)
                             if !isLastObject(objects: comments, object: comment) {
                                 Divider()
                                     .overlay(Colors.neutralEmphasis.color)
@@ -405,7 +408,7 @@ public struct GistDetailView: View {
                             await viewModel.gist(gistID: gist.id)
                         }
                     }
-                    .environmentObject(userStore)
+                    .environmentObject(currentAccount)
                 }
             }
             .padding(.horizontal, 16)
@@ -450,7 +453,7 @@ public struct GistDetailView: View {
                     await viewModel.gist(gistID: gist.id)
                 }
             }
-            .environmentObject(userStore)
+            .environmentObject(currentAccount)
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
@@ -478,7 +481,7 @@ public struct GistDetailView: View {
                     gist: gist,
                     language: language
                 ) {}
-                .environmentObject(userStore)
+                .environmentObject(currentAccount)
                 .navigationBarTitleDisplayMode(.inline)
             }
         }

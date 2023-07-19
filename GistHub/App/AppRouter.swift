@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Environment
+import Gist
 
 @MainActor
 extension View {
@@ -14,10 +15,7 @@ extension View {
         navigationDestination(for: RouterDestination.self) { destination in
             switch destination {
             case let .gistDetail(gistId):
-                
-                Text("Gist Detail \(gistId)")
-            default:
-                Text("Default")
+                GistDetailView(gistId: gistId)
             }
         }
     }

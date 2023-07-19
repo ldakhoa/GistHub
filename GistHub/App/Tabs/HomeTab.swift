@@ -14,9 +14,11 @@ struct HomeTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .allGists, user: .init())
-                .withAppRouter()
-                .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
+            GistListsView(listsMode: .allGists, user: .init()) {
+                GistListsViewModel(routerPath: routerPath)
+            }
+            .withAppRouter()
+            .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
     }
 }

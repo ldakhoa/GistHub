@@ -14,7 +14,9 @@ import Utilities
 
 public struct GistListsView: View {
     @ObserveInjection private var inject
-    @StateObject private var viewModel = GistListsViewModel()
+    @EnvironmentObject private var currentAccount: CurrentAccount
+    @StateObject private var routerPath = RouterPath()
+    @StateObject private var viewModel: GistListsViewModel
     @State private var showingNewGistView = false
     @State private var showingGistDetail = false
     @State private var selectedGist: Gist?
@@ -26,67 +28,63 @@ public struct GistListsView: View {
 
     // MARK: - Initializer
 
-    public init(listsMode: GistListsMode, user: User) {
+    // StateObject accepts an @autoclosure which only allocates the view model once when the view gets on screen.
+    public init(
+        listsMode: GistListsMode,
+        user: User,
+        viewModel: @escaping () -> GistListsViewModel
+    ) {
         self.listsMode = listsMode
         self.user = user
+        _viewModel = StateObject(wrappedValue: viewModel())
     }
 
     public var body: some View {
         ZStack {
-            switch viewModel.contentState {
-            case .loading:
-                ProgressView()
-            case let .content(gists):
-                List {
+            List {
+                switch viewModel.contentState {
+                case .loading:
+                    ForEach(Gist.placeholders) { gist in
+                        GistListDetailView(gist: gist)
+                            .redacted(reason: .placeholder)
+                    }
+                case let .content(gists):
                     ForEach(gists) { gist in
-                        PlainNavigationLink {
-                            GistDetailView(gistId: gist.id) {
-                                fetchGists()
-                            }
-                            .environmentObject(UserStore(user: user))
-                        } label: {
+                        HStack {
                             GistListDetailView(gist: gist)
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            viewModel.navigateToDetail(gistId: gist.id)
                         }
                         .contextMenu {
-                            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-                            ShareLink(
-                                item: gist.htmlURL ?? "",
-                                preview: SharePreview(titlePreview, image: Image(systemName: "home"))
-                            ) {
-                                Label("Share via...", systemImage: "square.and.arrow.up")
-                            }
+                            contextMenu(gist: gist)
                         } preview: {
-                            // Put in NavigationStack to solve size issues
-                            NavigationStack {
-                                GistDetailView(gistId: gist.id) {}
-                                    .environmentObject(UserStore(user: user))
-                                    .toolbarBackground(.visible, for: .navigationBar)
-                                    .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
-                                    .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")
-                            }
+                            contextMenuPreview(gist: gist)
                         }
                     }
-                    .listRowBackground(Colors.listBackground.color)
-                }
-                .listStyle(.plain)
-                .animation(.default, value: gists)
-                // TODO: Research and apply new NavigationStack
-                if let selectedGist = selectedGist {
-                    NavigationLink(
-                        destination: GistDetailView(
-                            gistId: selectedGist.id,
-                            shouldReloadGistListsView: { fetchGists() })
-                        .environmentObject(UserStore(user: user)),
-                        isActive: $showingGistDetail
-                    ) {
-                        EmptyView()
+                    // TODO: Research and apply new NavigationStack
+                    if let selectedGist = selectedGist {
+                        NavigationLink(
+                            destination: GistDetailView(
+                                gistId: selectedGist.id,
+                                shouldReloadGistListsView: { fetchGists() })
+                            .environmentObject(UserStore(user: user)),
+                            isActive: $showingGistDetail
+                        ) {
+                            EmptyView()
+                        }
                     }
+                case let .error(error):
+                    Text(error)
+                        .foregroundColor(Colors.danger.color)
                 }
-            case let .error(error):
-                Text(error)
-                    .foregroundColor(Colors.danger.color)
             }
         }
+        .listRowBackground(Colors.danger.color)
+        .listStyle(.plain)
+        .animation(.default, value: viewModel.searchText)
         .navigationTitle(Text(listsMode.navigationTitle))
         .toolbar {
             if listsMode == .allGists {
@@ -116,6 +114,29 @@ public struct GistListsView: View {
             }
         }
         .enableInjection()
+    }
+
+    @ViewBuilder
+    private func contextMenu(gist: Gist) -> some View {
+        let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
+        ShareLink(
+            item: gist.htmlURL ?? "",
+            preview: SharePreview(titlePreview, image: Image(systemName: "home"))
+        ) {
+            Label("Share via...", systemImage: "square.and.arrow.up")
+        }
+    }
+
+    @ViewBuilder
+    private func contextMenuPreview(gist: Gist) -> some View {
+        // Put in NavigationStack to solve size issues
+        NavigationStack {
+            GistDetailView(gistId: gist.id) {}
+                .environmentObject(currentAccount)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
+                .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")
+        }
     }
 
     private func fetchGists() {
