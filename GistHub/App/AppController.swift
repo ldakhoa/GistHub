@@ -115,7 +115,7 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
 
     func finishLogin(
         token: String,
-        authMethod: GitHubUserSession.AuthMethod,
+        authMethod: AuthMethod,
         username: String
     ) {
         sessionManager.focus(

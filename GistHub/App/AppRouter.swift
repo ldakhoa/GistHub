@@ -13,6 +13,9 @@ extension View {
     func withAppRouter() -> some View {
         navigationDestination(for: RouterDestination.self) { destination in
             switch destination {
+            case let .gistDetail(gistId):
+                
+                Text("Gist Detail \(gistId)")
             default:
                 Text("Default")
             }

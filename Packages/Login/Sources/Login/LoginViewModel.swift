@@ -14,7 +14,7 @@ import Utilities
 import Environment
 
 public protocol LoginDelegate: AnyObject {
-    func finishLogin(token: String, authMethod: GitHubUserSession.AuthMethod, username: String)
+    func finishLogin(token: String, authMethod: AuthMethod, username: String)
 }
 
 final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentationContextProviding {

@@ -7,16 +7,16 @@
 
 import Foundation
 
+public enum AuthMethod: String, Codable {
+    case oauth
+    case pat
+}
+
 public class GitHubUserSession: NSObject, NSCoding, Identifiable {
     public enum Keys {
         static let token = "token"
         static let authMethod = "authMethod"
         static let username = "username"
-    }
-
-    public enum AuthMethod: String {
-        case oauth
-        case pat
     }
 
     public let token: String

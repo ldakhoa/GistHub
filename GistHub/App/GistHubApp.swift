@@ -7,6 +7,7 @@
 
 import SwiftUI
 import DesignSystem
+import AppAccount
 
 @main
 struct GistHubApp: App {
@@ -16,9 +17,16 @@ struct GistHubApp: App {
 
     private var tabs: [Tab] = Tab.loggedInTabs()
 
+    // TODO: Migrate to AppAccountManager when done
+    private let sessionManager = GitHubSessionManager()
+
     var body: some Scene {
         WindowGroup {
-            tabBarView
+            if sessionManager.focusedUserSession != nil {
+                tabBarView
+            } else {
+                // show login
+            }
         }
     }
 

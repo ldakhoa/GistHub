@@ -15,8 +15,13 @@ import Networking
 
     @Published private var gists = [Gist]()
     private let client: GistHubAPIClient
+    private let routerPath: RouterPath
 
-    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+    init(
+        routerPath: RouterPath,
+        client: GistHubAPIClient = DefaultGistHubAPIClient()
+    ) {
+        self.routerPath = routerPath
         self.client = client
     }
 
