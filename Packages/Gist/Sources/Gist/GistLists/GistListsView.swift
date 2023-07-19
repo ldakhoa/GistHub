@@ -15,7 +15,6 @@ import Utilities
 public struct GistListsView: View {
     @ObserveInjection private var inject
     @EnvironmentObject private var currentAccount: CurrentAccount
-    @StateObject private var routerPath = RouterPath()
 
     // MARK: - Dependencies
 
