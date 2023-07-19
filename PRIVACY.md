@@ -17,9 +17,9 @@ Client-side communication is encrypted using HTTPs. Server-side tokens are encry
 
 ## Image security
 
-The mobile application will use secure transmission protocols (such as HTTPS) to encrypt the communication between the application and Imgur's servers during the image upload process.
-The application will not modify or alter the original image content during the upload process, unless explicitly authorized by the user.
-The mobile application will not store any images locally on the device after they have been successfully uploaded to Imgur.
+GistHub will use secure transmission protocols (such as HTTPS) to encrypt the communication between the application and Imgur's servers during the image upload process.
+GistHub will not modify or alter the original image content during the upload process, unless explicitly authorized by the user.
+GistHub will not store any images locally on the device after they have been successfully uploaded to Imgur.
 Uploaded images will be stored anonymously on Imgur's servers and don't belong to any specific Imgur account. Those images may be subject to Imgur's privacy policy and terms of service.
 
 ## Support
