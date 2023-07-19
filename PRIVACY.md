@@ -3,7 +3,7 @@
 ## Personal user information
 
 GistHub requires a basic GitHub OAuth authentication.
-GistHub requests access to the user's profile, email and public notifications.
+GistHub requests access to the user's profile, email, and public notifications.
 
 ## Personal Access Token (PAT)
 
@@ -17,10 +17,11 @@ Client-side communication is encrypted using HTTPs. Server-side tokens are encry
 
 ## Image security
 
-GistHub will use secure transmission protocols (such as HTTPS) to encrypt the communication between the application and Imgur's servers during the image upload process.
-GistHub will not modify or alter the original image content during the upload process, unless explicitly authorized by the user.
-GistHub will not store any images locally on the device after they have been successfully uploaded to Imgur.
-Uploaded images will be stored anonymously on Imgur's servers and don't belong to any specific Imgur account. Those images may be subject to Imgur's privacy policy and terms of service.
+When using GistHub to upload images to Imgur, we take several measures to protect your privacy. Specifically, we:
+- Use secure transmission protocols (such as HTTPS) to encrypt communication between the application and Imgur's servers during the upload process.
+- Do not modify or alter the original image content during the upload process, unless explicitly authorized by the user.
+- Do not store any images locally on the device after they have been successfully uploaded to Imgur.
+- Store uploaded images anonymously on Imgur's servers, without being associated with any specific Imgur account. Please note that these images may be subject to Imgur's privacy policy and terms of service.
 
 ## Support
 
