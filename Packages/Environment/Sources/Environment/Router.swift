@@ -1,13 +1,19 @@
 import SwiftUI
 import Networking
+import Models
 
 public enum RouterDestination: Hashable {
     case gistDetail(gistId: String)
 }
 
 public enum SheetDestination: Identifiable {
+    case newGist(completion: ((Gist) -> Void)?)
+
     public var id: String {
-        return "id"
+        switch self {
+        case .newGist:
+            return "composeGist"
+        }
     }
 }
 

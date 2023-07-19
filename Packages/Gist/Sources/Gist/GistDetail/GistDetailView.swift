@@ -21,7 +21,6 @@ public struct GistDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = GistDetailViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
-//    @EnvironmentObject private var currentAccount: CurrentAccount
 
     @State private var scrollOffset: CGPoint = .zero
     @State private var floatingButtonSize: CGSize = .zero
@@ -60,7 +59,7 @@ public struct GistDetailView: View {
                     ScrollViewReader { scrollViewProxy in
                         ScrollView(showsIndicators: true) {
                             VStack(alignment: .leading, spacing: 8) {
-                                buildTitleView(gist: gist)
+                                titleView(gist: gist)
 
                                 if let description = gist.description, !description.isEmpty {
                                     Text(description)
@@ -232,7 +231,8 @@ public struct GistDetailView: View {
         .enableInjection()
     }
 
-    private func buildTitleView(gist: Gist) -> some View {
+    @ViewBuilder
+    private func titleView(gist: Gist) -> some View {
         HStack(alignment: .center, spacing: 4) {
             HStack(spacing: 6) {
                 if

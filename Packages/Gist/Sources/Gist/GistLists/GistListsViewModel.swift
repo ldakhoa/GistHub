@@ -68,6 +68,13 @@ public final class GistListsViewModel: ObservableObject {
     func navigateToDetail(gistId: String) {
         routerPath.navigate(to: .gistDetail(gistId: gistId))
     }
+
+    func presentNewGistSheet() {
+        routerPath.presentedSheet = .newGist { [weak self] gist in
+            self?.insert(gist)
+            self?.routerPath.navigate(to: .gistDetail(gistId: gist.id))
+        }
+    }
 }
 
 extension GistListsViewModel {

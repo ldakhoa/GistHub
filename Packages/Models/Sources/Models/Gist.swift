@@ -8,7 +8,7 @@
 import Foundation
 import OrderedCollections
 
-public struct Gist: Codable, Identifiable, Equatable, Hashable {
+public struct Gist: Codable, Identifiable, Hashable {
     public let url: String?
     public let forksURL: String?
     public let commitsURL: String?

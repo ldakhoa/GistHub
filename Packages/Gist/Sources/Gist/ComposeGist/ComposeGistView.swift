@@ -5,17 +5,17 @@
 //  Created by Hung Dao on 27/02/2023.
 //
 
- import Foundation
- import SwiftUI
- import Inject
- import AlertToast
- import OrderedCollections
- import Models
- import DesignSystem
- import Editor
- import Utilities
+import Foundation
+import SwiftUI
+import Inject
+import AlertToast
+import OrderedCollections
+import Models
+import DesignSystem
+import Editor
+import Utilities
 
- struct ComposeGistView: View {
+public struct ComposeGistView: View {
     @ObserveInjection private var inject
 
     @Environment(\.dismiss) private var dismiss
@@ -33,11 +33,12 @@
     @State private var showErrorToast = false
     @State private var descriptionChanged = false
     @State private var filesChanged = false
-    var completion: ((Gist) -> Void)?
+    private var completion: ((Gist) -> Void)?
+
     private let style: ComposeGistView.Style
     private var originalFiles = [String: File]()
 
-    init(
+    public init(
         style: ComposeGistView.Style,
         completion: ((Gist) -> Void)? = nil
     ) {
@@ -52,7 +53,7 @@
         }
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             Form {
                 Section {
@@ -210,7 +211,7 @@
         }
     }
 
-     private func buildEditorView(file: File? = nil, fileName: String, completionHandler: @escaping (File) -> Void) -> some View {
+    private func buildEditorView(file: File? = nil, fileName: String, completionHandler: @escaping (File) -> Void) -> some View {
         if let language = fileName.getFileExtension() {
             if language == "md" || language == "markdown" {
                 return AnyView(MarkdownTextEditorView(
@@ -231,10 +232,10 @@
         }
         return AnyView(EmptyView())
     }
- }
+}
 
- extension ComposeGistView {
-    enum Style {
+extension ComposeGistView {
+    public enum Style {
         case createGist
         case update(gist: Gist)
 
@@ -245,4 +246,4 @@
             }
         }
     }
- }
+}

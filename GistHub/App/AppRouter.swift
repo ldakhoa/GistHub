@@ -23,8 +23,8 @@ extension View {
     func withSheetDestinations(sheetDestinations: Binding<SheetDestination?>) -> some View {
         sheet(item: sheetDestinations) { destination in
             switch destination {
-            default:
-                Text("Sheet default")
+            case let .newGist(completion):
+                ComposeGistView(style: .createGist, completion: completion)
             }
         }
     }
