@@ -27,11 +27,7 @@ public struct GistDetailView: View {
     @State private var floatingButtonSize: CGSize = .zero
 
     @State private var showToastAlert = false
-    @State private var showCommentTextEditor = false
     @State private var showDeleteAlert = false
-    @State private var showToastError = false
-    @State private var gistDescription = ""
-    @State private var showBrowseFiles = false
 
     @EnvironmentObject private var currentAccount: CurrentAccount
 
@@ -81,8 +77,8 @@ public struct GistDetailView: View {
                                 }
 
                                 switch viewModel.starButtonState {
-                                case .idling:
-                                    EmptyView()
+                                case .loading:
+                                    ProgressView()
                                 case .starred:
                                     starButton(isStarred: true)
                                 case .unstarred:
@@ -106,7 +102,6 @@ public struct GistDetailView: View {
                             // padding bottom of the Button is 16,
                             // and we want the space between list and Comment button is 8
                             let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
-//                            commentSectionView
                             GistDetailCommentSectionView(
                                 commentViewModel: commentViewModel,
                                 gistId: gistId,
@@ -152,7 +147,7 @@ public struct GistDetailView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                makeLeadingToolbarButton()
+                leadingToolbarItem
             }
             if scrollOffset.y >= 15 {
                 ToolbarItem(placement: .principal) {
@@ -170,47 +165,7 @@ public struct GistDetailView: View {
             }
 
             ToolbarItem(placement: .navigationBarTrailing) {
-                if viewModel.isFetchingGist {
-                    ProgressView()
-                } else {
-                    Menu {
-                        if currentAccount.user?.id == viewModel.gist.owner?.id {
-                            makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
-                                routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
-                                    viewModel.gist = newGist
-                                }
-                            }
-                        }
-
-                        if let htmlUrl = viewModel.gist.htmlURL,
-                           let url = URL(string: htmlUrl) {
-                            Link(destination: url) {
-                                Label("Open In Browser", systemImage: "globe")
-                            }
-                        }
-
-                        // ShareLink in Menu currently works on iOS 16.1
-                        if #available(iOS 16.1, *) {
-                            let titlePreview = "\(viewModel.gist.owner?.login ?? "")/\(viewModel.gist.files?.fileName ?? "")"
-                            ShareLinkView(
-                                itemString: viewModel.gist.htmlURL ?? "",
-                                previewTitle: titlePreview,
-                                labelTitle: "Share"
-                            )
-                        }
-
-                        Divider()
-
-                        if currentAccount.user?.id == viewModel.gist.owner?.id {
-                            makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
-                                showDeleteAlert.toggle()
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .foregroundColor(Colors.accent.color)
-                    }
-                }
+                trailingToolbarItem
             }
         }
         .confirmationDialog("Delete Gist?", isPresented: $showDeleteAlert) {
@@ -223,15 +178,6 @@ public struct GistDetailView: View {
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Are you positive you want to delete this Gist?")
-        }
-        .sheet(isPresented: $showCommentTextEditor) {
-            MarkdownTextEditorView(
-                style: .writeComment,
-                gistID: gistId,
-                navigationTitle: "Write Comment",
-                placeholder: "Write a comment...",
-                commentViewModel: self.commentViewModel
-            )
         }
         .toastSuccess(isPresenting: $showToastAlert, title: "Deleted Gist", duration: 1.0) {
             shouldReloadGistListsView?()
@@ -269,6 +215,47 @@ public struct GistDetailView: View {
         }
     }
 
+    @ViewBuilder
+    private var menuView: some View {
+        Menu {
+            if currentAccount.user?.id == viewModel.gist.owner?.id {
+                makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
+                    routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
+                        viewModel.gist = newGist
+                    }
+                }
+            }
+
+            if let htmlUrl = viewModel.gist.htmlURL,
+               let url = URL(string: htmlUrl) {
+                Link(destination: url) {
+                    Label("Open In Browser", systemImage: "globe")
+                }
+            }
+
+            // ShareLink in Menu currently works on iOS 16.1
+            if #available(iOS 16.1, *) {
+                let titlePreview = "\(viewModel.gist.owner?.login ?? "")/\(viewModel.gist.files?.fileName ?? "")"
+                ShareLinkView(
+                    itemString: viewModel.gist.htmlURL ?? "",
+                    previewTitle: titlePreview,
+                    labelTitle: "Share"
+                )
+            }
+
+            Divider()
+
+            if currentAccount.user?.id == viewModel.gist.owner?.id {
+                makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
+                    showDeleteAlert.toggle()
+                }
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .foregroundColor(Colors.accent.color)
+        }
+    }
+
     private func fileName() -> String {
         if let files = viewModel.gist.files, let fileName = files.keys.first {
             return fileName
@@ -283,7 +270,12 @@ public struct GistDetailView: View {
             HStack {
                 Spacer()
                 Button {
-                    showCommentTextEditor.toggle()
+                    routerPath.presentedSheet = .commentTextEditor(
+                        gistId: gistId,
+                        navigationTitle: "Write Comment",
+                        placeholder: "Write a comment...",
+                        commentViewModel: self.commentViewModel
+                    )
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "bubble.left")
@@ -306,6 +298,26 @@ public struct GistDetailView: View {
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var leadingToolbarItem: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }, label: {
+            Image(systemName: "chevron.backward")
+                .font(.system(size: 18))
+                .foregroundColor(Colors.accent.color)
+        })
+    }
+
+    @ViewBuilder
+    private var trailingToolbarItem: some View {
+        if viewModel.isFetchingGist {
+            ProgressView()
+        } else {
+            menuView
         }
     }
 
@@ -352,50 +364,6 @@ public struct GistDetailView: View {
     ) -> some View {
         Button(role: role ?? .none, action: action) {
             Label(title, systemImage: systemImage)
-        }
-    }
-
-    private func makeLeadingToolbarButton() -> some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }, label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 18))
-                .foregroundColor(Colors.accent.color)
-        })
-    }
-
-    @ViewBuilder
-    private var commentSectionView: some View {
-        ZStack {
-            switch commentViewModel.contentState {
-            case .loading:
-                ProgressView()
-            case let .error(error):
-                Text(error).foregroundColor(Colors.danger.color)
-            case .showContent:
-                let comments = commentViewModel.comments
-                VStack(alignment: .leading) {
-                    let commentTitle = comments.count > 1 ? "Comments" : "Comment"
-                    Text(comments.isEmpty ? "" : commentTitle)
-                        .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                        .padding(.horizontal, 16)
-                    LazyVStack(alignment: .leading) {
-                        ForEach(comments, id: \.id) { comment in
-                            CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
-                                .id(comment.id)
-//                                .environmentObject(userStore)
-                            if !isLastObject(objects: comments, object: comment) {
-                                Divider()
-                                    .overlay(Colors.neutralEmphasis.color)
-                            }
-                        }
-                    }
-                    .padding(.vertical, comments.isEmpty ? 0 : 4)
-                    .background(Colors.itemBackground)
-                }
-            }
         }
     }
 }

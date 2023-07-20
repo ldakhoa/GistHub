@@ -30,6 +30,14 @@ extension View {
                 ComposeGistView(style: .createGist, completion: completion)
             case let .editGist(gist, completion):
                 ComposeGistView(style: .update(gist: gist), completion: completion)
+            case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
+                MarkdownTextEditorView(
+                    style: .writeComment,
+                    gistID: gistId,
+                    navigationTitle: navigationTitle,
+                    placeholder: placeholder,
+                    commentViewModel: commentViewModel
+                )
             }
         }
     }

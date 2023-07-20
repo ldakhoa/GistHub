@@ -1,4 +1,5 @@
 import SwiftUI
+import Common
 import Networking
 import Models
 
@@ -15,11 +16,19 @@ public enum RouterDestination: Hashable {
 public enum SheetDestination: Identifiable {
     case newGist(completion: ((Gist) -> Void)?)
     case editGist(_ gist: Gist, completion: ((Gist) -> Void)?)
+    case commentTextEditor(
+        gistId: String,
+        navigationTitle: String,
+        placeholder: String,
+        commentViewModel: CommentViewModel
+    )
 
     public var id: String {
         switch self {
         case .newGist, .editGist:
             return "composeGist"
+        case .commentTextEditor:
+            return "markdownTextEditorView"
         }
     }
 }

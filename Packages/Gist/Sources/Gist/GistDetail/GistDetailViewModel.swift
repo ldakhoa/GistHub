@@ -11,7 +11,7 @@ import Models
 
 @MainActor final class GistDetailViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
-    @Published var starButtonState: StarButtonState = .idling
+    @Published var starButtonState: StarButtonState = .loading
     @Published var gist: Gist!
     @Published var isFetchingGist: Bool = true
 
@@ -83,7 +83,7 @@ extension GistDetailViewModel {
     }
 
     enum StarButtonState {
-        case idling
+        case loading
         case starred
         case unstarred
     }
