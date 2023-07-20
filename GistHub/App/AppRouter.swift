@@ -28,6 +28,8 @@ extension View {
             switch destination {
             case let .newGist(completion):
                 ComposeGistView(style: .createGist, completion: completion)
+            case let .editGist(gist, completion):
+                ComposeGistView(style: .update(gist: gist), completion: completion)
             }
         }
     }

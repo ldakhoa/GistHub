@@ -14,10 +14,11 @@ public enum RouterDestination: Hashable {
 
 public enum SheetDestination: Identifiable {
     case newGist(completion: ((Gist) -> Void)?)
+    case editGist(_ gist: Gist, completion: ((Gist) -> Void)?)
 
     public var id: String {
         switch self {
-        case .newGist:
+        case .newGist, .editGist:
             return "composeGist"
         }
     }

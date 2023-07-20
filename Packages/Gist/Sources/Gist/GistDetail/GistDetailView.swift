@@ -32,7 +32,6 @@ public struct GistDetailView: View {
     @State private var showToastError = false
     @State private var gistDescription = ""
     @State private var showBrowseFiles = false
-    @State private var showEditGist = false
 
     @EnvironmentObject private var currentAccount: CurrentAccount
 
@@ -177,7 +176,9 @@ public struct GistDetailView: View {
                     Menu {
                         if currentAccount.user?.id == viewModel.gist.owner?.id {
                             makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
-                                showEditGist.toggle()
+                                routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
+                                    viewModel.gist = newGist
+                                }
                             }
                         }
 
@@ -235,12 +236,6 @@ public struct GistDetailView: View {
         .toastSuccess(isPresenting: $showToastAlert, title: "Deleted Gist", duration: 1.0) {
             shouldReloadGistListsView?()
             presentationMode.wrappedValue.dismiss()
-        }
-        .sheet(isPresented: $showEditGist) {
-            EmptyView()
-            ComposeGistView(style: .update(gist: viewModel.gist)) { gist in
-                viewModel.gist = gist
-            }
         }
         .enableInjection()
     }
