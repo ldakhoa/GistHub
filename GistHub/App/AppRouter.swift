@@ -8,6 +8,7 @@
 import SwiftUI
 import Environment
 import Gist
+import Editor
 
 @MainActor
 extension View {
@@ -16,6 +17,8 @@ extension View {
             switch destination {
             case let .gistDetail(gistId):
                 GistDetailView(gistId: gistId)
+            case let .editorDisplay(content, fileName, gist, language):
+                EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
             }
         }
     }

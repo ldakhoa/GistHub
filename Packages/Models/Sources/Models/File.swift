@@ -82,7 +82,7 @@ public struct File: Codable, Identifiable, Hashable, Equatable {
 }
 
 extension File {
-    public enum Language: String, Codable {
+    public enum Language: String, Codable, Hashable {
         case astro
         case bash = "shell"
         case c

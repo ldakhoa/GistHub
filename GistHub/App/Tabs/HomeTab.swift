@@ -20,5 +20,6 @@ struct HomeTab: View {
             .withAppRouter()
             .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
+        .environmentObject(routerPath)
     }
 }

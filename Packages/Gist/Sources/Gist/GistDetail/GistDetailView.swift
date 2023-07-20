@@ -17,8 +17,9 @@ import Environment
 
 public struct GistDetailView: View {
     @ObserveInjection private var inject
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject private var routerPath: RouterPath
+
     @StateObject private var viewModel = GistDetailViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
 
@@ -33,7 +34,7 @@ public struct GistDetailView: View {
     @State private var showBrowseFiles = false
     @State private var showEditGist = false
 
-    @EnvironmentObject public var currentAccount: CurrentAccount
+    @EnvironmentObject private var currentAccount: CurrentAccount
 
     private let gistId: String
     private let shouldReloadGistListsView: (() -> Void)?
@@ -84,9 +85,9 @@ public struct GistDetailView: View {
                                 case .idling:
                                     EmptyView()
                                 case .starred:
-                                    buildStarButton(isStarred: true)
+                                    starButton(isStarred: true)
                                 case .unstarred:
-                                    buildStarButton(isStarred: false)
+                                    starButton(isStarred: false)
                                 }
                             }
                             .padding(16)
@@ -95,15 +96,24 @@ public struct GistDetailView: View {
 
                             Spacer(minLength: 16)
 
-                            buildCodeSection(gist: gist)
+                            GistDetailCodeSectionView(
+                                gist: gist,
+                                routerPath: routerPath,
+                                currentAccount: currentAccount
+                            )
 
                             Spacer(minLength: 16)
 
                             // padding bottom of the Button is 16,
                             // and we want the space between list and Comment button is 8
                             let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
-                            buildCommentSection()
-                                .padding(.bottom, listPaddingBottom)
+//                            commentSectionView
+                            GistDetailCommentSectionView(
+                                commentViewModel: commentViewModel,
+                                gistId: gistId,
+                                currentAccount: currentAccount
+                            )
+                            .padding(.bottom, listPaddingBottom)
                         }
                         .onChange(of: commentViewModel.comments) { _ in
                             if commentViewModel.shouldScrollToComment {
@@ -117,7 +127,7 @@ public struct GistDetailView: View {
                         .animation(.spring(), value: commentViewModel.comments)
                     }
 
-                    buildFloatingCommentButton()
+                    floatingCommentButton
                 }
             }
         }
@@ -181,7 +191,11 @@ public struct GistDetailView: View {
                         // ShareLink in Menu currently works on iOS 16.1
                         if #available(iOS 16.1, *) {
                             let titlePreview = "\(viewModel.gist.owner?.login ?? "")/\(viewModel.gist.files?.fileName ?? "")"
-                            makeShareLink(itemString: viewModel.gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share")
+                            ShareLinkView(
+                                itemString: viewModel.gist.htmlURL ?? "",
+                                previewTitle: titlePreview,
+                                labelTitle: "Share"
+                            )
                         }
 
                         Divider()
@@ -220,7 +234,7 @@ public struct GistDetailView: View {
         }
         .toastSuccess(isPresenting: $showToastAlert, title: "Deleted Gist", duration: 1.0) {
             shouldReloadGistListsView?()
-            self.dismiss()
+            presentationMode.wrappedValue.dismiss()
         }
         .sheet(isPresented: $showEditGist) {
             EmptyView()
@@ -267,7 +281,8 @@ public struct GistDetailView: View {
         return ""
     }
 
-    private func buildFloatingCommentButton() -> some View {
+    @ViewBuilder
+    private var floatingCommentButton: some View {
         VStack {
             Spacer()
             HStack {
@@ -299,7 +314,8 @@ public struct GistDetailView: View {
         }
     }
 
-    private func buildStarButton(isStarred: Bool) -> some View {
+    @ViewBuilder
+    private func starButton(isStarred: Bool) -> some View {
         Button {
             Task {
                 if isStarred {
@@ -354,7 +370,8 @@ public struct GistDetailView: View {
         })
     }
 
-    private func buildCommentSection() -> some View {
+    @ViewBuilder
+    private var commentSectionView: some View {
         ZStack {
             switch commentViewModel.contentState {
             case .loading:
@@ -383,106 +400,6 @@ public struct GistDetailView: View {
                     .padding(.vertical, comments.isEmpty ? 0 : 4)
                     .background(Colors.itemBackground)
                 }
-            }
-        }
-    }
-
-    private func buildCodeSection(gist: Gist) -> some View {
-        let fileNames = gist.files?.keys.map { String($0) } ?? []
-        return VStack(alignment: .leading) {
-            HStack {
-                Text(fileNames.count > 1 ? "Files" : "File")
-                    .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
-                    .foregroundColor(Colors.neutralEmphasisPlus.color)
-                Spacer()
-
-                Button("Browse files") {
-                    showBrowseFiles.toggle()
-                }
-                .font(.callout)
-                .foregroundColor(Colors.accent.color)
-                .sheet(isPresented: $showBrowseFiles) {
-                    let files = gist.files?.values.map { $0 } ?? []
-                    BrowseFilesView(files: files, gist: gist) {
-                        Task {
-                            await viewModel.gist(gistID: gist.id)
-                        }
-                    }
-                    .environmentObject(currentAccount)
-                }
-            }
-            .padding(.horizontal, 16)
-
-            LazyVStack(alignment: .leading) {
-                ForEach(fileNames, id: \.hashValue) { fileName in
-                    buildFileNameView(gist: gist, fileName: fileName)
-                    if !isLastObject(objects: fileNames, object: fileName) {
-                        Divider()
-                            .overlay(Colors.neutralEmphasis.color)
-                            .padding(.leading, 42)
-                    }
-                }
-            }
-            .padding(.vertical, fileNames.isEmpty ? 0 : 4)
-            .background(Colors.itemBackground)
-        }
-
-    }
-
-    private func makeShareLink(itemString: String, previewTitle: String, label: String) -> some View {
-        ShareLink(
-            item: itemString,
-            preview: SharePreview(previewTitle, image: Image("default"))
-        ) {
-            Label(label, systemImage: "square.and.arrow.up")
-        }
-    }
-
-    private func buildFileNameView(gist: Gist, fileName: String) -> some View {
-        let file = gist.files?[fileName]
-        let content = file?.content ?? ""
-        let language = file?.language ?? .unknown
-        return NavigationLink {
-            EditorDisplayView(
-                content: content,
-                fileName: fileName,
-                gist: gist,
-                language: language
-            ) {
-                Task {
-                    await viewModel.gist(gistID: gist.id)
-                }
-            }
-            .environmentObject(currentAccount)
-        } label: {
-            VStack(alignment: .leading) {
-                HStack(alignment: .center) {
-                    Image(systemName: "doc")
-                    Text(fileName)
-                    Spacer()
-
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 16))
-                        .foregroundColor(Colors.neutralEmphasis.color)
-                }
-                .foregroundColor(Colors.fileNameForeground.color)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-            }
-        }
-        .contextMenu {
-            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-            makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share via...")
-        } preview: {
-            NavigationStack {
-                EditorDisplayView(
-                    content: content,
-                    fileName: fileName,
-                    gist: gist,
-                    language: language
-                ) {}
-                .environmentObject(currentAccount)
-                .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

@@ -12,12 +12,12 @@ import Environment
 import Markdown
 
 public struct EditorDisplayView: View {
-    @EnvironmentObject var userStore: UserStore
-    @State var content: String = ""
-    @State var fileName: String = ""
-    let gist: Gist
-    let language: File.Language
-    let completion: () -> Void
+    @EnvironmentObject private var currentAccount: CurrentAccount
+    @State private var content: String = ""
+    @State private var fileName: String = ""
+    private let gist: Gist
+    private let language: File.Language
+    private let completion: (() -> Void)?
 
     @State private var showEditorInEditMode = false
     @State private var showCodeSettings = false
@@ -34,7 +34,7 @@ public struct EditorDisplayView: View {
         fileName: String,
         gist: Gist,
         language: File.Language,
-        completion: @escaping () -> Void
+        completion: (() -> Void)? = nil
     ) {
         _content = State(initialValue: content)
         _fileName = State(initialValue: fileName)
@@ -44,7 +44,7 @@ public struct EditorDisplayView: View {
     }
 
     public var body: some View {
-        buildBodyView()
+        view
             .navigationTitle(fileName)
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -54,7 +54,7 @@ public struct EditorDisplayView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        if gist.owner?.id == userStore.user.id {
+                        if gist.owner?.id == currentAccount.user?.id {
                             Button {
                                 showEditorInEditMode.toggle()
                             } label: {
@@ -68,7 +68,7 @@ public struct EditorDisplayView: View {
                             Label("View Code Options", systemImage: "gear")
                         }
 
-                        if gist.owner?.id == userStore.user.id {
+                        if gist.owner?.id == currentAccount.user?.id {
                             Divider()
                             Button(role: .destructive) {
                                 showConfirmDialog.toggle()
@@ -89,7 +89,7 @@ public struct EditorDisplayView: View {
                                 language: language,
                                 gist: gist
                             ) {
-                                completion()
+                                completion?()
                             }
                         }
                     }
@@ -119,13 +119,14 @@ public struct EditorDisplayView: View {
                 }
             }
             .toastSuccess(isPresenting: $showSuccessToast, title: "Deleted File") {
-                self.completion()
+                self.completion?()
                 dismiss()
             }
             .toastError(isPresenting: $showErrorToast, error: error)
     }
 
-    func buildBodyView() -> some View {
+    @ViewBuilder
+    private var view: some View {
         Group {
             if language == .markdown {
                 MarkdownUI(markdown: content)

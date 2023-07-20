@@ -12,12 +12,13 @@ import DesignSystem
 import Markdown
 import Common
 import Editor
+import Environment
 
 public struct CommentView: View {
     private let comment: Comment
     private let gistID: String
     @ObservedObject private var viewModel: CommentViewModel
-    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var currentAccount: CurrentAccount
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
@@ -96,13 +97,13 @@ public struct CommentView: View {
             .padding(.horizontal, -16)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
-            if comment.user.id == userStore.user.id {
+            if comment.user.id == currentAccount.user?.id {
                 Button("Delete", role: .destructive) {
                     showDeleteConfirmedDialog.toggle()
                 }
             }
 
-            if comment.user.id == userStore.user.id {
+            if comment.user.id == currentAccount.user?.id {
                 Button("Edit") {
                     showPlainTextEditorView.toggle()
                 }

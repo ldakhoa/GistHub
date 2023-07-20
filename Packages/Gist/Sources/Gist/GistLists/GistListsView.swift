@@ -114,7 +114,7 @@ public struct GistListsView: View {
     private func contextMenuPreview(gist: Gist) -> some View {
         // Put in NavigationStack to solve size issues
         NavigationStack {
-            GistDetailView(gistId: gist.id) {}
+            GistDetailView(gistId: gist.id)
                 .environmentObject(currentAccount)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)

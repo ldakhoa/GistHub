@@ -4,6 +4,12 @@ import Models
 
 public enum RouterDestination: Hashable {
     case gistDetail(gistId: String)
+    case editorDisplay(
+        content: String,
+        fileName: String,
+        gist: Gist,
+        language: File.Language
+    )
 }
 
 public enum SheetDestination: Identifiable {
