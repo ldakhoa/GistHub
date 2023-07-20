@@ -22,6 +22,11 @@ public struct GistHubImage: View {
 
     public var body: some View {
         KFImage.url(url)
+            .placeholder {
+                Rectangle()
+                    .foregroundColor(Colors.neutralEmphasis.color)
+                    .redacted(reason: .placeholder)
+            }
             .resizable()
             .scaledToFill()
             .frame(width: width, height: height)

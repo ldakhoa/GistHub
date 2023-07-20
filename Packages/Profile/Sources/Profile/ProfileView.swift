@@ -12,7 +12,7 @@ import Models
 import AppAccount
 import Settings
 
-public struct ProfilePage: View {
+public struct ProfileView: View {
     @ObserveInjection private var inject
 
     let user: User?

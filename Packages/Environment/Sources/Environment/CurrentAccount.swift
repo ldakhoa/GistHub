@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Khoa Le on 19/07/2023.
-//
-
 import Foundation
 import Networking
 import Models
