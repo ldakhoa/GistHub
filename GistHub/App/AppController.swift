@@ -81,7 +81,7 @@ final class AppController: NSObject, LoginDelegate, GitHubSessionListener, Profi
     // MARK: - Side Effects
 
     private func showLogin(animated: Bool) {
-        let loginView = LoginView(delegate: self)
+        let loginView = LoginView()
         let controller = UIHostingController(rootView: loginView)
         controller.modalPresentationStyle = .fullScreen
         loginViewController = controller

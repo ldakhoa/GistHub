@@ -13,14 +13,19 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Models", path: "../Models"),
-        .package(url: "https://github.com/evgenyneu/keychain-swift", branch: "master")
+        .package(url: "https://github.com/evgenyneu/keychain-swift", branch: "master"),
+        .package(
+            url: "https://github.com/apple/swift-collections.git",
+            .upToNextMajor(from: "1.0.4")
+        )
     ],
     targets: [
         .target(
             name: "AppAccount",
             dependencies: [
                 "Models",
-                .product(name: "KeychainSwift", package: "keychain-swift")
+                .product(name: "KeychainSwift", package: "keychain-swift"),
+                .product(name: "Collections", package: "swift-collections")
             ]
         ),
         .testTarget(

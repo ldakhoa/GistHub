@@ -13,6 +13,10 @@ enum Tab: Int, Identifiable, Hashable {
         [.home, .starred, .profile]
     }
 
+    static func loggedOutTabs() -> [Tab] {
+        []
+    }
+
     @ViewBuilder
     func makeContentView() -> some View {
         switch self {

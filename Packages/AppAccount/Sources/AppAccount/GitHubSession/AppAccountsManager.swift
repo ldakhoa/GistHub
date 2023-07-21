@@ -6,19 +6,64 @@
 //
 
 import SwiftUI
+import OrderedCollections
 
-@MainActor
+// @MainActor
 public class AppAccountsManager: ObservableObject {
-//    @AppStorage("", )
+
     public static var shared = AppAccountsManager()
 
     @Published public var focusedAccount: AppAccount?
 
-    init() {}
-}
+    public var isAuth: Bool {
+        focusedAccount != nil
+    }
 
-@MainActor
-public class UserPreferences: ObservableObject {
-    public static let sharedDefault = "space.khoale.gisthub"
-    public static let shared = UserPreferences()
+    private var _userSessions: OrderedSet<AppAccount> = OrderedSet()
+
+    // TODO: Move to keychain when migration to Router is done.
+    private let defaults: UserDefaults
+    private let sessionKeys = "com.github.sessionmanager.shared.session"
+
+    public init() {
+        defaults = UserDefaults(suiteName: "space.khoale.gisthub") ?? .standard
+
+        if let data = defaults.object(forKey: sessionKeys) as? Data {
+            let decoder = JSONDecoder()
+            do {
+                let session = try decoder.decode(OrderedSet<AppAccount>.self, from: data)
+                _userSessions.formUnion(session)
+            } catch {
+                // handle error later
+                print("Failed to decode user sessions \(error.localizedDescription)")
+            }
+        }
+
+        // TODO: Handle multiple account
+        focusedAccount = _userSessions.first
+    }
+
+    public func focus(_ appAccount: AppAccount) {
+        update(oldAppAccount: appAccount, newAppAccount: appAccount)
+    }
+
+    private func update(oldAppAccount: AppAccount, newAppAccount: AppAccount) {
+        _userSessions.remove(oldAppAccount)
+        _userSessions.insert(newAppAccount, at: 0)
+
+        save()
+
+        focusedAccount = newAppAccount
+    }
+
+    func save() {
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(_userSessions)
+            defaults.set(data, forKey: sessionKeys)
+        } catch {
+            // handle error later
+            print("Failed to encode user sessions \(error.localizedDescription)")
+        }
+    }
 }

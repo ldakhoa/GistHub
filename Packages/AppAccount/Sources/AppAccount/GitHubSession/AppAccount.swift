@@ -21,13 +21,6 @@ public struct AppAccount: Codable, Identifiable, Hashable {
         self.authMethod = authMethod
         self.username = username
     }
-
-    func save() throws {
-    }
-
-    static func getAll() -> [AppAccount] {
-        []
-    }
 }
 
 public extension AppAccount {
@@ -38,4 +31,14 @@ public extension AppAccount {
 #endif
         return keychain
     }
+
+    var authorizationHeader: String {
+        switch authMethod {
+        case .oauth:
+            return "Bearer \(token)"
+        case .pat:
+            return "token \(token)"
+        }
+    }
+
 }

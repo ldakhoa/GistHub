@@ -174,9 +174,9 @@
 				6A641C342A5688460095334B /* Utilities */,
 				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
 				6A9BF50029503C0300EBFF04 /* ci_scripts */,
-				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
 				6A7CF6B5294652B9007B7D68 /* Frameworks */,
 				6A7CF5302943CF33007B7D68 /* GistHub */,
+				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
 			);
 			sourceTree = "<group>";

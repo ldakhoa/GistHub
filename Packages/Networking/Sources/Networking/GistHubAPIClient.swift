@@ -188,8 +188,9 @@ extension DefaultGistHubAPIClient {
         case createIssue(title: String, content: String?)
 
         var headers: [String: String]? {
-            let userSessionManager = GitHubSessionManager()
-            guard let focusedUserSession = userSessionManager.focusedUserSession else { return [:] }
+            let appAccountsManager = AppAccountsManager()
+            guard let focusedUserSession = appAccountsManager.focusedAccount else { return [:] }
+
             return [
                 "Authorization": focusedUserSession.authorizationHeader,
                 "Accept": "application/vnd.github+json"

@@ -8,20 +8,22 @@
 import SwiftUI
 import Inject
 import DesignSystem
+import AppAccount
 
 public struct LoginView: View {
     @ObserveInjection private var inject
-    @ObservedObject private var viewModel = LoginViewModel()
+    @StateObject private var viewModel = LoginViewModel()
     @State private var showErrorToast = false
     @State private var error = ""
     @State private var ghButtonLoading = false
     @State private var patButtonLoading = false
     @State private var showLoginAlertField = false
     @State private var accessToken = ""
+    @Environment(\.dismiss) private var dismiss
 
-    public init(delegate: LoginDelegate) {
-        viewModel.delegate = delegate
-    }
+    @EnvironmentObject private var appAccountManager: AppAccountsManager
+
+    public init() {}
 
     public var body: some View {
         VStack(spacing: 24) {
@@ -63,6 +65,9 @@ public struct LoginView: View {
             }
             .padding(.bottom, 32)
         }
+        .onAppear {
+            viewModel.appAccountsManager = appAccountManager
+        }
         .onChange(of: viewModel.contentState) { contentState in
             switch contentState {
             case .idling:
@@ -76,6 +81,9 @@ public struct LoginView: View {
                 self.showErrorToast.toggle()
                 self.error = error
             }
+        }
+        .onChange(of: viewModel.finishLogin) { newValue in
+            if newValue { dismiss() }
         }
         .toastError(isPresenting: $showErrorToast, error: error, displayMode: .hud)
         .alert("Personal Access Token", isPresented: $showLoginAlertField) {

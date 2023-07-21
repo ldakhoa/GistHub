@@ -16,29 +16,40 @@ struct GistHubApp: App {
 //    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
     @State private var selectedTab: Tab = .home
+    @State private var showLogin: Bool = false
+    @StateObject private var appAccountManager = AppAccountsManager.shared
     @StateObject private var currentAccount = CurrentAccount.shared
 
-    private var tabs: [Tab] = Tab.loggedInTabs()
+    private var tabs: [Tab] {
+        appAccountManager.isAuth ? Tab.loggedInTabs() : Tab.loggedOutTabs()
+    }
 
     // TODO: Migrate to AppAccountManager when done
-    private let sessionManager = GitHubSessionManager()
+//    private let sessionManager = GitHubSessionManager()
 
     var body: some Scene {
         WindowGroup {
-            appView
+            tabBarView
                 .onAppear {
-                    setupEnv()
+                    if appAccountManager.isAuth {
+                        setupEnv()
+                    } else {
+                        showLogin.toggle()
+                    }
                 }
                 .environmentObject(currentAccount)
-        }
-    }
-
-    @ViewBuilder
-    private var appView: some View {
-        if sessionManager.focusedUserSession != nil {
-            tabBarView
-        } else {
-            // show login
+                .environmentObject(appAccountManager)
+                .onChange(of: appAccountManager.focusedAccount) { appAccount in
+                    if appAccount == nil {
+                        // present login
+                        showLogin.toggle()
+                    }
+                    setupEnv()
+                }
+                .fullScreenCover(isPresented: $showLogin) {
+                    LoginView()
+                        .environmentObject(appAccountManager)
+                }
         }
     }
 
