@@ -4,12 +4,12 @@ import ApolloCodegenLib
 
 @main
 struct GraphQLGenerator: ParsableCommand {
-    static var configuration: CommandConfiguration = CommandConfiguration(abstract: "A Swift CLI to generate API from Apollo schema")
+    static var configuration: CommandConfiguration = CommandConfiguration(abstract: "A Swift CLI to generate API from Apollo schema.")
 
-    @Argument(help: "Use 'download' to download and update the schema. Or 'generate' to update API")
+    @Argument(help: "Use 'download' to download and update the schema. Or 'generate' to update API.")
     var action: CommandAction
 
-    @Option(help: "GitHub Personal Access Token to download the schema")
+    @Option(help: "GitHub Personal Access Token. This is required to download the schema.")
     var token: String?
 
     func run() throws {
