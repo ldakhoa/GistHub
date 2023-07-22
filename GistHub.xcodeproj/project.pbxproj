@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		011F11972A6B994D00B31F26 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 011F11962A6B994D00B31F26 /* Apollo */; };
 		01B61E822A6BF7C6006A4501 /* GistHubAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 01B61E812A6BF7C6006A4501 /* GistHubAPI */; };
 		6A0CA5B42A62C4FF00366D03 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */; };
 		6A0CA5B72A62C4FF00366D03 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A0CA5B62A62C4FF00366D03 /* Media.xcassets */; };
@@ -63,7 +62,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		01B61E7F2A6BF682006A4501 /* graphql */ = {isa = PBXFileReference; lastKnownFileType = folder; path = graphql; sourceTree = "<group>"; };
 		6A0CA5B22A62C4FF00366D03 /* GistHubActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GistHubActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		6A0CA5B62A62C4FF00366D03 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A641C3C2A568C870095334B /* Networking in Frameworks */,
-				011F11972A6B994D00B31F26 /* Apollo in Frameworks */,
 				6AAEBBF62A59515300CD52FF /* Profile in Frameworks */,
 				6A641C432A56E22B0095334B /* AppAccount in Frameworks */,
 				6A641C472A56E24B0095334B /* Login in Frameworks */,
@@ -157,7 +154,6 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
-				01B61E7F2A6BF682006A4501 /* graphql */,
 				6A641C402A56A91B0095334B /* AppAccount */,
 				6AE6C95B2A573BA500A4DA87 /* Common */,
 				6A641C332A5687A50095334B /* DesignSystem */,
@@ -287,7 +283,6 @@
 				6A641C462A56E24B0095334B /* Login */,
 				6A641C4E2A570EC10095334B /* Gist */,
 				6AAEBBF52A59515300CD52FF /* Profile */,
-				011F11962A6B994D00B31F26 /* Apollo */,
 				01B61E812A6BF7C6006A4501 /* GistHubAPI */,
 			);
 			productName = GistHub;
@@ -323,8 +318,6 @@
 			mainGroup = 6A7CF5252943CF33007B7D68;
 			packageReferences = (
 				6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */,
-				011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */,
-				01B61E802A6BF7C6006A4501 /* XCLocalSwiftPackageReference "GistHubAPI" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -712,22 +705,7 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		01B61E802A6BF7C6006A4501 /* XCLocalSwiftPackageReference "GistHubAPI" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = GistHubAPI;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apollographql/apollo-ios.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.2;
-			};
-		};
 		6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzysztofzablocki/Inject";
@@ -739,11 +717,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		011F11962A6B994D00B31F26 /* Apollo */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */;
-			productName = Apollo;
-		};
 		01B61E812A6BF7C6006A4501 /* GistHubAPI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GistHubAPI;

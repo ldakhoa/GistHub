@@ -15,7 +15,8 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "AppAccount", path: "../AppAccount"),
-        .package(url: "https://github.com/duytph/Networkable", from: "2.0.0")
+        .package(url: "https://github.com/duytph/Networkable", from: "2.0.0"),
+        .package(url: "https://github.com/apollographql/apollo-ios.git", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -23,7 +24,14 @@ let package = Package(
             dependencies: [
                 "Models",
                 "Networkable",
-                "AppAccount"
+                "AppAccount",
+                "GistHubGraphQL"
+            ]
+        ),
+        .target(
+            name: "GistHubGraphQL",
+            dependencies: [
+                .product(name: "ApolloAPI", package: "apollo-ios")
             ]
         ),
         .testTarget(
