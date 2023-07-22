@@ -36,7 +36,7 @@ struct GraphQLGenerator: ParsableCommand {
             operationSearchPaths: ["\(sourceRootURL)/**/**/*.graphql"]
         )
 
-        let outputPath = "\(sourceRootURL)/Packages/Networking/GistHubGraphQL"
+        let outputPath = "\(sourceRootURL)/Packages/Networking/Sources/GistHubGraphQL"
         let output = ApolloCodegenConfiguration.FileOutput(
             schemaTypes: ApolloCodegenConfiguration.SchemaTypesFileOutput(
                 path: outputPath,
