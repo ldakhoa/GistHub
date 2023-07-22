@@ -93,9 +93,13 @@ public struct SettingView: View {
         .toolbar(.visible, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarRole(.automatic)
-        .confirmationDialog("Are you sure?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
+        .confirmationDialog(
+            "Are you sure?",
+            isPresented: $showConfirmationDialog,
+            titleVisibility: .visible
+        ) {
             Button("Sign out", role: .destructive) {
-                // log out
+                appAccountsManager.logout()
             }
         } message: {
             Text("You will be signed out from all of your accounts. Do you want to sign out?")
