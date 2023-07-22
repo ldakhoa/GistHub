@@ -9,6 +9,8 @@ import SwiftUI
 import Environment
 import Gist
 import Editor
+import Profile
+import Settings
 
 @MainActor
 extension View {
@@ -19,6 +21,12 @@ extension View {
                 GistDetailView(gistId: gistId)
             case let .editorDisplay(content, fileName, gist, language):
                 EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
+            case .settings:
+                SettingView()
+            case .settingsAccount:
+                SettingAccountView()
+            case .editorCodeSettings:
+                EditorCodeSettingsView()
             }
         }
     }
@@ -38,6 +46,8 @@ extension View {
                     placeholder: placeholder,
                     commentViewModel: commentViewModel
                 )
+            case .reportABug:
+                ReportABugView()
             }
         }
     }

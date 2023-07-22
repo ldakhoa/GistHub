@@ -19,6 +19,10 @@ public class AppAccountsManager: ObservableObject {
         focusedAccount != nil
     }
 
+    public var userSessions: [AppAccount] {
+        _userSessions.elements
+    }
+
     private var _userSessions: OrderedSet<AppAccount> = OrderedSet()
 
     // TODO: Move to keychain when migration to Router is done.

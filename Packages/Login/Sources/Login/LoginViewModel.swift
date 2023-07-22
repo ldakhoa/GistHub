@@ -33,8 +33,6 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
 
     private let callbackURLScheme = "gisthub"
 
-    public weak var delegate: LoginDelegate?
-
     // MARK: - Utils
 
     private var cancellables = Set<AnyCancellable>()

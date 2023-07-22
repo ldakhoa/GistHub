@@ -45,7 +45,7 @@ func profileRootViewController(
     sessionManager: GitHubSessionManager,
     delegate: ProfileDelegate
 ) -> UIViewController {
-    let controller = UIHostingController(rootView: ProfileView(user: user, delegate: delegate, sessionManager: sessionManager))
+    let controller = UIHostingController(rootView: ProfileView())
     return createNavController(
         viewController: controller,
         title: "Profile",

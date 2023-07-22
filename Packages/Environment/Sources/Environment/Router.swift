@@ -11,6 +11,9 @@ public enum RouterDestination: Hashable {
         gist: Gist,
         language: File.Language
     )
+    case settings
+    case settingsAccount
+    case editorCodeSettings
 }
 
 public enum SheetDestination: Identifiable {
@@ -22,6 +25,7 @@ public enum SheetDestination: Identifiable {
         placeholder: String,
         commentViewModel: CommentViewModel
     )
+    case reportABug
 
     public var id: String {
         switch self {
@@ -29,6 +33,8 @@ public enum SheetDestination: Identifiable {
             return "composeGist"
         case .commentTextEditor:
             return "markdownTextEditorView"
+        case .reportABug:
+            return "reportABug"
         }
     }
 }
