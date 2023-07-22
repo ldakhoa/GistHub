@@ -11,6 +11,7 @@ import Gist
 import Editor
 import Profile
 import Settings
+import AppAccount
 
 @MainActor
 extension View {
@@ -38,6 +39,9 @@ extension View {
                 ComposeGistView(style: .createGist, completion: completion)
             case let .editGist(gist, completion):
                 ComposeGistView(style: .update(gist: gist), completion: completion)
+            case let .browseFiles(files, gist, dismissAction):
+                BrowseFilesView(files: files, gist: gist, dismissAction: dismissAction)
+                    .withEnvironments()
             case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
                 MarkdownTextEditorView(
                     style: .writeComment,
@@ -50,5 +54,10 @@ extension View {
                 ReportABugView()
             }
         }
+    }
+
+    func withEnvironments() -> some View {
+      environmentObject(CurrentAccount.shared)
+        .environmentObject(AppAccountsManager.shared)
     }
 }

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Khoa Le on 22/07/2023.
-//
-
 import SwiftUI
 
 public struct ButtonRowView: View {
@@ -25,10 +18,7 @@ public struct ButtonRowView: View {
                 Text(title)
                     .foregroundColor(Colors.foreground.color)
                 Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14))
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(UIColor.tertiaryLabel))
+                RightChevronRowImage()
             }
         })
     }

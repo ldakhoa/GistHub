@@ -19,6 +19,7 @@ public enum RouterDestination: Hashable {
 public enum SheetDestination: Identifiable {
     case newGist(completion: ((Gist) -> Void)?)
     case editGist(_ gist: Gist, completion: ((Gist) -> Void)?)
+    case browseFiles(files: [File], gist: Gist, dismissAction: () -> Void)
     case commentTextEditor(
         gistId: String,
         navigationTitle: String,
@@ -31,6 +32,8 @@ public enum SheetDestination: Identifiable {
         switch self {
         case .newGist, .editGist:
             return "composeGist"
+        case .browseFiles:
+            return "browseFiles"
         case .commentTextEditor:
             return "markdownTextEditorView"
         case .reportABug:
