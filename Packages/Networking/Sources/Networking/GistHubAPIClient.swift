@@ -9,6 +9,9 @@ import Foundation
 import Networkable
 import Models
 import AppAccount
+import GistHubAPI
+import Apollo
+import os
 
 public protocol GistHubAPIClient: Client {
     /// Allows you to add a new gist with one or more files.
@@ -24,10 +27,14 @@ public protocol GistHubAPIClient: Client {
     func user() async throws -> User
 
     /// Star a gist.
-    func starGist(gistID: String) async throws
+    /// - Parameter gistID: ID of the gist to be starred
+    /// - Returns: Bool value indicating if the gist is starred
+    func starGist(gistID: String) async throws -> Bool
 
     /// Unstar a gist.
-    func unstarGist(gistID: String) async throws
+    /// - Parameter gistID: ID of the gist to be unstarred
+    /// - Returns: Bool value indicating if the gist is starred
+    func unstarGist(gistID: String) async throws -> Bool
 
     /// Check if gist is starred.
     func isStarred(gistID: String) async throws
@@ -77,9 +84,14 @@ public protocol GistHubAPIClient: Client {
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
+    private let apolloClient: ApolloClient
 
-    public init(session: NetworkSession = .github) {
+    public init(
+        session: NetworkSession = .github,
+        apolloClient: ApolloClient = ApolloGitHubNetworkSession.shared.apollo
+    ) {
         self.session = session
+        self.apolloClient = apolloClient
     }
 
     public func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
@@ -98,12 +110,40 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.user)
     }
 
-    public func starGist(gistID: String) async throws {
-        try await session.data(for: API.starGist(gistID: gistID))
+    public func starGist(gistID: String) async throws -> Bool {
+        try await withCheckedThrowingContinuation { continuation in
+            apolloClient.perform(mutation: AddStarMutation(input: AddStarInput(starrableId: gistID))) { result in
+                switch result {
+                case .success(let addStarResult):
+                    if let starred = addStarResult.data?.addStar?.starrable?.viewerHasStarred {
+                        continuation.resume(returning: starred)
+                    }
+                    if addStarResult.errors != nil {
+                        continuation.resume(throwing: ApolloError())
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 
-    public func unstarGist(gistID: String) async throws {
-        try await session.data(for: API.unstarGist(gistID: gistID))
+    public func unstarGist(gistID: String) async throws -> Bool {
+        try await withCheckedThrowingContinuation { continuation in
+            apolloClient.perform(mutation: RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))) { result in
+                switch result {
+                case .success(let removeStarResult):
+                    if let starred = removeStarResult.data?.removeStar?.starrable?.viewerHasStarred {
+                        continuation.resume(returning: starred)
+                    }
+                    if removeStarResult.errors != nil {
+                        continuation.resume(throwing: ApolloError())
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 
     public func isStarred(gistID: String) async throws {

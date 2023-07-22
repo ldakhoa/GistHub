@@ -327,9 +327,9 @@ public struct GistDetailView: View {
         Button {
             Task {
                 if isStarred {
-                    await viewModel.unstarGist(gistID: gistId)
+                    await viewModel.unstarGist()
                 } else {
-                    await viewModel.starGist(gistID: gistId)
+                    await viewModel.starGist()
                 }
             }
         } label: {

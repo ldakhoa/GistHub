@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		011F11972A6B994D00B31F26 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 011F11962A6B994D00B31F26 /* Apollo */; };
+		01B61E822A6BF7C6006A4501 /* GistHubAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 01B61E812A6BF7C6006A4501 /* GistHubAPI */; };
 		6A0CA5B42A62C4FF00366D03 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */; };
 		6A0CA5B72A62C4FF00366D03 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A0CA5B62A62C4FF00366D03 /* Media.xcassets */; };
 		6A0CA5B92A62C4FF00366D03 /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0CA5B82A62C4FF00366D03 /* ActionRequestHandler.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01B61E7F2A6BF682006A4501 /* graphql */ = {isa = PBXFileReference; lastKnownFileType = folder; path = graphql; sourceTree = "<group>"; };
 		6A0CA5B22A62C4FF00366D03 /* GistHubActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GistHubActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		6A0CA5B62A62C4FF00366D03 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				6A641C362A568C870095334B /* DesignSystem in Frameworks */,
 				6A641C4F2A570EC10095334B /* Gist in Frameworks */,
 				6A7CF56229446B0D007B7D68 /* Inject in Frameworks */,
+				01B61E822A6BF7C6006A4501 /* GistHubAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +157,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				01B61E7F2A6BF682006A4501 /* graphql */,
 				6A641C402A56A91B0095334B /* AppAccount */,
 				6AE6C95B2A573BA500A4DA87 /* Common */,
 				6A641C332A5687A50095334B /* DesignSystem */,
@@ -284,6 +288,7 @@
 				6A641C4E2A570EC10095334B /* Gist */,
 				6AAEBBF52A59515300CD52FF /* Profile */,
 				011F11962A6B994D00B31F26 /* Apollo */,
+				01B61E812A6BF7C6006A4501 /* GistHubAPI */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -319,6 +324,7 @@
 			packageReferences = (
 				6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */,
 				011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				01B61E802A6BF7C6006A4501 /* XCLocalSwiftPackageReference "GistHubAPI" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -706,6 +712,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		01B61E802A6BF7C6006A4501 /* XCLocalSwiftPackageReference "GistHubAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = GistHubAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -730,6 +743,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 011F11952A6B994D00B31F26 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = Apollo;
+		};
+		01B61E812A6BF7C6006A4501 /* GistHubAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GistHubAPI;
 		};
 		6A0CA5C62A62D7C700366D03 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;
