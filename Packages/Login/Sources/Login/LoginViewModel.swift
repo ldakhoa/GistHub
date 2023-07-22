@@ -13,10 +13,6 @@ import Networking
 import Utilities
 import Environment
 
-public protocol LoginDelegate: AnyObject {
-    func finishLogin(token: String, authMethod: AuthMethod, username: String)
-}
-
 final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentationContextProviding {
     @Published var contentState: ContentState = .idling
     @Published var finishLogin: Bool = false

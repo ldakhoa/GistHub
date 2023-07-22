@@ -13,8 +13,6 @@ import Login
 
 @main
 struct GistHubApp: App {
-//    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-
     @State private var selectedTab: Tab = .home
     @State private var showLogin: Bool = false
     @StateObject private var appAccountManager = AppAccountsManager.shared
@@ -23,9 +21,6 @@ struct GistHubApp: App {
     private var tabs: [Tab] {
         appAccountManager.isAuth ? Tab.loggedInTabs() : Tab.loggedOutTabs()
     }
-
-    // TODO: Migrate to AppAccountManager when done
-//    private let sessionManager = GitHubSessionManager()
 
     var body: some Scene {
         WindowGroup {
@@ -64,6 +59,7 @@ struct GistHubApp: App {
                     .tag(tab)
             }
         }
+        .background(UIColor.systemBackground.color)
         .tint(Colors.accent.color)
     }
 
