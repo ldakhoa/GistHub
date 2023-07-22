@@ -11,24 +11,33 @@ public enum RouterDestination: Hashable {
         gist: Gist,
         language: File.Language
     )
+    case settings
+    case settingsAccount
+    case editorCodeSettings
 }
 
 public enum SheetDestination: Identifiable {
     case newGist(completion: ((Gist) -> Void)?)
     case editGist(_ gist: Gist, completion: ((Gist) -> Void)?)
+    case browseFiles(files: [File], gist: Gist, dismissAction: () -> Void)
     case commentTextEditor(
         gistId: String,
         navigationTitle: String,
         placeholder: String,
         commentViewModel: CommentViewModel
     )
+    case reportABug
 
     public var id: String {
         switch self {
         case .newGist, .editGist:
             return "composeGist"
+        case .browseFiles:
+            return "browseFiles"
         case .commentTextEditor:
             return "markdownTextEditorView"
+        case .reportABug:
+            return "reportABug"
         }
     }
 }

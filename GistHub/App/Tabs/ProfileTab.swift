@@ -14,7 +14,10 @@ struct ProfileTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            Text("Profile")
+            ProfileView()
+                .withAppRouter()
+                .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
+        .environmentObject(routerPath)
     }
 }

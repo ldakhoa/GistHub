@@ -9,6 +9,9 @@ import SwiftUI
 import Environment
 import Gist
 import Editor
+import Profile
+import Settings
+import AppAccount
 
 @MainActor
 extension View {
@@ -19,6 +22,12 @@ extension View {
                 GistDetailView(gistId: gistId)
             case let .editorDisplay(content, fileName, gist, language):
                 EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
+            case .settings:
+                SettingView()
+            case .settingsAccount:
+                SettingAccountView()
+            case .editorCodeSettings:
+                EditorCodeSettingsView()
             }
         }
     }
@@ -30,6 +39,9 @@ extension View {
                 ComposeGistView(style: .createGist, completion: completion)
             case let .editGist(gist, completion):
                 ComposeGistView(style: .update(gist: gist), completion: completion)
+            case let .browseFiles(files, gist, dismissAction):
+                BrowseFilesView(files: files, gist: gist, dismissAction: dismissAction)
+                    .withEnvironments()
             case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
                 MarkdownTextEditorView(
                     style: .writeComment,
@@ -38,7 +50,14 @@ extension View {
                     placeholder: placeholder,
                     commentViewModel: commentViewModel
                 )
+            case .reportABug:
+                ReportABugView()
             }
         }
+    }
+
+    func withEnvironments() -> some View {
+      environmentObject(CurrentAccount.shared)
+        .environmentObject(AppAccountsManager.shared)
     }
 }

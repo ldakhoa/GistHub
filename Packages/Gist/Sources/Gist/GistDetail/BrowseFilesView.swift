@@ -15,43 +15,40 @@ import Editor
 public struct BrowseFilesView: View {
     @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = ViewModel()
-    @EnvironmentObject var userStore: UserStore
 
-    @State var files: [File]
-    let gist: Gist
-    let dismissAction: () -> Void
+    @EnvironmentObject private var currentAccount: CurrentAccount
+    @StateObject private var viewModel = BrowseFilesViewModel()
+    @ObservedObject private var routerPath: RouterPath = RouterPath()
+
+    @State private var files: [File]
+    private let gist: Gist
+    private let dismissAction: () -> Void
+
+    public init(files: [File], gist: Gist, dismissAction: @escaping () -> Void) {
+        _files = State(initialValue: files)
+        self.gist = gist
+        self.dismissAction = dismissAction
+    }
 
     public var body: some View {
-        NavigationStack {
-            ZStack {
+        NavigationStack(path: $routerPath.path) {
+            List {
                 switch viewModel.contentState {
                 case .loading:
-                    ProgressView()
-                case let .content(files):
-                    List {
-                        ForEach(files) { file in
-                            NavigationLink {
-                                buildEditorDisplayView(file: file)
-                            } label: {
-                                VStack(alignment: .leading) {
-                                    Text(file.filename ?? "")
-                                        .bold()
-                                        .foregroundColor(Colors.fileNameForeground.color)
-                                    Text(file.content ?? "")
-                                        .font(.callout)
-                                        .lineLimit(1)
-                                        .foregroundColor(Colors.neutralEmphasis.color)
-                                }
-                            }
-                        }
+                    ForEach(File.placeholders) { file in
+                        fileView(file: file)
+                            .redacted(reason: .placeholder)
                     }
-                    .listStyle(.grouped)
-                    .searchable(text: $viewModel.searchText, prompt: Text("Search files..."))
-                    .onChange(of: viewModel.searchText) { _ in viewModel.search() }
-                    .animation(.default, value: files)
+                case let .content(files):
+                    ForEach(files) { file in
+                        fileView(file: file)
+                    }
                 }
             }
+            .listStyle(.grouped)
+            .searchable(text: $viewModel.searchText, prompt: Text("Search files..."))
+            .onChange(of: viewModel.searchText) { _ in viewModel.search() }
+            .animation(.default, value: viewModel.searchText)
             .navigationTitle("Browse Files")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Colors.listBackground.color, for: .navigationBar)
@@ -72,6 +69,34 @@ public struct BrowseFilesView: View {
         .enableInjection()
     }
 
+    @ViewBuilder
+    private func fileView(file: File) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(file.filename ?? "")
+                    .bold()
+                    .foregroundColor(Colors.fileNameForeground.color)
+                Text(file.content ?? "")
+                    .font(.callout)
+                    .lineLimit(1)
+                    .foregroundColor(Colors.neutralEmphasis.color)
+            }
+            Spacer()
+            RightChevronRowImage()
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            let content = file.content ?? ""
+            let language = file.language ?? .unknown
+            let fileName = file.filename ?? ""
+            routerPath.navigate(to: .editorDisplay(
+                content: content,
+                fileName: fileName,
+                gist: gist,
+                language: language))
+        }
+    }
+
     private func buildEditorDisplayView(file: File) -> some View {
         let content = file.content ?? ""
         let language = file.language ?? .unknown
@@ -82,8 +107,8 @@ public struct BrowseFilesView: View {
             fileName: fileName,
             gist: gist,
             language: language
-        ) {}
-            .environmentObject(userStore)
+        )
+//            .environmentObject(userStore)
             .toolbar(.visible, for: .navigationBar)
             .contextMenu {
                 let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
@@ -101,14 +126,15 @@ public struct BrowseFilesView: View {
                         gist: gist,
                         language: language
                     ) {}
-                        .environmentObject(userStore)
+//                        .environmentObject(userStore)
                         .navigationBarTitleDisplayMode(.inline)
                 }
             }
     }
 }
 
-@MainActor private final class ViewModel: ObservableObject {
+@MainActor
+private final class BrowseFilesViewModel: ObservableObject {
     @Published private var files = [File]()
     @Published var contentState: ContentState = .loading
     @Published var searchText = ""

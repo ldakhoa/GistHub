@@ -4,7 +4,7 @@ import DesignSystem
 import Networking
 import Editor
 
-struct ReportABugView: View {
+public struct ReportABugView: View {
     @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
 
@@ -17,9 +17,11 @@ struct ReportABugView: View {
     @State private var networkError: String = ""
     private let client: GistHubAPIClient = DefaultGistHubAPIClient()
 
+    public init() {}
+
     // MARK: - View
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             Form {
                 Section("title") {

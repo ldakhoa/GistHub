@@ -29,15 +29,11 @@
 		6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C942A67185E00F47796 /* AppRouter.swift */; };
 		6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C962A671C8E00F47796 /* ProfileTab.swift */; };
 		6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C982A671C9300F47796 /* StarredTab.swift */; };
-		6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5312943CF33007B7D68 /* AppDelegate.swift */; };
 		6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */; };
 		6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53A2943CF35007B7D68 /* Assets.xcassets */; };
 		6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53C2943CF35007B7D68 /* LaunchScreen.storyboard */; };
-		6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF55E29446967007B7D68 /* MainTabBarController.swift */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
 		6AAEBBF62A59515300CD52FF /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 6AAEBBF52A59515300CD52FF /* Profile */; };
-		6AC4F2C7294CD78F00F0A2BA /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2C6294CD78F00F0A2BA /* AppController.swift */; };
-		6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */; };
 		6AEEE4542966CD5200767BD6 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 6AEEE4532966CD5200767BD6 /* emoji.json */; };
 /* End PBXBuildFile section */
 
@@ -92,15 +88,11 @@
 		6A6D6C982A671C9300F47796 /* StarredTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredTab.swift; sourceTree = "<group>"; };
 		6A6D6C9C2A67C46F00F47796 /* GistHub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GistHub.entitlements; sourceTree = "<group>"; };
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A7CF5312943CF33007B7D68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6A7CF55E29446967007B7D68 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
-		6AC4F2C6294CD78F00F0A2BA /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
-		6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewControllers.swift; sourceTree = "<group>"; };
 		6AE6C95B2A573BA500A4DA87 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = Packages/Common; sourceTree = "<group>"; };
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,12 +198,8 @@
 			isa = PBXGroup;
 			children = (
 				6A6D6C8F2A670D6600F47796 /* Tabs */,
-				6A7CF5312943CF33007B7D68 /* AppDelegate.swift */,
 				6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */,
 				6A6D6C942A67185E00F47796 /* AppRouter.swift */,
-				6A7CF55E29446967007B7D68 /* MainTabBarController.swift */,
-				6AC4F2D3294F52D300F0A2BA /* RootViewControllers.swift */,
-				6AC4F2C6294CD78F00F0A2BA /* AppController.swift */,
 				6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */,
 			);
 			path = App;
@@ -401,13 +389,9 @@
 			files = (
 				6A6D6C932A67160C00F47796 /* HomeTab.swift in Sources */,
 				6A6D6C8E2A670C6800F47796 /* GistHubApp.swift in Sources */,
-				6AC4F2C7294CD78F00F0A2BA /* AppController.swift in Sources */,
-				6A7CF55F29446967007B7D68 /* MainTabBarController.swift in Sources */,
-				6AC4F2D4294F52D300F0A2BA /* RootViewControllers.swift in Sources */,
 				6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */,
 				6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */,
 				6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */,
-				6A7CF5322943CF33007B7D68 /* AppDelegate.swift in Sources */,
 				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */,
 			);

@@ -2,6 +2,11 @@ import Foundation
 import KeychainSwift
 import Models
 
+public enum AuthMethod: String, Codable {
+    case oauth
+    case pat
+}
+
 public struct AppAccount: Codable, Identifiable, Hashable {
 
     public let token: String

@@ -87,7 +87,7 @@ extension File {
         case bash = "shell"
         case c
         case cpp = "C++"
-        case cSharp
+        case cSharp = "csharp"
         case css
         case elixir
         case elm
@@ -95,7 +95,7 @@ extension File {
         case haskell
         case html
         case java
-        case javaScript
+        case javaScript = "javascript"
         case jsdoc
         case json
         case json5
@@ -116,7 +116,7 @@ extension File {
         case swift
         case toml
         case tsx
-        case typeScript
+        case typeScript = "typescript"
         case yaml
         case unknown
 
@@ -172,4 +172,18 @@ extension File {
         }
     }
 
+}
+
+extension File {
+    public static var placeholder: File {
+        .init(
+            filename: "placeholder.md",
+            language: .markdown,
+            content: "# Placeholder.md\n## Placeholder.md# Placeholder.md\n## Placeholder.md"
+        )
+    }
+
+    public static var placeholders: [File] {
+        [.placeholder, .placeholder, .placeholder]
+    }
 }

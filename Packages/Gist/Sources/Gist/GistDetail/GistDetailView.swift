@@ -94,7 +94,8 @@ public struct GistDetailView: View {
                             GistDetailCodeSectionView(
                                 gist: gist,
                                 routerPath: routerPath,
-                                currentAccount: currentAccount
+                                currentAccount: currentAccount,
+                                viewModel: viewModel
                             )
 
                             Spacer(minLength: 16)

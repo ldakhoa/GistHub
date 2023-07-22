@@ -8,6 +8,7 @@ struct GistDetailCodeSectionView: View {
     let gist: Gist
     let routerPath: RouterPath
     let currentAccount: CurrentAccount
+    @ObservedObject var viewModel: GistDetailViewModel
 
     var body: some View {
         let fileNames = gist.files?.keys.map { String($0) } ?? []
@@ -19,19 +20,15 @@ struct GistDetailCodeSectionView: View {
                 Spacer()
 
                 Button("Browse files") {
-//                    showBrowseFiles.toggle()
+                    let files = gist.files?.values.map { $0 } ?? []
+                    routerPath.presentedSheet = .browseFiles(files: files, gist: gist) {
+                        Task {
+                            await viewModel.gist(gistID: gist.id)
+                        }
+                    }
                 }
                 .font(.callout)
                 .foregroundColor(Colors.accent.color)
-//                .sheet(isPresented: $showBrowseFiles) {
-//                    let files = gist.files?.values.map { $0 } ?? []
-//                    BrowseFilesView(files: files, gist: gist) {
-//                        Task {
-//                            await viewModel.gist(gistID: gist.id)
-//                        }
-//                    }
-//                    .environmentObject(currentAccount)
-//                }
             }
             .padding(.horizontal, 16)
 
@@ -71,12 +68,11 @@ struct GistDetailCodeSectionView: View {
         .padding(.horizontal, 16)
         .contentShape(Rectangle())
         .onTapGesture {
-            routerPath.navigate(
-                to: .editorDisplay(content: content,
+            routerPath.navigate(to: .editorDisplay(
+                content: content,
                 fileName: fileName,
                 gist: gist,
-                language: language)
-            )
+                language: language))
         }
         .contextMenu {
             let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
@@ -84,50 +80,6 @@ struct GistDetailCodeSectionView: View {
         } preview: {
             contextMenuPreview(content: content, fileName: fileName, language: language)
         }
-//        NavigationLink {
-//            EditorDisplayView(
-//                content: content,
-//                fileName: fileName,
-//                gist: gist,
-//                language: language
-//            ) {
-//                Task {
-//                    await viewModel.gist(gistID: gist.id)
-//                }
-//            }
-//            .environmentObject(currentAccount)
-//        } label: {
-//            VStack(alignment: .leading) {
-//                HStack(alignment: .center) {
-//                    Image(systemName: "doc")
-//                    Text(fileName)
-//                    Spacer()
-//
-//                    Image(systemName: "chevron.right")
-//                        .font(.system(size: 16))
-//                        .foregroundColor(Colors.neutralEmphasis.color)
-//                }
-//                .foregroundColor(Colors.fileNameForeground.color)
-//                .padding(.vertical, 8)
-//                .padding(.horizontal, 16)
-//            }
-//        }
-
-//        .contextMenu {
-//            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-//            makeShareLink(itemString: gist.htmlURL ?? "", previewTitle: titlePreview, label: "Share via...")
-//        } preview: {
-//            NavigationStack {
-//                EditorDisplayView(
-//                    content: content,
-//                    fileName: fileName,
-//                    gist: gist,
-//                    language: language
-//                ) {}
-//                .environmentObject(currentAccount)
-//                .navigationBarTitleDisplayMode(.inline)
-//            }
-//        }
     }
 
     @ViewBuilder
