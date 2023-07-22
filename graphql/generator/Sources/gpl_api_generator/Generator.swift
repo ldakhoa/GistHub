@@ -36,10 +36,15 @@ struct GraphQLGenerator: ParsableCommand {
             operationSearchPaths: ["\(sourceRootURL)/**/**/*.graphql"]
         )
 
-        let outputPath = "\(sourceRootURL)/Packages/Networking/Sources/GistHubGraphQL"
+        let outputPath = sourceRootURL
+            .childFolderURL(folderName: "Packages")
+            .childFolderURL(folderName: "Networking")
+            .childFolderURL(folderName: "Sources")
+            .childFolderURL(folderName: "GistHubGraphQL")
+
         let output = ApolloCodegenConfiguration.FileOutput(
             schemaTypes: ApolloCodegenConfiguration.SchemaTypesFileOutput(
-                path: outputPath,
+                path: outputPath.path,
                 moduleType: .other),
             operations: .inSchemaModule,
             testMocks: .none
@@ -53,7 +58,7 @@ struct GraphQLGenerator: ParsableCommand {
 
         do {
             try ApolloCodegen.build(with: configuration)
-            print("✅ Generated at 'GistHub/Packages/Networking/GistHubGraphQL'")
+            print("✅ Generated at \(outputPath.path)")
         } catch {
             print("Failed to generate: \(error.localizedDescription)")
         }
