@@ -27,6 +27,8 @@ public enum SheetDestination: Identifiable {
         commentViewModel: CommentViewModel
     )
     case reportABug
+    case editorCodeSettings
+    case editorView(fileName: String, content: String, language: File.Language, gist: Gist)
 
     public var id: String {
         switch self {
@@ -38,6 +40,10 @@ public enum SheetDestination: Identifiable {
             return "markdownTextEditorView"
         case .reportABug:
             return "reportABug"
+        case .editorCodeSettings:
+            return "editorCodeSettings"
+        case .editorView:
+            return "editorView"
         }
     }
 }

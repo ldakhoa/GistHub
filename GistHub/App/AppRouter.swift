@@ -52,6 +52,20 @@ extension View {
                 )
             case .reportABug:
                 ReportABugView()
+            case .editorCodeSettings:
+                NavigationStack {
+                    EditorCodeSettingsView()
+                }
+            case let .editorView(fileName, content, language, gist):
+                NavigationStack {
+                    EditorView(
+                        style: .update,
+                        fileName: fileName,
+                        content: content,
+                        language: language,
+                        gist: gist
+                    )
+                }
             }
         }
     }

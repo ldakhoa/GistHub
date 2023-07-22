@@ -36,7 +36,6 @@ struct GistHubApp: App {
                 .environmentObject(appAccountManager)
                 .onChange(of: appAccountManager.focusedAccount) { appAccount in
                     if appAccount == nil {
-                        // present login
                         showLogin.toggle()
                     }
                     setupEnv()

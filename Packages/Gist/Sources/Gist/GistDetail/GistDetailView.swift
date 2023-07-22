@@ -131,12 +131,14 @@ public struct GistDetailView: View {
         .onAppear {
             Task {
                 await viewModel.isStarred(gistID: gistId)
+                await commentViewModel.fetchComments(gistID: gistId)
+                await viewModel.gist(gistID: gistId)
             }
         }
         .onLoad {
             Task {
-                await commentViewModel.fetchComments(gistID: gistId)
-                await viewModel.gist(gistID: gistId)
+//                await commentViewModel.fetchComments(gistID: gistId)
+//                await viewModel.gist(gistID: gistId)
             }
         }
         .refreshable {
@@ -222,6 +224,9 @@ public struct GistDetailView: View {
             if currentAccount.user?.id == viewModel.gist.owner?.id {
                 makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                     routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
+                        Task {
+                            await viewModel.gist(gistID: newGist.id)
+                        }
                         viewModel.gist = newGist
                     }
                 }
