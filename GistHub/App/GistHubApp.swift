@@ -57,6 +57,7 @@ struct GistHubApp: App {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                     popToRootTab = selectedTab
                 }
+                HapticManager.shared.fireHaptic(of: .tabSelection)
             }
             selectedTab = newTab
         })) {

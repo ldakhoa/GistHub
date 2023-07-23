@@ -282,6 +282,7 @@ public struct GistDetailView: View {
                         placeholder: "Write a comment...",
                         commentViewModel: self.commentViewModel
                     )
+                    HapticManager.shared.fireHaptic(of: .buttonPress)
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "bubble.left")
@@ -336,6 +337,7 @@ public struct GistDetailView: View {
                 } else {
                     await viewModel.starGist(gistID: gistId)
                 }
+                HapticManager.shared.fireHaptic(of: .buttonPress)
             }
         } label: {
             HStack {
