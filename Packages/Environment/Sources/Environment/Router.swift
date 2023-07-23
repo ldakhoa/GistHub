@@ -52,10 +52,16 @@ public enum SheetDestination: Identifiable {
 public class RouterPath: ObservableObject {
     @Published public var path: [RouterDestination] = []
     @Published public var presentedSheet: SheetDestination?
+    public var urlHandler: ((URL) -> OpenURLAction.Result)?
 
     public init() {}
 
     public func navigate(to destination: RouterDestination) {
         path.append(destination)
+    }
+
+    public func handle(url: URL) -> OpenURLAction.Result {
+        print("Handle", url)
+        return urlHandler?(url) ?? .systemAction
     }
 }

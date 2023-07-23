@@ -20,6 +20,7 @@ struct StarredTab: View {
             .withAppRouter()
             .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
+        .withSafariRouter()
         .environmentObject(routerPath)
     }
 }
