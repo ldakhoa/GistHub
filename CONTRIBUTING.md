@@ -62,7 +62,6 @@ swift run gpl_api_generator generate
 To download the new GitHub schema
 
 ```bash
-// Download GitHub schema
 cd graphql/generator/
 swift run gpl_api_generator download --token <github access token>
 ```
