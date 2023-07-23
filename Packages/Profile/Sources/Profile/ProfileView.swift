@@ -41,7 +41,6 @@ public struct ProfileView: View {
                 }
             }
         }
-        .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

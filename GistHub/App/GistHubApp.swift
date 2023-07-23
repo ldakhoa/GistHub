@@ -15,6 +15,7 @@ import Login
 struct GistHubApp: App {
     @State private var selectedTab: Tab = .home
     @State private var showLogin: Bool = false
+    @State private var popToRootTab: Tab = .other
     @StateObject private var appAccountManager = AppAccountsManager.shared
     @StateObject private var currentAccount = CurrentAccount.shared
 
@@ -48,9 +49,19 @@ struct GistHubApp: App {
     }
 
     private var tabBarView: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: .init(get: {
+            selectedTab
+        }, set: { newTab in
+            if newTab == selectedTab {
+                popToRootTab = .other
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                    popToRootTab = selectedTab
+                }
+            }
+            selectedTab = newTab
+        })) {
             ForEach(tabs) { tab in
-                tab.makeContentView()
+                tab.makeContentView(popToRootTab: $popToRootTab)
                     .tabItem {
                         Image(uiImage: UIImage(named: selectedTab == tab ? tab.iconSelectedName : tab.iconName)!)
                         Text(tab.title)

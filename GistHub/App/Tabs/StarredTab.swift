@@ -11,6 +11,11 @@ import Gist
 
 struct StarredTab: View {
     @StateObject private var routerPath: RouterPath = RouterPath()
+    @Binding var popToRootTab: Tab
+
+    init(popToRootTab: Binding<Tab>) {
+        _popToRootTab = popToRootTab
+    }
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
@@ -19,6 +24,11 @@ struct StarredTab: View {
             }
             .withAppRouter()
             .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
+        }
+        .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
+            if popToRootTab != .starred {
+                routerPath.path = []
+            }
         }
         .withSafariRouter()
         .environmentObject(routerPath)
