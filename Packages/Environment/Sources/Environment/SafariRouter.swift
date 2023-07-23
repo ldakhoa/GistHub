@@ -15,5 +15,11 @@ private struct SafariRouter: ViewModifier {
                 // Open internal URL
                 routerPath.handle(url: url)
             })
+            .onOpenURL { url in
+                // Open external URL (from gisthub://)
+                let urlString = url.absoluteString.replacingOccurrences(of: "gisthub://", with: "https://")
+                guard let url = URL(string: urlString), url.host != nil else { return }
+                routerPath.handle(url: url)
+            }
     }
 }

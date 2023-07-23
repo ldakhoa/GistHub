@@ -28,7 +28,6 @@
 		6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C942A67185E00F47796 /* AppRouter.swift */; };
 		6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C962A671C8E00F47796 /* ProfileTab.swift */; };
 		6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C982A671C9300F47796 /* StarredTab.swift */; };
-		6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */; };
 		6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53A2943CF35007B7D68 /* Assets.xcassets */; };
 		6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53C2943CF35007B7D68 /* LaunchScreen.storyboard */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
@@ -87,7 +86,6 @@
 		6A6D6C982A671C9300F47796 /* StarredTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredTab.swift; sourceTree = "<group>"; };
 		6A6D6C9C2A67C46F00F47796 /* GistHub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GistHub.entitlements; sourceTree = "<group>"; };
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -196,7 +194,6 @@
 			isa = PBXGroup;
 			children = (
 				6A6D6C8F2A670D6600F47796 /* Tabs */,
-				6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */,
 				6A6D6C942A67185E00F47796 /* AppRouter.swift */,
 				6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */,
 			);
@@ -388,7 +385,6 @@
 				6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */,
 				6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */,
 				6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */,
-				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
