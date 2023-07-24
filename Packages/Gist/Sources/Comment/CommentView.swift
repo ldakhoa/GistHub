@@ -22,8 +22,6 @@ public struct CommentView: View {
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
-    @State private var showPlainTextEditorView = false
-    @State private var showQuoteCommentTextEditor = false
     @ObserveInjection private var inject
     @State private var commentMarkdownHeight: CGFloat = 0
 
@@ -121,7 +119,6 @@ public struct CommentView: View {
             }
 
             Button("Quote reply") {
-                showQuoteCommentTextEditor.toggle()
                 routerPath.presentedSheet = .markdownTextEditor(
                     style: .writeComment(content: quoteBody(body: comment.body ?? ""))
                 ) { content in
@@ -145,17 +142,6 @@ public struct CommentView: View {
                 }
             }
         }
-//        .sheet(isPresented: $showPlainTextEditorView) {
-//            MarkdownTextEditorView(
-//                style: .updateComment,
-//                content: comment.body ?? "",
-//                commentID: comment.id)
-//        }
-//        .sheet(isPresented: $showQuoteCommentTextEditor) {
-//            MarkdownTextEditorView(
-//                style: .writeComment,
-//                content: quoteBody(body: comment.body ?? ""))
-//        }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .enableInjection()
