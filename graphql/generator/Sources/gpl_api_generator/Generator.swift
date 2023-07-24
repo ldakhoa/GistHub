@@ -46,12 +46,12 @@ struct GraphQLGenerator: ParsableCommand {
             schemaTypes: ApolloCodegenConfiguration.SchemaTypesFileOutput(
                 path: outputPath.path,
                 moduleType: .other),
-            operations: .inSchemaModule,
+            operations: .absolute(path: outputPath.path, accessModifier: .public),
             testMocks: .none
         )
 
         let configuration = ApolloCodegenConfiguration(
-            schemaName: "GistHubGraphQL",
+            schemaNamespace: "GistHubGraphQL",
             input: input,
             output: output
         )

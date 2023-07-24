@@ -4,7 +4,10 @@ import PackageDescription
 
 let package = Package(
     name: "Environment",
-    platforms: [.iOS(.v16)],
+    platforms: [
+        .iOS(.v16),
+        .macOS(.v13)
+    ],
     products: [
         .library(
             name: "Environment",
@@ -14,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(name: "Utilities", path: "../Utilities"),
         .package(name: "Networking", path: "../Networking"),
+        .package(name: "Common", path: "../Common"),
 //        .package(
 //            url: "https://github.com/simonbs/treesitterlanguages",
 //            from: "0.1.0"
@@ -29,7 +33,8 @@ let package = Package(
             dependencies: [
                 "Runestone",
                 "Networking",
-                "Utilities"
+                "Utilities",
+                "Common"
             ]
         ),
         .testTarget(

@@ -2,28 +2,18 @@
 // This file was automatically generated and should not be edited.
 
 @_exported import ApolloAPI
+import GistHubGraphQL
 
 public class AddStarMutation: GraphQLMutation {
   public static let operationName: String = "AddStar"
-  public static let document: DocumentType = .notPersisted(
+  public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      """
-      mutation AddStar($input: AddStarInput!) {
-        addStar(input: $input) {
-          __typename
-          starrable {
-            __typename
-            id
-            viewerHasStarred
-          }
-        }
-      }
-      """
+      #"mutation AddStar($input: AddStarInput!) { addStar(input: $input) { __typename starrable { __typename id viewerHasStarred } } }"#
     ))
 
-  public var input: AddStarInput
+  public var input: GistHubGraphQL.AddStarInput
 
-  public init(input: AddStarInput) {
+  public init(input: GistHubGraphQL.AddStarInput) {
     self.input = input
   }
 
@@ -31,10 +21,10 @@ public class AddStarMutation: GraphQLMutation {
 
   public struct Data: GistHubGraphQL.SelectionSet {
     public let __data: DataDict
-    public init(data: DataDict) { __data = data }
+    public init(_dataDict: DataDict) { __data = _dataDict }
 
-    public static var __parentType: ParentType { GistHubGraphQL.Objects.Mutation }
-    public static var __selections: [Selection] { [
+    public static var __parentType: ApolloAPI.ParentType { GistHubGraphQL.Objects.Mutation }
+    public static var __selections: [ApolloAPI.Selection] { [
       .field("addStar", AddStar?.self, arguments: ["input": .variable("input")]),
     ] }
 
@@ -46,10 +36,11 @@ public class AddStarMutation: GraphQLMutation {
     /// Parent Type: `AddStarPayload`
     public struct AddStar: GistHubGraphQL.SelectionSet {
       public let __data: DataDict
-      public init(data: DataDict) { __data = data }
+      public init(_dataDict: DataDict) { __data = _dataDict }
 
-      public static var __parentType: ParentType { GistHubGraphQL.Objects.AddStarPayload }
-      public static var __selections: [Selection] { [
+      public static var __parentType: ApolloAPI.ParentType { GistHubGraphQL.Objects.AddStarPayload }
+      public static var __selections: [ApolloAPI.Selection] { [
+        .field("__typename", String.self),
         .field("starrable", Starrable?.self),
       ] }
 
@@ -61,15 +52,16 @@ public class AddStarMutation: GraphQLMutation {
       /// Parent Type: `Starrable`
       public struct Starrable: GistHubGraphQL.SelectionSet {
         public let __data: DataDict
-        public init(data: DataDict) { __data = data }
+        public init(_dataDict: DataDict) { __data = _dataDict }
 
-        public static var __parentType: ParentType { GistHubGraphQL.Interfaces.Starrable }
-        public static var __selections: [Selection] { [
-          .field("id", ID.self),
+        public static var __parentType: ApolloAPI.ParentType { GistHubGraphQL.Interfaces.Starrable }
+        public static var __selections: [ApolloAPI.Selection] { [
+          .field("__typename", String.self),
+          .field("id", GistHubGraphQL.ID.self),
           .field("viewerHasStarred", Bool.self),
         ] }
 
-        public var id: ID { __data["id"] }
+        public var id: GistHubGraphQL.ID { __data["id"] }
         /// Returns a boolean indicating whether the viewing user has starred this starrable.
         public var viewerHasStarred: Bool { __data["viewerHasStarred"] }
       }

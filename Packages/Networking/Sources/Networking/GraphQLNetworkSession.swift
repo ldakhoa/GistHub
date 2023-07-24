@@ -7,7 +7,7 @@
 
 import Foundation
 import Apollo
-import GistHubAPI
+import GistHubGraphQL
 import AppAccount
 import os
 

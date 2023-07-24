@@ -9,7 +9,7 @@ import Foundation
 import Networkable
 import Models
 import AppAccount
-import GistHubAPI
+import GistHubGraphQL
 import Apollo
 import os
 

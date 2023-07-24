@@ -12,11 +12,11 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/apple/swift-argument-parser.git",
-            .upToNextMinor(from: "1.1.4")
+            .upToNextMinor(from: "1.2.2")
         ),
         .package(
             url: "https://github.com/apollographql/apollo-ios.git",
-            .upToNextMajor(from: "1.0.0")
+            .upToNextMajor(from: "1.3.2")
         ),
     ],
     targets: [
@@ -30,9 +30,6 @@ let package = Package(
                     name: "ApolloCodegenLib",
                     package: "apollo-ios")
             ]
-        ),
-        .testTarget(
-            name: "gpl_api_generatorTests",
-            dependencies: ["gpl_api_generator"]),
+        )
     ]
 )
