@@ -18,4 +18,5 @@ included:
   - GistHub
   - Packages
 excluded:
+  - Packages/Networking/Sources/GistHubGraphQL
   - Packages/**/Tests
