@@ -23,7 +23,10 @@ public enum SheetDestination: Identifiable {
         gist: Gist,
         completion: ((File) -> Void)?
     )
-    case markdownTextEditor(style: MarkdownTextEditorStyle)
+    case markdownTextEditor(
+        style: MarkdownTextEditorStyle,
+        completion: ((String) -> Void)?
+    )
     case reportABug
     case editorCodeSettings
     case editorView(fileName: String, content: String, language: File.Language, gist: Gist)

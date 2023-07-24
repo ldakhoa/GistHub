@@ -9,7 +9,6 @@ import AlertToast
 import SwiftUI
 import Inject
 import DesignSystem
-import Common
 import Models
 import Editor
 import Comment
@@ -276,12 +275,15 @@ public struct GistDetailView: View {
             HStack {
                 Spacer()
                 Button {
-//                    routerPath.presentedSheet = .commentTextEditor(
-//                        gistId: gistId,
-//                        navigationTitle: "Write Comment",
-//                        placeholder: "Write a comment..."
-//                    )
                     HapticManager.shared.fireHaptic(of: .buttonPress)
+                    routerPath.presentedSheet = .markdownTextEditor(style: .writeComment(content: "")) { content in
+                        Task {
+                            await commentViewModel.createComment(
+                                gistID: gistId,
+                                body: content
+                            )
+                        }
+                    }
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "bubble.left")
@@ -331,12 +333,12 @@ public struct GistDetailView: View {
     private func starButton(isStarred: Bool) -> some View {
         Button {
             Task {
+                HapticManager.shared.fireHaptic(of: .buttonPress)
                 if isStarred {
                     await viewModel.unstarGist(gistID: gistId)
                 } else {
                     await viewModel.starGist(gistID: gistId)
                 }
-                HapticManager.shared.fireHaptic(of: .buttonPress)
             }
         } label: {
             HStack {

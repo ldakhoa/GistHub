@@ -1,9 +1,9 @@
 import Foundation
 
-public enum MarkdownTextEditorStyle {
+public enum MarkdownTextEditorStyle: Equatable {
     case createGist
-    case writeComment
-    case updateComment
+    case writeComment(content: String)
+    case updateComment(content: String)
 
     public var navigationTitle: String {
         switch self {

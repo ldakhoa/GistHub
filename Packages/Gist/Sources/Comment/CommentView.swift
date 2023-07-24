@@ -10,7 +10,6 @@ import Inject
 import Models
 import DesignSystem
 import Markdown
-import Common
 import Editor
 import Environment
 
@@ -18,7 +17,8 @@ public struct CommentView: View {
     private let comment: Comment
     private let gistID: String
     @ObservedObject private var viewModel: CommentViewModel
-    @EnvironmentObject var currentAccount: CurrentAccount
+    @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var routerPath: RouterPath
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
@@ -105,12 +105,33 @@ public struct CommentView: View {
 
             if comment.user.id == currentAccount.user?.id {
                 Button("Edit") {
-                    showPlainTextEditorView.toggle()
+                    routerPath.presentedSheet = .markdownTextEditor(
+                        style: .updateComment(content: comment.body ?? "")
+                    ) { content in
+                        Task {
+                            guard let commentId = comment.id else { return }
+                            await viewModel.updateComment(
+                                gistID: gistID,
+                                commentID: commentId,
+                                body: content
+                            )
+                        }
+                    }
                 }
             }
 
             Button("Quote reply") {
                 showQuoteCommentTextEditor.toggle()
+                routerPath.presentedSheet = .markdownTextEditor(
+                    style: .writeComment(content: quoteBody(body: comment.body ?? ""))
+                ) { content in
+                    Task {
+                        await viewModel.createComment(
+                            gistID: gistID,
+                            body: content
+                        )
+                    }
+                }
             }
         }
         .confirmationDialog(
@@ -124,17 +145,17 @@ public struct CommentView: View {
                 }
             }
         }
-        .sheet(isPresented: $showPlainTextEditorView) {
-            MarkdownTextEditorView(
-                style: .updateComment,
-                content: comment.body ?? "",
-                commentID: comment.id)
-        }
-        .sheet(isPresented: $showQuoteCommentTextEditor) {
-            MarkdownTextEditorView(
-                style: .writeComment,
-                content: quoteBody(body: comment.body ?? ""))
-        }
+//        .sheet(isPresented: $showPlainTextEditorView) {
+//            MarkdownTextEditorView(
+//                style: .updateComment,
+//                content: comment.body ?? "",
+//                commentID: comment.id)
+//        }
+//        .sheet(isPresented: $showQuoteCommentTextEditor) {
+//            MarkdownTextEditorView(
+//                style: .writeComment,
+//                content: quoteBody(body: comment.body ?? ""))
+//        }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .enableInjection()
