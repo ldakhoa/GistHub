@@ -17,17 +17,21 @@ public struct BrowseFilesView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @StateObject private var routerPath: RouterPath = RouterPath()
     @StateObject private var viewModel = BrowseFilesViewModel()
-    @ObservedObject private var routerPath: RouterPath = RouterPath()
 
     @State private var files: [File]
     private let gist: Gist
-    private let dismissAction: () -> Void
+    private let completion: ((File) -> Void)?
 
-    public init(files: [File], gist: Gist, dismissAction: @escaping () -> Void) {
+    public init(
+        files: [File],
+        gist: Gist,
+        completion: ((File) -> Void)? = nil
+    ) {
         _files = State(initialValue: files)
         self.gist = gist
-        self.dismissAction = dismissAction
+        self.completion = completion
     }
 
     public var body: some View {
@@ -62,9 +66,6 @@ public struct BrowseFilesView: View {
             .onLoad {
                 viewModel.onLoad(files: self.files)
             }
-            .onDisappear {
-                dismissAction()
-            }
         }
         .enableInjection()
     }
@@ -86,50 +87,9 @@ public struct BrowseFilesView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            let content = file.content ?? ""
-            let language = file.language ?? .unknown
-            let fileName = file.filename ?? ""
-            routerPath.navigate(to: .editorDisplay(
-                content: content,
-                fileName: fileName,
-                gist: gist,
-                language: language))
+            completion?(file)
+            dismiss()
         }
-    }
-
-    private func buildEditorDisplayView(file: File) -> some View {
-        let content = file.content ?? ""
-        let language = file.language ?? .unknown
-        let fileName = file.filename ?? ""
-
-        return EditorDisplayView(
-            content: content,
-            fileName: fileName,
-            gist: gist,
-            language: language
-        )
-//            .environmentObject(userStore)
-            .toolbar(.visible, for: .navigationBar)
-            .contextMenu {
-                let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-                ShareLink(
-                    item: gist.htmlURL ?? "",
-                    preview: SharePreview(titlePreview, image: Image("default"))
-                ) {
-                    Label("Share via...", systemImage: "square.and.arrow.up")
-                }
-            } preview: {
-                NavigationStack {
-                    EditorDisplayView(
-                        content: content,
-                        fileName: fileName,
-                        gist: gist,
-                        language: language
-                    ) {}
-//                        .environmentObject(userStore)
-                        .navigationBarTitleDisplayMode(.inline)
-                }
-            }
     }
 }
 

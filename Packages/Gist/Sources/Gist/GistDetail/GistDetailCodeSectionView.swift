@@ -21,10 +21,8 @@ struct GistDetailCodeSectionView: View {
 
                 Button("Browse files") {
                     let files = gist.files?.values.map { $0 } ?? []
-                    routerPath.presentedSheet = .browseFiles(files: files, gist: gist) {
-                        Task {
-                            await viewModel.gist(gistID: gist.id)
-                        }
+                    routerPath.presentedSheet = .browseFiles(files: files, gist: gist) { file in
+                        navigateToEditorDisplay(with: file)
                     }
                 }
                 .font(.callout)
@@ -68,11 +66,7 @@ struct GistDetailCodeSectionView: View {
         .padding(.horizontal, 16)
         .contentShape(Rectangle())
         .onTapGesture {
-            routerPath.navigate(to: .editorDisplay(
-                content: content,
-                fileName: fileName,
-                gist: gist,
-                language: language))
+            navigateToEditorDisplay(with: file)
         }
         .contextMenu {
             let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
@@ -98,6 +92,19 @@ struct GistDetailCodeSectionView: View {
             .environmentObject(currentAccount)
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    private func navigateToEditorDisplay(with file: File?) {
+        let content = file?.content ?? ""
+        let language = file?.language ?? .unknown
+        let fileName = file?.filename ?? ""
+
+        routerPath.navigate(to: .editorDisplay(
+            content: content,
+            fileName: fileName,
+            gist: gist,
+            language: language)
+        )
     }
 }
 

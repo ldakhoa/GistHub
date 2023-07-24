@@ -39,8 +39,8 @@ extension View {
                 ComposeGistView(style: .createGist, completion: completion)
             case let .editGist(gist, completion):
                 ComposeGistView(style: .update(gist: gist), completion: completion)
-            case let .browseFiles(files, gist, dismissAction):
-                BrowseFilesView(files: files, gist: gist, dismissAction: dismissAction)
+            case let .browseFiles(files, gist, completion):
+                BrowseFilesView(files: files, gist: gist, completion: completion)
                     .withEnvironments()
             case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
                 MarkdownTextEditorView(
