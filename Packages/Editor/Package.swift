@@ -17,7 +17,6 @@ let package = Package(
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
         .package(name: "Markdown", path: "../Markdown"),
-        .package(name: "Common", path: "../Common"),
         .package(
             url: "https://github.com/simonbs/Runestone",
             .upToNextMajor(from: "0.2.9")
@@ -35,7 +34,6 @@ let package = Package(
                 "Models",
                 "Networking",
                 "Environment",
-                "Common",
                 "Utilities",
                 "KeyboardToolbar",
                 "Markdown"

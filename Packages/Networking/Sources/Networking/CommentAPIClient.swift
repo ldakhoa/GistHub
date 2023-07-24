@@ -56,9 +56,11 @@ extension DefaultCommentAPIClient {
         case deleteComment(gistID: String, commentID: Int)
 
         var headers: [String: String]? {
-            let userSessionManager = GitHubSessionManager()
+            let appAccountsManager = AppAccountsManager()
+            guard let focusedUserSession = appAccountsManager.focusedAccount else { return [:] }
+
             return [
-                "Authorization": userSessionManager.focusedUserSession!.authorizationHeader,
+                "Authorization": focusedUserSession.authorizationHeader,
                 "Accept": "application/vnd.github+json"
             ]
         }

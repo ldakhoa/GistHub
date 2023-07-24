@@ -35,13 +35,12 @@ public final class CommentViewModel: ObservableObject {
         }
     }
 
-    public func createComment(gistID: String, body: String, completion: () -> Void) async {
+    public func createComment(gistID: String, body: String) async {
         do {
             let comment = try await client.createComment(gistID: gistID, body: body)
             self.comments.append(comment)
             self.contentState = .showContent
             shouldScrollToComment = true
-            completion()
         } catch {
             showErrorToast = true
             errorToastTitle = error.localizedDescription
@@ -51,8 +50,7 @@ public final class CommentViewModel: ObservableObject {
     public func updateComment(
         gistID: String,
         commentID: Int,
-        body: String,
-        completion: () -> Void
+        body: String
     ) async {
         do {
             let comment = try await client.updateComment(gistID: gistID, commentID: commentID, body: body)
@@ -61,7 +59,6 @@ public final class CommentViewModel: ObservableObject {
             }
             self.contentState = .showContent
             shouldScrollToComment = false
-            completion()
         } catch {
             showErrorToast = true
             errorToastTitle = error.localizedDescription

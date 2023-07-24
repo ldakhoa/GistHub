@@ -10,20 +10,18 @@ import SwiftUI
 import Models
 import DesignSystem
 import AppAccount
+import Environment
 
-struct SettingAccountView: View {
+public struct SettingAccountView: View {
     @ObserveInjection private var inject
-    private let user: User
-    private let sessionManager: GitHubSessionManager
+    @EnvironmentObject private var appAccountsManager: AppAccountsManager
+    @EnvironmentObject private var currentAccount: CurrentAccount
 
-    init(user: User, sessionManager: GitHubSessionManager) {
-        self.user = user
-        self.sessionManager = sessionManager
-    }
+    public init() {}
 
-    var body: some View {
+    public var body: some View {
         List {
-            ForEach(sessionManager.userSessions) { userSession in
+            ForEach(appAccountsManager.userSessions) { userSession in
                 HStack {
                     Text(userSession.username ?? "")
                     Spacer()

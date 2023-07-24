@@ -13,10 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Utilities", path: "../Utilities"),
-//        .package(
-//            url: "https://github.com/simonbs/treesitterlanguages",
-//            from: "0.1.0"
-//        ),
+        .package(name: "Networking", path: "../Networking"),
         .package(
             url: "https://github.com/simonbs/Runestone",
             .upToNextMajor(from: "0.2.9")
@@ -27,6 +24,7 @@ let package = Package(
             name: "Environment",
             dependencies: [
                 "Runestone",
+                "Networking",
                 "Utilities"
             ]
         ),

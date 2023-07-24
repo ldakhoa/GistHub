@@ -82,12 +82,12 @@ public struct File: Codable, Identifiable, Hashable, Equatable {
 }
 
 extension File {
-    public enum Language: String, Codable {
+    public enum Language: String, Codable, Hashable {
         case astro
         case bash = "shell"
         case c
         case cpp = "C++"
-        case cSharp
+        case cSharp = "csharp"
         case css
         case elixir
         case elm
@@ -95,7 +95,7 @@ extension File {
         case haskell
         case html
         case java
-        case javaScript
+        case javaScript = "javascript"
         case jsdoc
         case json
         case json5
@@ -116,7 +116,7 @@ extension File {
         case swift
         case toml
         case tsx
-        case typeScript
+        case typeScript = "typescript"
         case yaml
         case unknown
 
@@ -125,6 +125,8 @@ extension File {
             let rawString = try container.decode(String.self)
             if let language = Language(rawValue: rawString.lowercased()) {
                 self = language
+            } else if rawString.lowercased() == "md" || rawString.lowercased() == "markdown" {
+                self = .markdown
             } else {
                 self = .unknown
             }
@@ -171,5 +173,113 @@ extension File {
             }
         }
     }
+}
 
+extension String {
+    public func getLanguage() -> File.Language {
+        switch self {
+        case "astro":
+            return .astro
+        case "sh":
+            return .bash
+        case "c":
+            return .c
+        case "cpp":
+            return .cpp
+        case "cs":
+            return .cSharp
+        case "css":
+            return .css
+        case "ex":
+            return .elixir
+        case "elm":
+            return .elm
+        case "go":
+            return .go
+        case "hs":
+            return .haskell
+        case "html":
+            return .html
+        case "java":
+            return .java
+        case "js":
+            return .javaScript
+        case "jsdoc":
+            return .jsdoc
+        case "json":
+            return .json
+        case "json5":
+            return .json5
+        case "jl":
+            return .julia
+        case "tex":
+            return .latex
+        case "lua":
+            return .lua
+        case "md":
+            return .markdown
+        case "ml":
+            return .ocaml
+        case "pl":
+            return .perl
+        case "php":
+            return .php
+        case "py":
+            return .python
+        case "r":
+            return .r
+        case "regex":
+            return .regex
+        case "rb":
+            return .ruby
+        case "rs":
+            return .rust
+        case "scss":
+            return .scss
+        case "svelte":
+            return .svelte
+        case "swift":
+            return .swift
+        case "toml":
+            return .toml
+        case "tsx":
+            return .tsx
+        case "ts":
+            return .typeScript
+        case "yaml":
+            return .yaml
+        default:
+            return .markdown
+        }
+    }
+}
+
+public final class FilesObservableObject: ObservableObject, Hashable {
+    @Published public var files: [String: File] = [:]
+
+    public init(files: [String: File] = [:]) {
+        self.files = files
+    }
+
+    public static func == (lhs: FilesObservableObject, rhs: FilesObservableObject) -> Bool {
+        lhs.files == rhs.files
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(files)
+    }
+}
+
+extension File {
+    public static var placeholder: File {
+        .init(
+            filename: "placeholder.md",
+            language: .markdown,
+            content: "# Placeholder.md\n## Placeholder.md# Placeholder.md\n## Placeholder.md"
+        )
+    }
+
+    public static var placeholders: [File] {
+        [.placeholder, .placeholder, .placeholder]
+    }
 }

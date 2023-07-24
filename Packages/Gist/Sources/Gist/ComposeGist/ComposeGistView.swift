@@ -5,22 +5,23 @@
 //  Created by Hung Dao on 27/02/2023.
 //
 
- import Foundation
- import SwiftUI
- import Inject
- import AlertToast
- import OrderedCollections
- import Models
- import DesignSystem
- import Editor
- import Utilities
+import SwiftUI
+import Inject
+import OrderedCollections
+import Models
+import DesignSystem
+import Editor
+import Utilities
+import Environment
 
- struct ComposeGistView: View {
+public struct ComposeGistView: View {
     @ObserveInjection private var inject
 
     @Environment(\.dismiss) private var dismiss
 
     @StateObject private var viewModel = ComposeGistViewModel()
+    @ObservedObject private var filesObservableObject = FilesObservableObject()
+
     @State private var description: String = ""
     @State private var presentNewFileAlert = false
     @State private var presentCreateDialog = false
@@ -28,16 +29,16 @@
     @State private var newFileTitle: String = ""
     @State private var enableCreateNewGist = false
     @State private var showCancelConfirmDialog = false
-    @State private var files = [String: File]()
     @State private var error = ""
     @State private var showErrorToast = false
     @State private var descriptionChanged = false
     @State private var filesChanged = false
-    var completion: ((Gist) -> Void)?
+    private var completion: ((Gist) -> Void)?
+
     private let style: ComposeGistView.Style
     private var originalFiles = [String: File]()
 
-    init(
+    public init(
         style: ComposeGistView.Style,
         completion: ((Gist) -> Void)? = nil
     ) {
@@ -48,11 +49,11 @@
                 originalFiles[file.key] = File(filename: file.key, content: file.value.content)
             }
             _description = State(initialValue: gist.description ?? "")
-            _files = State(initialValue: originalFiles)
+            filesObservableObject.files = originalFiles
         }
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             Form {
                 Section {
@@ -62,12 +63,10 @@
                     Text("Gist Description")
                 }
                 Section {
-                    ForEach(files.keys.sorted(), id: \.self) { fileName in
-                        let file = files[fileName]
+                    ForEach(filesObservableObject.files.keys.sorted(), id: \.self) { fileName in
+                        let file = filesObservableObject.files[fileName]
                         NavigationLink(fileName) {
-                            buildEditorView(file: file, fileName: fileName) { newFile in
-                                self.files[newFile.filename ?? ""] = newFile
-                            }
+                            buildEditorView(file: file, fileName: fileName)
                         }
                     }
                     Button("Add file") {
@@ -81,10 +80,8 @@
                             .font(.subheadline)
 
                         NavigationLink("Create") {
-                            buildEditorView(fileName: newFileTitle) { file in
-                                self.files[file.filename ?? ""] = file
-                                newFileTitle = ""
-                            }
+                            buildEditorView(fileName: newFileTitle)
+//                            newFileTitle = ""
                         }
 
                         Button("Cancel", role: .cancel) {
@@ -94,7 +91,6 @@
                 } header: {
                     Text("Files")
                 }
-
             }
             .scrollDismissesKeyboard(.interactively)
             .navigationBarTitleDisplayMode(.inline)
@@ -131,13 +127,14 @@
             }
             .tint(Colors.accent.color)
         }
-        .onChange(of: files) { newFiles in
+        .onChange(of: filesObservableObject.files) { newFiles in
             switch style {
             case .createGist:
                 enableCreateNewGist = !newFiles.isEmpty
             case .update:
                 filesChanged = originalFiles != newFiles
             }
+            newFileTitle = ""
         }
         .onChange(of: description) { newDescription in
             if case .update(let gist) = style {
@@ -163,7 +160,11 @@
         Button("Update") {
             Task {
                 do {
-                    let gist = try await viewModel.updateGist(gistID: gistID, description: description, files: files)
+                    let gist = try await viewModel.updateGist(
+                        gistID: gistID,
+                        description: description,
+                        files: filesObservableObject.files
+                    )
                     completion!(gist)
                     dismiss()
                 } catch let updateError {
@@ -184,7 +185,10 @@
             Button("Create secret gist") {
                 Task {
                     do {
-                        let gist = try await viewModel.createGist(description: description, files: files, public: false)
+                        let gist = try await viewModel.createGist(
+                            description: description,
+                            files: filesObservableObject.files,
+                            public: false)
                         dismiss()
                         completion!(gist)
                     } catch let createError {
@@ -196,7 +200,10 @@
             Button("Create public gist") {
                 Task {
                     do {
-                        let gist = try await viewModel.createGist(description: description, files: files, public: true)
+                        let gist = try await viewModel.createGist(
+                            description: description,
+                            files: filesObservableObject.files,
+                            public: true)
                         dismiss()
                         completion!(gist)
                     } catch let createError {
@@ -210,31 +217,27 @@
         }
     }
 
-     private func buildEditorView(file: File? = nil, fileName: String, completionHandler: @escaping (File) -> Void) -> some View {
-        if let language = fileName.getFileExtension() {
-            if language == "md" || language == "markdown" {
-                return AnyView(MarkdownTextEditorView(
-                    style: .createGist,
-                    content: file?.content ?? "",
-                    navigationTitle: fileName,
-                    createGistCompletion: completionHandler))
-            } else if language.isEmpty {
-                // TODO: Handle case language is empty
-            } else {
-                return AnyView(EditorView(
-                    style: .createFile,
-                    fileName: fileName,
-                    content: file?.content ?? "",
-                    language: File.Language(rawValue: language) ?? .javaScript,
-                    createGistCompletion: completionHandler))
-            }
-        }
-        return AnyView(EmptyView())
-    }
- }
+    @ViewBuilder
+    private func buildEditorView(
+        file: File? = nil,
+        fileName: String
+    ) -> some View {
+        let language = fileName
+            .getFileExtension()?
+            .getLanguage() ?? .markdown
 
- extension ComposeGistView {
-    enum Style {
+        EditorView(
+            style: .createFile,
+            fileName: fileName,
+            content: file?.content ?? "",
+            language: language,
+            filesObservableObject: filesObservableObject
+        )
+    }
+}
+
+extension ComposeGistView {
+    public enum Style {
         case createGist
         case update(gist: Gist)
 
@@ -245,4 +248,4 @@
             }
         }
     }
- }
+}

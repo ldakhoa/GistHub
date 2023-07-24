@@ -9,13 +9,8 @@ import Combine
 import Networking
 import Models
 
-public protocol ProfileDelegate: AnyObject {
-    func shouldLogout()
-}
-
 @MainActor final class ProfileViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
-    weak var delegate: ProfileDelegate?
 
     private let client: GistHubAPIClient
 
@@ -30,10 +25,6 @@ public protocol ProfileDelegate: AnyObject {
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
-    }
-
-    func logout() {
-        delegate?.shouldLogout()
     }
 }
 

@@ -12,50 +12,38 @@ import Models
 import DesignSystem
 import Editor
 import Utilities
+import Environment
 
 public struct SettingView: View {
 
-    // MARK: - Dependencies
-
-    private let user: User
-    private let sessionManager: GitHubSessionManager
-    private let logoutAction: () -> Void
-
+    @EnvironmentObject private var appAccountsManager: AppAccountsManager
+    @EnvironmentObject private var routerPath: RouterPath
+    @EnvironmentObject private var currentAccount: CurrentAccount
     @ObserveInjection private var inject
 
     // MARK: - Misc
 
     @State private var showConfirmationDialog: Bool = false
-    @State private var showReportABug: Bool = false
 
     // MARK: - Initializer
 
-    public init(
-        user: User,
-        sessionManager: GitHubSessionManager,
-        logoutAction: @escaping () -> Void,
-        showConfirmationDialog: Bool = false
-    ) {
-        self.user = user
-        self.sessionManager = sessionManager
-        self.logoutAction = logoutAction
-        self.showConfirmationDialog = showConfirmationDialog
-    }
+    public init() {}
 
     public var body: some View {
         List {
             Section {
-                NavigationLink("Manage Accounts") {
-                    SettingAccountView(user: user, sessionManager: sessionManager)
+                ButtonRowView(title: "Manage Accounts") {
+                    routerPath.navigate(to: .settingsAccount)
                 }
-                NavigationLink("Code Options") {
-                    EditorCodeSettingsView()
+
+                ButtonRowView(title: "Code Options") {
+                    routerPath.navigate(to: .editorCodeSettings)
                 }
             }
 
             Section {
                 Button {
-                    showReportABug.toggle()
+                    routerPath.presentedSheet = .reportABug
                 } label: {
                     HStack {
                         Text("Report a Bug")
@@ -67,11 +55,8 @@ public struct SettingView: View {
                             .foregroundColor(Color(UIColor.tertiaryLabel))
                     }
                 }
-                .sheet(isPresented: $showReportABug) {
-                    ReportABugView()
-                }
 
-                Link(destination: URL(string: "https://github.com/ldakhoa/GistHub")!) {
+                Link(destination: URL(string: AppInfo.repoWeblink)!) {
                     HStack {
                         Text("View GistHub Repo")
                             .foregroundColor(Colors.foreground.color)
@@ -105,9 +90,16 @@ public struct SettingView: View {
             }
         }
         .navigationTitle("Settings")
-        .confirmationDialog("Are you sure?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
+        .toolbar(.visible, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarRole(.automatic)
+        .confirmationDialog(
+            "Are you sure?",
+            isPresented: $showConfirmationDialog,
+            titleVisibility: .visible
+        ) {
             Button("Sign out", role: .destructive) {
-                logoutAction()
+                appAccountsManager.logout()
             }
         } message: {
             Text("You will be signed out from all of your accounts. Do you want to sign out?")

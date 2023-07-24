@@ -13,12 +13,11 @@ import Networking
 import Utilities
 import Environment
 
-public protocol LoginDelegate: AnyObject {
-    func finishLogin(token: String, authMethod: GitHubUserSession.AuthMethod, username: String)
-}
-
 final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPresentationContextProviding {
     @Published var contentState: ContentState = .idling
+    @Published var finishLogin: Bool = false
+
+    var appAccountsManager: AppAccountsManager?
 
     // MARK: - Login URL
 
@@ -29,8 +28,6 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
         .url!
 
     private let callbackURLScheme = "gisthub"
-
-    public weak var delegate: LoginDelegate?
 
     // MARK: - Utils
 
@@ -94,12 +91,14 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
                 DispatchQueue.main.async {
                     switch result {
                     case let .success(response):
-                        self?.contentState = .idling
-                        self?.delegate?.finishLogin(
+                        let appAccount: AppAccount = AppAccount(
                             token: response.token,
                             authMethod: .oauth,
                             username: response.username
                         )
+                        self?.appAccountsManager?.focus(appAccount)
+                        self?.contentState = .idling
+                        self?.finishLogin = true
                     case .failure:
                         self?.contentState = .error(error: "An error occured when attempting to sign in.")
                     }
@@ -113,14 +112,17 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
     func personalAccessTokenLogin(token: String) async {
         do {
             let user = try await client.verifyPersonalAccessTokenRequest(token: token)
-            if user.id != nil {
-                contentState = .idling
-            }
-            self.delegate?.finishLogin(
+            let appAccount: AppAccount = AppAccount(
                 token: token,
                 authMethod: .pat,
                 username: user.login ?? ""
             )
+            self.appAccountsManager?.focus(appAccount)
+
+            if user.id != nil {
+                contentState = .idling
+                finishLogin = true
+            }
         } catch {
             contentState = .error(error: error.localizedDescription)
         }

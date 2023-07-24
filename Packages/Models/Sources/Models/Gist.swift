@@ -8,7 +8,7 @@
 import Foundation
 import OrderedCollections
 
-public struct Gist: Codable, Identifiable, Equatable, Hashable {
+public struct Gist: Codable, Identifiable, Hashable {
     public let url: String?
     public let forksURL: String?
     public let commitsURL: String?
@@ -134,5 +134,35 @@ private extension Dictionary where Key == String, Value == File {
             file1.key < file2.key
         }
         return orderedDict
+    }
+}
+
+public extension Gist {
+    static var placeholders: [Gist] {
+        [.placeholder, .placeholder, .placeholder, .placeholder, .placeholder, .placeholder]
+    }
+
+    static var placeholder: Gist {
+        Gist(
+            id: UUID().uuidString,
+            url: "https://github.com/ldakhoa",
+            forksURL: "https://github.com/ldakhoa",
+            commitsURL: "https://github.com/ldakhoa",
+            nodeID: "https://github.com/ldakhoa",
+            gitPullURL: "https://github.com/ldakhoa",
+            gitPushURL: "https://github.com/ldakhoa",
+            htmlURL: "https://github.com/ldakhoa",
+            files: [
+                "Test file": File(filename: "Example.md", language: .markdown)
+            ],
+            isPublic: true,
+            createdAt: Date(timeIntervalSince1970: TimeInterval.infinity),
+            updatedAt: Date(timeIntervalSince1970: TimeInterval.infinity),
+            description: "This is fake description to display redacted",
+            comments: 1,
+            commentsURL: "https://github.com/ldakhoa",
+            owner: .stubbed,
+            isTruncated: false
+        )
     }
 }

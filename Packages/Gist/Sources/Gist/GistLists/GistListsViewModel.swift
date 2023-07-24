@@ -8,15 +8,22 @@
 import SwiftUI
 import Models
 import Networking
+import Environment
 
-@MainActor final class GistListsViewModel: ObservableObject {
+@MainActor
+public final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var searchText = ""
 
-    @Published private var gists = [Gist]()
+    @Published var gists = [Gist]()
     private let client: GistHubAPIClient
+    private let routerPath: RouterPath
 
-    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+    public init(
+        routerPath: RouterPath,
+        client: GistHubAPIClient = DefaultGistHubAPIClient()
+    ) {
+        self.routerPath = routerPath
         self.client = client
     }
 
@@ -55,6 +62,17 @@ import Networking
                 return false
             }
             contentState = .content(gists: newGists)
+        }
+    }
+
+    func navigateToDetail(gistId: String) {
+        routerPath.navigate(to: .gistDetail(gistId: gistId))
+    }
+
+    func presentNewGistSheet() {
+        routerPath.presentedSheet = .newGist { [weak self] gist in
+            self?.insert(gist)
+            self?.routerPath.navigate(to: .gistDetail(gistId: gist.id))
         }
     }
 }
