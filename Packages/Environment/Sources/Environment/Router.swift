@@ -1,5 +1,4 @@
 import SwiftUI
-import Common
 import Networking
 import Models
 
@@ -24,12 +23,7 @@ public enum SheetDestination: Identifiable {
         gist: Gist,
         completion: ((File) -> Void)?
     )
-    case commentTextEditor(
-        gistId: String,
-        navigationTitle: String,
-        placeholder: String,
-        commentViewModel: CommentViewModel
-    )
+    case markdownTextEditor(style: MarkdownTextEditorStyle)
     case reportABug
     case editorCodeSettings
     case editorView(fileName: String, content: String, language: File.Language, gist: Gist)
@@ -40,7 +34,7 @@ public enum SheetDestination: Identifiable {
             return "composeGist"
         case .browseFiles:
             return "browseFiles"
-        case .commentTextEditor:
+        case .markdownTextEditor:
             return "markdownTextEditorView"
         case .reportABug:
             return "reportABug"

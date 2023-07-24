@@ -16,13 +16,9 @@ public struct MarkdownTextEditorView: View {
 
     // MARK: - Dependencies
 
-    private let style: Style
+    private let style: MarkdownTextEditorStyle
     @State private var content: String
-    private let gistID: String?
     private let commentID: Int?
-    private let navigationTitle: String
-    private let placeholder: String
-    @ObservedObject private var commentViewModel: CommentViewModel
     @State private var files: [String: File]?
     private let completion: (() -> Void)?
     private let createGistCompletion: ((File) -> Void)?
@@ -47,24 +43,16 @@ public struct MarkdownTextEditorView: View {
     // MARK: - Initializer
 
     public init(
-        style: Style,
+        style: MarkdownTextEditorStyle,
         content: String = "",
-        gistID: String? = nil,
         commentID: Int? = nil,
-        navigationTitle: String,
-        placeholder: String = "",
-        commentViewModel: CommentViewModel? = nil,
         files: [String: File]? = nil,
         completion: (() -> Void)? = nil,
         createGistCompletion: ((File) -> Void)? = nil
     ) {
         self.style = style
         _content = State(initialValue: content)
-        self.gistID = gistID
         self.commentID = commentID
-        self.navigationTitle = navigationTitle
-        self.placeholder = placeholder
-        self.commentViewModel = commentViewModel ?? CommentViewModel()
         _files = State(wrappedValue: files)
         self.completion = completion
         self.createGistCompletion = createGistCompletion
@@ -74,7 +62,7 @@ public struct MarkdownTextEditorView: View {
         NavigationStack {
             EditorViewRepresentable(content: $content, language: .markdown)
                 .focused($isFocused)
-                .navigationTitle(navigationTitle)
+                .navigationTitle(style.navigationTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(.visible, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
@@ -96,7 +84,6 @@ public struct MarkdownTextEditorView: View {
                             showLoadingSaveButton = true
                             switch style {
                             case .createGist: createFile()
-                            case .changeDescription: updateDescription()
                             case .writeComment: createComment()
                             case .updateComment: updateComment()
                             }
@@ -116,12 +103,12 @@ public struct MarkdownTextEditorView: View {
         }
         .onAppear {
             self.originalContent = content
-            placeholderState = content.isEmpty ? placeholder : ""
+            placeholderState = content.isEmpty ? style.placeholder : ""
             isFocused = true
         }
         .onChange(of: content) { newValue in
             contentHasChanged = newValue != originalContent ? true : false
-            placeholderState = content.isEmpty ? placeholder : ""
+            placeholderState = content.isEmpty ? style.placeholder : ""
         }
         .confirmationDialog("Are you sure you want to cancel?", isPresented: $showConfirmDialog, titleVisibility: .visible) {
             Button("Discard Changes", role: .destructive) {
@@ -131,7 +118,7 @@ public struct MarkdownTextEditorView: View {
             Text("Your changes will be discarded.")
         }
         .toastError(isPresenting: $showErrorToast, error: error)
-        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
+//        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
         .onReceive(alertPublisher) { notification in
             guard let errorMessage = notification.object as? String else { return }
@@ -141,64 +128,67 @@ public struct MarkdownTextEditorView: View {
     }
 
     private func createFile() {
-        let fileName = navigationTitle
+//        let fileName = navigationTitle
 //        self.files?[fileName] = File(filename: fileName, content: self.content
-        let file = File(filename: fileName, content: self.content)
-        dismiss()
-        createGistCompletion!(file)
-    }
-
-    private func updateDescription() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                try await viewModel.updateDescription(content, gistID: gistID) {
-                    dismiss()
-                    completion!()
-                }
-            } catch let gistError {
-                error = gistError.localizedDescription
-                self.showErrorToast.toggle()
-                showLoadingSaveButton = false
-            }
-        }
+//        let file = File(filename: fileName, content: self.content)
+//        dismiss()
+//        createGistCompletion!(file)
     }
 
     private func createComment() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                await commentViewModel.createComment(gistID: gistID, body: content) {
-                    dismiss()
-                }
-            }
-            showLoadingSaveButton = false
-        }
+//        guard let gistID = gistID else { return }
+//        Task {
+//            do {
+//                await commentViewModel.createComment(gistID: gistID, body: content) {
+//                    dismiss()
+//                }
+//            }
+//            showLoadingSaveButton = false
+//        }
     }
 
     private func updateComment() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                guard let commentID = commentID else { return }
-                await commentViewModel.updateComment(
-                    gistID: gistID,
-                    commentID: commentID,
-                    body: content
-                ) {
-                    dismiss()
-                }
-            }
-            showLoadingSaveButton = false
-        }
+//        guard let gistID = gistID else { return }
+//        Task {
+//            do {
+//                guard let commentID = commentID else { return }
+//                await commentViewModel.updateComment(
+//                    gistID: gistID,
+//                    commentID: commentID,
+//                    body: content
+//                ) {
+//                    dismiss()
+//                }
+//            }
+//            showLoadingSaveButton = false
+//        }
     }
 }
 
 extension MarkdownTextEditorView {
     public enum Style {
         case createGist
-        case changeDescription
         case writeComment
         case updateComment
+
+        var navigationTitle: String {
+            switch self {
+            case .createGist:
+                return ""
+            case .writeComment:
+                return "Write Comment"
+            case .updateComment:
+                return "Edit Comment"
+            }
+        }
+
+        var placeholder: String {
+            switch self {
+            case .createGist:
+                return ""
+            case .writeComment, .updateComment:
+                return "Write a comment..."
+            }
+        }
     }
 }

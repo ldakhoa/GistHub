@@ -42,14 +42,8 @@ extension View {
             case let .browseFiles(files, gist, completion):
                 BrowseFilesView(files: files, gist: gist, completion: completion)
                     .withEnvironments()
-            case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
-                MarkdownTextEditorView(
-                    style: .writeComment,
-                    gistID: gistId,
-                    navigationTitle: navigationTitle,
-                    placeholder: placeholder,
-                    commentViewModel: commentViewModel
-                )
+            case let .markdownTextEditor(style):
+                MarkdownTextEditorView(style: .writeComment)
             case .reportABug:
                 ReportABugView()
             case .editorCodeSettings:

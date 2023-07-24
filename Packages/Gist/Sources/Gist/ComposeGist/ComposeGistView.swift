@@ -217,7 +217,7 @@ public struct ComposeGistView: View {
                 return AnyView(MarkdownTextEditorView(
                     style: .createGist,
                     content: file?.content ?? "",
-                    navigationTitle: fileName,
+//                    navigationTitle: fileName,
                     createGistCompletion: completionHandler))
             } else if language.isEmpty {
                 // TODO: Handle case language is empty

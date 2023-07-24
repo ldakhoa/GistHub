@@ -128,20 +128,12 @@ public struct CommentView: View {
             MarkdownTextEditorView(
                 style: .updateComment,
                 content: comment.body ?? "",
-                gistID: gistID,
-                commentID: comment.id,
-                navigationTitle: "Edit Comment",
-                placeholder: "Write a comment...",
-                commentViewModel: viewModel)
+                commentID: comment.id)
         }
         .sheet(isPresented: $showQuoteCommentTextEditor) {
             MarkdownTextEditorView(
                 style: .writeComment,
-                content: quoteBody(body: comment.body ?? ""),
-                gistID: gistID,
-                navigationTitle: "Write Comment",
-                placeholder: "Write a comment...",
-                commentViewModel: viewModel)
+                content: quoteBody(body: comment.body ?? ""))
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

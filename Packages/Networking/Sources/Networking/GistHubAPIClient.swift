@@ -58,13 +58,6 @@ public protocol GistHubAPIClient: Client {
         files: [String: File?]
     ) async throws -> Gist
 
-    /// Update a gist description
-    @discardableResult
-    func updateDescription(
-        fromGistID gistID: String,
-        description: String?
-    ) async throws -> Gist
-
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
 
@@ -132,17 +125,6 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     @discardableResult
-    public func updateDescription(
-        fromGistID gistID: String,
-        description: String?
-    ) async throws -> Gist {
-        try await session.data(for: API.updateGistDescription(
-            gistID: gistID,
-            description: description
-        ))
-    }
-
-    @discardableResult
     public func updateGist(
         fromGistID gistID: String,
         description: String?,
@@ -180,10 +162,6 @@ extension DefaultGistHubAPIClient {
             description: String?,
             files: [String: File?]
         )
-        case updateGistDescription(
-            gistID: String,
-            description: String?
-        )
         case deleteGist(gistID: String)
         case createIssue(title: String, content: String?)
 
@@ -211,8 +189,7 @@ extension DefaultGistHubAPIClient {
                 return "/gists/\(gistID)/star"
             case let .gist(gistID),
                 let .deleteGist(gistID),
-                let .updateGist(gistID, _, _),
-                let .updateGistDescription(gistID, _):
+                let .updateGist(gistID, _, _):
                 return "/gists/\(gistID)"
             case .createIssue:
                 return "/repos/\(Constants.owner)/\(Constants.repo)/issues"
@@ -229,7 +206,7 @@ extension DefaultGistHubAPIClient {
                 return .put
             case .unstarGist, .deleteGist:
                 return .delete
-            case .updateGist, .updateGistDescription:
+            case .updateGist:
                 return .patch
             }
         }
@@ -259,13 +236,6 @@ extension DefaultGistHubAPIClient {
                 }
                 let request = Request(description: description, files: updatedFiles)
                 return try? request.toData()
-
-            case let .updateGistDescription(_, description):
-                struct Request: Codable {
-                    let description: String?
-                }
-                let request = Request(description: description)
-                return try? JSONEncoder().encode(request)
             case let .createIssue(title, content):
                 struct Request: Codable {
                     let title: String

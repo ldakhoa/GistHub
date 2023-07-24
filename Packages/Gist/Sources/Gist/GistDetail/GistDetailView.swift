@@ -276,12 +276,11 @@ public struct GistDetailView: View {
             HStack {
                 Spacer()
                 Button {
-                    routerPath.presentedSheet = .commentTextEditor(
-                        gistId: gistId,
-                        navigationTitle: "Write Comment",
-                        placeholder: "Write a comment...",
-                        commentViewModel: self.commentViewModel
-                    )
+//                    routerPath.presentedSheet = .commentTextEditor(
+//                        gistId: gistId,
+//                        navigationTitle: "Write Comment",
+//                        placeholder: "Write a comment..."
+//                    )
                     HapticManager.shared.fireHaptic(of: .buttonPress)
                 } label: {
                     HStack(spacing: 4) {
