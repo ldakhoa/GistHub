@@ -19,7 +19,6 @@ public struct MarkdownTextEditorView: View {
     @State private var content: String
     @State private var files: [String: File]?
     private let completion: ((String) -> Void)?
-    private let createGistCompletion: ((File) -> Void)?
     private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
 
     // MARK: - State
@@ -44,8 +43,7 @@ public struct MarkdownTextEditorView: View {
         style: MarkdownTextEditorStyle,
         content: String = "",
         files: [String: File]? = nil,
-        completion: ((String) -> Void)? = nil,
-        createGistCompletion: ((File) -> Void)? = nil
+        completion: ((String) -> Void)? = nil
     ) {
         self.style = style
 
@@ -60,7 +58,6 @@ public struct MarkdownTextEditorView: View {
 
         _files = State(wrappedValue: files)
         self.completion = completion
-        self.createGistCompletion = createGistCompletion
     }
 
     public var body: some View {
@@ -88,11 +85,8 @@ public struct MarkdownTextEditorView: View {
                         ToolbarItem(placement: .navigationBarTrailing) {
                             Button {
                                 showLoadingSaveButton = true
-                                switch style {
-                                case .createGist: createFile()
-                                case .writeComment, .updateComment:
-                                    onComment()
-                                }
+                                completion?(content)
+                                dismiss()
                             } label: {
                                 if showLoadingSaveButton {
                                     ProgressView()
@@ -131,7 +125,6 @@ public struct MarkdownTextEditorView: View {
             Text("Your changes will be discarded.")
         }
         .toastError(isPresenting: $showErrorToast, error: error)
-        //        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
         .onReceive(alertPublisher) { notification in
             guard let errorMessage = notification.object as? String else { return }
@@ -155,18 +148,5 @@ public struct MarkdownTextEditorView: View {
             }
             Spacer()
         }
-    }
-
-    private func createFile() {
-        //        let fileName = navigationTitle
-        //        self.files?[fileName] = File(filename: fileName, content: self.content
-        //        let file = File(filename: fileName, content: self.content)
-        //        dismiss()
-        //        createGistCompletion!(file)
-    }
-
-    private func onComment() {
-        completion?(content)
-        dismiss()
     }
 }

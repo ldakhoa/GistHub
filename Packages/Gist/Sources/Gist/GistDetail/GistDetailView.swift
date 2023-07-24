@@ -134,12 +134,6 @@ public struct GistDetailView: View {
                 await viewModel.gist(gistID: gistId)
             }
         }
-        .onLoad {
-            Task {
-//                await commentViewModel.fetchComments(gistID: gistId)
-//                await viewModel.gist(gistID: gistId)
-            }
-        }
         .refreshable {
             Task {
                 await viewModel.gist(gistID: gistId)
@@ -185,6 +179,7 @@ public struct GistDetailView: View {
             shouldReloadGistListsView?()
             presentationMode.wrappedValue.dismiss()
         }
+        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .enableInjection()
     }
 

@@ -14,7 +14,7 @@ public struct EditorView: View {
 
     // MARK: - Dependencies
 
-    private let style: Style
+    private let style: EditorViewStyle
     private let fileName: String
     @State private var content: String
     private let language: File.Language
@@ -41,7 +41,7 @@ public struct EditorView: View {
     // MARK: - Initializer
 
     public init(
-        style: Style,
+        style: EditorViewStyle,
         fileName: String,
         content: String = "",
         language: File.Language,
@@ -138,12 +138,5 @@ public struct EditorView: View {
         let file = File(filename: fileName, content: self.content)
         dismiss()
         createGistCompletion!(file)
-    }
-}
-
-extension EditorView {
-    public enum Style {
-        case createFile
-        case update
     }
 }

@@ -125,6 +125,8 @@ extension File {
             let rawString = try container.decode(String.self)
             if let language = Language(rawValue: rawString.lowercased()) {
                 self = language
+            } else if rawString.lowercased() == "md" || rawString.lowercased() == "markdown" {
+                self = .markdown
             } else {
                 self = .unknown
             }
