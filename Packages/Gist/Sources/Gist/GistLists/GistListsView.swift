@@ -78,6 +78,7 @@ public struct GistListsView: View {
             if listsMode == .allGists {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
+                        HapticManager.shared.fireHaptic(of: .buttonPress)
                         viewModel.presentNewGistSheet()
                     } label: {
                         Image(systemName: "plus.circle")
