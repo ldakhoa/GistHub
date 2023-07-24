@@ -22,7 +22,7 @@ let package = Package(
         .package(name: "Markdown", path: "../Markdown"),
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
-        .package(name: "Editor", path: "../Editor"),
+        .package(name: "Editor", path: "../Editor")
     ],
     targets: [
         .target(

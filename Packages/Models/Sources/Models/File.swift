@@ -257,7 +257,7 @@ extension String {
 public final class FilesObservableObject: ObservableObject, Hashable {
     @Published public var files: [String: File] = [:]
 
-    public init(files: [String : File] = [:]) {
+    public init(files: [String: File] = [:]) {
         self.files = files
     }
 

@@ -361,7 +361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# \"${SRCROOT}/Scripts/lint.sh\"\n";
+			shellScript = "\"${SRCROOT}/Scripts/lint.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

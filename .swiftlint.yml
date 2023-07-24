@@ -19,3 +19,4 @@ included:
   - Packages
 excluded:
   - Packages/**/Tests
+  - Packages/**/.build
