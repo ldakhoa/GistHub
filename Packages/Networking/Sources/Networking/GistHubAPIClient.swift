@@ -84,14 +84,14 @@ public protocol GistHubAPIClient: Client {
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
-    private let apolloClient: ApolloClient
+    private let graphQLSession: GraphQLNetworkSession
 
     public init(
         session: NetworkSession = .github,
-        apolloClient: ApolloClient = ApolloGitHubNetworkSession.shared.apollo
+        graphQLSession: GraphQLNetworkSession = GraphQLNetworkSession()
     ) {
         self.session = session
-        self.apolloClient = apolloClient
+        self.graphQLSession = graphQLSession
     }
 
     public func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
@@ -111,39 +111,21 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     public func starGist(gistID: String) async throws -> Bool {
-        try await withCheckedThrowingContinuation { continuation in
-            apolloClient.perform(mutation: AddStarMutation(input: AddStarInput(starrableId: gistID))) { result in
-                switch result {
-                case .success(let addStarResult):
-                    if let starred = addStarResult.data?.addStar?.starrable?.viewerHasStarred {
-                        continuation.resume(returning: starred)
-                    }
-                    if addStarResult.errors != nil {
-                        continuation.resume(throwing: ApolloError())
-                    }
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
+        let mutation = AddStarMutation(input: AddStarInput(starrableId: gistID))
+        let data = try await graphQLSession.mutate(mutation)
+        guard let starred = data.addStar?.starrable?.viewerHasStarred else {
+            throw ApolloError()
         }
+        return starred
     }
 
     public func unstarGist(gistID: String) async throws -> Bool {
-        try await withCheckedThrowingContinuation { continuation in
-            apolloClient.perform(mutation: RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))) { result in
-                switch result {
-                case .success(let removeStarResult):
-                    if let starred = removeStarResult.data?.removeStar?.starrable?.viewerHasStarred {
-                        continuation.resume(returning: starred)
-                    }
-                    if removeStarResult.errors != nil {
-                        continuation.resume(throwing: ApolloError())
-                    }
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
+        let mutation = RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))
+        let data = try await graphQLSession.mutate(mutation)
+        guard let starred = data.removeStar?.starrable?.viewerHasStarred else {
+            throw ApolloError()
         }
+        return starred
     }
 
     public func isStarred(gistID: String) async throws {

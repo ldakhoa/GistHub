@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01B61E822A6BF7C6006A4501 /* GistHubAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 01B61E812A6BF7C6006A4501 /* GistHubAPI */; };
 		6A0CA5B42A62C4FF00366D03 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */; };
 		6A0CA5B72A62C4FF00366D03 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A0CA5B62A62C4FF00366D03 /* Media.xcassets */; };
 		6A0CA5B92A62C4FF00366D03 /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A0CA5B82A62C4FF00366D03 /* ActionRequestHandler.swift */; };
@@ -122,7 +121,6 @@
 				6A641C362A568C870095334B /* DesignSystem in Frameworks */,
 				6A641C4F2A570EC10095334B /* Gist in Frameworks */,
 				6A7CF56229446B0D007B7D68 /* Inject in Frameworks */,
-				01B61E822A6BF7C6006A4501 /* GistHubAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +281,6 @@
 				6A641C462A56E24B0095334B /* Login */,
 				6A641C4E2A570EC10095334B /* Gist */,
 				6AAEBBF52A59515300CD52FF /* Profile */,
-				01B61E812A6BF7C6006A4501 /* GistHubAPI */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -717,10 +714,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		01B61E812A6BF7C6006A4501 /* GistHubAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GistHubAPI;
-		};
 		6A0CA5C62A62D7C700366D03 /* Models */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Models;

@@ -11,10 +11,10 @@ import GistHubAPI
 import AppAccount
 import os
 
-public class ApolloGitHubNetworkSession {
-    public static let shared = ApolloGitHubNetworkSession()
+public class GraphQLNetworkSession {
 
-    public lazy var apollo: ApolloClient = {
+    public init() {}
+    public lazy var client: ApolloClient = {
         let url = URL(string: "https://api.github.com/graphql")!
         let cache = InMemoryNormalizedCache()
         let store = ApolloStore(cache: cache)
@@ -26,6 +26,42 @@ public class ApolloGitHubNetworkSession {
         return ApolloClient(networkTransport: requestChainTransport,
                             store: store)
     }()
+
+    public func query<T: GraphQLQuery>(_ query: T) async throws -> T.Data {
+        try await withCheckedThrowingContinuation { continuation in
+            client.fetch(query: query) { result in
+                switch result {
+                case .success(let graphQLResult):
+                    if let data = graphQLResult.data {
+                        continuation.resume(returning: data)
+                    }
+                    if graphQLResult.errors != nil {
+                        continuation.resume(throwing: ApolloError())
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    public func mutate<T: GraphQLMutation>(_ mutation: T) async throws -> T.Data {
+        try await withCheckedThrowingContinuation { continuation in
+            client.perform(mutation: mutation) { result in
+                switch result {
+                case .success(let graphQLResult):
+                    if let data = graphQLResult.data {
+                        continuation.resume(returning: data)
+                    }
+                    if graphQLResult.errors != nil {
+                        continuation.resume(throwing: ApolloError())
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
 }
 
 class NetworkInterceptorProvider: DefaultInterceptorProvider {
