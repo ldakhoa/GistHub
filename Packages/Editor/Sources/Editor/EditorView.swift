@@ -21,8 +21,8 @@ public struct EditorView: View {
     private let gist: Gist?
     private let navigationTitle: String
     private let updateContentCompletion: (() -> Void)?
-    private let createGistCompletion: ((File) -> Void)?
     private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
+    @ObservedObject private var filesObservableObject: FilesObservableObject
 
     // Only need if style is create
     @State private var files: [String: File]?
@@ -48,8 +48,8 @@ public struct EditorView: View {
         gist: Gist? = nil,
         navigationTitle: String = "Edit",
         files: [String: File]? = nil,
-        updateContentCompletion: (() -> Void)? = nil,
-        createGistCompletion: ((File) -> Void)? = nil
+        filesObservableObject: FilesObservableObject = .init(),
+        updateContentCompletion: (() -> Void)? = nil
     ) {
         self.style = style
         self.fileName = fileName
@@ -58,8 +58,8 @@ public struct EditorView: View {
         self.gist = gist
         self.navigationTitle = navigationTitle
         _files = State(wrappedValue: files)
+        self.filesObservableObject = filesObservableObject
         self.updateContentCompletion = updateContentCompletion
-        self.createGistCompletion = createGistCompletion
     }
 
     public var body: some View {
@@ -69,7 +69,7 @@ public struct EditorView: View {
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(style == .update ? "Cancel" : "Back") {
                         if contentHasChanged {
                             showConfirmDialog.toggle()
                         } else {
@@ -136,7 +136,12 @@ public struct EditorView: View {
 
     private func createGist() {
         let file = File(filename: fileName, content: self.content)
+        filesObservableObject.files[fileName] = file
         dismiss()
-        createGistCompletion!(file)
     }
+}
+
+public enum EditorViewStyle {
+    case createFile
+    case update
 }
