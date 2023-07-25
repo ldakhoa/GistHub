@@ -10,6 +10,7 @@ import Utilities
 
 public class CodeSettingsStore: ObservableObject {
     public let settings = UserDefaults.standard
+    public static let shared = CodeSettingsStore()
 
     public init() {}
 

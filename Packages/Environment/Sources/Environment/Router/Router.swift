@@ -64,9 +64,11 @@ public class RouterPath: ObservableObject {
     @discardableResult
     public func handle(url: URL) -> OpenURLAction.Result {
         // TODO: Handle open GistHub profile when ready
-        if url.pathComponents.count >= 3 {
-            navigate(to: .gistDetail(gistId: url.pathComponents[2]))
-            return .handled
+        if let host = url.host(), host == AppInfo.mainHost {
+            if url.pathComponents.count >= 3 {
+                navigate(to: .gistDetail(gistId: url.pathComponents[2]))
+                return .handled
+            }
         }
 
         return urlHandler?(url) ?? .systemAction

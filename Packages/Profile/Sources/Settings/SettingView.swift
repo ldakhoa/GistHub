@@ -19,12 +19,12 @@ public struct SettingView: View {
     @EnvironmentObject private var appAccountsManager: AppAccountsManager
     @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var codeSettingsStore: CodeSettingsStore
     @ObserveInjection private var inject
 
     // MARK: - Misc
 
     @State private var showConfirmationDialog: Bool = false
-    @ObservedObject private var codeSettingsStore = CodeSettingsStore()
 
     // MARK: - Initializer
 

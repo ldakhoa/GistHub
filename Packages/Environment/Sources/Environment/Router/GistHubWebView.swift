@@ -9,13 +9,17 @@ final class GistHubWebView: NSObject, ObservableObject, SFSafariViewControllerDe
 
     @MainActor
     func open(_ url: URL) -> OpenURLAction.Result {
-        guard let windowScene = windowScene else { return .systemAction }
+        guard
+            let windowScene,
+            let scheme = url.scheme,
+            ["https", "http"].contains(scheme.lowercased())
+        else {
+            return .systemAction
+        }
 
         window = setupWindow(windowScene: windowScene)
 
         let safari = SFSafariViewController(url: url)
-        safari.preferredBarTintColor = .blue
-        safari.preferredControlTintColor = .red
         safari.delegate = self
 
         DispatchQueue.main.async { [weak self] in
