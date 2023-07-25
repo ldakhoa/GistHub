@@ -19,6 +19,7 @@ struct GistHubApp: App {
     @State private var popToRootTab: Tab = .other
     @StateObject private var appAccountManager = AppAccountsManager.shared
     @StateObject private var currentAccount = CurrentAccount.shared
+    @StateObject private var codeSettings = CodeSettingsStore.shared
 
     private var tabs: [Tab] {
         appAccountManager.isAuth ? Tab.loggedInTabs() : Tab.loggedOutTabs()
@@ -36,6 +37,7 @@ struct GistHubApp: App {
                 }
                 .environmentObject(currentAccount)
                 .environmentObject(appAccountManager)
+                .environmentObject(codeSettings)
                 .onChange(of: appAccountManager.focusedAccount) { appAccount in
                     if appAccount == nil {
                         showLogin.toggle()

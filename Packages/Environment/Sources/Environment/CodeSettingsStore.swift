@@ -10,6 +10,7 @@ import Utilities
 
 public class CodeSettingsStore: ObservableObject {
     public let settings = UserDefaults.standard
+    public static let shared = CodeSettingsStore()
 
     public init() {}
 
@@ -75,6 +76,13 @@ public class CodeSettingsStore: ObservableObject {
             NotificationCenter.default.post(name: .textViewShouldUpdateTheme, object: nil)
         }
     }
+
+    @Published public var openExternalsLinksInSafari: Bool = UserDefaults.standard.bool(forKey: Key.openExternalsLinksInSafari) {
+        didSet {
+            settings.openExternalsLinksInSafari = openExternalsLinksInSafari
+        }
+    }
+
 }
 
 enum Key {
@@ -88,6 +96,7 @@ enum Key {
     static let showPageGuide = "GistHub.showPageGuide"
     static let theme = "GistHub.theme"
     static let darkTheme = "GistHub.darktheme"
+    static let openExternalsLinksInSafari = "GistHub.openExternalsLinksInSafari"
 }
 
 extension UserDefaults {
@@ -175,6 +184,14 @@ extension UserDefaults {
         }
         set {
             set(newValue.rawValue, forKey: Key.theme)
+        }
+    }
+    public var openExternalsLinksInSafari: Bool {
+        get {
+            return bool(forKey: Key.openExternalsLinksInSafari)
+        }
+        set {
+            set(newValue, forKey: Key.openExternalsLinksInSafari)
         }
     }
 

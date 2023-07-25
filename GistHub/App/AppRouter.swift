@@ -69,5 +69,6 @@ extension View {
     func withEnvironments() -> some View {
       environmentObject(CurrentAccount.shared)
         .environmentObject(AppAccountsManager.shared)
+        .environmentObject(CodeSettingsStore.shared)
     }
 }
