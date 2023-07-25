@@ -24,6 +24,7 @@ public struct SettingView: View {
     // MARK: - Misc
 
     @State private var showConfirmationDialog: Bool = false
+    @ObservedObject private var codeSettingsStore = CodeSettingsStore()
 
     // MARK: - Initializer
 
@@ -42,18 +43,8 @@ public struct SettingView: View {
             }
 
             Section {
-                Button {
+                ButtonRowView(title: "Report a Bug") {
                     routerPath.presentedSheet = .reportABug
-                } label: {
-                    HStack {
-                        Text("Report a Bug")
-                            .foregroundColor(Colors.foreground.color)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14))
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color(UIColor.tertiaryLabel))
-                    }
                 }
 
                 Link(destination: URL(string: AppInfo.repoWeblink)!) {
@@ -66,6 +57,10 @@ public struct SettingView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(Color(UIColor.tertiaryLabel))
                     }
+                }
+
+                Toggle(isOn: $codeSettingsStore.openExternalsLinksInSafari) {
+                    Text("Open external links in Safari")
                 }
             }
 
