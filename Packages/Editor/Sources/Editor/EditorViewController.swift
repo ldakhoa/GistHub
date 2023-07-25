@@ -195,7 +195,7 @@ public final class EditorViewController: UIViewController {
     private func showPhotoPicker() {
         textView.resignFirstResponder()
 
-        let configuration = PHPickerConfiguration()
+        var configuration = PHPickerConfiguration()
         configuration.filter = .images
         configuration.selectionLimit = 1
         configuration.preferredAssetRepresentationMode = .automatic
