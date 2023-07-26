@@ -10,7 +10,7 @@ import Environment
 import DesignSystem
 
 public struct EditorCodeSettingsView: View {
-    @ObservedObject private var codeSettingsStore = CodeSettingsStore()
+    @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
 
     @Environment(\.dismiss) private var dismiss
 
@@ -39,19 +39,19 @@ public struct EditorCodeSettingsView: View {
                 Text("Preview")
             }
             Section {
-                makeToggleView(isOn: $codeSettingsStore.showLineNumbers, title: "Show Line Numbers")
-                makeToggleView(isOn: $codeSettingsStore.wrapLines, title: "Line Wrapping")
-                makeToggleView(isOn: $codeSettingsStore.highlightSelectedLine, title: "Highlight Selected Line")
-                makeToggleView(isOn: $codeSettingsStore.forceDarkTheme, title: "Force Dark Theme")
+                makeToggleView(isOn: $userDefaultsStore.showLineNumbers, title: "Show Line Numbers")
+                makeToggleView(isOn: $userDefaultsStore.wrapLines, title: "Line Wrapping")
+                makeToggleView(isOn: $userDefaultsStore.highlightSelectedLine, title: "Highlight Selected Line")
+                makeToggleView(isOn: $userDefaultsStore.forceDarkTheme, title: "Force Dark Theme")
             } header: {
                 Text("display")
             }
 
             Section {
-                makeToggleView(isOn: $codeSettingsStore.showPageGuide, title: "Show Page Guide")
-                makeToggleView(isOn: $codeSettingsStore.showInvisibleCharacters, title: "Show Line Break")
-                makeToggleView(isOn: $codeSettingsStore.showSpaces, title: "Show Spaces")
-                makeToggleView(isOn: $codeSettingsStore.showTabs, title: "Show Tabs")
+                makeToggleView(isOn: $userDefaultsStore.showPageGuide, title: "Show Page Guide")
+                makeToggleView(isOn: $userDefaultsStore.showInvisibleCharacters, title: "Show Line Break")
+                makeToggleView(isOn: $userDefaultsStore.showSpaces, title: "Show Spaces")
+                makeToggleView(isOn: $userDefaultsStore.showTabs, title: "Show Tabs")
             } header: {
                 Text("Editing")
             }
