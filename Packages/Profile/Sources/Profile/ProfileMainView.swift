@@ -30,7 +30,8 @@ public struct UserProfileView: View {
         ScrollView(showsIndicators: false) {
             switch viewModel.contentState {
             case .loading:
-                Text("Loading...")
+                content(from: .stubbed)
+                    .redacted(reason: .placeholder)
             case let .content(user):
                 content(from: user)
                     .readingScrollView(from: "scrollOffSet", into: $scrollOffset)
@@ -49,7 +50,9 @@ public struct UserProfileView: View {
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                authenticatedToolbar
+                if currentAccount.user?.login == viewModel.user.login {
+                    authenticatedToolbar
+                }
             }
 
             if scrollOffset.y >= -11 {
@@ -71,8 +74,7 @@ public struct UserProfileView: View {
                 makeButton(
                     title: "Gists",
                     systemImageName: "doc.text",
-                    backgroundImage: Colors.buttonForeground.color,
-                    gistsCount: 60
+                    backgroundImage: Colors.buttonForeground.color
                 ) {
                     routerPath.navigate(to: .gistLists(mode: .userGists(userName: userName)))
                 }
@@ -84,8 +86,7 @@ public struct UserProfileView: View {
                 makeButton(
                     title: "Starred",
                     systemImageName: "star",
-                    backgroundImage: Colors.Palette.Yellow.yellow2.dynamicColor.color,
-                    gistsCount: 12
+                    backgroundImage: Colors.Palette.Yellow.yellow2.dynamicColor.color
                 ) {
                     // implement
                 }
@@ -119,7 +120,6 @@ public struct UserProfileView: View {
         title: LocalizedStringKey,
         systemImageName: String,
         backgroundImage: Color,
-        gistsCount: Int,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action, label: {
@@ -137,13 +137,7 @@ public struct UserProfileView: View {
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
                 }
                 Spacer()
-                HStack {
-                    Text("\(gistsCount)")
-                        .font(.body)
-                        .foregroundColor(Colors.neutralEmphasis.color)
-
-                    RightChevronRowImage()
-                }
+                RightChevronRowImage()
             }
         })
         .padding(.vertical, 12)
