@@ -20,6 +20,7 @@ public struct GistListsView: View {
 
     private let listsMode: GistListsMode
     @StateObject private var viewModel: GistListsViewModel
+    @State var progressViewId = 0
 
     // MARK: - Initializer
 
@@ -43,7 +44,7 @@ public struct GistListsView: View {
                         GistListsRowView(gist: gist)
                             .redacted(reason: .placeholder)
                     }
-                case let .content:
+                case .content:
                     ForEach(viewModel.gists) { gist in
                         HStack {
                             GistListsRowView(gist: gist)
@@ -68,6 +69,10 @@ public struct GistListsView: View {
                         HStack {
                             Spacer()
                             ProgressView()
+                                .id(progressViewId)
+                                .onAppear {
+                                    progressViewId += 1
+                                }
                             Spacer()
                         }
                     }
