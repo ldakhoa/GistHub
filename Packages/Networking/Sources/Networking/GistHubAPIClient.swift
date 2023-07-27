@@ -18,7 +18,7 @@ public protocol GistHubAPIClient: Client {
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
     /// List gists for the authenticated user.
-    func gists() async throws -> [Gist]
+    func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
@@ -37,7 +37,7 @@ public protocol GistHubAPIClient: Client {
     func unstarGist(gistID: String) async throws -> Bool
 
     /// Check if gist is starred.
-    func isStarred(gistID: String) async throws
+    func isStarred(gistID: String) async throws -> Bool
 
     /// Get a gist.
     func gist(fromGistID gistID: String) async throws -> Gist
@@ -98,8 +98,16 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
-    public func gists() async throws -> [Gist] {
-        try await session.data(for: API.gists)
+    public func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse {
+        let inputCursor: GraphQLNullable<String>
+        if let cursor {
+            inputCursor = GraphQLNullable(stringLiteral: cursor)
+        } else {
+            inputCursor = GraphQLNullable.none
+        }
+        let query = GistsQuery(first: GraphQLNullable(integerLiteral: pageSize), after: inputCursor, privacy: GraphQLNullable(GistPrivacy.all))
+        let data = try await graphQLSession.query(query)
+        return GistsResponse(data: data)
     }
 
     public func starredGists() async throws -> [Gist] {
@@ -128,8 +136,13 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return starred
     }
 
-    public func isStarred(gistID: String) async throws {
-        try await session.data(for: API.isStarred(gistID: gistID))
+    public func isStarred(gistID: String) async throws -> Bool {
+        let query = IsStarredQuery(gistID: gistID)
+        let data = try await graphQLSession.query(query)
+        guard let starred = data.viewer.gist?.viewerHasStarred else {
+            throw ApolloError()
+        }
+        return starred
     }
 
     public func gist(fromGistID gistID: String) async throws -> Gist {

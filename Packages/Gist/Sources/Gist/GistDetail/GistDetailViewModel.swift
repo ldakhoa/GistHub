@@ -46,10 +46,10 @@ import Models
 
     func isStarred(gistID: String) async {
         do {
-            try await gistHubClient.isStarred(gistID: gistID)
-            starButtonState = .starred
+            let starred = try await gistHubClient.isStarred(gistID: gistID)
+            starButtonState = starred ? .starred : .unstarred
         } catch {
-            starButtonState = .unstarred
+            contentState = .error(error: error.localizedDescription)
         }
     }
 

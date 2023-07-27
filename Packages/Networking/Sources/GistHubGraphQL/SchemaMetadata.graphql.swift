@@ -22,9 +22,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
 
   public static func objectType(forTypename typename: String) -> Object? {
     switch typename {
-    case "Mutation": return GistHubGraphQL.Objects.Mutation
-    case "RemoveStarPayload": return GistHubGraphQL.Objects.RemoveStarPayload
-    case "Gist": return GistHubGraphQL.Objects.Gist
+    case "Query": return GistHubGraphQL.Objects.Query
+    case "User": return GistHubGraphQL.Objects.User
     case "AddedToMergeQueueEvent": return GistHubGraphQL.Objects.AddedToMergeQueueEvent
     case "AddedToProjectEvent": return GistHubGraphQL.Objects.AddedToProjectEvent
     case "App": return GistHubGraphQL.Objects.App
@@ -61,7 +60,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Mannequin": return GistHubGraphQL.Objects.Mannequin
     case "Organization": return GistHubGraphQL.Objects.Organization
     case "Repository": return GistHubGraphQL.Objects.Repository
-    case "User": return GistHubGraphQL.Objects.User
+    case "Gist": return GistHubGraphQL.Objects.Gist
+    case "Topic": return GistHubGraphQL.Objects.Topic
     case "Team": return GistHubGraphQL.Objects.Team
     case "Enterprise": return GistHubGraphQL.Objects.Enterprise
     case "CheckRun": return GistHubGraphQL.Objects.CheckRun
@@ -253,7 +253,6 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Status": return GistHubGraphQL.Objects.Status
     case "StatusCheckRollup": return GistHubGraphQL.Objects.StatusCheckRollup
     case "SubscribedEvent": return GistHubGraphQL.Objects.SubscribedEvent
-    case "Topic": return GistHubGraphQL.Objects.Topic
     case "TransferredEvent": return GistHubGraphQL.Objects.TransferredEvent
     case "UnassignedEvent": return GistHubGraphQL.Objects.UnassignedEvent
     case "UnlabeledEvent": return GistHubGraphQL.Objects.UnlabeledEvent
@@ -265,6 +264,13 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "UserContentEdit": return GistHubGraphQL.Objects.UserContentEdit
     case "UserStatus": return GistHubGraphQL.Objects.UserStatus
     case "VerifiableDomain": return GistHubGraphQL.Objects.VerifiableDomain
+    case "GistConnection": return GistHubGraphQL.Objects.GistConnection
+    case "GistEdge": return GistHubGraphQL.Objects.GistEdge
+    case "GistFile": return GistHubGraphQL.Objects.GistFile
+    case "GistCommentConnection": return GistHubGraphQL.Objects.GistCommentConnection
+    case "PageInfo": return GistHubGraphQL.Objects.PageInfo
+    case "Mutation": return GistHubGraphQL.Objects.Mutation
+    case "RemoveStarPayload": return GistHubGraphQL.Objects.RemoveStarPayload
     case "AddStarPayload": return GistHubGraphQL.Objects.AddStarPayload
     default: return nil
     }

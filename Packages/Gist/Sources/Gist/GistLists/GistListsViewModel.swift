@@ -16,8 +16,12 @@ public final class GistListsViewModel: ObservableObject {
     @Published var searchText = ""
 
     @Published var gists = [Gist]()
+    @Published var hasMoreGists = false
+    @Published var isLoadingMoreGists = false
+
     private let client: GistHubAPIClient
     private let routerPath: RouterPath
+    private var pagingCursor: String?
 
     public init(
         routerPath: RouterPath,
@@ -29,15 +33,35 @@ public final class GistListsViewModel: ObservableObject {
 
     func fetchGists(listsMode: GistListsMode) async {
         do {
-            let gists: [Gist]
             switch listsMode {
             case .allGists:
-                gists = try await client.gists()
+                let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: nil)
+                pagingCursor = gistsResponse.cursor
+                hasMoreGists = gistsResponse.hasNextPage
+                gists = gistsResponse.gists
+                contentState = .content
+                return
             case .starred:
                 gists = try await client.starredGists()
             }
             self.gists = gists
-            contentState = .content(gists: gists)
+            contentState = .content
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
+
+    func fetchMoreGists(currentId: String) async {
+        guard hasMoreGists, !isLoadingMoreGists, currentId == gists.last?.id ?? "" else {
+            return
+        }
+        do {
+            isLoadingMoreGists = true
+            let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+            hasMoreGists = gistsResponse.hasNextPage
+            gists.append(contentsOf: gistsResponse.gists)
+            isLoadingMoreGists = false
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
@@ -45,14 +69,15 @@ public final class GistListsViewModel: ObservableObject {
 
     func insert(_ gist: Gist) {
         gists.insert(gist, at: 0)
-        contentState = .content(gists: gists)
     }
 
-    func search() {
+    func search(listMode: GistListsMode) {
         if searchText.isEmpty {
-            contentState = .content(gists: self.gists)
+            Task {
+                await fetchGists(listsMode: listMode)
+            }
         } else {
-            let newGists = gists.filter {
+            gists = gists.filter {
                 if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {
                 let fileNameCondition = fileNames.filter { $0.range(of: searchText, options: .caseInsensitive) != nil }
                     let loginNameCondition = loginName.localizedCaseInsensitiveContains(searchText)
@@ -61,7 +86,6 @@ public final class GistListsViewModel: ObservableObject {
                 }
                 return false
             }
-            contentState = .content(gists: newGists)
         }
     }
 
@@ -80,7 +104,11 @@ public final class GistListsViewModel: ObservableObject {
 extension GistListsViewModel {
     enum ContentState {
         case loading
-        case content(gists: [Gist])
+        case content
         case error(error: String)
+    }
+
+    enum Constants {
+        static let pagingSize = 6
     }
 }

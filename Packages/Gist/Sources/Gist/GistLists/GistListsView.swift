@@ -43,10 +43,15 @@ public struct GistListsView: View {
                         GistListsRowView(gist: gist)
                             .redacted(reason: .placeholder)
                     }
-                case let .content(gists):
-                    ForEach(gists) { gist in
+                case let .content:
+                    ForEach(viewModel.gists) { gist in
                         HStack {
                             GistListsRowView(gist: gist)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.fetchMoreGists(currentId: gist.id)
+                                    }
+                                }
                             Spacer()
                         }
                         .contentShape(Rectangle())
@@ -57,6 +62,13 @@ public struct GistListsView: View {
                             contextMenu(gist: gist)
                         } preview: {
                             contextMenuPreview(gist: gist)
+                        }
+                    }
+                    if viewModel.isLoadingMoreGists {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
                         }
                     }
                 case .error:
@@ -92,7 +104,7 @@ public struct GistListsView: View {
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
         .scrollDismissesKeyboard(.interactively)
         .onChange(of: viewModel.searchText) { _ in
-            viewModel.search()
+            viewModel.search(listMode: listsMode)
         }
         .enableInjection()
     }

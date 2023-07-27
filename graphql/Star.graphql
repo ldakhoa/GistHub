@@ -16,3 +16,11 @@ mutation AddStar($input: AddStarInput!) {
   }
 }
 
+query IsStarred($gistID: String!) {
+  viewer {
+    gist(name: $gistID) {
+      viewerHasStarred
+    }
+  }
+}
+

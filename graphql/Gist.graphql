@@ -1,0 +1,45 @@
+query Gists($first: Int, $after: String, $privacy: GistPrivacy) {
+  viewer {
+    gists(first: $first, after: $after, privacy: $privacy) {
+      edges {
+        node {
+          id
+          name
+          description
+          files {
+            name
+            language {
+              name
+            }
+            size
+            text
+          }
+          createdAt
+          owner {
+            id
+            login
+            avatarUrl
+            ... on User {
+              name
+              twitterUsername
+              isSiteAdmin
+              url
+              bio
+              email
+            }
+          }
+          updatedAt
+          comments {
+            totalCount
+          }
+          isPublic
+          url
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
