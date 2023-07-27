@@ -11,10 +11,14 @@ import Profile
 
 struct ProfileTab: View {
     @StateObject private var routerPath: RouterPath = RouterPath()
-
+    @Binding var selectedTab: Tab
     @Binding var popToRootTab: Tab
 
-    init(popToRootTab: Binding<Tab>) {
+    init(
+        selectedTab: Binding<Tab>,
+        popToRootTab: Binding<Tab>
+    ) {
+        _selectedTab = selectedTab
         _popToRootTab = popToRootTab
     }
 
@@ -29,7 +33,7 @@ struct ProfileTab: View {
                 routerPath.path = []
             }
         }
-        .withSafariRouter()
+        .withSafariRouter(isActiveTab: selectedTab == .profile)
         .environmentObject(routerPath)
     }
 }

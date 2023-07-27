@@ -69,7 +69,7 @@ struct GistHubApp: App {
             selectedTab = newTab
         })) {
             ForEach(tabs) { tab in
-                tab.makeContentView(popToRootTab: $popToRootTab)
+                tab.makeContentView(popToRootTab: $popToRootTab, selectedTab: $selectedTab)
                     .tabItem {
                         Image(uiImage: UIImage(named: selectedTab == tab ? tab.iconSelectedName : tab.iconName)!)
                         Text(tab.title)

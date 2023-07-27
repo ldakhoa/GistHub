@@ -193,9 +193,9 @@
 		6A7CF5452943CF3A007B7D68 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				6A6D6C8F2A670D6600F47796 /* Tabs */,
 				6A6D6C942A67185E00F47796 /* AppRouter.swift */,
 				6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */,
+				6A6D6C8F2A670D6600F47796 /* Tabs */,
 			);
 			path = App;
 			sourceTree = "<group>";
