@@ -8,6 +8,8 @@
 import UIKit
 import StyledTextKit
 import DesignSystem
+import Environment
+import Models
 
 protocol MarkdownViewControllerDelegate: AnyObject {
     func collectionViewDidUpdateHeight(height: CGFloat)
@@ -40,6 +42,8 @@ public final class MarkdownViewController: UIViewController {
     private static let webViewWidthCache = WidthCache<String, CGSize>()
     private static let imageWidthCache = WidthCache<URL, CGSize>()
     private var currentCollectionHeight: CGFloat = 0
+
+    private let userDefaultsStore = UserDefaultsStore.shared
 
     // MARK: - Dependencies
 
@@ -295,6 +299,16 @@ extension MarkdownViewController: MarkdownStyledTextViewDelegate {
         switch attribute {
         case .url(let url):
             guard UIApplication.shared.canOpenURL(url) else { return }
+            var url: URL = url
+            if !userDefaultsStore.openExternalsLinksInSafari || url.host() ?? "" == AppInfo.mainHost {
+                let urlString = url
+                    .absoluteString
+                    .replacingOccurrences(of: "https://", with: "gisthub://")
+                if let gistHubUrl = URL(string: urlString) {
+                    url = gistHubUrl
+                }
+            }
+
             UIApplication.shared.open(url)
         case .email(let email):
             if let url = URL(string: "mailto:\(email)") {
