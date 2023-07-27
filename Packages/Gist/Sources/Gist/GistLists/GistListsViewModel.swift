@@ -17,13 +17,10 @@ public final class GistListsViewModel: ObservableObject {
 
     @Published var gists = [Gist]()
     private let client: GistHubAPIClient
-    private let routerPath: RouterPath
 
     public init(
-        routerPath: RouterPath,
         client: GistHubAPIClient = DefaultGistHubAPIClient()
     ) {
-        self.routerPath = routerPath
         self.client = client
     }
 
@@ -31,10 +28,12 @@ public final class GistListsViewModel: ObservableObject {
         do {
             let gists: [Gist]
             switch listsMode {
-            case .allGists:
+            case .currentUserGists:
                 gists = try await client.gists()
-            case .starred:
+            case .currentUserStarredGists:
                 gists = try await client.starredGists()
+            case let .userGists(userName):
+                gists = try await client.gists(fromUserName: userName)
             }
             self.gists = gists
             contentState = .content(gists: gists)
@@ -62,17 +61,6 @@ public final class GistListsViewModel: ObservableObject {
                 return false
             }
             contentState = .content(gists: newGists)
-        }
-    }
-
-    func navigateToDetail(gistId: String) {
-        routerPath.navigate(to: .gistDetail(gistId: gistId))
-    }
-
-    func presentNewGistSheet() {
-        routerPath.presentedSheet = .newGist { [weak self] gist in
-            self?.insert(gist)
-            self?.routerPath.navigate(to: .gistDetail(gistId: gist.id))
         }
     }
 }

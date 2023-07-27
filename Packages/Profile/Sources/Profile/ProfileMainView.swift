@@ -74,7 +74,7 @@ public struct UserProfileView: View {
                     backgroundImage: Colors.buttonForeground.color,
                     gistsCount: 60
                 ) {
-                    // implement
+                    routerPath.navigate(to: .gistLists(mode: .userGists(userName: userName)))
                 }
 
                 Divider()

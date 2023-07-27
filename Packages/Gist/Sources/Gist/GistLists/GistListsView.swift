@@ -15,21 +15,17 @@ import Utilities
 public struct GistListsView: View {
     @ObserveInjection private var inject
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var routerPath: RouterPath
 
     // MARK: - Dependencies
 
     private let listsMode: GistListsMode
-    @StateObject private var viewModel: GistListsViewModel
+    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
 
     // MARK: - Initializer
 
-    // StateObject accepts an @autoclosure which only allocates the view model once when the view gets on screen.
-    public init(
-        listsMode: GistListsMode,
-        viewModel: @escaping () -> GistListsViewModel
-    ) {
+    public init(listsMode: GistListsMode) {
         self.listsMode = listsMode
-        _viewModel = StateObject(wrappedValue: viewModel())
     }
 
     // MARK: - View
@@ -51,7 +47,7 @@ public struct GistListsView: View {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            viewModel.navigateToDetail(gistId: gist.id)
+                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
                         }
                         .contextMenu {
                             contextMenu(gist: gist)
@@ -70,7 +66,7 @@ public struct GistListsView: View {
                 }
             }
 
-            if listsMode == .allGists {
+            if listsMode == .currentUserGists {
                 newGistFloatingButton
             }
         }
@@ -101,7 +97,10 @@ public struct GistListsView: View {
                     padding: 16.0,
                     radius: 32.0
                 ) {
-                    viewModel.presentNewGistSheet()
+                    routerPath.presentedSheet = .newGist { gist in
+                        viewModel.insert(gist)
+                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                    }
                 }
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)

@@ -17,6 +17,9 @@ public protocol GistHubAPIClient: Client {
     /// List gists for the authenticated user.
     func gists() async throws -> [Gist]
 
+    /// List gists for from the user name.
+    func gists(fromUserName userName: String) async throws -> [Gist]
+
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
 
