@@ -47,9 +47,6 @@ public struct UserProfileView: View {
         .onAppear {
             fetchUser()
         }
-        .onChange(of: scrollOffset) { newValue in
-            print(newValue)
-        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 authenticatedToolbar
@@ -69,7 +66,7 @@ public struct UserProfileView: View {
     private func content(from user: User) -> some View {
         VStack {
             ProfileMainView(user: user)
-            
+
             VStack(spacing: 0) {
                 makeButton(
                     title: "Gists",
@@ -79,11 +76,11 @@ public struct UserProfileView: View {
                 ) {
                     // implement
                 }
-                
+
                 Divider()
                     .overlay(Colors.neutralEmphasis.color)
                     .padding(.leading, 54)
-                
+
                 makeButton(
                     title: "Starred",
                     systemImageName: "star",

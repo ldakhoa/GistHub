@@ -86,6 +86,10 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.gists)
     }
 
+    public func gists(fromUserName userName: String) async throws -> [Gist] {
+        try await session.data(for: API.gistsFromUserName(userName: userName))
+    }
+
     public func starredGists() async throws -> [Gist] {
         try await session.data(for: API.starredGists)
     }
@@ -158,6 +162,7 @@ extension DefaultGistHubAPIClient {
     enum API: Request {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
+        case gistsFromUserName(userName: String)
         case starredGists
         case user
         case userFromUserName(userName: String)
@@ -187,6 +192,8 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .gists:
                 return "/gists"
+            case let .gistsFromUserName(userName):
+                return "/users/\(userName)/gists"
             case .starredGists:
                 return "/gists/starred"
             case .user:
@@ -210,7 +217,7 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist, .userFromUserName:
+            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName:
                 return .get
             case .starGist:
                 return .put
