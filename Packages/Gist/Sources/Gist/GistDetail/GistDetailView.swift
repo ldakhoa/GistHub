@@ -269,8 +269,14 @@ public struct GistDetailView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {
-                    HapticManager.shared.fireHaptic(of: .buttonPress)
+                GistHubButton(
+                    imageName: "bubble.left",
+                    title: "Write Comment",
+                    foregroundColor: Colors.Palette.White.white0.dynamicColor.color,
+                    background: Colors.commentButton.color,
+                    padding: 12.0,
+                    radius: 8.0
+                ) {
                     routerPath.presentedSheet = .markdownTextEditor(style: .writeComment(content: "")) { content in
                         Task {
                             await commentViewModel.createComment(
@@ -279,21 +285,6 @@ public struct GistDetailView: View {
                             )
                         }
                     }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "bubble.left")
-                        Text("Write Comment")
-                    }
-                    .font(.callout)
-                    .fontWeight(.semibold)
-                    .padding(12)
-                    .background(Colors.commentButton.color)
-                    .foregroundColor(Colors.Palette.White.white0.dynamicColor.color)
-                    .cornerRadius(8)
-                    .shadow(
-                        color: Colors.Palette.Black.black0.dynamicColor.color.opacity(0.4),
-                        radius: 8
-                    )
                 }
                 .readSize { buttonSize in
                     self.floatingButtonSize = buttonSize

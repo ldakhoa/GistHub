@@ -69,25 +69,15 @@ public struct GistListsView: View {
                     .listRowSeparator(.hidden)
                 }
             }
+
+            if listsMode == .allGists {
+                newGistFloatingButton
+            }
         }
         .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
         .navigationTitle(Text(listsMode.navigationTitle))
-        .toolbar {
-            if listsMode == .allGists {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        HapticManager.shared.fireHaptic(of: .buttonPress)
-                        viewModel.presentNewGistSheet()
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .renderingMode(.template)
-                            .foregroundColor(Colors.accent.color)
-                    }
-                }
-            }
-        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
@@ -96,6 +86,27 @@ public struct GistListsView: View {
             viewModel.search()
         }
         .enableInjection()
+    }
+
+    @ViewBuilder
+    private var newGistFloatingButton: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                GistHubButton(
+                    imageName: "plus",
+                    foregroundColor: Color.white,
+                    background: Colors.accent.color,
+                    padding: 16.0,
+                    radius: 32.0
+                ) {
+                    viewModel.presentNewGistSheet()
+                }
+                .padding(.trailing, 16)
+                .padding(.bottom, 16)
+            }
+        }
     }
 
     // MARK: - Context Menu
