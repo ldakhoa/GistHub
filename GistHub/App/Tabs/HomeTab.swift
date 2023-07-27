@@ -11,9 +11,14 @@ import Gist
 
 struct HomeTab: View {
     @StateObject private var routerPath: RouterPath = RouterPath()
+    @Binding var selectedTab: Tab
     @Binding var popToRootTab: Tab
 
-    init(popToRootTab: Binding<Tab>) {
+    init(
+        selectedTab: Binding<Tab>,
+        popToRootTab: Binding<Tab>
+    ) {
+        _selectedTab = selectedTab
         _popToRootTab = popToRootTab
     }
 
@@ -30,7 +35,7 @@ struct HomeTab: View {
                 routerPath.path = []
             }
         }
-        .withSafariRouter()
+        .withSafariRouter(isActiveTab: selectedTab == .home)
         .environmentObject(routerPath)
     }
 }

@@ -19,14 +19,17 @@ enum Tab: Int, Identifiable, Hashable {
     }
 
     @ViewBuilder
-    func makeContentView(popToRootTab: Binding<Tab>) -> some View {
+    func makeContentView(
+        popToRootTab: Binding<Tab>,
+        selectedTab: Binding<Tab>
+    ) -> some View {
         switch self {
         case .home:
-            HomeTab(popToRootTab: popToRootTab)
+            HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .starred:
-            StarredTab(popToRootTab: popToRootTab)
+            StarredTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .profile:
-            ProfileTab(popToRootTab: popToRootTab)
+            ProfileTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .other:
             EmptyView()
         }
