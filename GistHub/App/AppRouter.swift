@@ -51,6 +51,7 @@ extension View {
             case .editorCodeSettings:
                 NavigationStack {
                     EditorCodeSettingsView()
+                        .withEnvironments()
                 }
             case let .editorView(fileName, content, language, gist):
                 NavigationStack {
@@ -69,6 +70,6 @@ extension View {
     func withEnvironments() -> some View {
       environmentObject(CurrentAccount.shared)
         .environmentObject(AppAccountsManager.shared)
-        .environmentObject(CodeSettingsStore.shared)
+        .environmentObject(UserDefaultsStore.shared)
     }
 }

@@ -9,7 +9,7 @@ extension View {
 
 private struct SafariRouter: ViewModifier {
     @EnvironmentObject private var routerPath: RouterPath
-    @EnvironmentObject private var codeSettingsStore: CodeSettingsStore
+    @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
     @StateObject private var webView = GistHubWebView()
 
     func body(content: Content) -> some View {
@@ -29,7 +29,7 @@ private struct SafariRouter: ViewModifier {
             }
             .onAppear {
                 routerPath.urlHandler = { url in
-                    guard !codeSettingsStore.openExternalsLinksInSafari else { return .systemAction }
+                    guard !userDefaultsStore.openExternalsLinksInSafari else { return .systemAction }
                     return webView.open(url)
                 }
             }
