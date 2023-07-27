@@ -25,47 +25,48 @@ public struct ProfileView: View {
     public init() {}
 
     public var body: some View {
-        ZStack {
-            if let user = currentAccount.user {
-                makeMainView(user: user)
-            } else {
-                switch viewModel.contentState {
-                case .loading:
-                    makeMainView(user: .stubbed)
-                        .redacted(reason: .placeholder)
-                case let .content(user):
-                    makeMainView(user: user)
-                case let .error(error):
-                    Text(error)
-                        .foregroundColor(Colors.danger.color)
-                }
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                HStack {
-                    Button {
-                        routerPath.navigate(to: .settings)
-                    } label: {
-                        Image(systemName: "gear")
-                            .foregroundColor(Colors.accent.color)
-                    }
-
-                    let titlePreview = "\(currentAccount.user?.login ?? "") - Overview"
-                    ShareLink(
-                        item: currentAccount.user?.htmlURL ?? "",
-                        preview: SharePreview(titlePreview, image: Image("default"))
-                    ) {
-                        Image(systemName: "square.and.arrow.up")
-                            .foregroundColor(Colors.accent.color)
-                    }
-                }
-            }
-        }
-        .toolbarBackground(UIColor.systemGroupedBackground.color, for: .navigationBar)
-        .refreshable { fetchUser() }
-        .enableInjection()
+//        ZStack {
+//            if let user = currentAccount.user {
+//                makeMainView(user: user)
+//            } else {
+//                switch viewModel.contentState {
+//                case .loading:
+//                    makeMainView(user: .stubbed)
+//                        .redacted(reason: .placeholder)
+//                case let .content(user):
+//                    makeMainView(user: user)
+//                case let .error(error):
+//                    Text(error)
+//                        .foregroundColor(Colors.danger.color)
+//                }
+//            }
+//        }
+        UserProfileView(userName: "ldakhoa")
+//        .navigationBarTitleDisplayMode(.inline)
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                HStack {
+//                    Button {
+//                        routerPath.navigate(to: .settings)
+//                    } label: {
+//                        Image(systemName: "gear")
+//                            .foregroundColor(Colors.accent.color)
+//                    }
+//
+//                    let titlePreview = "\(currentAccount.user?.login ?? "") - Overview"
+//                    ShareLink(
+//                        item: currentAccount.user?.htmlURL ?? "",
+//                        preview: SharePreview(titlePreview, image: Image("default"))
+//                    ) {
+//                        Image(systemName: "square.and.arrow.up")
+//                            .foregroundColor(Colors.accent.color)
+//                    }
+//                }
+//            }
+//        }
+//        .toolbarBackground(UIColor.systemGroupedBackground.color, for: .navigationBar)
+//        .refreshable { fetchUser() }
+//        .enableInjection()
     }
 
     private func makeMainView(user: User) -> some View {

@@ -26,6 +26,15 @@ import Models
             contentState = .error(error: error.localizedDescription)
         }
     }
+
+    func fetchUser(fromUserName userName: String) async {
+        do {
+            let user = try await client.user(fromUserName: userName)
+            contentState = .content(user: user)
+        } catch {
+            contentState = .error(error: error.localizedDescription)
+        }
+    }
 }
 
 extension ProfileViewModel {

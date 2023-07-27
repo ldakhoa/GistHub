@@ -435,6 +435,8 @@ public final class Colors {
     public static var neutralEmphasis = Palette.Gray.gray5.dynamicColor
     public static var listBackground = UIColor.secondarySystemGroupedBackground
 
+    public static let scrollViewBackground = UIColor.systemGroupedBackground
+
     public static var buttonBackground = UIColor(light: Palette.Gray.gray0.light, dark: Palette.Gray.gray7.dark)
     public static var buttonForeground = UIColor(light: Palette.Gray.gray9.light, dark: Palette.Gray.gray1.dark)
     public static var buttonBorder = UIColor(light: Palette.Gray.gray2.light, dark: Palette.Gray.gray6.dark)

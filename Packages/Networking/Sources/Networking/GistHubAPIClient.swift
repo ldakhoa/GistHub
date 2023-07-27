@@ -23,6 +23,9 @@ public protocol GistHubAPIClient: Client {
     /// Get authenticated user info.
     func user() async throws -> User
 
+    /// Get the user from user name.
+    func user(fromUserName userName: String) async throws -> User
+
     /// Star a gist.
     func starGist(gistID: String) async throws
 
@@ -91,6 +94,10 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.user)
     }
 
+    public func user(fromUserName userName: String) async throws -> User {
+        try await session.data(for: API.userFromUserName(userName: userName))
+    }
+
     public func starGist(gistID: String) async throws {
         try await session.data(for: API.starGist(gistID: gistID))
     }
@@ -153,6 +160,7 @@ extension DefaultGistHubAPIClient {
         case gists
         case starredGists
         case user
+        case userFromUserName(userName: String)
         case starGist(gistID: String)
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
@@ -183,6 +191,8 @@ extension DefaultGistHubAPIClient {
                 return "/gists/starred"
             case .user:
                 return "/user"
+            case let .userFromUserName(userName):
+                return "/users/\(userName)"
             case let .starGist(gistID),
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
@@ -200,7 +210,7 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist:
+            case .gists, .starredGists, .user, .isStarred, .gist, .userFromUserName:
                 return .get
             case .starGist:
                 return .put
