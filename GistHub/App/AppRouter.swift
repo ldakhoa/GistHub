@@ -28,6 +28,8 @@ extension View {
                 SettingAccountView()
             case .editorCodeSettings:
                 EditorCodeSettingsView()
+            case let .gistLists(mode):
+                GistListsView(listsMode: mode)
             }
         }
     }
@@ -39,19 +41,30 @@ extension View {
                 ComposeGistView(style: .createGist, completion: completion)
             case let .editGist(gist, completion):
                 ComposeGistView(style: .update(gist: gist), completion: completion)
-            case let .browseFiles(files, gist, dismissAction):
-                BrowseFilesView(files: files, gist: gist, dismissAction: dismissAction)
+            case let .browseFiles(files, gist, completion):
+                BrowseFilesView(files: files, gist: gist, completion: completion)
                     .withEnvironments()
-            case let .commentTextEditor(gistId, navigationTitle, placeholder, commentViewModel):
+            case let .markdownTextEditor(style, completion):
                 MarkdownTextEditorView(
-                    style: .writeComment,
-                    gistID: gistId,
-                    navigationTitle: navigationTitle,
-                    placeholder: placeholder,
-                    commentViewModel: commentViewModel
-                )
+                    style: style,
+                    completion: completion)
             case .reportABug:
                 ReportABugView()
+            case .editorCodeSettings:
+                NavigationStack {
+                    EditorCodeSettingsView()
+                        .withEnvironments()
+                }
+            case let .editorView(fileName, content, language, gist):
+                NavigationStack {
+                    EditorView(
+                        style: .update,
+                        fileName: fileName,
+                        content: content,
+                        language: language,
+                        gist: gist
+                    )
+                }
             }
         }
     }
@@ -59,5 +72,6 @@ extension View {
     func withEnvironments() -> some View {
       environmentObject(CurrentAccount.shared)
         .environmentObject(AppAccountsManager.shared)
+        .environmentObject(UserDefaultsStore.shared)
     }
 }

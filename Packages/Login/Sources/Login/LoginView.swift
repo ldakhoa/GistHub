@@ -9,6 +9,7 @@ import SwiftUI
 import Inject
 import DesignSystem
 import AppAccount
+import Environment
 
 public struct LoginView: View {
     @ObserveInjection private var inject
@@ -51,6 +52,7 @@ public struct LoginView: View {
                     foregroundColor: Colors.ghButtonForeground,
                     shouldShowLoading: ghButtonLoading
                 ) {
+                    HapticManager.shared.fireHaptic(of: .buttonPress)
                     viewModel.login()
                 }
 
@@ -60,6 +62,7 @@ public struct LoginView: View {
                     foregroundColor: Colors.tokenButtonForeground,
                     shouldShowLoading: patButtonLoading
                 ) {
+                    HapticManager.shared.fireHaptic(of: .buttonPress)
                     showLoginAlertField.toggle()
                 }
             }

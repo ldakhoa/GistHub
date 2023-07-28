@@ -15,22 +15,18 @@ import Utilities
 public struct GistListsView: View {
     @ObserveInjection private var inject
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var routerPath: RouterPath
 
     // MARK: - Dependencies
 
     private let listsMode: GistListsMode
-    @StateObject private var viewModel: GistListsViewModel
+    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State var progressViewId = 0
 
     // MARK: - Initializer
 
-    // StateObject accepts an @autoclosure which only allocates the view model once when the view gets on screen.
-    public init(
-        listsMode: GistListsMode,
-        viewModel: @escaping () -> GistListsViewModel
-    ) {
+    public init(listsMode: GistListsMode) {
         self.listsMode = listsMode
-        _viewModel = StateObject(wrappedValue: viewModel())
     }
 
     // MARK: - View
@@ -57,7 +53,7 @@ public struct GistListsView: View {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            viewModel.navigateToDetail(gistId: gist.id)
+                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
                         }
                         .contextMenu {
                             contextMenu(gist: gist)
@@ -86,24 +82,15 @@ public struct GistListsView: View {
                     .listRowSeparator(.hidden)
                 }
             }
+
+            if listsMode == .currentUserGists {
+                newGistFloatingButton
+            }
         }
         .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
         .navigationTitle(Text(listsMode.navigationTitle))
-        .toolbar {
-            if listsMode == .allGists {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        viewModel.presentNewGistSheet()
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .renderingMode(.template)
-                            .foregroundColor(Colors.accent.color)
-                    }
-                }
-            }
-        }
         .onLoad { fetchGists() }
         .refreshable { fetchGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
@@ -112,6 +99,30 @@ public struct GistListsView: View {
             viewModel.search(listMode: listsMode)
         }
         .enableInjection()
+    }
+
+    @ViewBuilder
+    private var newGistFloatingButton: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                GistHubButton(
+                    imageName: "plus",
+                    foregroundColor: Color.white,
+                    background: Colors.accent.color,
+                    padding: 16.0,
+                    radius: 32.0
+                ) {
+                    routerPath.presentedSheet = .newGist { gist in
+                        viewModel.insert(gist)
+                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                    }
+                }
+                .padding(.trailing, 16)
+                .padding(.bottom, 16)
+            }
+        }
     }
 
     // MARK: - Context Menu

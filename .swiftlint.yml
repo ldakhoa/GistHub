@@ -20,3 +20,4 @@ included:
 excluded:
   - Packages/Networking/Sources/GistHubGraphQL
   - Packages/**/Tests
+  - Packages/**/.build

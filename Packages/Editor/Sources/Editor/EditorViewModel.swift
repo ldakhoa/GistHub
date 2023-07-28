@@ -9,7 +9,8 @@ import SwiftUI
 import Networking
 import Models
 
-@MainActor final class EditorViewModel: ObservableObject {
+@MainActor
+final class EditorViewModel: ObservableObject {
     private let client: GistHubAPIClient
     private let imgurClient: ImgurAPIClient
 
@@ -46,20 +47,6 @@ import Models
             fromGistID: gistID,
             fileName: fileName,
             content: nil
-        )
-        if gist.url != nil {
-            completion!()
-        }
-    }
-
-    func updateDescription(
-        _ description: String,
-        gistID: String,
-        completion: (() -> Void)? = nil
-    ) async throws {
-        let gist = try await client.updateDescription(
-            fromGistID: gistID,
-            description: description
         )
         if gist.url != nil {
             completion!()

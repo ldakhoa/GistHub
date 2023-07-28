@@ -4,6 +4,7 @@ enum Tab: Int, Identifiable, Hashable {
     case home
     case starred
     case profile
+    case other
 
     var id: Int {
         rawValue
@@ -18,14 +19,19 @@ enum Tab: Int, Identifiable, Hashable {
     }
 
     @ViewBuilder
-    func makeContentView() -> some View {
+    func makeContentView(
+        popToRootTab: Binding<Tab>,
+        selectedTab: Binding<Tab>
+    ) -> some View {
         switch self {
         case .home:
-            HomeTab()
+            HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .starred:
-            StarredTab()
+            StarredTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .profile:
-            ProfileTab()
+            ProfileTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+        case .other:
+            EmptyView()
         }
     }
 
@@ -37,6 +43,8 @@ enum Tab: Int, Identifiable, Hashable {
             return "Starred"
         case .profile:
             return "Profile"
+        case .other:
+            return "Other"
         }
     }
 
@@ -48,6 +56,8 @@ enum Tab: Int, Identifiable, Hashable {
             return "star"
         case .profile:
             return "person"
+        case .other:
+            return "other"
         }
     }
 

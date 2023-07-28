@@ -9,23 +9,16 @@ import AlertToast
 import SwiftUI
 import Models
 import DesignSystem
-import Common
 
 /// A view that uses for write comments and descriptions.
 public struct MarkdownTextEditorView: View {
 
     // MARK: - Dependencies
 
-    private let style: Style
+    private let style: MarkdownTextEditorStyle
     @State private var content: String
-    private let gistID: String?
-    private let commentID: Int?
-    private let navigationTitle: String
-    private let placeholder: String
-    @ObservedObject private var commentViewModel: CommentViewModel
     @State private var files: [String: File]?
-    private let completion: (() -> Void)?
-    private let createGistCompletion: ((File) -> Void)?
+    private let completion: ((String) -> Void)?
     private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
 
     // MARK: - State
@@ -37,7 +30,7 @@ public struct MarkdownTextEditorView: View {
     @State private var showConfirmDialog = false
     @State private var showErrorToast = false
     @State private var error = ""
-    @State private var placeholderState = ""
+    @State private var placeholder = ""
     @State private var showLoadingSaveButton = false
 
     // MARK: - Environments
@@ -47,83 +40,84 @@ public struct MarkdownTextEditorView: View {
     // MARK: - Initializer
 
     public init(
-        style: Style,
+        style: MarkdownTextEditorStyle,
         content: String = "",
-        gistID: String? = nil,
-        commentID: Int? = nil,
-        navigationTitle: String,
-        placeholder: String = "",
-        commentViewModel: CommentViewModel? = nil,
         files: [String: File]? = nil,
-        completion: (() -> Void)? = nil,
-        createGistCompletion: ((File) -> Void)? = nil
+        completion: ((String) -> Void)? = nil
     ) {
         self.style = style
-        _content = State(initialValue: content)
-        self.gistID = gistID
-        self.commentID = commentID
-        self.navigationTitle = navigationTitle
-        self.placeholder = placeholder
-        self.commentViewModel = commentViewModel ?? CommentViewModel()
+
+        switch style {
+        case .createGist:
+            _content = State(initialValue: "")
+        case let .writeComment(content):
+            _content = State(initialValue: content)
+        case let .updateComment(content):
+            _content = State(initialValue: content)
+        }
+
         _files = State(wrappedValue: files)
         self.completion = completion
-        self.createGistCompletion = createGistCompletion
     }
 
     public var body: some View {
         NavigationStack {
-            EditorViewRepresentable(content: $content, language: .markdown)
-                .focused($isFocused)
-                .navigationTitle(navigationTitle)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar(.visible, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .navigationBarBackButtonHidden()
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(style == .createGist ? "Back" : "Cancel") {
-                            if contentHasChanged {
-                                showConfirmDialog.toggle()
-                            } else {
-                                dismiss()
+            ZStack {
+                EditorViewRepresentable(content: $content, language: .markdown)
+                    .focused($isFocused)
+                    .navigationTitle(style.navigationTitle)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar(.visible, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .navigationBarBackButtonHidden()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button(style == .createGist ? "Back" : "Cancel") {
+                                if contentHasChanged {
+                                    showConfirmDialog.toggle()
+                                } else {
+                                    dismiss()
+                                }
                             }
+                            .foregroundColor(Colors.accent.color)
                         }
-                        .foregroundColor(Colors.accent.color)
+
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showLoadingSaveButton = true
+                                completion?(content)
+                                dismiss()
+                            } label: {
+                                if showLoadingSaveButton {
+                                    ProgressView()
+                                        .tint(Colors.accent.color)
+                                } else {
+                                    Text("Save")
+                                }
+                            }
+                            .bold()
+                            .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.accentDisabled.color)
+                            .disabled(!contentHasChanged)
+                        }
                     }
 
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            showLoadingSaveButton = true
-                            switch style {
-                            case .createGist: createFile()
-                            case .changeDescription: updateDescription()
-                            case .writeComment: createComment()
-                            case .updateComment: updateComment()
-                            }
-                        } label: {
-                            if showLoadingSaveButton {
-                                ProgressView()
-                                    .tint(Colors.accent.color)
-                            } else {
-                                Text("Save")
-                            }
-                        }
-                        .bold()
-                        .foregroundColor(contentHasChanged ? Colors.accent.color : Colors.accentDisabled.color)
-                        .disabled(!contentHasChanged)
-                    }
-                }
+                placeholderView
+            }
         }
         .onAppear {
             self.originalContent = content
-            placeholderState = content.isEmpty ? placeholder : ""
+            placeholder = content.isEmpty ? style.placeholder : ""
             isFocused = true
         }
         .onChange(of: content) { newValue in
             contentHasChanged = newValue != originalContent ? true : false
-            placeholderState = content.isEmpty ? placeholder : ""
+            placeholder = content.isEmpty ? style.placeholder : ""
         }
-        .confirmationDialog("Are you sure you want to cancel?", isPresented: $showConfirmDialog, titleVisibility: .visible) {
+        .confirmationDialog(
+            "Are you sure you want to cancel?",
+            isPresented: $showConfirmDialog,
+            titleVisibility: .visible
+        ) {
             Button("Discard Changes", role: .destructive) {
                 dismiss()
             }
@@ -131,7 +125,6 @@ public struct MarkdownTextEditorView: View {
             Text("Your changes will be discarded.")
         }
         .toastError(isPresenting: $showErrorToast, error: error)
-        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .interactiveDismissDisabled(contentHasChanged)
         .onReceive(alertPublisher) { notification in
             guard let errorMessage = notification.object as? String else { return }
@@ -140,65 +133,20 @@ public struct MarkdownTextEditorView: View {
         }
     }
 
-    private func createFile() {
-        let fileName = navigationTitle
-//        self.files?[fileName] = File(filename: fileName, content: self.content
-        let file = File(filename: fileName, content: self.content)
-        dismiss()
-        createGistCompletion!(file)
-    }
-
-    private func updateDescription() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                try await viewModel.updateDescription(content, gistID: gistID) {
-                    dismiss()
-                    completion!()
-                }
-            } catch let gistError {
-                error = gistError.localizedDescription
-                self.showErrorToast.toggle()
-                showLoadingSaveButton = false
+    @ViewBuilder
+    private var placeholderView: some View {
+        // TODO: Use UserPreferences when done
+        let showLineNumbers = UserDefaults.standard.bool(forKey: "GistHub.showLineNumbers")
+        VStack {
+            HStack {
+                Text(placeholder)
+                    .font(Font(UIFont.monospacedSystemFont(ofSize: 15, weight: .regular)))
+                    .foregroundColor(Colors.neutralEmphasis.color)
+                    .padding(.top, 9)
+                    .padding(.leading, showLineNumbers ? 22 : 6)
+                Spacer()
             }
+            Spacer()
         }
-    }
-
-    private func createComment() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                await commentViewModel.createComment(gistID: gistID, body: content) {
-                    dismiss()
-                }
-            }
-            showLoadingSaveButton = false
-        }
-    }
-
-    private func updateComment() {
-        guard let gistID = gistID else { return }
-        Task {
-            do {
-                guard let commentID = commentID else { return }
-                await commentViewModel.updateComment(
-                    gistID: gistID,
-                    commentID: commentID,
-                    body: content
-                ) {
-                    dismiss()
-                }
-            }
-            showLoadingSaveButton = false
-        }
-    }
-}
-
-extension MarkdownTextEditorView {
-    public enum Style {
-        case createGist
-        case changeDescription
-        case writeComment
-        case updateComment
     }
 }

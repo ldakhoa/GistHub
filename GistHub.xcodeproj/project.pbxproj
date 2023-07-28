@@ -13,27 +13,27 @@
 		6A0CA5BB2A62C4FF00366D03 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A0CA5BA2A62C4FF00366D03 /* Action.js */; };
 		6A0CA5C02A62C4FF00366D03 /* GistHubActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6A0CA5B22A62C4FF00366D03 /* GistHubActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6A0CA5C72A62D7C700366D03 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6A0CA5C62A62D7C700366D03 /* Models */; };
-		6A641C362A568C870095334B /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C352A568C870095334B /* DesignSystem */; };
-		6A641C382A568C870095334B /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C372A568C870095334B /* Markdown */; };
-		6A641C3A2A568C870095334B /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C392A568C870095334B /* Models */; };
-		6A641C3C2A568C870095334B /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C3B2A568C870095334B /* Networking */; };
-		6A641C3E2A568C870095334B /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C3D2A568C870095334B /* Utilities */; };
-		6A641C432A56E22B0095334B /* AppAccount in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C422A56E22B0095334B /* AppAccount */; };
-		6A641C452A56E22B0095334B /* Environment in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C442A56E22B0095334B /* Environment */; };
-		6A641C472A56E24B0095334B /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C462A56E24B0095334B /* Login */; };
-		6A641C4F2A570EC10095334B /* Gist in Frameworks */ = {isa = PBXBuildFile; productRef = 6A641C4E2A570EC10095334B /* Gist */; };
 		6A6D6C8E2A670C6800F47796 /* GistHubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */; };
 		6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C902A670D6D00F47796 /* Tabs.swift */; };
 		6A6D6C932A67160C00F47796 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C922A67160C00F47796 /* HomeTab.swift */; };
 		6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C942A67185E00F47796 /* AppRouter.swift */; };
 		6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C962A671C8E00F47796 /* ProfileTab.swift */; };
 		6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C982A671C9300F47796 /* StarredTab.swift */; };
-		6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */; };
 		6A7CF53B2943CF35007B7D68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53A2943CF35007B7D68 /* Assets.xcassets */; };
 		6A7CF53E2943CF35007B7D68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A7CF53C2943CF35007B7D68 /* LaunchScreen.storyboard */; };
 		6A7CF56229446B0D007B7D68 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 6A7CF56129446B0D007B7D68 /* Inject */; };
-		6AAEBBF62A59515300CD52FF /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 6AAEBBF52A59515300CD52FF /* Profile */; };
+		6A81446A2A700D1E00E7E542 /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6A8144692A700D1E00E7E542 /* WhatsNewKit */; };
 		6AEEE4542966CD5200767BD6 /* emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = 6AEEE4532966CD5200767BD6 /* emoji.json */; };
+		6AF19EE52A6EBFE400E1AC24 /* AppAccount in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EE42A6EBFE400E1AC24 /* AppAccount */; };
+		6AF19EE72A6EBFE400E1AC24 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EE62A6EBFE400E1AC24 /* DesignSystem */; };
+		6AF19EE92A6EBFE400E1AC24 /* Environment in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EE82A6EBFE400E1AC24 /* Environment */; };
+		6AF19EEB2A6EBFE400E1AC24 /* Gist in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EEA2A6EBFE400E1AC24 /* Gist */; };
+		6AF19EED2A6EBFE400E1AC24 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EEC2A6EBFE400E1AC24 /* Login */; };
+		6AF19EEF2A6EBFE400E1AC24 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EEE2A6EBFE400E1AC24 /* Models */; };
+		6AF19EF12A6EBFE400E1AC24 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EF02A6EBFE400E1AC24 /* Networking */; };
+		6AF19EF32A6EBFE400E1AC24 /* Profile in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EF22A6EBFE400E1AC24 /* Profile */; };
+		6AF19EF52A6EBFE400E1AC24 /* Utilities in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EF42A6EBFE400E1AC24 /* Utilities */; };
+		6AF19EF72A6EC14D00E1AC24 /* Editor in Frameworks */ = {isa = PBXBuildFile; productRef = 6AF19EF62A6EC14D00E1AC24 /* Editor */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,12 +87,10 @@
 		6A6D6C982A671C9300F47796 /* StarredTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredTab.swift; sourceTree = "<group>"; };
 		6A6D6C9C2A67C46F00F47796 /* GistHub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GistHub.entitlements; sourceTree = "<group>"; };
 		6A7CF52E2943CF33007B7D68 /* GistHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GistHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
-		6AE6C95B2A573BA500A4DA87 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = Packages/Common; sourceTree = "<group>"; };
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,16 +108,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A641C3C2A568C870095334B /* Networking in Frameworks */,
-				6AAEBBF62A59515300CD52FF /* Profile in Frameworks */,
-				6A641C432A56E22B0095334B /* AppAccount in Frameworks */,
-				6A641C472A56E24B0095334B /* Login in Frameworks */,
-				6A641C452A56E22B0095334B /* Environment in Frameworks */,
-				6A641C3E2A568C870095334B /* Utilities in Frameworks */,
-				6A641C3A2A568C870095334B /* Models in Frameworks */,
-				6A641C382A568C870095334B /* Markdown in Frameworks */,
-				6A641C362A568C870095334B /* DesignSystem in Frameworks */,
-				6A641C4F2A570EC10095334B /* Gist in Frameworks */,
+				6AF19EED2A6EBFE400E1AC24 /* Login in Frameworks */,
+				6AF19EE92A6EBFE400E1AC24 /* Environment in Frameworks */,
+				6AF19EF12A6EBFE400E1AC24 /* Networking in Frameworks */,
+				6AF19EF52A6EBFE400E1AC24 /* Utilities in Frameworks */,
+				6AF19EF32A6EBFE400E1AC24 /* Profile in Frameworks */,
+				6AF19EE72A6EBFE400E1AC24 /* DesignSystem in Frameworks */,
+				6AF19EE52A6EBFE400E1AC24 /* AppAccount in Frameworks */,
+				6AF19EEB2A6EBFE400E1AC24 /* Gist in Frameworks */,
+				6A81446A2A700D1E00E7E542 /* WhatsNewKit in Frameworks */,
+				6AF19EEF2A6EBFE400E1AC24 /* Models in Frameworks */,
+				6AF19EF72A6EC14D00E1AC24 /* Editor in Frameworks */,
 				6A7CF56229446B0D007B7D68 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,8 +151,12 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
+				6A9BF50029503C0300EBFF04 /* ci_scripts */,
+				6A7CF6B5294652B9007B7D68 /* Frameworks */,
+				6A7CF5302943CF33007B7D68 /* GistHub */,
+				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
 				6A641C402A56A91B0095334B /* AppAccount */,
-				6AE6C95B2A573BA500A4DA87 /* Common */,
 				6A641C332A5687A50095334B /* DesignSystem */,
 				6A641C492A56E99E0095334B /* Editor */,
 				6A641C3F2A56A8CC0095334B /* Environment */,
@@ -164,11 +167,6 @@
 				6A641C302A55F00B0095334B /* Networking */,
 				6A641C4A2A56E9DF0095334B /* Profile */,
 				6A641C342A5688460095334B /* Utilities */,
-				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
-				6A9BF50029503C0300EBFF04 /* ci_scripts */,
-				6A7CF6B5294652B9007B7D68 /* Frameworks */,
-				6A7CF5302943CF33007B7D68 /* GistHub */,
-				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -195,10 +193,9 @@
 		6A7CF5452943CF3A007B7D68 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				6A6D6C8F2A670D6600F47796 /* Tabs */,
-				6A7CF5332943CF33007B7D68 /* SceneDelegate.swift */,
 				6A6D6C942A67185E00F47796 /* AppRouter.swift */,
 				6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */,
+				6A6D6C8F2A670D6600F47796 /* Tabs */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -271,16 +268,17 @@
 			name = GistHub;
 			packageProductDependencies = (
 				6A7CF56129446B0D007B7D68 /* Inject */,
-				6A641C352A568C870095334B /* DesignSystem */,
-				6A641C372A568C870095334B /* Markdown */,
-				6A641C392A568C870095334B /* Models */,
-				6A641C3B2A568C870095334B /* Networking */,
-				6A641C3D2A568C870095334B /* Utilities */,
-				6A641C422A56E22B0095334B /* AppAccount */,
-				6A641C442A56E22B0095334B /* Environment */,
-				6A641C462A56E24B0095334B /* Login */,
-				6A641C4E2A570EC10095334B /* Gist */,
-				6AAEBBF52A59515300CD52FF /* Profile */,
+				6AF19EE42A6EBFE400E1AC24 /* AppAccount */,
+				6AF19EE62A6EBFE400E1AC24 /* DesignSystem */,
+				6AF19EE82A6EBFE400E1AC24 /* Environment */,
+				6AF19EEA2A6EBFE400E1AC24 /* Gist */,
+				6AF19EEC2A6EBFE400E1AC24 /* Login */,
+				6AF19EEE2A6EBFE400E1AC24 /* Models */,
+				6AF19EF02A6EBFE400E1AC24 /* Networking */,
+				6AF19EF22A6EBFE400E1AC24 /* Profile */,
+				6AF19EF42A6EBFE400E1AC24 /* Utilities */,
+				6AF19EF62A6EC14D00E1AC24 /* Editor */,
+				6A8144692A700D1E00E7E542 /* WhatsNewKit */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -315,6 +313,7 @@
 			mainGroup = 6A7CF5252943CF33007B7D68;
 			packageReferences = (
 				6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */,
+				6A8144682A700D1E00E7E542 /* XCRemoteSwiftPackageReference "WhatsNewKit" */,
 			);
 			productRefGroup = 6A7CF52F2943CF33007B7D68 /* Products */;
 			projectDirPath = "";
@@ -366,7 +365,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "\"${SRCROOT}/Scripts/lint.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -388,7 +387,6 @@
 				6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */,
 				6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */,
 				6A6D6C952A67185E00F47796 /* AppRouter.swift in Sources */,
-				6A7CF5342943CF33007B7D68 /* SceneDelegate.swift in Sources */,
 				6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -711,6 +709,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6A8144682A700D1E00E7E542 /* XCRemoteSwiftPackageReference "WhatsNewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/WhatsNewKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -718,50 +724,55 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Models;
 		};
-		6A641C352A568C870095334B /* DesignSystem */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DesignSystem;
-		};
-		6A641C372A568C870095334B /* Markdown */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Markdown;
-		};
-		6A641C392A568C870095334B /* Models */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Models;
-		};
-		6A641C3B2A568C870095334B /* Networking */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Networking;
-		};
-		6A641C3D2A568C870095334B /* Utilities */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Utilities;
-		};
-		6A641C422A56E22B0095334B /* AppAccount */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AppAccount;
-		};
-		6A641C442A56E22B0095334B /* Environment */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Environment;
-		};
-		6A641C462A56E24B0095334B /* Login */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Login;
-		};
-		6A641C4E2A570EC10095334B /* Gist */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Gist;
-		};
 		6A7CF56129446B0D007B7D68 /* Inject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6A7CF56029446B0D007B7D68 /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
 		};
-		6AAEBBF52A59515300CD52FF /* Profile */ = {
+		6A8144692A700D1E00E7E542 /* WhatsNewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6A8144682A700D1E00E7E542 /* XCRemoteSwiftPackageReference "WhatsNewKit" */;
+			productName = WhatsNewKit;
+		};
+		6AF19EE42A6EBFE400E1AC24 /* AppAccount */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppAccount;
+		};
+		6AF19EE62A6EBFE400E1AC24 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		6AF19EE82A6EBFE400E1AC24 /* Environment */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Environment;
+		};
+		6AF19EEA2A6EBFE400E1AC24 /* Gist */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Gist;
+		};
+		6AF19EEC2A6EBFE400E1AC24 /* Login */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Login;
+		};
+		6AF19EEE2A6EBFE400E1AC24 /* Models */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Models;
+		};
+		6AF19EF02A6EBFE400E1AC24 /* Networking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Networking;
+		};
+		6AF19EF22A6EBFE400E1AC24 /* Profile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Profile;
+		};
+		6AF19EF42A6EBFE400E1AC24 /* Utilities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Utilities;
+		};
+		6AF19EF62A6EC14D00E1AC24 /* Editor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Editor;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -19,6 +19,8 @@ public struct SettingView: View {
     @EnvironmentObject private var appAccountsManager: AppAccountsManager
     @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
+//    @EnvironmentObject private var codeSettingsStore: CodeSettingsStore
     @ObserveInjection private var inject
 
     // MARK: - Misc
@@ -42,18 +44,8 @@ public struct SettingView: View {
             }
 
             Section {
-                Button {
+                ButtonRowView(title: "Report a Bug") {
                     routerPath.presentedSheet = .reportABug
-                } label: {
-                    HStack {
-                        Text("Report a Bug")
-                            .foregroundColor(Colors.foreground.color)
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14))
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color(UIColor.tertiaryLabel))
-                    }
                 }
 
                 Link(destination: URL(string: AppInfo.repoWeblink)!) {
@@ -66,6 +58,10 @@ public struct SettingView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(Color(UIColor.tertiaryLabel))
                     }
+                }
+
+                Toggle(isOn: $userDefaultsStore.openExternalsLinksInSafari) {
+                    Text("Open external links in Safari")
                 }
             }
 

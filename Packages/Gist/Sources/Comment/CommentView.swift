@@ -10,7 +10,6 @@ import Inject
 import Models
 import DesignSystem
 import Markdown
-import Common
 import Editor
 import Environment
 
@@ -18,12 +17,11 @@ public struct CommentView: View {
     private let comment: Comment
     private let gistID: String
     @ObservedObject private var viewModel: CommentViewModel
-    @EnvironmentObject var currentAccount: CurrentAccount
+    @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var routerPath: RouterPath
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
-    @State private var showPlainTextEditorView = false
-    @State private var showQuoteCommentTextEditor = false
     @ObserveInjection private var inject
     @State private var commentMarkdownHeight: CGFloat = 0
 
@@ -105,12 +103,32 @@ public struct CommentView: View {
 
             if comment.user.id == currentAccount.user?.id {
                 Button("Edit") {
-                    showPlainTextEditorView.toggle()
+                    routerPath.presentedSheet = .markdownTextEditor(
+                        style: .updateComment(content: comment.body ?? "")
+                    ) { content in
+                        Task {
+                            guard let commentId = comment.id else { return }
+                            await viewModel.updateComment(
+                                gistID: gistID,
+                                commentID: commentId,
+                                body: content
+                            )
+                        }
+                    }
                 }
             }
 
             Button("Quote reply") {
-                showQuoteCommentTextEditor.toggle()
+                routerPath.presentedSheet = .markdownTextEditor(
+                    style: .writeComment(content: quoteBody(body: comment.body ?? ""))
+                ) { content in
+                    Task {
+                        await viewModel.createComment(
+                            gistID: gistID,
+                            body: content
+                        )
+                    }
+                }
             }
         }
         .confirmationDialog(
@@ -123,25 +141,6 @@ public struct CommentView: View {
                     await viewModel.deleteComments(gistID: gistID, commentID: comment.id ?? 0)
                 }
             }
-        }
-        .sheet(isPresented: $showPlainTextEditorView) {
-            MarkdownTextEditorView(
-                style: .updateComment,
-                content: comment.body ?? "",
-                gistID: gistID,
-                commentID: comment.id,
-                navigationTitle: "Edit Comment",
-                placeholder: "Write a comment...",
-                commentViewModel: viewModel)
-        }
-        .sheet(isPresented: $showQuoteCommentTextEditor) {
-            MarkdownTextEditorView(
-                style: .writeComment,
-                content: quoteBody(body: comment.body ?? ""),
-                gistID: gistID,
-                navigationTitle: "Write Comment",
-                placeholder: "Write a comment...",
-                commentViewModel: viewModel)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

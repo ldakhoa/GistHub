@@ -9,7 +9,6 @@ import AlertToast
 import SwiftUI
 import Inject
 import DesignSystem
-import Common
 import Models
 import Editor
 import Comment
@@ -48,6 +47,7 @@ public struct GistDetailView: View {
             case .loading:
                 ProgressView()
             case let .error(error):
+                // TODO: Replace by ErrorView
                 Text(error)
                     .foregroundColor(Colors.danger.color)
             case let .content(gist):
@@ -131,10 +131,6 @@ public struct GistDetailView: View {
         .onAppear {
             Task {
                 await viewModel.isStarred(gistID: gistId)
-            }
-        }
-        .onLoad {
-            Task {
                 await commentViewModel.fetchComments(gistID: gistId)
                 await viewModel.gist(gistID: gistId)
             }
@@ -184,6 +180,7 @@ public struct GistDetailView: View {
             shouldReloadGistListsView?()
             presentationMode.wrappedValue.dismiss()
         }
+        .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
         .enableInjection()
     }
 
@@ -222,6 +219,9 @@ public struct GistDetailView: View {
             if currentAccount.user?.id == viewModel.gist.owner?.id {
                 makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                     routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
+                        Task {
+                            await viewModel.gist(gistID: newGist.id)
+                        }
                         viewModel.gist = newGist
                     }
                 }
@@ -270,28 +270,22 @@ public struct GistDetailView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {
-                    routerPath.presentedSheet = .commentTextEditor(
-                        gistId: gistId,
-                        navigationTitle: "Write Comment",
-                        placeholder: "Write a comment...",
-                        commentViewModel: self.commentViewModel
-                    )
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "bubble.left")
-                        Text("Write Comment")
+                GistHubButton(
+                    imageName: "bubble.left",
+                    title: "Write Comment",
+                    foregroundColor: Colors.Palette.White.white0.dynamicColor.color,
+                    background: Colors.commentButton.color,
+                    padding: 12.0,
+                    radius: 8.0
+                ) {
+                    routerPath.presentedSheet = .markdownTextEditor(style: .writeComment(content: "")) { content in
+                        Task {
+                            await commentViewModel.createComment(
+                                gistID: gistId,
+                                body: content
+                            )
+                        }
                     }
-                    .font(.callout)
-                    .fontWeight(.semibold)
-                    .padding(12)
-                    .background(Colors.commentButton.color)
-                    .foregroundColor(Colors.Palette.White.white0.dynamicColor.color)
-                    .cornerRadius(8)
-                    .shadow(
-                        color: Colors.Palette.Black.black0.dynamicColor.color.opacity(0.4),
-                        radius: 8
-                    )
                 }
                 .readSize { buttonSize in
                     self.floatingButtonSize = buttonSize
@@ -326,6 +320,7 @@ public struct GistDetailView: View {
     private func starButton(isStarred: Bool) -> some View {
         Button {
             Task {
+                HapticManager.shared.fireHaptic(of: .buttonPress)
                 if isStarred {
                     await viewModel.unstarGist()
                 } else {

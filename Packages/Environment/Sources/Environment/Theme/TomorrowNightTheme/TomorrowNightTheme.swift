@@ -85,6 +85,6 @@ public final class TomorrowNightTheme: EditorTheme {
 
 private extension UIColor {
     convenience init(namedInModule name: String) {
-        self.init(named: name, in: .main, compatibleWith: nil)!
+        self.init(named: name, in: .module, compatibleWith: nil)!
     }
 }

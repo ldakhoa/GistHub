@@ -20,11 +20,17 @@ public protocol GistHubAPIClient: Client {
     /// List gists for the authenticated user.
     func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
 
+    /// List gists for from the user name.
+    func gists(fromUserName userName: String) async throws -> [Gist]
+
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
 
     /// Get authenticated user info.
     func user() async throws -> User
+
+    /// Get the user from user name.
+    func user(fromUserName userName: String) async throws -> User
 
     /// Star a gist.
     /// - Parameter gistID: ID of the gist to be starred
@@ -65,13 +71,6 @@ public protocol GistHubAPIClient: Client {
         files: [String: File?]
     ) async throws -> Gist
 
-    /// Update a gist description
-    @discardableResult
-    func updateDescription(
-        fromGistID gistID: String,
-        description: String?
-    ) async throws -> Gist
-
     /// Delete a gist.
     func deleteGist(fromGistID gistID: String) async throws
 
@@ -110,6 +109,10 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(data: data)
     }
 
+    public func gists(fromUserName userName: String) async throws -> [Gist] {
+        try await session.data(for: API.gistsFromUserName(userName: userName))
+    }
+
     public func starredGists() async throws -> [Gist] {
         try await session.data(for: API.starredGists)
     }
@@ -125,6 +128,10 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
             throw ApolloError()
         }
         return starred
+    }
+
+    public func user(fromUserName userName: String) async throws -> User {
+        try await session.data(for: API.userFromUserName(userName: userName))
     }
 
     public func unstarGist(gistID: String) async throws -> Bool {
@@ -172,17 +179,6 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     @discardableResult
-    public func updateDescription(
-        fromGistID gistID: String,
-        description: String?
-    ) async throws -> Gist {
-        try await session.data(for: API.updateGistDescription(
-            gistID: gistID,
-            description: description
-        ))
-    }
-
-    @discardableResult
     public func updateGist(
         fromGistID gistID: String,
         description: String?,
@@ -209,8 +205,10 @@ extension DefaultGistHubAPIClient {
     enum API: Request {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
+        case gistsFromUserName(userName: String)
         case starredGists
         case user
+        case userFromUserName(userName: String)
         case starGist(gistID: String)
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
@@ -219,10 +217,6 @@ extension DefaultGistHubAPIClient {
             gistID: String,
             description: String?,
             files: [String: File?]
-        )
-        case updateGistDescription(
-            gistID: String,
-            description: String?
         )
         case deleteGist(gistID: String)
         case createIssue(title: String, content: String?)
@@ -241,18 +235,21 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .gists:
                 return "/gists"
+            case let .gistsFromUserName(userName):
+                return "/users/\(userName)/gists"
             case .starredGists:
                 return "/gists/starred"
             case .user:
                 return "/user"
+            case let .userFromUserName(userName):
+                return "/users/\(userName)"
             case let .starGist(gistID),
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
                 return "/gists/\(gistID)/star"
             case let .gist(gistID),
                 let .deleteGist(gistID),
-                let .updateGist(gistID, _, _),
-                let .updateGistDescription(gistID, _):
+                let .updateGist(gistID, _, _):
                 return "/gists/\(gistID)"
             case .createIssue:
                 return "/repos/\(Constants.owner)/\(Constants.repo)/issues"
@@ -263,13 +260,13 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist:
+            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName:
                 return .get
             case .starGist:
                 return .put
             case .unstarGist, .deleteGist:
                 return .delete
-            case .updateGist, .updateGistDescription:
+            case .updateGist:
                 return .patch
             }
         }
@@ -299,13 +296,6 @@ extension DefaultGistHubAPIClient {
                 }
                 let request = Request(description: description, files: updatedFiles)
                 return try? request.toData()
-
-            case let .updateGistDescription(_, description):
-                struct Request: Codable {
-                    let description: String?
-                }
-                let request = Request(description: description)
-                return try? JSONEncoder().encode(request)
             case let .createIssue(title, content):
                 struct Request: Codable {
                     let title: String

@@ -20,31 +20,27 @@ public final class GistListsViewModel: ObservableObject {
     @Published var isLoadingMoreGists = false
 
     private let client: GistHubAPIClient
-    private let routerPath: RouterPath
     private var pagingCursor: String?
 
     public init(
-        routerPath: RouterPath,
         client: GistHubAPIClient = DefaultGistHubAPIClient()
     ) {
-        self.routerPath = routerPath
         self.client = client
     }
 
     func fetchGists(listsMode: GistListsMode) async {
         do {
             switch listsMode {
-            case .allGists:
+            case .currentUserGists:
                 let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: nil)
                 pagingCursor = gistsResponse.cursor
                 hasMoreGists = gistsResponse.hasNextPage
                 gists = gistsResponse.gists
-                contentState = .content
-                return
-            case .starred:
+            case .currentUserStarredGists:
                 gists = try await client.starredGists()
+            case let .userGists(userName):
+                gists = try await client.gists(fromUserName: userName)
             }
-            self.gists = gists
             contentState = .content
         } catch {
             contentState = .error(error: error.localizedDescription)
@@ -86,17 +82,6 @@ public final class GistListsViewModel: ObservableObject {
                 }
                 return false
             }
-        }
-    }
-
-    func navigateToDetail(gistId: String) {
-        routerPath.navigate(to: .gistDetail(gistId: gistId))
-    }
-
-    func presentNewGistSheet() {
-        routerPath.presentedSheet = .newGist { [weak self] gist in
-            self?.insert(gist)
-            self?.routerPath.navigate(to: .gistDetail(gistId: gist.id))
         }
     }
 }

@@ -13,14 +13,14 @@ import Markdown
 
 public struct EditorDisplayView: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var routerPath: RouterPath
+
     @State private var content: String = ""
     @State private var fileName: String = ""
     private let gist: Gist
     private let language: File.Language
     private let completion: (() -> Void)?
 
-    @State private var showEditorInEditMode = false
-    @State private var showCodeSettings = false
     @State private var showConfirmDialog = false
     @State private var showSuccessToast = false
     @State private var showErrorToast = false
@@ -49,21 +49,26 @@ public struct EditorDisplayView: View {
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    makeBackButtonItem()
+                    backButtonItem
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         if gist.owner?.id == currentAccount.user?.id {
                             Button {
-                                showEditorInEditMode.toggle()
+                                routerPath.presentedSheet = .editorView(
+                                    fileName: fileName,
+                                    content: content,
+                                    language: language,
+                                    gist: gist
+                                )
                             } label: {
                                 Label("Edit", systemImage: "pencil")
                             }
                         }
 
                         Button {
-                            showCodeSettings.toggle()
+                            routerPath.presentedSheet = .editorCodeSettings
                         } label: {
                             Label("View Code Options", systemImage: "gear")
                         }
@@ -79,24 +84,6 @@ public struct EditorDisplayView: View {
                     } label: {
                         Image(systemName: "ellipsis")
                             .font(.system(size: 18))
-                    }
-                    .sheet(isPresented: $showEditorInEditMode) {
-                        NavigationView {
-                            EditorView(
-                                style: .update,
-                                fileName: fileName,
-                                content: content,
-                                language: language,
-                                gist: gist
-                            ) {
-                                completion?()
-                            }
-                        }
-                    }
-                    .sheet(isPresented: $showCodeSettings) {
-                        NavigationView {
-                            EditorCodeSettingsView()
-                        }
                     }
                     .confirmationDialog(
                         "Are you sure you want to delete this file?",
@@ -136,7 +123,7 @@ public struct EditorDisplayView: View {
         }
     }
 
-    private func makeBackButtonItem() -> some View {
+    private var backButtonItem: some View {
         Button(action: { dismiss() }, label: {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 18))
