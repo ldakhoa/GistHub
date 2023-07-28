@@ -24,11 +24,9 @@ struct StarredTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .starred) {
-                GistListsViewModel(routerPath: routerPath)
-            }
-            .withAppRouter()
-            .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
+            GistListsView(listsMode: .currentUserStarredGists)
+                .withAppRouter()
+                .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
         .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
             if popToRootTab != .starred {

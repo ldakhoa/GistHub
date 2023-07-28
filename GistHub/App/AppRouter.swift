@@ -28,6 +28,8 @@ extension View {
                 SettingAccountView()
             case .editorCodeSettings:
                 EditorCodeSettingsView()
+            case let .gistLists(mode):
+                GistListsView(listsMode: mode)
             }
         }
     }

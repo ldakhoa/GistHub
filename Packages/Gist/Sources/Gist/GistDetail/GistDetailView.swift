@@ -47,6 +47,7 @@ public struct GistDetailView: View {
             case .loading:
                 ProgressView()
             case let .error(error):
+                // TODO: Replace by ErrorView
                 Text(error)
                     .foregroundColor(Colors.danger.color)
             case let .content(gist):

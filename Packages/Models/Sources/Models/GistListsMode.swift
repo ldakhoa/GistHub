@@ -7,26 +7,28 @@
 
 import Foundation
 
-// TODO: Move to Gist
-public enum GistListsMode {
-    case allGists
-    case starred
+public enum GistListsMode: Hashable {
+    case currentUserGists
+    case currentUserStarredGists
+    case userGists(userName: String)
 
     public var navigationTitle: String {
         switch self {
-        case .allGists:
+        case .currentUserGists:
             return "All Gists"
-        case .starred:
+        case .currentUserStarredGists:
             return "Starred Gists"
+        case .userGists:
+            return "Gists"
         }
     }
 
     public var promptSearchText: String {
         switch self {
-        case .allGists:
-            return "Search Gists"
-        case .starred:
+        case .currentUserStarredGists:
             return "Search Starred Gists"
+        case .currentUserGists, .userGists:
+            return "Search Gists"
         }
     }
 }

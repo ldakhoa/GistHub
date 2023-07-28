@@ -13,6 +13,7 @@ public enum RouterDestination: Hashable {
     case settings
     case settingsAccount
     case editorCodeSettings
+    case gistLists(mode: GistListsMode)
 }
 
 public enum SheetDestination: Identifiable {

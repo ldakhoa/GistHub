@@ -17,11 +17,17 @@ public protocol GistHubAPIClient: Client {
     /// List gists for the authenticated user.
     func gists() async throws -> [Gist]
 
+    /// List gists for from the user name.
+    func gists(fromUserName userName: String) async throws -> [Gist]
+
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
 
     /// Get authenticated user info.
     func user() async throws -> User
+
+    /// Get the user from user name.
+    func user(fromUserName userName: String) async throws -> User
 
     /// Star a gist.
     func starGist(gistID: String) async throws
@@ -83,12 +89,20 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.gists)
     }
 
+    public func gists(fromUserName userName: String) async throws -> [Gist] {
+        try await session.data(for: API.gistsFromUserName(userName: userName))
+    }
+
     public func starredGists() async throws -> [Gist] {
         try await session.data(for: API.starredGists)
     }
 
     public func user() async throws -> User {
         try await session.data(for: API.user)
+    }
+
+    public func user(fromUserName userName: String) async throws -> User {
+        try await session.data(for: API.userFromUserName(userName: userName))
     }
 
     public func starGist(gistID: String) async throws {
@@ -151,8 +165,10 @@ extension DefaultGistHubAPIClient {
     enum API: Request {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
+        case gistsFromUserName(userName: String)
         case starredGists
         case user
+        case userFromUserName(userName: String)
         case starGist(gistID: String)
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
@@ -179,10 +195,14 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .gists:
                 return "/gists"
+            case let .gistsFromUserName(userName):
+                return "/users/\(userName)/gists"
             case .starredGists:
                 return "/gists/starred"
             case .user:
                 return "/user"
+            case let .userFromUserName(userName):
+                return "/users/\(userName)"
             case let .starGist(gistID),
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
@@ -200,7 +220,7 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist:
+            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName:
                 return .get
             case .starGist:
                 return .put
