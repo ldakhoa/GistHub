@@ -62,6 +62,7 @@ public struct UserProfileView: View {
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
         .enableInjection()
     }
 

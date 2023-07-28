@@ -20,7 +20,6 @@ public struct SettingView: View {
     @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
-//    @EnvironmentObject private var codeSettingsStore: CodeSettingsStore
     @ObserveInjection private var inject
 
     // MARK: - Misc
@@ -89,6 +88,7 @@ public struct SettingView: View {
         .toolbar(.visible, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarRole(.automatic)
+        .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog(
             "Are you sure?",
             isPresented: $showConfirmationDialog,
