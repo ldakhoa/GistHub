@@ -26,6 +26,7 @@ public struct Gist: Codable, Identifiable, Hashable {
     public let commentsURL: String?
     public let owner: User?
     public let truncated: Bool?
+    public let stargazerCount: Int?
 
     public init(
         id: String,
@@ -44,7 +45,8 @@ public struct Gist: Codable, Identifiable, Hashable {
         comments: Int? = nil,
         commentsURL: String? = nil,
         owner: User? = nil,
-        isTruncated: Bool = false
+        isTruncated: Bool = false,
+        stargazerCount: Int? = nil
     ) {
         self.id = id
         self.url = url
@@ -63,6 +65,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commentsURL = commentsURL
         self.owner = owner
         self.truncated = isTruncated
+        self.stargazerCount = stargazerCount
     }
 
     public init(from decoder: Decoder) throws {
@@ -84,6 +87,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commentsURL = try container.decodeIfPresent(String.self, forKey: .commentsURL)
         self.owner = try container.decodeIfPresent(User.self, forKey: .owner)
         self.truncated = try container.decodeIfPresent(Bool.self, forKey: .truncated)
+        self.stargazerCount = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -162,7 +166,8 @@ public extension Gist {
             comments: 1,
             commentsURL: "https://github.com/ldakhoa",
             owner: .stubbed,
-            isTruncated: false
+            isTruncated: false,
+            stargazerCount: 0
         )
     }
 }

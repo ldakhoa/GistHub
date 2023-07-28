@@ -8,7 +8,7 @@ public class GistQuery: GraphQLQuery {
   public static let operationName: String = "Gist"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query Gist($gistID: String!) { viewer { __typename gist(name: $gistID) { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url } } }"#
+      #"query Gist($gistID: String!) { viewer { __typename gist(name: $gistID) { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url stargazerCount } } }"#
     ))
 
   public var gistID: String
@@ -67,6 +67,7 @@ public class GistQuery: GraphQLQuery {
           .field("comments", Comments.self),
           .field("isPublic", Bool.self),
           .field("url", GistHubGraphQL.URI.self),
+          .field("stargazerCount", Int.self),
         ] }
 
         public var id: GistHubGraphQL.ID { __data["id"] }
@@ -88,6 +89,9 @@ public class GistQuery: GraphQLQuery {
         public var isPublic: Bool { __data["isPublic"] }
         /// The HTTP URL for this Gist.
         public var url: GistHubGraphQL.URI { __data["url"] }
+        /// Returns a count of how many stargazers there are on this object
+        ///
+        public var stargazerCount: Int { __data["stargazerCount"] }
 
         /// Viewer.Gist.File
         ///

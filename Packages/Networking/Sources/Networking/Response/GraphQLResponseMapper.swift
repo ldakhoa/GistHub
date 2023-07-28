@@ -84,6 +84,7 @@ protocol GraphQLGist {
     var isPublic: Bool { get }
     var url: String { get }
     var owner: Owner? { get }
+    var stargazerCount: Int { get }
 }
 
 extension GraphQLGist {
@@ -100,7 +101,8 @@ extension GraphQLGist {
             updatedAt: dateFormatter.date(from: self.updatedAt),
             description: self.description,
             comments: self.comments.totalCount,
-            owner: self.owner?.toUser()
+            owner: self.owner?.toUser(),
+            stargazerCount: self.stargazerCount
         )
     }
 

@@ -8,7 +8,7 @@ public class GistsQuery: GraphQLQuery {
   public static let operationName: String = "Gists"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query Gists($first: Int, $after: String, $privacy: GistPrivacy) { viewer { __typename gists(first: $first, after: $after, privacy: $privacy) { __typename edges { __typename node { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url } } pageInfo { __typename hasNextPage endCursor } } } }"#
+      #"query Gists($first: Int, $after: String, $privacy: GistPrivacy) { viewer { __typename gists(first: $first, after: $after, privacy: $privacy) { __typename edges { __typename node { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url stargazerCount } } pageInfo { __typename hasNextPage endCursor } } } }"#
     ))
 
   public var first: GraphQLNullable<Int>
@@ -118,6 +118,7 @@ public class GistsQuery: GraphQLQuery {
               .field("comments", Comments.self),
               .field("isPublic", Bool.self),
               .field("url", GistHubGraphQL.URI.self),
+              .field("stargazerCount", Int.self),
             ] }
 
             public var id: GistHubGraphQL.ID { __data["id"] }
@@ -139,6 +140,9 @@ public class GistsQuery: GraphQLQuery {
             public var isPublic: Bool { __data["isPublic"] }
             /// The HTTP URL for this Gist.
             public var url: GistHubGraphQL.URI { __data["url"] }
+            /// Returns a count of how many stargazers there are on this object
+            ///
+            public var stargazerCount: Int { __data["stargazerCount"] }
 
             /// Viewer.Gists.Edge.Node.File
             ///

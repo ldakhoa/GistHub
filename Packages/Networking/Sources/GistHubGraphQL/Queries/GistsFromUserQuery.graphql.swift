@@ -8,7 +8,7 @@ public class GistsFromUserQuery: GraphQLQuery {
   public static let operationName: String = "GistsFromUser"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $after: String) { user(login: $userName) { __typename gists(privacy: $privacy, first: $first, after: $after) { __typename edges { __typename node { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url } } pageInfo { __typename hasNextPage endCursor } } } }"#
+      #"query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $after: String) { user(login: $userName) { __typename gists(privacy: $privacy, first: $first, after: $after) { __typename edges { __typename node { __typename id name description files { __typename name language { __typename name } size text } createdAt owner { __typename id login avatarUrl ... on User { name twitterUsername isSiteAdmin url bio email } } updatedAt comments { __typename totalCount } isPublic url stargazerCount } } pageInfo { __typename hasNextPage endCursor } } } }"#
     ))
 
   public var userName: String
@@ -122,6 +122,7 @@ public class GistsFromUserQuery: GraphQLQuery {
               .field("comments", Comments.self),
               .field("isPublic", Bool.self),
               .field("url", GistHubGraphQL.URI.self),
+              .field("stargazerCount", Int.self),
             ] }
 
             public var id: GistHubGraphQL.ID { __data["id"] }
@@ -143,6 +144,9 @@ public class GistsFromUserQuery: GraphQLQuery {
             public var isPublic: Bool { __data["isPublic"] }
             /// The HTTP URL for this Gist.
             public var url: GistHubGraphQL.URI { __data["url"] }
+            /// Returns a count of how many stargazers there are on this object
+            ///
+            public var stargazerCount: Int { __data["stargazerCount"] }
 
             /// User.Gists.Edge.Node.File
             ///

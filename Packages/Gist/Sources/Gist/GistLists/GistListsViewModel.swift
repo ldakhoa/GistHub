@@ -21,6 +21,7 @@ public final class GistListsViewModel: ObservableObject {
 
     private let client: GistHubAPIClient
     private var pagingCursor: String?
+    private var initialGists = [Gist]()
 
     public init(
         client: GistHubAPIClient = DefaultGistHubAPIClient()
@@ -68,6 +69,7 @@ public final class GistListsViewModel: ObservableObject {
 
     func search(listMode: GistListsMode) {
         if searchText.isEmpty {
+            pagingCursor = nil
             Task {
                 await fetchGists(listsMode: listMode)
             }

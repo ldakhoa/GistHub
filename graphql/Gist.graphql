@@ -34,6 +34,7 @@ query Gists($first: Int, $after: String, $privacy: GistPrivacy) {
           }
           isPublic
           url
+          stargazerCount
         }
       }
       pageInfo {
@@ -78,6 +79,7 @@ query Gist($gistID: String!) {
         }
         isPublic
         url
+        stargazerCount
     }
   }
 }
@@ -118,6 +120,7 @@ query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $aft
           }
           isPublic
           url
+          stargazerCount
         }
       }
       pageInfo {
