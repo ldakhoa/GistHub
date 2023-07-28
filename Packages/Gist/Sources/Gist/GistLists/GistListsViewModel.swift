@@ -95,6 +95,6 @@ extension GistListsViewModel {
     }
 
     enum Constants {
-        static let pagingSize = 5
+        static let pagingSize = 20
     }
 }
