@@ -81,3 +81,50 @@ query Gist($gistID: String!) {
     }
   }
 }
+
+query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $after: String) {
+  user(login: $userName) {
+    gists(privacy: $privacy, first: $first, after: $after) {
+     edges {
+        node {
+          id
+          name
+          description
+          files {
+            name
+            language {
+              name
+            }
+            size
+            text
+          }
+          createdAt
+          owner {
+            id
+            login
+            avatarUrl
+            ... on User {
+              name
+              twitterUsername
+              isSiteAdmin
+              url
+              bio
+              email
+            }
+          }
+          updatedAt
+          comments {
+            totalCount
+          }
+          isPublic
+          url
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
+

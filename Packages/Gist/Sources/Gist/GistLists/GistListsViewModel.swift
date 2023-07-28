@@ -30,37 +30,36 @@ public final class GistListsViewModel: ObservableObject {
 
     func fetchGists(listsMode: GistListsMode) async {
         do {
+            isLoadingMoreGists = true
             switch listsMode {
             case .currentUserGists:
-                let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: nil)
+                let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
                 pagingCursor = gistsResponse.cursor
                 hasMoreGists = gistsResponse.hasNextPage
-                gists = gistsResponse.gists
+                gists.append(contentsOf: gistsResponse.gists)
             case .currentUserStarredGists:
                 gists = try await client.starredGists()
             case let .userGists(userName):
-                gists = try await client.gists(fromUserName: userName)
+                let gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+                pagingCursor = gistsResponse.cursor
+                hasMoreGists = gistsResponse.hasNextPage
+                gists.append(contentsOf: gistsResponse.gists)
             }
+            isLoadingMoreGists = false
             contentState = .content
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
     }
 
-    func fetchMoreGists(currentId: String) async {
-        guard hasMoreGists, !isLoadingMoreGists, currentId == gists.last?.id ?? "" else {
+    func fetchMoreGistsIfNeeded(lastGistId: String, listsMode: GistListsMode) async {
+        guard listsMode != .currentUserStarredGists else {
             return
         }
-        do {
-            isLoadingMoreGists = true
-            let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
-            pagingCursor = gistsResponse.cursor
-            hasMoreGists = gistsResponse.hasNextPage
-            gists.append(contentsOf: gistsResponse.gists)
-            isLoadingMoreGists = false
-        } catch {
-            contentState = .error(error: error.localizedDescription)
+        guard hasMoreGists, !isLoadingMoreGists, lastGistId == gists.last?.id ?? "" else {
+            return
         }
+        await fetchGists(listsMode: listsMode)
     }
 
     func insert(_ gist: Gist) {
@@ -94,6 +93,6 @@ extension GistListsViewModel {
     }
 
     enum Constants {
-        static let pagingSize = 20
+        static let pagingSize = 5
     }
 }

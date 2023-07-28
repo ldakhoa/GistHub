@@ -4,6 +4,7 @@
 //
 //  Created by Hung Dao on 27/07/2023.
 //
+
 import OrderedCollections
 import Models
 import GistHubGraphQL
@@ -20,6 +21,18 @@ public struct GistsResponse {
         hasNextPage = pageInfo.hasNextPage
 
         let gistsData = data.viewer.gists.edges ?? []
+        gists = gistsData.compactMap { edge in
+            let gist = edge?.node
+            return gist?.toGist()
+        }
+    }
+
+    init(data: GistsFromUserQuery.Data) {
+        let pageInfo = data.user?.gists.pageInfo
+        cursor = pageInfo?.endCursor ?? ""
+        hasNextPage = pageInfo?.hasNextPage ?? false
+
+        let gistsData = data.user?.gists.edges ?? []
         gists = gistsData.compactMap { edge in
             let gist = edge?.node
             return gist?.toGist()

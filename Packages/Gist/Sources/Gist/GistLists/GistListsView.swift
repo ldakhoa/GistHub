@@ -46,7 +46,7 @@ public struct GistListsView: View {
                             GistListsRowView(gist: gist)
                                 .onAppear {
                                     Task {
-                                        await viewModel.fetchMoreGists(currentId: gist.id)
+                                        await viewModel.fetchMoreGistsIfNeeded(lastGistId: gist.id, listsMode: listsMode)
                                     }
                                 }
                             Spacer()

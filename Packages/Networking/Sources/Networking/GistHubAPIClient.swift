@@ -21,7 +21,7 @@ public protocol GistHubAPIClient: Client {
     func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List gists for from the user name.
-    func gists(fromUserName userName: String) async throws -> [Gist]
+    func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
     func starredGists() async throws -> [Gist]
@@ -109,8 +109,21 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(data: data)
     }
 
-    public func gists(fromUserName userName: String) async throws -> [Gist] {
-        try await session.data(for: API.gistsFromUserName(userName: userName))
+    public func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse {
+        let inputCursor: GraphQLNullable<String>
+        if let cursor {
+            inputCursor = GraphQLNullable(stringLiteral: cursor)
+        } else {
+            inputCursor = GraphQLNullable.none
+        }
+        let query = GistsFromUserQuery(
+            userName: userName,
+            privacy: GraphQLNullable(GistPrivacy.all),
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: inputCursor
+        )
+        let data = try await graphQLSession.query(query)
+        return GistsResponse(data: data)
     }
 
     public func starredGists() async throws -> [Gist] {

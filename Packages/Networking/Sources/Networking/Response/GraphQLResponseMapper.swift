@@ -161,3 +161,13 @@ extension GistQueryNode.Owner.AsUser: GraphQLAsUser {}
 extension GistQueryNode.Owner: GraphQLUser {}
 extension GistQueryNode.File: GraphQLFile {}
 extension GistQueryNode.File.Language: GraphQLLanguage {}
+
+// MARK: GistFromUserQuery
+
+typealias GistsFromUserQueryNode = GistsFromUserQuery.Data.User.Gists.Edge.Node
+extension GistsFromUserQueryNode: GraphQLGist {}
+extension GistsFromUserQueryNode.Comments: GraphQLComments {}
+extension GistsFromUserQueryNode.Owner.AsUser: GraphQLAsUser {}
+extension GistsFromUserQueryNode.Owner: GraphQLUser {}
+extension GistsFromUserQueryNode.File: GraphQLFile {}
+extension GistsFromUserQueryNode.File.Language: GraphQLLanguage {}
