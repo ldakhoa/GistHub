@@ -8,6 +8,7 @@
 import Models
 import OrderedCollections
 import Foundation
+import GistHubGraphQL
 
 protocol GraphQLLanguage {
     var name: String { get }
@@ -138,3 +139,25 @@ private extension OrderedDictionary<String, File> {
         return result
     }
 }
+
+// MARK: - Protocol apdoption
+
+// MARK: GistsQuery
+
+typealias GistsQueryNode = GistsQuery.Data.Viewer.Gists.Edge.Node
+extension GistsQueryNode: GraphQLGist {}
+extension GistsQueryNode.Comments: GraphQLComments {}
+extension GistsQueryNode.Owner.AsUser: GraphQLAsUser {}
+extension GistsQueryNode.Owner: GraphQLUser {}
+extension GistsQueryNode.File: GraphQLFile {}
+extension GistsQueryNode.File.Language: GraphQLLanguage {}
+
+// MARK: GistQuery
+
+typealias GistQueryNode = GistQuery.Data.Viewer.Gist
+extension GistQueryNode: GraphQLGist {}
+extension GistQueryNode.Comments: GraphQLComments {}
+extension GistQueryNode.Owner.AsUser: GraphQLAsUser {}
+extension GistQueryNode.Owner: GraphQLUser {}
+extension GistQueryNode.File: GraphQLFile {}
+extension GistQueryNode.File.Language: GraphQLLanguage {}

@@ -9,8 +9,6 @@ import Models
 import GistHubGraphQL
 import Foundation
 
-typealias Node = GistsQuery.Data.Viewer.Gists.Edge.Node
-
 public struct GistsResponse {
     public let gists: [Gist]
     public let cursor: String
@@ -28,10 +26,3 @@ public struct GistsResponse {
         }
     }
 }
-
-extension Node: GraphQLGist {}
-extension Node.Comments: GraphQLComments {}
-extension Node.Owner.AsUser: GraphQLAsUser {}
-extension Node.Owner: GraphQLUser {}
-extension Node.File: GraphQLFile {}
-extension Node.File.Language: GraphQLLanguage {}

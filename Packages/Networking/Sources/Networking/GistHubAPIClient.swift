@@ -146,7 +146,12 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     }
 
     public func gist(fromGistID gistID: String) async throws -> Gist {
-        try await session.data(for: API.gist(gistID: gistID))
+        let query = GistQuery(gistID: gistID)
+        let data = try await graphQLSession.query(query)
+        guard let gist = data.viewer.gist?.toGist() else {
+            throw ApolloError()
+        }
+        return gist
     }
 
     public func deleteGist(fromGistID gistID: String) async throws {
