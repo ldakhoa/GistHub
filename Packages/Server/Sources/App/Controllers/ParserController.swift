@@ -64,10 +64,13 @@ public final class ParserController {
                     gist.id = gistId
                 }
 
-                if let fileCountLink = try snippet.select("a[href*=files]").first() {
-                   let fileCount = try fileCountLink.text().components(separatedBy: CharacterSet.decimalDigits.inverted)
+                // File count
+                if let fileCountElement = try snippet.select("a[href*=/\(user.userName!)/\(gist.id!)]").first() {
+                    let fileCount = try fileCountElement
+                        .text()
+                        .components(separatedBy: CharacterSet.decimalDigits.inverted)
                         .joined()
-                    print("File count: \(fileCount)")
+                    gist.fileCount = Int(fileCount)
                 }
 
                 // Comment count

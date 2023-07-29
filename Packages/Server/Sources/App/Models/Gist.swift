@@ -8,7 +8,7 @@ public struct Gist: Content, Codable {
     public var comments: Int?
     public var owner: User?
     public var stargazerCount: Int?
-    public var filesCount: Int?
+    public var fileCount: Int?
     public var files: [String: File]?
 
     public init(
@@ -18,7 +18,7 @@ public struct Gist: Content, Codable {
         comments: Int? = nil,
         owner: User? = nil,
         stargazerCount: Int? = nil,
-        filesCount: Int? = nil,
+        fileCount: Int? = nil,
         files: [String: File]? = nil
     ) {
         self.id = id
@@ -27,7 +27,7 @@ public struct Gist: Content, Codable {
         self.comments = comments
         self.owner = owner
         self.stargazerCount = stargazerCount
-        self.filesCount = filesCount
+        self.fileCount = fileCount
         self.files = files
     }
 }
