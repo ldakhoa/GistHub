@@ -21,7 +21,7 @@ public struct GistListsView: View {
 
     private let listsMode: GistListsMode
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
-    @State var progressViewId = 0
+    @State private var progressViewId = 0
 
     // MARK: - Initializer
 

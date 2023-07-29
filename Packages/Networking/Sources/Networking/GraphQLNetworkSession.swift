@@ -11,34 +11,44 @@ import GistHubGraphQL
 import AppAccount
 import os
 
-public class GraphQLNetworkSession {
+public final class GraphQLNetworkSession {
 
-    public init() {}
-    public lazy var client: ApolloClient = {
-        let url = URL(string: "https://api.github.com/graphql")!
+    private lazy var client: ApolloClient? = {
+        guard let url = URL(string: "https://api.github.com/graphql") else {
+            return nil
+        }
         let cache = InMemoryNormalizedCache()
         let store = ApolloStore(cache: cache)
         let sessionClient = URLSessionClient()
         let provider = NetworkInterceptorProvider(client: sessionClient, shouldInvalidateClientOnDeinit: true, store: store)
-        let requestChainTransport = RequestChainNetworkTransport(interceptorProvider: provider,
-                                                                 endpointURL: url)
+        let requestChainTransport = RequestChainNetworkTransport(
+            interceptorProvider: provider,
+            endpointURL: url
+        )
 
-        return ApolloClient(networkTransport: requestChainTransport,
-                            store: store)
+        return ApolloClient(
+            networkTransport: requestChainTransport,
+            store: store
+        )
     }()
 
+    public init() {}
+
     public func query<T: GraphQLQuery>(_ query: T) async throws -> T.Data {
-        try await withCheckedThrowingContinuation { continuation in
+        guard let client else {
+            throw ApolloError.invalidEndpointURL
+        }
+        return try await withCheckedThrowingContinuation { continuation in
             client.fetch(query: query) { result in
                 switch result {
-                case .success(let graphQLResult):
+                case let .success(graphQLResult):
                     if let data = graphQLResult.data {
                         continuation.resume(returning: data)
                     }
                     if graphQLResult.errors != nil {
-                        continuation.resume(throwing: ApolloError())
+                        continuation.resume(throwing: ApolloError.responseError)
                     }
-                case .failure(let error):
+                case let .failure(error):
                     continuation.resume(throwing: error)
                 }
             }
@@ -46,17 +56,20 @@ public class GraphQLNetworkSession {
     }
 
     public func mutate<T: GraphQLMutation>(_ mutation: T) async throws -> T.Data {
-        try await withCheckedThrowingContinuation { continuation in
+        guard let client else {
+            throw ApolloError.invalidEndpointURL
+        }
+        return try await withCheckedThrowingContinuation { continuation in
             client.perform(mutation: mutation) { result in
                 switch result {
-                case .success(let graphQLResult):
+                case let .success(graphQLResult):
                     if let data = graphQLResult.data {
                         continuation.resume(returning: data)
                     }
                     if graphQLResult.errors != nil {
-                        continuation.resume(throwing: ApolloError())
+                        continuation.resume(throwing: ApolloError.responseError)
                     }
-                case .failure(let error):
+                case let .failure(error):
                     continuation.resume(throwing: error)
                 }
             }
@@ -64,7 +77,7 @@ public class GraphQLNetworkSession {
     }
 }
 
-class NetworkInterceptorProvider: DefaultInterceptorProvider {
+private final class NetworkInterceptorProvider: DefaultInterceptorProvider {
     override func interceptors<Operation: GraphQLOperation>(for operation: Operation) -> [ApolloInterceptor] {
         var interceptors = super.interceptors(for: operation)
         interceptors.insert(AuthorizationInterceptor(), at: 0)
@@ -72,7 +85,7 @@ class NetworkInterceptorProvider: DefaultInterceptorProvider {
     }
 }
 
-class AuthorizationInterceptor: ApolloInterceptor {
+private final class AuthorizationInterceptor: ApolloInterceptor {
     var id: String = ""
 
     func interceptAsync<Operation: GraphQLOperation>(
@@ -83,15 +96,25 @@ class AuthorizationInterceptor: ApolloInterceptor {
             let appAccountsManager = AppAccountsManager()
             guard let focusedUserSession = appAccountsManager.focusedAccount else { return }
             request.addHeader(name: "Authorization", value: "bearer \(focusedUserSession.token)")
-            chain.proceedAsync(request: request,
-                               response: response,
-                               interceptor: self,
-                               completion: completion)
+            chain.proceedAsync(
+                request: request,
+                response: response,
+                interceptor: self,
+                completion: completion
+            )
         }
 }
 
-public struct ApolloError: LocalizedError {
+public enum ApolloError: LocalizedError {
+    case invalidEndpointURL
+    case responseError
+
     public var errorDescription: String? {
-        return "Errors occurred while fetching data"
+        switch self {
+        case .invalidEndpointURL:
+            return "Invalid GraphQL endpoint"
+        case .responseError:
+            return "GraphQL response included errors"
+        }
     }
 }

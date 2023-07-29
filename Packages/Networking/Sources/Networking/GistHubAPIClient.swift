@@ -11,7 +11,6 @@ import Models
 import AppAccount
 import GistHubGraphQL
 import Apollo
-import os
 
 public protocol GistHubAPIClient: Client {
     /// Allows you to add a new gist with one or more files.
@@ -104,7 +103,10 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         } else {
             inputCursor = GraphQLNullable.none
         }
-        let query = GistsQuery(first: GraphQLNullable(integerLiteral: pageSize), after: inputCursor, privacy: GraphQLNullable(GistPrivacy.all))
+        let query = GistsQuery(
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: inputCursor, privacy: GraphQLNullable(GistPrivacy.all)
+        )
         let data = try await graphQLSession.query(query)
         return GistsResponse(data: data)
     }
