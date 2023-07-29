@@ -415,6 +415,7 @@
 /* Begin XCBuildConfiguration section */
 		6A0CA5C12A62C4FF00366D03 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -620,6 +621,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = debugging;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -658,6 +660,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = debugging;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
