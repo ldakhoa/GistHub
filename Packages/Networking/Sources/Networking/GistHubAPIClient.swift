@@ -140,7 +140,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let mutation = AddStarMutation(input: AddStarInput(starrableId: gistID))
         let data = try await graphQLSession.mutate(mutation)
         guard let starred = data.addStar?.starrable?.viewerHasStarred else {
-            throw ApolloError()
+            throw ApolloError.responseError
         }
         return starred
     }
@@ -153,7 +153,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let mutation = RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))
         let data = try await graphQLSession.mutate(mutation)
         guard let starred = data.removeStar?.starrable?.viewerHasStarred else {
-            throw ApolloError()
+            throw ApolloError.responseError
         }
         return starred
     }
@@ -162,7 +162,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let query = IsStarredQuery(gistID: gistID)
         let data = try await graphQLSession.query(query)
         guard let starred = data.viewer.gist?.viewerHasStarred else {
-            throw ApolloError()
+            throw ApolloError.responseError
         }
         return starred
     }
@@ -171,7 +171,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let query = GistQuery(gistID: gistID)
         let data = try await graphQLSession.query(query)
         guard let gist = data.viewer.gist?.toGist() else {
-            throw ApolloError()
+            throw ApolloError.responseError
         }
         return gist
     }
