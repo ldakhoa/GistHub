@@ -53,11 +53,14 @@ public final class GistListsViewModel: ObservableObject {
         }
     }
 
-    func fetchMoreGistsIfNeeded(lastGistId: String, listsMode: GistListsMode) async {
+    func fetchMoreGistsIfNeeded(currentGistID: String, listsMode: GistListsMode) async {
         guard listsMode != .currentUserStarredGists else {
             return
         }
-        guard hasMoreGists, !isLoadingMoreGists, lastGistId == gists.last?.id ?? "" else {
+        guard hasMoreGists,
+            !isLoadingMoreGists,
+            let lastGistID = gists.last?.id,
+            currentGistID == lastGistID else {
             return
         }
         await fetchGists(listsMode: listsMode)
