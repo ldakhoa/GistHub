@@ -10,7 +10,7 @@ on:
 
 jobs:
   SwiftLint:
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
       - name: GitHub Action for SwiftLint
