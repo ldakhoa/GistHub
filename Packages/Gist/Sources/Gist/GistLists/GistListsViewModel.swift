@@ -22,7 +22,7 @@ public final class GistListsViewModel: ObservableObject {
     private let client: GistHubAPIClient
     private var pagingCursor: String?
     private var originalGists: [Gist] = []
-
+    private var isSearchingGists: Bool = false
     public init(
         client: GistHubAPIClient = DefaultGistHubAPIClient()
     ) {
@@ -37,6 +37,7 @@ public final class GistListsViewModel: ObservableObject {
                 let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
                 pagingCursor = gistsResponse.cursor
                 hasMoreGists = gistsResponse.hasNextPage
+                originalGists.append(contentsOf: gistsResponse.gists)
                 gists.append(contentsOf: gistsResponse.gists)
             case .currentUserStarredGists:
                 gists = try await client.starredGists()
@@ -44,6 +45,7 @@ public final class GistListsViewModel: ObservableObject {
                 let gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
                 pagingCursor = gistsResponse.cursor
                 hasMoreGists = gistsResponse.hasNextPage
+                originalGists.append(contentsOf: gistsResponse.gists)
                 gists.append(contentsOf: gistsResponse.gists)
             }
             isLoadingMoreGists = false
@@ -54,7 +56,7 @@ public final class GistListsViewModel: ObservableObject {
     }
 
     func fetchMoreGistsIfNeeded(currentGistID: String, listsMode: GistListsMode) async {
-        guard listsMode != .currentUserStarredGists else {
+        guard listsMode != .currentUserStarredGists, !isSearchingGists else {
             return
         }
         guard hasMoreGists,
@@ -74,11 +76,9 @@ public final class GistListsViewModel: ObservableObject {
         if searchText.isEmpty {
             // Restore the original list of gists
             gists = originalGists
+            isSearchingGists = false
         } else {
-            if originalGists.isEmpty {
-                originalGists = gists
-            }
-
+            isSearchingGists = true
             gists = originalGists.filter {
                 if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {
                 let fileNameCondition = fileNames.filter { $0.range(of: searchText, options: .caseInsensitive) != nil }

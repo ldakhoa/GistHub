@@ -87,7 +87,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commentsURL = try container.decodeIfPresent(String.self, forKey: .commentsURL)
         self.owner = try container.decodeIfPresent(User.self, forKey: .owner)
         self.truncated = try container.decodeIfPresent(Bool.self, forKey: .truncated)
-        self.stargazerCount = nil
+        self.stargazerCount = try container.decodeIfPresent(Int.self, forKey: .stargazerCount)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -108,6 +108,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         case commentsURL = "comments_url"
         case owner = "owner"
         case truncated = "truncated"
+        case stargazerCount
     }
 
     public static func == (lhs: Gist, rhs: Gist) -> Bool {
