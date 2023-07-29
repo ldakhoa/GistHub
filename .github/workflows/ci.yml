@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  SwiftLint:
-    runs-on: macos-13
+  CI:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - name: Test Server
