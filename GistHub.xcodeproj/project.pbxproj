@@ -448,6 +448,7 @@
 		};
 		6A0CA5C22A62C4FF00366D03 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = ActionIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
