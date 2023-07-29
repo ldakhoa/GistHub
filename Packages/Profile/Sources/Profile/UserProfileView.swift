@@ -90,6 +90,7 @@ public struct UserProfileView: View {
                     backgroundImage: Colors.Palette.Yellow.yellow2.dynamicColor.color
                 ) {
                     // implement
+                    routerPath.navigate(to: .gistLists(mode: .currentUserStarredGists))
                 }
             }
             .background(Colors.listBackground.color)
