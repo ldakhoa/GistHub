@@ -16,4 +16,4 @@ jobs:
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
       - name: Test Server
-        run: cd Packages/Server && swift test -v
+        run: cd Packages/Server; swift test
