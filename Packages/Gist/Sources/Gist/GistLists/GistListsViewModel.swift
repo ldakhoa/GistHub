@@ -15,13 +15,13 @@ public final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var searchText = ""
 
-    @Published var gists = [Gist]()
+    @Published var gists: [Gist] = []
     @Published var hasMoreGists = false
     @Published var isLoadingMoreGists = false
 
     private let client: GistHubAPIClient
     private var pagingCursor: String?
-    private var initialGists = [Gist]()
+    private var originalGists: [Gist] = []
 
     public init(
         client: GistHubAPIClient = DefaultGistHubAPIClient()
@@ -69,12 +69,14 @@ public final class GistListsViewModel: ObservableObject {
 
     func search(listMode: GistListsMode) {
         if searchText.isEmpty {
-            pagingCursor = nil
-            Task {
-                await fetchGists(listsMode: listMode)
-            }
+            // Restore the original list of gists
+            gists = originalGists
         } else {
-            gists = gists.filter {
+            if originalGists.isEmpty {
+                originalGists = gists
+            }
+
+            gists = originalGists.filter {
                 if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {
                 let fileNameCondition = fileNames.filter { $0.range(of: searchText, options: .caseInsensitive) != nil }
                     let loginNameCondition = loginName.localizedCaseInsensitiveContains(searchText)

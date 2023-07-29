@@ -61,8 +61,9 @@ public struct GistListsView: View {
                             contextMenuPreview(gist: gist)
                         }
                     }
+
                     if viewModel.isLoadingMoreGists {
-                        HStack {
+                        HStack(alignment: .center) {
                             Spacer()
                             ProgressView()
                                 .id(progressViewId)
@@ -71,6 +72,7 @@ public struct GistListsView: View {
                                 }
                             Spacer()
                         }
+                        .listRowSeparator(.hidden)
                     }
                 case .error:
                     ErrorView(
@@ -82,6 +84,7 @@ public struct GistListsView: View {
                     .listRowSeparator(.hidden)
                 }
             }
+            .animation(.linear, value: viewModel.gists)
 
             if listsMode == .currentUserGists {
                 newGistFloatingButton
