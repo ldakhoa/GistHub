@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/elai950/AlertToast",
       "state" : {
-        "revision" : "a4f4267f6454259ba4ed8f9dadb87334a789c26c",
-        "version" : "1.3.7"
+        "revision" : "b39252eacd159904afd7d718bba0afabb87f2f2f",
+        "version" : "1.3.9"
       }
     },
     {
@@ -55,18 +55,27 @@
       }
     },
     {
+      "identity" : "keychain-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/evgenyneu/keychain-swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c1fde55798b164cad44b5e23cfa2f0f1ebcd76af"
+      }
+    },
+    {
       "identity" : "kingfisher",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "44e891bdb61426a95e31492a67c7c0dfad1f87c5",
-        "version" : "7.4.1"
+        "revision" : "c1f60c63f356d364f4284ba82961acbe7de79bcc",
+        "version" : "7.8.1"
       }
     },
     {
       "identity" : "networkable",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tphduy/Networkable",
+      "location" : "https://github.com/duytph/Networkable",
       "state" : {
         "revision" : "8e514e65d81a8ed7a67f718e3cc9399ce2094be4",
         "version" : "2.0.0"
@@ -106,6 +115,15 @@
       "state" : {
         "revision" : "f23b8872561daf747e233ba7d6130d9e680f52e1",
         "version" : "0.1.4"
+      }
+    },
+    {
+      "identity" : "whatsnewkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SvenTiigi/WhatsNewKit",
+      "state" : {
+        "revision" : "238dadc14dd58885f51037e63d08baf4275c480e",
+        "version" : "2.1.0"
       }
     }
   ],
