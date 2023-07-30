@@ -1,7 +1,6 @@
 import Foundation
-import Vapor
 
-public struct Gist: Content, Codable, Equatable {
+public struct Gist: Codable, Equatable {
     public var id: String?
     public var updatedAt: Date?
     public var description: String?
@@ -32,7 +31,7 @@ public struct Gist: Content, Codable, Equatable {
     }
 }
 
-public struct File: Content, Codable, Equatable {
+public struct File: Codable, Equatable {
     public var filename: String?
 
     public init(filename: String? = nil) {

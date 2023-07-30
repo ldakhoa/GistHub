@@ -15,12 +15,19 @@ let package = Package(
             name: "App",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
-                "SwiftSoup"
+                "Parser"
             ]
         ),
-        .testTarget(name: "AppTests", dependencies: [
-            "App",
-            "SwiftSoup"
-        ])
+        .target(
+            name: "Parser",
+            dependencies: ["SwiftSoup"]
+        ),
+        .testTarget(
+            name: "ParserTests",
+            dependencies: [
+                "SwiftSoup",
+                "Parser"
+            ]
+        )
     ]
 )

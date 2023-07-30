@@ -1,6 +1,6 @@
 import XCTest
 import SwiftSoup
-@testable import App
+@testable import Parser
 
 final class ParserControllerTests: XCTestCase {
     private let stubbedUrlString = "https://gist.github.com/gisthubtester"
@@ -23,12 +23,12 @@ final class ParserControllerTests: XCTestCase {
             updatedAt: nil,
             description: nil,
             comments: 0,
-            owner: App.User(
+            owner: User(
                 userName: "gisthubtester",
                 avatarUrl: "https://avatars.githubusercontent.com/u/121019184?s=60&v=4"),
             stargazerCount: 1,
             fileCount: 1,
-            files: ["test11.md": App.File(filename: "test11.md")]
+            files: ["test11.md": File(filename: "test11.md")]
         )
 
         let snippet = try XCTUnwrap(buildSnippet(from: parserController))

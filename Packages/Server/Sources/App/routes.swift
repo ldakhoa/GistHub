@@ -1,4 +1,5 @@
 import Vapor
+import Parser
 
 func routes(_ app: Application) throws {
     app.get { req async in
@@ -21,3 +22,7 @@ func routes(_ app: Application) throws {
 enum Constants {
     static let host = "https://gist.github.com"
 }
+
+extension Gist: Content {}
+extension Parser.File: Content {}
+extension User: Content {}

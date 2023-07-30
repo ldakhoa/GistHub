@@ -1,7 +1,6 @@
 import Foundation
-import Vapor
 
-public struct User: Content, Codable, Equatable {
+public struct User: Codable, Equatable {
     public var userName: String?
     public var avatarUrl: String?
 
