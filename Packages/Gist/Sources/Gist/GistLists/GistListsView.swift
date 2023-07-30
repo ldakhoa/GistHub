@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import Inject
 import Models
 import Environment
 import DesignSystem
 import Utilities
 
 public struct GistListsView: View {
-    @ObserveInjection private var inject
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var routerPath: RouterPath
 
@@ -81,7 +79,6 @@ public struct GistListsView: View {
         .onChange(of: viewModel.searchText) { _ in
             viewModel.search()
         }
-        .enableInjection()
     }
 
     @ViewBuilder
@@ -127,6 +124,7 @@ public struct GistListsView: View {
         NavigationStack {
             GistDetailView(gistId: gist.id)
                 .environmentObject(currentAccount)
+                .environmentObject(routerPath)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
                 .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")

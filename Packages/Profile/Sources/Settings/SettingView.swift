@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Inject
 import AppAccount
 import Models
 import DesignSystem
@@ -20,7 +19,6 @@ public struct SettingView: View {
     @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
-    @ObserveInjection private var inject
 
     // MARK: - Misc
 
@@ -100,7 +98,6 @@ public struct SettingView: View {
         } message: {
             Text("You will be signed out from all of your accounts. Do you want to sign out?")
         }
-        .enableInjection()
     }
 }
 

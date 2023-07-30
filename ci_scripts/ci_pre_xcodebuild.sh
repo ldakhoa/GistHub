@@ -8,6 +8,7 @@ cd GistHub/Resources
 
 plutil -replace GITHUBID -string $GITHUBID Info.plist
 plutil -replace GITHUBSECRET -string $GITHUBSECRET Info.plist
+plutil -replace IMGURID -string $IMGURID Info.plist
 
 plutil -p Info.plist
 
