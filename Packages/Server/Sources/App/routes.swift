@@ -1,5 +1,5 @@
 import Vapor
-import Parser
+import GistHub_HTML_Parser
 
 func routes(_ app: Application) throws {
     app.get { req async in
@@ -24,5 +24,5 @@ enum Constants {
 }
 
 extension Gist: Content {}
-extension Parser.File: Content {}
+extension GistHub_HTML_Parser.File: Content {}
 extension User: Content {}
