@@ -46,6 +46,7 @@ public struct UserProfileView: View {
         .onAppear {
             fetchUser()
         }
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if currentAccount.user?.login == viewModel.user.login {
@@ -60,7 +61,6 @@ public struct UserProfileView: View {
                 }
             }
         }
-//        .enableInjection()
     }
 
     @ViewBuilder
