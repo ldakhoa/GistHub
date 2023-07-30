@@ -624,10 +624,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = (
-					"-Xlinker",
-					"-interposable",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = debugging;
@@ -667,10 +664,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_LDFLAGS = (
-					"-Xlinker",
-					"-interposable",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ldakhoa.gisthub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = debugging;
