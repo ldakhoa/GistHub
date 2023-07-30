@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import Inject
 import DesignSystem
 import AppAccount
 import Environment
 
 public struct LoginView: View {
-    @ObserveInjection private var inject
     @StateObject private var viewModel = LoginViewModel()
     @State private var showErrorToast = false
     @State private var error = ""
@@ -108,7 +106,6 @@ public struct LoginView: View {
         } message: {
             Text("Sign in with a Personal Access Token with both gists and user scopes.")
         }
-        .enableInjection()
     }
 
     private func makeButton(

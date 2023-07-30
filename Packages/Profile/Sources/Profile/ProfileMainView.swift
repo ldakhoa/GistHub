@@ -2,12 +2,10 @@ import SwiftUI
 import Models
 import Environment
 import DesignSystem
-import Inject
 import AppAccount
 import Utilities
 
 public struct UserProfileView: View {
-    @ObserveInjection private var inject
     @StateObject private var viewModel = ProfileViewModel()
     @State private var scrollOffset: CGPoint = .zero
 
@@ -62,7 +60,7 @@ public struct UserProfileView: View {
                 }
             }
         }
-        .enableInjection()
+//        .enableInjection()
     }
 
     @ViewBuilder
