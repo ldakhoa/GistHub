@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-// import Inject
 import Models
 import Environment
 import DesignSystem
 import Utilities
 
 public struct GistListsView: View {
-//    @ObserveInjection private var inject
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var routerPath: RouterPath
 
@@ -81,7 +79,6 @@ public struct GistListsView: View {
         .onChange(of: viewModel.searchText) { _ in
             viewModel.search()
         }
-//        .enableInjection()
     }
 
     @ViewBuilder

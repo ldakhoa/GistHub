@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "inject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzysztofzablocki/Inject",
+      "state" : {
+        "revision" : "2057eb9819813b89fd2107e99608d2d20890d9c5",
+        "version" : "1.2.4"
+      }
+    },
+    {
       "identity" : "keyboardtoolbar",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/KeyboardToolbar",

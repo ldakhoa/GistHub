@@ -17,7 +17,11 @@ let package = Package(
          .package(name: "Networking", path: "../Networking"),
          .package(name: "AppAccount", path: "../AppAccount"),
          .package(name: "Environment", path: "../Environment"),
-         .package(name: "Utilities", path: "../Utilities")
+         .package(name: "Utilities", path: "../Utilities"),
+         .package(
+            url: "https://github.com/krzysztofzablocki/Inject.git",
+            from: "1.2.4"
+         )
         // Third package dependencies
         // .package(url: "url", from: "1.0.0"),
     ],
@@ -29,7 +33,8 @@ let package = Package(
                 "Networking",
                 "AppAccount",
                 "Utilities",
-                "Environment"
+                "Environment",
+                "Inject"
             ]
         ),
         .testTarget(
