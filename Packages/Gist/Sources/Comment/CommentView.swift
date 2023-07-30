@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Inject
+// import Inject
 import Models
 import DesignSystem
 import Markdown
@@ -22,7 +22,7 @@ public struct CommentView: View {
 
     @State private var showContentActionConfirmedDialog = false
     @State private var showDeleteConfirmedDialog = false
-    @ObserveInjection private var inject
+//    @ObserveInjection private var inject
     @State private var commentMarkdownHeight: CGFloat = 0
 
     public init(
@@ -144,7 +144,7 @@ public struct CommentView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .enableInjection()
+//        .enableInjection()
     }
 
     private func quoteBody(body: String) -> String {

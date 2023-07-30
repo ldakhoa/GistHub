@@ -7,7 +7,7 @@
 
 import AlertToast
 import SwiftUI
-import Inject
+// import Inject
 import DesignSystem
 import Models
 import Editor
@@ -15,7 +15,7 @@ import Comment
 import Environment
 
 public struct GistDetailView: View {
-    @ObserveInjection private var inject
+//    @ObserveInjection private var inject
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var routerPath: RouterPath
 
@@ -181,7 +181,7 @@ public struct GistDetailView: View {
             presentationMode.wrappedValue.dismiss()
         }
         .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
-        .enableInjection()
+//        .enableInjection()
     }
 
     @ViewBuilder

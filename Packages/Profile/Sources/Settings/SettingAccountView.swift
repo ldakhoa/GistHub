@@ -5,7 +5,7 @@
 //  Created by Khoa Le on 18/12/2022.
 //
 
-import Inject
+// import Inject
 import SwiftUI
 import Models
 import DesignSystem
@@ -13,7 +13,7 @@ import AppAccount
 import Environment
 
 public struct SettingAccountView: View {
-    @ObserveInjection private var inject
+//    @ObserveInjection private var inject
     @EnvironmentObject private var appAccountsManager: AppAccountsManager
     @EnvironmentObject private var currentAccount: CurrentAccount
 
@@ -31,6 +31,6 @@ public struct SettingAccountView: View {
         }
         .listStyle(.grouped)
         .navigationTitle("Accounts")
-        .enableInjection()
+//        .enableInjection()
     }
 }

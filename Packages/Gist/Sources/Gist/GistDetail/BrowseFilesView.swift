@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-import Inject
+// import Inject
 import DesignSystem
 import Models
 import Environment
 import Editor
 
 public struct BrowseFilesView: View {
-    @ObserveInjection private var inject
+//    @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var currentAccount: CurrentAccount
@@ -67,7 +67,7 @@ public struct BrowseFilesView: View {
                 viewModel.onLoad(files: self.files)
             }
         }
-        .enableInjection()
+//        .enableInjection()
     }
 
     @ViewBuilder
