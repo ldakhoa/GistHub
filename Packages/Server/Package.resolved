@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ldakhoa/GistHub-HTML-Parser.git",
       "state" : {
-        "revision" : "94de44e2ae4bf17be4c0ab6f221ecce24bba910d",
-        "version" : "1.0.0"
+        "revision" : "ad458612a3cbc00d83a0b34f95a36e7fa08fe887",
+        "version" : "1.0.1"
       }
     },
     {
