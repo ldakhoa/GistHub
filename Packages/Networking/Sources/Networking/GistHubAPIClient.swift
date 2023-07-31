@@ -23,7 +23,7 @@ public protocol GistHubAPIClient: Client {
     func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
-    func starredGists(page: Int, perPage: Int) async throws -> [Gist]
+    func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
 
     /// Get authenticated user info.
     func user() async throws -> User
@@ -128,8 +128,9 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(data: data)
     }
 
-    public func starredGists(page: Int, perPage: Int) async throws -> [Gist] {
-        try await session.data(for: API.starredGists(page: page, perPage: perPage))
+    public func starredGists(page: Int, perPage: Int) async throws -> GistsResponse {
+        let gists: [Gist] = try await session.data(for: API.starredGists(page: page, perPage: perPage))
+        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 
     public func user() async throws -> User {

@@ -15,6 +15,16 @@ public struct GistsResponse {
     public let cursor: String
     public let hasNextPage: Bool
 
+    init(
+        gists: [Gist],
+        cursor: String = "",
+        hasNextPage: Bool
+    ) {
+        self.gists = gists
+        self.cursor = cursor
+        self.hasNextPage = hasNextPage
+    }
+
     init(data: GistsQuery.Data) {
         let pageInfo = data.viewer.gists.pageInfo
         cursor = pageInfo.endCursor ?? ""

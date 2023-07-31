@@ -20,13 +20,14 @@ public struct GistListsView: View {
     // MARK: - Dependencies
 
     private let listsMode: GistListsMode
-    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
+    @StateObject private var viewModel: GistListsViewModel
     @State private var progressViewId = 0
 
     // MARK: - Initializer
 
     public init(listsMode: GistListsMode) {
         self.listsMode = listsMode
+        _viewModel = StateObject(wrappedValue: GistListsViewModel(listsMode: listsMode))
     }
 
     // MARK: - View
@@ -46,7 +47,7 @@ public struct GistListsView: View {
                             GistListsRowView(gist: gist)
                                 .onAppear {
                                     Task {
-                                        await viewModel.fetchMoreGistsIfNeeded(currentGistID: gist.id, listsMode: listsMode)
+                                        await viewModel.fetchMoreGistsIfNeeded(currentGistID: gist.id)
                                     }
                                 }
                             Spacer()
@@ -95,11 +96,11 @@ public struct GistListsView: View {
         .animation(.default, value: viewModel.searchText)
         .navigationTitle(Text(listsMode.navigationTitle))
         .onLoad { fetchGists() }
-        .refreshable { fetchGists() }
+        .refreshable { refreshGists() }
         .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
         .scrollDismissesKeyboard(.interactively)
         .onChange(of: viewModel.searchText) { _ in
-            viewModel.search(listMode: listsMode)
+            viewModel.search()
         }
         .enableInjection()
     }
@@ -157,7 +158,13 @@ public struct GistListsView: View {
 
     private func fetchGists() {
         Task {
-            await viewModel.fetchGists(listsMode: listsMode)
+            await viewModel.fetchGists()
+        }
+    }
+
+    private func refreshGists() {
+        Task {
+            await viewModel.refreshGists()
         }
     }
 }

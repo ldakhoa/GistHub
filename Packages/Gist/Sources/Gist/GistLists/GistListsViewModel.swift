@@ -24,35 +24,26 @@ public final class GistListsViewModel: ObservableObject {
     private var isSearchingGists: Bool = false
     private var currentStarredPage: Int = 1
     private var hasMoreGists = false
+    private let listsMode: GistListsMode
 
     public init(
-        client: GistHubAPIClient = DefaultGistHubAPIClient()
+        client: GistHubAPIClient = DefaultGistHubAPIClient(),
+        listsMode: GistListsMode
     ) {
         self.client = client
+        self.listsMode = listsMode
     }
 
-    func fetchGists(listsMode: GistListsMode) async {
+    func fetchGists(refresh: Bool = false) async {
         do {
             isLoadingMoreGists = true
-            switch listsMode {
-            case .currentUserGists:
-                let gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
-                pagingCursor = gistsResponse.cursor
-                hasMoreGists = gistsResponse.hasNextPage
-                originalGists.append(contentsOf: gistsResponse.gists)
-                gists.append(contentsOf: gistsResponse.gists)
-            case .currentUserStarredGists:
-                let newGists = try await client.starredGists(page: currentStarredPage, perPage: Constants.pagingSize)
-                hasMoreGists = !newGists.isEmpty
-                currentStarredPage += 1
+            let newGists = try await fetchGistsByListsMode()
+            if refresh {
+                originalGists = newGists
+                gists = newGists
+            } else {
                 originalGists.append(contentsOf: newGists)
                 gists.append(contentsOf: newGists)
-            case let .userGists(userName):
-                let gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
-                pagingCursor = gistsResponse.cursor
-                hasMoreGists = gistsResponse.hasNextPage
-                originalGists.append(contentsOf: gistsResponse.gists)
-                gists.append(contentsOf: gistsResponse.gists)
             }
             isLoadingMoreGists = false
             contentState = .content
@@ -61,7 +52,24 @@ public final class GistListsViewModel: ObservableObject {
         }
     }
 
-    func fetchMoreGistsIfNeeded(currentGistID: String, listsMode: GistListsMode) async {
+    private func fetchGistsByListsMode() async throws -> [Gist] {
+        let gistsResponse: GistsResponse
+        switch listsMode {
+        case .currentUserGists:
+            gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        case .currentUserStarredGists:
+            gistsResponse = try await client.starredGists(page: currentStarredPage, perPage: Constants.pagingSize)
+            currentStarredPage += 1
+        case let .userGists(userName):
+            gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        }
+        hasMoreGists = gistsResponse.hasNextPage
+        return gistsResponse.gists
+    }
+
+    func fetchMoreGistsIfNeeded(currentGistID: String) async {
         guard !isSearchingGists else {
             return
         }
@@ -71,14 +79,14 @@ public final class GistListsViewModel: ObservableObject {
             currentGistID == lastGistID else {
             return
         }
-        await fetchGists(listsMode: listsMode)
+        await fetchGists()
     }
 
     func insert(_ gist: Gist) {
         gists.insert(gist, at: 0)
     }
 
-    func search(listMode: GistListsMode) {
+    func search() {
         if searchText.isEmpty {
             // Restore the original list of gists
             gists = originalGists
@@ -95,6 +103,16 @@ public final class GistListsViewModel: ObservableObject {
                 return false
             }
         }
+    }
+
+    func refreshGists() async {
+        guard searchText.isEmpty else {
+            return
+        }
+        hasMoreGists = false
+        currentStarredPage = 1
+        pagingCursor = nil
+        await fetchGists(refresh: true)
     }
 }
 
