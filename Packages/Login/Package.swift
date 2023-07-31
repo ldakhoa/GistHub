@@ -21,8 +21,6 @@ let package = Package(
          .package(name: "AppAccount", path: "../AppAccount"),
          .package(name: "Environment", path: "../Environment"),
          .package(name: "Utilities", path: "../Utilities")
-        // Third package dependencies
-        // .package(url: "url", from: "1.0.0"),
     ],
     targets: [
         .target(

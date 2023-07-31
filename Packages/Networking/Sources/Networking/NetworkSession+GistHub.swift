@@ -15,6 +15,10 @@ public extension NetworkSession {
         buildSession(urlString: "https://api.imgur.com/3/", errorType: ImgurError.self)
     }
 
+    static var gisthubapp: NetworkSession {
+        buildSession(urlString: "https://gisthubapp.khoale.space", errorType: GitHubError.self)
+    }
+
     private static func buildSession<Failure>(urlString: String, errorType: Failure.Type) -> NetworkSession where Failure: Error & Decodable {
         let baseURL = URL(string: urlString)
         let requestBuilder = URLRequestBuilder(baseURL: baseURL)

@@ -21,3 +21,4 @@ excluded:
   - Packages/Networking/Sources/GistHubGraphQL
   - Packages/**/Tests
   - Packages/**/.build
+  - Packages/Server

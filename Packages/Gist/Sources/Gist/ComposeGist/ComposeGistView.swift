@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Inject
 import OrderedCollections
 import Models
 import DesignSystem
@@ -15,7 +14,6 @@ import Utilities
 import Environment
 
 public struct ComposeGistView: View {
-    @ObserveInjection private var inject
 
     @Environment(\.dismiss) private var dismiss
 
@@ -153,7 +151,6 @@ public struct ComposeGistView: View {
             Text("Your changes will be discarded.")
         }
         .toastError(isPresenting: $showErrorToast, error: error)
-        .enableInjection()
     }
 
     private func buildUpdateButton(gistID: String) -> some View {

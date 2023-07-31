@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Inject
 import AppAccount
 import Models
 import DesignSystem
@@ -20,8 +19,6 @@ public struct SettingView: View {
     @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
-//    @EnvironmentObject private var codeSettingsStore: CodeSettingsStore
-    @ObserveInjection private var inject
 
     // MARK: - Misc
 
@@ -89,6 +86,7 @@ public struct SettingView: View {
         .toolbar(.visible, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarRole(.automatic)
+        .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog(
             "Are you sure?",
             isPresented: $showConfirmationDialog,
@@ -100,7 +98,6 @@ public struct SettingView: View {
         } message: {
             Text("You will be signed out from all of your accounts. Do you want to sign out?")
         }
-        .enableInjection()
     }
 }
 

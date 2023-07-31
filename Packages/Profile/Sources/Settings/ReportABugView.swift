@@ -1,11 +1,9 @@
 import SwiftUI
-import Inject
 import DesignSystem
 import Networking
 import Editor
 
 public struct ReportABugView: View {
-    @ObserveInjection private var inject
     @Environment(\.dismiss) private var dismiss
 
     @State private var showConfirmDismissAlert: Bool = false
@@ -80,7 +78,6 @@ public struct ReportABugView: View {
             }
             .interactiveDismissDisabled(!title.isEmpty || (!title.isEmpty && !content.isEmpty))
         }
-        .enableInjection()
     }
 
     @MainActor

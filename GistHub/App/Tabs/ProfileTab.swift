@@ -10,6 +10,7 @@ import Environment
 import Profile
 
 struct ProfileTab: View {
+    @EnvironmentObject private var currentAccount: CurrentAccount
     @StateObject private var routerPath: RouterPath = RouterPath()
     @Binding var selectedTab: Tab
     @Binding var popToRootTab: Tab
@@ -24,7 +25,7 @@ struct ProfileTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            ProfileView()
+            UserProfileView(userName: currentAccount.user?.login ?? "")
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
