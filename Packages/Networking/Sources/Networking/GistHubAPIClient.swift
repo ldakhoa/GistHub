@@ -23,7 +23,7 @@ public protocol GistHubAPIClient: Client {
     func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
-    func starredGists() async throws -> [Gist]
+    func starredGists(page: Int, perPage: Int) async throws -> [Gist]
 
     /// Get authenticated user info.
     func user() async throws -> User
@@ -128,8 +128,8 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(data: data)
     }
 
-    public func starredGists() async throws -> [Gist] {
-        try await session.data(for: API.starredGists)
+    public func starredGists(page: Int, perPage: Int) async throws -> [Gist] {
+        try await session.data(for: API.starredGists(page: page, perPage: perPage))
     }
 
     public func user() async throws -> User {
@@ -221,7 +221,10 @@ extension DefaultGistHubAPIClient {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
         case gistsFromUserName(userName: String)
-        case starredGists
+        case starredGists(
+            page: Int,
+            perPage: Int
+        )
         case user
         case userFromUserName(userName: String)
         case starGist(gistID: String)
@@ -252,8 +255,8 @@ extension DefaultGistHubAPIClient {
                 return "/gists"
             case let .gistsFromUserName(userName):
                 return "/users/\(userName)/gists"
-            case .starredGists:
-                return "/gists/starred"
+            case let .starredGists(page, perPage):
+                return "/gists/starred?page=\(page)&per_page=\(perPage)"
             case .user:
                 return "/user"
             case let .userFromUserName(userName):

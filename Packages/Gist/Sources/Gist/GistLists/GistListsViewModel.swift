@@ -16,13 +16,15 @@ public final class GistListsViewModel: ObservableObject {
     @Published var searchText = ""
 
     @Published var gists: [Gist] = []
-    @Published var hasMoreGists = false
     @Published var isLoadingMoreGists = false
 
     private let client: GistHubAPIClient
     private var pagingCursor: String?
     private var originalGists: [Gist] = []
     private var isSearchingGists: Bool = false
+    private var currentStarredPage: Int = 1
+    private var hasMoreGists = false
+
     public init(
         client: GistHubAPIClient = DefaultGistHubAPIClient()
     ) {
@@ -40,7 +42,11 @@ public final class GistListsViewModel: ObservableObject {
                 originalGists.append(contentsOf: gistsResponse.gists)
                 gists.append(contentsOf: gistsResponse.gists)
             case .currentUserStarredGists:
-                gists = try await client.starredGists()
+                let newGists = try await client.starredGists(page: currentStarredPage, perPage: Constants.pagingSize)
+                hasMoreGists = !newGists.isEmpty
+                currentStarredPage += 1
+                originalGists.append(contentsOf: newGists)
+                gists.append(contentsOf: newGists)
             case let .userGists(userName):
                 let gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
                 pagingCursor = gistsResponse.cursor
@@ -56,7 +62,7 @@ public final class GistListsViewModel: ObservableObject {
     }
 
     func fetchMoreGistsIfNeeded(currentGistID: String, listsMode: GistListsMode) async {
-        guard listsMode != .currentUserStarredGists, !isSearchingGists else {
+        guard !isSearchingGists else {
             return
         }
         guard hasMoreGists,
