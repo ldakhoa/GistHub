@@ -4,7 +4,7 @@ import Models
 
 public protocol GistHubServerClient {
     /// Get starred gists from the user name.
-    func starredGists(fromUserName userName: String) async throws -> [Gist]
+    func starredGists(fromUserName userName: String, page: Int) async throws -> GistsResponse
 }
 
 public final class DefaultGistHubServerClient: GistHubServerClient {
@@ -14,19 +14,20 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
         self.session = session
     }
 
-    public func starredGists(fromUserName userName: String) async throws -> [Gist] {
-        try await session.data(for: API.starredGist(userName: userName))
+    public func starredGists(fromUserName userName: String, page: Int) async throws -> GistsResponse {
+        let gists: [Gist] = try await session.data(for: API.starredGists(userName: userName, page: page))
+        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 }
 
 extension DefaultGistHubServerClient {
     enum API: Request {
-        case starredGist(userName: String)
+        case starredGists(userName: String, page: Int)
 
         var url: String {
             switch self {
-            case let .starredGist(userName):
-                return "/users/\(userName)/starred"
+            case let .starredGists(userName, page):
+                return "/users/\(userName)/starred?page=\(page)"
             }
         }
 

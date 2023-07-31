@@ -18,7 +18,8 @@ public final class GistListsViewModel: ObservableObject {
     @Published var gists: [Gist] = []
     @Published var isLoadingMoreGists = false
 
-    private let client: GistHubAPIClient
+    private let gistHubclient: GistHubAPIClient
+    private let serverclient: GistHubServerClient
     private var pagingCursor: String?
     private var originalGists: [Gist] = []
     private var isSearchingGists: Bool = false
@@ -27,10 +28,12 @@ public final class GistListsViewModel: ObservableObject {
     private let listsMode: GistListsMode
 
     public init(
-        client: GistHubAPIClient = DefaultGistHubAPIClient(),
+        gistHubclient: GistHubAPIClient = DefaultGistHubAPIClient(),
+        serverClient: GistHubServerClient = DefaultGistHubServerClient(),
         listsMode: GistListsMode
     ) {
-        self.client = client
+        self.gistHubclient = gistHubclient
+        self.serverclient = serverClient
         self.listsMode = listsMode
     }
 
@@ -56,13 +59,14 @@ public final class GistListsViewModel: ObservableObject {
         let gistsResponse: GistsResponse
         switch listsMode {
         case .currentUserGists:
-            gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+            gistsResponse = try await gistHubclient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
             pagingCursor = gistsResponse.cursor
-        case .currentUserStarredGists:
-            gistsResponse = try await client.starredGists(page: currentStarredPage, perPage: Constants.pagingSize)
+        case let .userStarredGists(userName):
+            guard let userName else { return [] }
+            gistsResponse = try await serverclient.starredGists(fromUserName: userName, page: currentStarredPage)
             currentStarredPage += 1
         case let .userGists(userName):
-            gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+            gistsResponse = try await gistHubclient.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
             pagingCursor = gistsResponse.cursor
         }
         hasMoreGists = gistsResponse.hasNextPage

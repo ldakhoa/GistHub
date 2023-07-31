@@ -9,14 +9,14 @@ import Foundation
 
 public enum GistListsMode: Hashable {
     case currentUserGists
-    case currentUserStarredGists
+    case userStarredGists(userName: String?)
     case userGists(userName: String)
 
     public var navigationTitle: String {
         switch self {
         case .currentUserGists:
             return "All Gists"
-        case .currentUserStarredGists:
+        case .userStarredGists:
             return "Starred Gists"
         case .userGists:
             return "Gists"
@@ -25,7 +25,7 @@ public enum GistListsMode: Hashable {
 
     public var promptSearchText: String {
         switch self {
-        case .currentUserStarredGists:
+        case .userStarredGists:
             return "Search Starred Gists"
         case .currentUserGists, .userGists:
             return "Search Gists"

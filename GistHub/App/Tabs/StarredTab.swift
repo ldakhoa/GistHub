@@ -10,6 +10,7 @@ import Environment
 import Gist
 
 struct StarredTab: View {
+    @EnvironmentObject private var currentAccount: CurrentAccount
     @StateObject private var routerPath: RouterPath = RouterPath()
     @Binding var selectedTab: Tab
     @Binding var popToRootTab: Tab
@@ -24,7 +25,7 @@ struct StarredTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .currentUserStarredGists)
+            GistListsView(listsMode: .userStarredGists(userName: currentAccount.user?.login))
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
