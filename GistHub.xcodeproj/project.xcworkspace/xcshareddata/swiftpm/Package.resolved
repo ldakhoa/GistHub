@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "inflectorkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattt/InflectorKit",
+      "state" : {
+        "revision" : "d8cbcc04972690aaa5fc760a2b9ddb3e9f0decd7",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "keyboardtoolbar",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/KeyboardToolbar",
