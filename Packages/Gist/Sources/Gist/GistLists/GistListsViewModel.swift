@@ -15,43 +15,85 @@ public final class GistListsViewModel: ObservableObject {
     @Published var contentState: ContentState = .loading
     @Published var searchText = ""
 
-    @Published var gists = [Gist]()
+    @Published var gists: [Gist] = []
+    @Published var isLoadingMoreGists = false
+
     private let client: GistHubAPIClient
+    private var pagingCursor: String?
+    private var originalGists: [Gist] = []
+    private var isSearchingGists: Bool = false
+    private var currentStarredPage: Int = 1
+    private var hasMoreGists = false
+    private let listsMode: GistListsMode
 
     public init(
-        client: GistHubAPIClient = DefaultGistHubAPIClient()
+        client: GistHubAPIClient = DefaultGistHubAPIClient(),
+        listsMode: GistListsMode
     ) {
         self.client = client
+        self.listsMode = listsMode
     }
 
-    func fetchGists(listsMode: GistListsMode) async {
+    func fetchGists(refresh: Bool = false) async {
         do {
-            let gists: [Gist]
-            switch listsMode {
-            case .currentUserGists:
-                gists = try await client.gists()
-            case .currentUserStarredGists:
-                gists = try await client.starredGists()
-            case let .userGists(userName):
-                gists = try await client.gists(fromUserName: userName)
+            isLoadingMoreGists = true
+            let newGists = try await fetchGistsByListsMode()
+            if refresh {
+                originalGists = newGists
+                gists = newGists
+            } else {
+                originalGists.append(contentsOf: newGists)
+                gists.append(contentsOf: newGists)
             }
-            self.gists = gists
-            contentState = .content(gists: gists)
+            isLoadingMoreGists = false
+            contentState = .content
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
     }
 
+    private func fetchGistsByListsMode() async throws -> [Gist] {
+        let gistsResponse: GistsResponse
+        switch listsMode {
+        case .currentUserGists:
+            gistsResponse = try await client.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        case .currentUserStarredGists:
+            gistsResponse = try await client.starredGists(page: currentStarredPage, perPage: Constants.pagingSize)
+            currentStarredPage += 1
+        case let .userGists(userName):
+            gistsResponse = try await client.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        }
+        hasMoreGists = gistsResponse.hasNextPage
+        return gistsResponse.gists
+    }
+
+    func fetchMoreGistsIfNeeded(currentGistID: String) async {
+        guard !isSearchingGists else {
+            return
+        }
+        guard hasMoreGists,
+            !isLoadingMoreGists,
+            let lastGistID = gists.last?.id,
+            currentGistID == lastGistID else {
+            return
+        }
+        await fetchGists()
+    }
+
     func insert(_ gist: Gist) {
         gists.insert(gist, at: 0)
-        contentState = .content(gists: gists)
     }
 
     func search() {
         if searchText.isEmpty {
-            contentState = .content(gists: self.gists)
+            // Restore the original list of gists
+            gists = originalGists
+            isSearchingGists = false
         } else {
-            let newGists = gists.filter {
+            isSearchingGists = true
+            gists = originalGists.filter {
                 if let fileNames = $0.files?.map({ String($0.key) }), let loginName = $0.owner?.login {
                 let fileNameCondition = fileNames.filter { $0.range(of: searchText, options: .caseInsensitive) != nil }
                     let loginNameCondition = loginName.localizedCaseInsensitiveContains(searchText)
@@ -60,15 +102,28 @@ public final class GistListsViewModel: ObservableObject {
                 }
                 return false
             }
-            contentState = .content(gists: newGists)
         }
+    }
+
+    func refreshGists() async {
+        guard searchText.isEmpty else {
+            return
+        }
+        hasMoreGists = false
+        currentStarredPage = 1
+        pagingCursor = nil
+        await fetchGists(refresh: true)
     }
 }
 
 extension GistListsViewModel {
     enum ContentState {
         case loading
-        case content(gists: [Gist])
+        case content
         case error(error: String)
+    }
+
+    enum Constants {
+        static let pagingSize = 20
     }
 }
