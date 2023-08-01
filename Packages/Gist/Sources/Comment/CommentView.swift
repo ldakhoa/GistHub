@@ -93,13 +93,13 @@ public struct CommentView: View {
             .padding(.horizontal, -16)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
-            if comment.user.id == currentAccount.user?.id {
+            if comment.user.login == currentAccount.user?.login {
                 Button("Delete", role: .destructive) {
                     showDeleteConfirmedDialog.toggle()
                 }
             }
 
-            if comment.user.id == currentAccount.user?.id {
+            if comment.user.login == currentAccount.user?.login {
                 Button("Edit") {
                     routerPath.presentedSheet = .markdownTextEditor(
                         style: .updateComment(content: comment.body ?? "")

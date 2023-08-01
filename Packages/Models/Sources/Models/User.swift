@@ -118,7 +118,7 @@ public extension User {
         User(
             login: "octocat",
             id: 1,
-            nodeID: "MDQ6VXNlcjE=",
+            nodeID: "123123123",
             avatarURL: "https://github.com/images/error/octocat_happy.gif",
             url: "https://api.github.com/users/octocat",
             htmlURL: "https://github.com/octocat",

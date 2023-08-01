@@ -56,7 +56,7 @@ public final class UserDefaultsStore: ObservableObject {
     }
 
     @AppStorage(Keys.theme)
-    public var theme: ThemeSetting = .tomorrow {
+    public var theme: ThemeSetting = .gitHubLight {
         didSet {
             NotificationCenter.default.post(name: .textViewShouldUpdateTheme, object: nil)
         }
@@ -65,7 +65,7 @@ public final class UserDefaultsStore: ObservableObject {
     @AppStorage(Keys.darkTheme)
     public var forceDarkTheme: Bool = false {
         didSet {
-            settings.theme = forceDarkTheme ? .tomorrowNight : .tomorrow
+            settings.theme = forceDarkTheme ? .gitHubDark : .gitHubLight
             NotificationCenter.default.post(name: .textViewShouldUpdateTheme, object: nil)
         }
     }
@@ -168,7 +168,7 @@ extension UserDefaults {
             if let rawValue = string(forKey: Keys.theme), let setting = ThemeSetting(rawValue: rawValue) {
                 return setting
             } else {
-                return .tomorrow
+                return .gitHubLight
             }
         }
         set {

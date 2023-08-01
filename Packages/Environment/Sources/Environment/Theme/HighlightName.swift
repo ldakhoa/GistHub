@@ -20,6 +20,8 @@ public enum HighlightName: String {
     case reference = "text.reference"
     case literal = "text.literal"
     case uri = "text.uri"
+    case variable
+    case type
     case none
 
     public init?(_ rawHighlightName: String) {

@@ -213,7 +213,7 @@ public struct GistDetailView: View {
     @ViewBuilder
     private var menuView: some View {
         Menu {
-            if currentAccount.user?.id == viewModel.gist.owner?.id {
+            if currentAccount.user?.login == viewModel.gist.owner?.login {
                 makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                     routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
                         Task {
@@ -243,7 +243,7 @@ public struct GistDetailView: View {
 
             Divider()
 
-            if currentAccount.user?.id == viewModel.gist.owner?.id {
+            if currentAccount.user?.login == viewModel.gist.owner?.login {
                 makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
                     showDeleteAlert.toggle()
                 }

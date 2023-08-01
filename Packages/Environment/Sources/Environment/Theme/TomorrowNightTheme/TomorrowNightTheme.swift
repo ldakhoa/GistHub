@@ -63,6 +63,8 @@ public final class TomorrowNightTheme: EditorTheme {
             return UIColor(namedInModule: "TomorrowNightBlue")
         case .none:
             return UIColor(namedInModule: "TomorrowNightForeground")
+        default:
+            return UIColor(namedInModule: "TomorrowNightForeground")
         }
     }
 
