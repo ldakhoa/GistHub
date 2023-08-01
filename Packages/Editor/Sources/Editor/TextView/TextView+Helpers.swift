@@ -33,7 +33,7 @@ extension TextView {
         textView.applySettings(from: settings)
 
         // Force dark mode if user interface style is dark
-        let theme = userInterfaceStyle == .light ? settings.theme.makeTheme() : TomorrowNightTheme()
+        let theme = userInterfaceStyle == .light ? settings.theme.makeTheme() : GitHubDarkTheme()
         textView.applyTheme(theme)
         textView.applySettings(from: settings)
         return textView

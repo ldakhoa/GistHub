@@ -16,7 +16,7 @@ public enum ThemeSetting: String, CaseIterable, Hashable {
         case .gitHubLight:
             return GitHubTheme()
         case .gitHubDark:
-            return TomorrowNightTheme()
+            return GitHubDarkTheme()
         }
     }
 }

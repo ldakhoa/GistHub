@@ -144,7 +144,7 @@ public final class EditorViewController: UIViewController {
 
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.userInterfaceStyle == .dark {
-            textView.applyTheme(TomorrowNightTheme())
+            textView.applyTheme(GitHubDarkTheme())
         } else {
             let theme = UserDefaults.standard.theme.makeTheme()
             textView.applyTheme(theme)
