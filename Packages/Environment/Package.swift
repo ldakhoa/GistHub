@@ -19,7 +19,7 @@ let package = Package(
         .package(name: "Networking", path: "../Networking"),
         .package(
             url: "https://github.com/simonbs/Runestone",
-            .upToNextMajor(from: "0.2.9")
+            .upToNextMajor(from: "0.3.2")
         )
     ],
     targets: [

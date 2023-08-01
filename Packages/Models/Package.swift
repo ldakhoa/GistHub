@@ -25,7 +25,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/simonbs/Runestone",
-            .upToNextMajor(from: "0.2.9")
+            from: "0.3.2"
         ),
         .package(name: "Utilities", path: "../Utilities")
     ],
