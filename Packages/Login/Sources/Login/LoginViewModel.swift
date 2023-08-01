@@ -119,7 +119,7 @@ final class LoginViewModel: NSObject, ObservableObject, ASWebAuthenticationPrese
             )
             self.appAccountsManager?.focus(appAccount)
 
-            if user.id != nil {
+            if user.login != nil {
                 contentState = .idling
                 finishLogin = true
             }

@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/Runestone",
       "state" : {
-        "revision" : "1d0e79051a18d79f12882e9fad0b130e47d4a06b",
-        "version" : "0.3.0"
+        "revision" : "00dee9fbc9c93b709f6b1b052bce84cb971e493a",
+        "version" : "0.3.2"
       }
     },
     {
@@ -88,6 +88,15 @@
       "state" : {
         "revision" : "937e904258d22af6e447a0b72c0bc67583ef64a2",
         "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "tree-sitter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/tree-sitter",
+      "state" : {
+        "revision" : "f88ae4ebe351d8aa99c31a17111607017d805118",
+        "version" : "0.20.9-beta-1"
       }
     },
     {

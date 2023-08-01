@@ -54,7 +54,7 @@ public struct EditorDisplayView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
-                        if gist.owner?.id == currentAccount.user?.id {
+                        if gist.owner?.login == currentAccount.user?.login {
                             Button {
                                 routerPath.presentedSheet = .editorView(
                                     fileName: fileName,
