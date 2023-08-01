@@ -63,6 +63,10 @@ public class RouterPath: ObservableObject {
         path.append(destination)
     }
 
+    public func navigateToUserProfileView(with userName: String) {
+        navigate(to: .userProfile(userName: userName))
+    }
+
     @discardableResult
     public func handle(url: URL) -> OpenURLAction.Result {
         // TODO: Handle open GistHub profile when ready

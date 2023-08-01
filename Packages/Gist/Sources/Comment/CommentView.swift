@@ -42,7 +42,7 @@ public struct CommentView: View {
                 {
                     GistHubImage(url: url, width: 44, height: 44, cornerRadius: 24)
                         .onTapGesture {
-                            navigateToUserProfileView()
+                            routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
                         }
                 }
                 VStack(alignment: .leading, spacing: -6) {
@@ -50,7 +50,7 @@ public struct CommentView: View {
                         Text(comment.user.login ?? "")
                             .bold()
                             .onTapGesture {
-                                navigateToUserProfileView()
+                                routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
                             }
                         if let createdAt = comment.createdAt {
                             Text("· \(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
@@ -155,9 +155,5 @@ public struct CommentView: View {
         let newBody = body.replacingOccurrences(of: "\n", with: "\n> ")
         let newLine = "\n\n"
         return result + newBody + newLine
-    }
-
-    private func navigateToUserProfileView() {
-        routerPath.navigate(to: .userProfile(userName: comment.user.login ?? ""))
     }
 }

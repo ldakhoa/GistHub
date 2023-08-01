@@ -195,7 +195,7 @@ public struct GistDetailView: View {
                     .bold()
             }
             .onTapGesture {
-                navigateToUserProfileView()
+                routerPath.navigateToUserProfileView(with: viewModel.gist.owner?.login ?? "")
             }
 
             if let files = gist.files, let fileName = files.keys.first {
@@ -363,10 +363,6 @@ public struct GistDetailView: View {
         Button(role: role ?? .none, action: action) {
             Label(title, systemImage: systemImage)
         }
-    }
-
-    private func navigateToUserProfileView() {
-        routerPath.navigate(to: .userProfile(userName: viewModel.gist.owner?.login ?? ""))
     }
 }
 
