@@ -194,12 +194,17 @@ public struct GistDetailView: View {
                 Text(gist.owner?.login ?? "")
                     .bold()
             }
+            .onTapGesture {
+                navigateToUserProfileView()
+            }
+
             if let files = gist.files, let fileName = files.keys.first {
                 Text("/")
                     .foregroundColor(Colors.neutralEmphasisPlus.color)
 
                 Text(fileName)
                     .bold()
+                    .lineLimit(1)
             }
             if !(gist.public ?? true) {
                 Image(systemName: "lock")
@@ -358,6 +363,10 @@ public struct GistDetailView: View {
         Button(role: role ?? .none, action: action) {
             Label(title, systemImage: systemImage)
         }
+    }
+
+    private func navigateToUserProfileView() {
+        routerPath.navigate(to: .userProfile(userName: viewModel.gist.owner?.login ?? ""))
     }
 }
 
