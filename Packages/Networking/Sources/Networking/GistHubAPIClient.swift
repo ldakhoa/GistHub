@@ -171,7 +171,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
     public func gist(fromGistID gistID: String) async throws -> Gist {
         let query = GistQuery(gistID: gistID)
         let data = try await graphQLSession.query(query)
-        guard let gist = data.viewer.gist?.toGist() else {
+        guard let gist = data.gist else {
             throw ApolloError.responseError
         }
         return gist
