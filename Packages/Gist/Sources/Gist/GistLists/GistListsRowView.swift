@@ -61,6 +61,8 @@ struct GistListsRowView: View {
                 HStack(alignment: .center) {
                     let fileTitle = files.keys.count > 1 ? "files" : "file"
                     footerItem(title: "\(files.keys.count) \(fileTitle)", imageName: "file-code")
+                    let forkCountTitle = gist.fork?.totalCount ?? 0 > 1 ? "forks" : "fork"
+                    footerItem(title: "\(gist.fork?.totalCount ?? 0) \(forkCountTitle)", imageName: "fork")
                     let commentTitle = gist.comments ?? 0 > 1 ? "comments" : "comment"
                     footerItem(title: "\(gist.comments ?? 0) \(commentTitle)", imageName: "comment")
                     let stargazerCountTitle = gist.stargazerCount ?? 0 > 1 ? "stars" : "star"
