@@ -17,15 +17,14 @@ public struct GistListsView: View {
 
     // MARK: - Dependencies
 
-    private let listsMode: GistListsMode
-    @StateObject private var viewModel: GistListsViewModel
+    @State private var listsMode: GistListsMode
+    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State private var progressViewId = 0
 
     // MARK: - Initializer
 
     public init(listsMode: GistListsMode) {
-        self.listsMode = listsMode
-        _viewModel = StateObject(wrappedValue: GistListsViewModel(listsMode: listsMode))
+        _listsMode = State(initialValue: listsMode)
     }
 
     // MARK: - View
@@ -45,7 +44,10 @@ public struct GistListsView: View {
                             GistListsRowView(gist: gist)
                                 .onAppear {
                                     Task {
-                                        await viewModel.fetchMoreGistsIfNeeded(currentGistID: gist.id)
+                                        await viewModel.fetchMoreGistsIfNeeded(
+                                            currentGistID: gist.id,
+                                            mode: listsMode
+                                        )
                                     }
                                 }
                             Spacer()
@@ -92,14 +94,25 @@ public struct GistListsView: View {
         .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
-        .navigationTitle(Text(listsMode.navigationTitle))
         .onLoad { fetchGists() }
         .refreshable { refreshGists() }
-        .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
         .scrollDismissesKeyboard(.interactively)
-        .onChange(of: viewModel.searchText) { _ in
-            viewModel.search()
+        .modifyIf(listsMode.shouldShowMenuView) { view in
+            view
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        menuView
+                    }
+                }
         }
+        .modifyIf(listsMode.shouldShowSearch) { view in
+            view
+                .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+                .onChange(of: viewModel.searchText) { _ in
+                    viewModel.search()
+                }
+        }
+        .navigationTitle(Text(listsMode.navigationTitle))
     }
 
     @ViewBuilder
@@ -123,6 +136,42 @@ public struct GistListsView: View {
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var menuView: some View {
+        Menu {
+            makeMenuButton(title: "All gists", image: "code24") {
+                self.listsMode = .discover(mode: .all)
+                refreshGists()
+            }
+
+            makeMenuButton(title: "Starred", image: "star") {
+                self.listsMode = .discover(mode: .starred)
+                refreshGists()
+            }
+
+            makeMenuButton(title: "Forked", image: "fork") {
+                self.listsMode = .discover(mode: .forked)
+                refreshGists()
+            }
+
+        } label: {
+            Image(systemName: "chevron.down.circle")
+                .fontWeight(.semibold)
+                .foregroundColor(Colors.accent.color)
+        }
+    }
+
+    private func makeMenuButton(
+        title: String,
+        image: String,
+        role: ButtonRole? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(role: role ?? .none, action: action) {
+            Label(title, image: image)
         }
     }
 
@@ -156,13 +205,13 @@ public struct GistListsView: View {
 
     private func fetchGists() {
         Task {
-            await viewModel.fetchGists()
+            await viewModel.fetchGists(mode: self.listsMode)
         }
     }
 
     private func refreshGists() {
         Task {
-            await viewModel.refreshGists()
+            await viewModel.refreshGists(mode: self.listsMode)
         }
     }
 }

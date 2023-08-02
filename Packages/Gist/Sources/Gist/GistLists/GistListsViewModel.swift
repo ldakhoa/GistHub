@@ -24,23 +24,28 @@ public final class GistListsViewModel: ObservableObject {
     private var originalGists: [Gist] = []
     private var isSearchingGists: Bool = false
     private var currentStarredPage: Int = 1
+    private var currentDiscoverAllGistsPage: Int = 1
+    private var currentDiscoverForkedGistsPage: Int = 1
+    private var currentDiscoverStarredGistsPage: Int = 1
     private var hasMoreGists = false
-    private let listsMode: GistListsMode
 
     public init(
         gistHubClient: GistHubAPIClient = DefaultGistHubAPIClient(),
-        serverClient: GistHubServerClient = DefaultGistHubServerClient(),
-        listsMode: GistListsMode
+        serverClient: GistHubServerClient = DefaultGistHubServerClient()
     ) {
         self.gistHubClient = gistHubClient
         self.serverClient = serverClient
-        self.listsMode = listsMode
     }
 
-    func fetchGists(refresh: Bool = false) async {
+    // MARK: - Side Effects - Public
+
+    func fetchGists(
+        mode: GistListsMode,
+        refresh: Bool = false
+    ) async {
         do {
             isLoadingMoreGists = true
-            let newGists = try await fetchGistsByListsMode()
+            let newGists = try await fetchGistsByListsMode(mode: mode)
             if refresh {
                 originalGists = newGists
                 gists = newGists
@@ -55,25 +60,7 @@ public final class GistListsViewModel: ObservableObject {
         }
     }
 
-    private func fetchGistsByListsMode() async throws -> [Gist] {
-        let gistsResponse: GistsResponse
-        switch listsMode {
-        case .currentUserGists:
-            gistsResponse = try await gistHubClient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
-            pagingCursor = gistsResponse.cursor
-        case let .userStarredGists(userName):
-            guard let userName else { return [] }
-            gistsResponse = try await serverClient.starredGists(fromUserName: userName, page: currentStarredPage)
-            currentStarredPage += 1
-        case let .userGists(userName):
-            gistsResponse = try await gistHubClient.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
-            pagingCursor = gistsResponse.cursor
-        }
-        hasMoreGists = gistsResponse.hasNextPage
-        return gistsResponse.gists
-    }
-
-    func fetchMoreGistsIfNeeded(currentGistID: String) async {
+    func fetchMoreGistsIfNeeded(currentGistID: String, mode: GistListsMode) async {
         guard !isSearchingGists else {
             return
         }
@@ -83,7 +70,7 @@ public final class GistListsViewModel: ObservableObject {
             currentGistID == lastGistID else {
             return
         }
-        await fetchGists()
+        await fetchGists(mode: mode)
     }
 
     func insert(_ gist: Gist) {
@@ -109,14 +96,50 @@ public final class GistListsViewModel: ObservableObject {
         }
     }
 
-    func refreshGists() async {
+    func refreshGists(mode: GistListsMode) async {
         guard searchText.isEmpty else {
             return
         }
+        contentState = .loading
         hasMoreGists = false
         currentStarredPage = 1
+        currentDiscoverAllGistsPage = 1
+        currentDiscoverStarredGistsPage = 1
+        currentDiscoverForkedGistsPage = 1
         pagingCursor = nil
-        await fetchGists(refresh: true)
+        await fetchGists(mode: mode, refresh: true)
+    }
+
+    // MARK: - Side Effects - Private
+
+    private func fetchGistsByListsMode(mode: GistListsMode) async throws -> [Gist] {
+        let gistsResponse: GistsResponse
+        switch mode {
+        case .currentUserGists:
+            gistsResponse = try await gistHubClient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        case let .userStarredGists(userName):
+            guard let userName else { return [] }
+            gistsResponse = try await serverClient.starredGists(fromUserName: userName, page: currentStarredPage)
+            currentStarredPage += 1
+        case let .userGists(userName):
+            gistsResponse = try await gistHubClient.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+            pagingCursor = gistsResponse.cursor
+        case let .discover(mode):
+            switch mode {
+            case .all:
+                gistsResponse = try await serverClient.discoverGists(page: currentDiscoverAllGistsPage)
+                currentDiscoverAllGistsPage += 1
+            case .forked:
+                gistsResponse = try await serverClient.discoverForkedGists(page: currentDiscoverForkedGistsPage)
+                currentDiscoverForkedGistsPage += 1
+            case .starred:
+                gistsResponse = try await serverClient.discoverStarredGists(page: currentDiscoverForkedGistsPage)
+                currentDiscoverStarredGistsPage += 1
+            }
+        }
+        hasMoreGists = gistsResponse.hasNextPage
+        return gistsResponse.gists
     }
 }
 

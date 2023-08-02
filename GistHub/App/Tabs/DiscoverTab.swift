@@ -25,7 +25,7 @@ struct DiscoverTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .currentUserGists)
+            GistListsView(listsMode: .discover(mode: .all))
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
