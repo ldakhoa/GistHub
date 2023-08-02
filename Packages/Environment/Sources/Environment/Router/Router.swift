@@ -67,14 +67,22 @@ public class RouterPath: ObservableObject {
         navigate(to: .userProfile(userName: userName))
     }
 
+    // Possible URL
+    // https://gist.github.com/<username>/<gistid>
+    // https://gist.github.com/<username>/<gistid>#file-<file-name>
+    // https://gist.github.com/<username>/<gistid>/stargazers (Support later)
     @discardableResult
     public func handle(url: URL) -> OpenURLAction.Result {
-        // TODO: Handle open GistHub profile when ready
-        if let host = url.host(), host == AppInfo.mainHost {
-            if url.pathComponents.count >= 3 {
-                navigate(to: .gistDetail(gistId: url.pathComponents[2]))
-                return .handled
-            }
+        guard let host = url.host(), host == AppInfo.mainHost else {
+            return .systemAction
+        }
+
+        if url.pathComponents.count == 2, !url.pathComponents[1].isEmpty {
+            navigateToUserProfileView(with: url.pathComponents[1])
+            return .handled
+        } else if url.pathComponents.count >= 3 {
+            navigate(to: .gistDetail(gistId: url.pathComponents[2]))
+            return .handled
         }
 
         return urlHandler?(url) ?? .systemAction
