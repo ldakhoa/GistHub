@@ -194,12 +194,17 @@ public struct GistDetailView: View {
                 Text(gist.owner?.login ?? "")
                     .bold()
             }
+            .onTapGesture {
+                routerPath.navigateToUserProfileView(with: viewModel.gist.owner?.login ?? "")
+            }
+
             if let files = gist.files, let fileName = files.keys.first {
                 Text("/")
                     .foregroundColor(Colors.neutralEmphasisPlus.color)
 
                 Text(fileName)
                     .bold()
+                    .lineLimit(1)
             }
             if !(gist.public ?? true) {
                 Image(systemName: "lock")

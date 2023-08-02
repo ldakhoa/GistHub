@@ -30,6 +30,8 @@ extension View {
                 EditorCodeSettingsView()
             case let .gistLists(mode):
                 GistListsView(listsMode: mode)
+            case let .userProfile(userName):
+                UserProfileView(userName: userName)
             }
         }
     }

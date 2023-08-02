@@ -41,11 +41,17 @@ public struct CommentView: View {
                     let url = URL(string: avatarURLString)
                 {
                     GistHubImage(url: url, width: 44, height: 44, cornerRadius: 24)
+                        .onTapGesture {
+                            routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
+                        }
                 }
                 VStack(alignment: .leading, spacing: -6) {
                     HStack {
                         Text(comment.user.login ?? "")
                             .bold()
+                            .onTapGesture {
+                                routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
+                            }
                         if let createdAt = comment.createdAt {
                             Text("· \(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
                                 .foregroundColor(Colors.neutralEmphasisPlus.color)
