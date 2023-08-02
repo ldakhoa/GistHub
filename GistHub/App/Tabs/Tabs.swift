@@ -4,6 +4,7 @@ enum Tab: Int, Identifiable, Hashable {
     case home
     case starred
     case profile
+    case discover
     case other
 
     var id: Int {
@@ -11,7 +12,7 @@ enum Tab: Int, Identifiable, Hashable {
     }
 
     static func loggedInTabs() -> [Tab] {
-        [.home, .starred, .profile]
+        [.home, .starred, .discover, .profile]
     }
 
     static func loggedOutTabs() -> [Tab] {
@@ -30,6 +31,9 @@ enum Tab: Int, Identifiable, Hashable {
             StarredTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .profile:
             ProfileTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+        case .discover:
+            DiscoverTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+
         case .other:
             EmptyView()
         }
@@ -41,6 +45,8 @@ enum Tab: Int, Identifiable, Hashable {
             return "Home"
         case .starred:
             return "Starred"
+        case .discover:
+            return "Discover"
         case .profile:
             return "Profile"
         case .other:
@@ -54,6 +60,8 @@ enum Tab: Int, Identifiable, Hashable {
             return "home"
         case .starred:
             return "star"
+        case .discover:
+            return "discover"
         case .profile:
             return "person"
         case .other:

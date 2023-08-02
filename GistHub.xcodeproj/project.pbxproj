@@ -13,6 +13,7 @@
 		6A0CA5BB2A62C4FF00366D03 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = 6A0CA5BA2A62C4FF00366D03 /* Action.js */; };
 		6A0CA5C02A62C4FF00366D03 /* GistHubActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6A0CA5B22A62C4FF00366D03 /* GistHubActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6A0CA5C72A62D7C700366D03 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6A0CA5C62A62D7C700366D03 /* Models */; };
+		6A181F9B2A7A7FA80002DC99 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A181F9A2A7A7FA80002DC99 /* DiscoverTab.swift */; };
 		6A2D7B642A762FDD00DCC09D /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2D7B632A762FDD00DCC09D /* WhatsNewKit */; };
 		6A6D6C8E2A670C6800F47796 /* GistHubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */; };
 		6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C902A670D6D00F47796 /* Tabs.swift */; };
@@ -66,6 +67,7 @@
 		6A0CA5B82A62C4FF00366D03 /* ActionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestHandler.swift; sourceTree = "<group>"; };
 		6A0CA5BA2A62C4FF00366D03 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		6A0CA5BC2A62C4FF00366D03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A181F9A2A7A7FA80002DC99 /* DiscoverTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverTab.swift; sourceTree = "<group>"; };
 		6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GistHub.xcconfig; sourceTree = "<group>"; };
 		6A641C302A55F00B0095334B /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Networking; path = Packages/Networking; sourceTree = "<group>"; };
 		6A641C312A55F52F0095334B /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = Packages/Models; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				6A6D6C962A671C8E00F47796 /* ProfileTab.swift */,
 				6A6D6C982A671C9300F47796 /* StarredTab.swift */,
 				6A6D6C922A67160C00F47796 /* HomeTab.swift */,
+				6A181F9A2A7A7FA80002DC99 /* DiscoverTab.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A6D6C932A67160C00F47796 /* HomeTab.swift in Sources */,
+				6A181F9B2A7A7FA80002DC99 /* DiscoverTab.swift in Sources */,
 				6A6D6C8E2A670C6800F47796 /* GistHubApp.swift in Sources */,
 				6A6D6C972A671C8E00F47796 /* ProfileTab.swift in Sources */,
 				6A6D6C992A671C9300F47796 /* StarredTab.swift in Sources */,
