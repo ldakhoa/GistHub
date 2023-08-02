@@ -46,28 +46,28 @@ struct HomeTab: View {
     // Only show at Home Tab when login
     @State
     private var whatsNew: WhatsNew? = WhatsNew(
-        version: "1.0.5",
+        version: "1.1.0",
         title: "What's New in GistHub",
         features: [
             .init(
-                image: .init(systemName: "safari"),
-                title: "Open in GistHub",
-                subtitle: "Easily open gists in GistHub app from Safari for quick access, commenting, and browsing."
+                image: .init(systemName: "person.crop.circle.badge.questionmark"),
+                title: "Profile View",
+                subtitle: "TBD"
             ),
             .init(
-                image: .init(systemName: "doc.text.image"),
-                title: "Upload image in Gist markdown",
-                subtitle: "Effortlessly include images in your Markdown gists by uploading them directly within the app."
+                image: .init(systemName: "magnifyingglass.circle"),
+                title: "Discover Gists",
+                subtitle: "TBD"
             ),
             .init(
-                image: .init(systemName: "pencil.circle"),
-                title: "Edit a Gist",
-                subtitle: "Update gist description and files right in the GistHub app, making changes on the go."
+                image: .init(systemName: "star"),
+                title: "Stargazer",
+                subtitle: "TBD"
             ),
             .init(
-                image: .init(systemName: "exclamationmark.bubble"),
-                title: "Report a Bug",
-                subtitle: "Instantly report bugs within GistHub app, eliminating the need to raise issues on GitHub."
+                image: .init(systemName: "note.text"),
+                title: "New editor theme",
+                subtitle: "TBD"
             )
         ],
         primaryAction: WhatsNew.PrimaryAction(
