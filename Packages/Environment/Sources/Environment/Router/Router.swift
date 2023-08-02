@@ -77,12 +77,20 @@ public class RouterPath: ObservableObject {
             return .systemAction
         }
 
-        if url.pathComponents.count == 2, !url.pathComponents[1].isEmpty {
-            navigateToUserProfileView(with: url.pathComponents[1])
+        let pathComponents: [String] = url.pathComponents
+        let userName = pathComponents[1]
+
+        if pathComponents.count == 2, !userName.isEmpty {
+            navigateToUserProfileView(with: userName)
             return .handled
-        } else if url.pathComponents.count >= 3 {
-            navigate(to: .gistDetail(gistId: url.pathComponents[2]))
-            return .handled
+        } else if pathComponents.count >= 3 {
+            if pathComponents[2] == "starred" {
+                navigateToUserProfileView(with: userName)
+                return .handled
+            } else {
+                navigate(to: .gistDetail(gistId: pathComponents[2]))
+                return .handled
+            }
         }
 
         return urlHandler?(url) ?? .systemAction
