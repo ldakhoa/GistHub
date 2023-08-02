@@ -27,6 +27,7 @@ public struct Gist: Codable, Identifiable, Hashable {
     public let owner: User?
     public let truncated: Bool?
     public let stargazerCount: Int?
+    public let fork: Fork?
 
     public init(
         id: String,
@@ -46,7 +47,8 @@ public struct Gist: Codable, Identifiable, Hashable {
         commentsURL: String? = nil,
         owner: User? = nil,
         isTruncated: Bool = false,
-        stargazerCount: Int? = nil
+        stargazerCount: Int? = nil,
+        fork: Fork? = nil
     ) {
         self.id = id
         self.url = url
@@ -66,6 +68,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.owner = owner
         self.truncated = isTruncated
         self.stargazerCount = stargazerCount
+        self.fork = fork
     }
 
     public init(from decoder: Decoder) throws {
@@ -88,6 +91,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.owner = try container.decodeIfPresent(User.self, forKey: .owner)
         self.truncated = try container.decodeIfPresent(Bool.self, forKey: .truncated)
         self.stargazerCount = try container.decodeIfPresent(Int.self, forKey: .stargazerCount)
+        self.fork = try container.decodeIfPresent(Fork.self, forKey: .fork)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -109,6 +113,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         case owner = "owner"
         case truncated = "truncated"
         case stargazerCount
+        case fork
     }
 
     public static func == (lhs: Gist, rhs: Gist) -> Bool {
@@ -168,7 +173,8 @@ public extension Gist {
             commentsURL: "https://github.com/ldakhoa",
             owner: .stubbed,
             isTruncated: false,
-            stargazerCount: 0
+            stargazerCount: 0,
+            fork: Fork(totalCount: 0)
         )
     }
 }

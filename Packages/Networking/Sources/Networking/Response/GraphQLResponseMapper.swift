@@ -10,23 +10,7 @@ import OrderedCollections
 import Foundation
 import GistHubGraphQL
 
-protocol GraphQLLanguage {
-    var name: String { get }
-}
-
-protocol GraphQLComments {
-    var totalCount: Int { get }
-}
-
-protocol GraphQLFile {
-    associatedtype Language: GraphQLLanguage
-    var name: String? { get }
-    var language: Language? { get }
-    var size: Int? { get }
-    var text: String? { get }
-}
-
-extension GraphQLFile {
+extension GistDetails.File {
     func toFile() -> Models.File {
         File(
             filename: self.name,
@@ -37,24 +21,7 @@ extension GraphQLFile {
     }
 }
 
-protocol GraphQLAsUser {
-    var name: String? { get }
-    var twitterUsername: String? { get }
-    var isSiteAdmin: Bool { get }
-    var url: String { get }
-    var bio: String? { get }
-    var email: String { get }
-}
-
-protocol GraphQLUser {
-    associatedtype AsUser: GraphQLAsUser
-    var id: String { get }
-    var login: String { get }
-    var avatarUrl: String { get }
-    var asUser: AsUser? { get }
-}
-
-extension GraphQLUser {
+extension GistDetails.Owner {
     func toUser() -> User {
         User(
             login: self.login,
@@ -70,24 +37,7 @@ extension GraphQLUser {
     }
 }
 
-protocol GraphQLGist {
-    associatedtype File: GraphQLFile
-    associatedtype Owner: GraphQLUser
-    associatedtype Comments: GraphQLComments
-    var id: String { get }
-    var name: String { get }
-    var description: String? { get }
-    var files: [File?]? { get }
-    var createdAt: String { get }
-    var updatedAt: String { get }
-    var comments: Comments { get }
-    var isPublic: Bool { get }
-    var url: String { get }
-    var owner: Owner? { get }
-    var stargazerCount: Int { get }
-}
-
-extension GraphQLGist {
+extension GistDetails {
     func toGist() -> Gist {
         let dateFormatter = ISO8601DateFormatter()
         return Gist(
@@ -102,7 +52,8 @@ extension GraphQLGist {
             description: self.description,
             comments: self.comments.totalCount,
             owner: self.owner?.toUser(),
-            stargazerCount: self.stargazerCount
+            stargazerCount: self.stargazerCount,
+            fork: Models.Fork(totalCount: forks.totalCount)
         )
     }
 
@@ -122,9 +73,9 @@ extension GraphQLGist {
 }
 
 private extension OrderedDictionary<String, File> {
-    static func create(with fileNodes: [(any GraphQLFile)?]?) -> Self {
+    static func create(with fileNodes: [(GistDetails.File)?]?) -> Self {
         guard let fileNodes else { return [:] }
-        let files: [any GraphQLFile] = fileNodes.compactMap { $0 }
+        let files: [GistDetails.File] = fileNodes.compactMap { $0 }
         var result: OrderedDictionary<String, File> = [:]
         for file in files {
             let fileObject = File(
@@ -142,34 +93,34 @@ private extension OrderedDictionary<String, File> {
     }
 }
 
-// MARK: - Protocol apdoption
+// MARK: - Helpers
 
 // MARK: GistsQuery
 
-typealias GistsQueryNode = GistsQuery.Data.Viewer.Gists.Edge.Node
-extension GistsQueryNode: GraphQLGist {}
-extension GistsQueryNode.Comments: GraphQLComments {}
-extension GistsQueryNode.Owner.AsUser: GraphQLAsUser {}
-extension GistsQueryNode.Owner: GraphQLUser {}
-extension GistsQueryNode.File: GraphQLFile {}
-extension GistsQueryNode.File.Language: GraphQLLanguage {}
+extension GistsQuery.Data.Viewer.Gists.Edge.Node {
+    var gistDetails: GistDetails {
+        return Self.Fragments(_dataDict: __data).gistDetails
+    }
+}
 
 // MARK: GistQuery
 
-typealias GistQueryNode = GistQuery.Data.Viewer.Gist
-extension GistQueryNode: GraphQLGist {}
-extension GistQueryNode.Comments: GraphQLComments {}
-extension GistQueryNode.Owner.AsUser: GraphQLAsUser {}
-extension GistQueryNode.Owner: GraphQLUser {}
-extension GistQueryNode.File: GraphQLFile {}
-extension GistQueryNode.File.Language: GraphQLLanguage {}
+public extension GistQuery.Data {
+    var gist: Models.Gist? {
+        viewer.gist?.gistDetails.toGist()
+    }
+}
+
+extension GistQuery.Data.Viewer.Gist {
+    var gistDetails: GistDetails {
+        return Self.Fragments(_dataDict: __data).gistDetails
+    }
+}
 
 // MARK: GistFromUserQuery
 
-typealias GistsFromUserQueryNode = GistsFromUserQuery.Data.User.Gists.Edge.Node
-extension GistsFromUserQueryNode: GraphQLGist {}
-extension GistsFromUserQueryNode.Comments: GraphQLComments {}
-extension GistsFromUserQueryNode.Owner.AsUser: GraphQLAsUser {}
-extension GistsFromUserQueryNode.Owner: GraphQLUser {}
-extension GistsFromUserQueryNode.File: GraphQLFile {}
-extension GistsFromUserQueryNode.File.Language: GraphQLLanguage {}
+extension GistsFromUserQuery.Data.User.Gists.Edge.Node {
+    var gistDetails: GistDetails {
+        return Self.Fragments(_dataDict: __data).gistDetails
+    }
+}

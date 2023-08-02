@@ -30,10 +30,9 @@ public struct GistsResponse {
         cursor = pageInfo.endCursor ?? ""
         hasNextPage = pageInfo.hasNextPage
 
-        let gistsData = data.viewer.gists.edges ?? []
-        gists = gistsData.compactMap { edge in
-            let gist = edge?.node
-            return gist?.toGist()
+        let gistsEdges = data.viewer.gists.edges ?? []
+        gists = gistsEdges.compactMap { edge in
+            edge?.node?.gistDetails.toGist()
         }
     }
 
@@ -42,10 +41,9 @@ public struct GistsResponse {
         cursor = pageInfo?.endCursor ?? ""
         hasNextPage = pageInfo?.hasNextPage ?? false
 
-        let gistsData = data.user?.gists.edges ?? []
-        gists = gistsData.compactMap { edge in
-            let gist = edge?.node
-            return gist?.toGist()
+        let gistsEdges = data.user?.gists.edges ?? []
+        gists = gistsEdges.compactMap { edge in
+            edge?.node?.gistDetails.toGist()
         }
     }
 }
