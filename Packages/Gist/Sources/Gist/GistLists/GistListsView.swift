@@ -100,7 +100,7 @@ public struct GistListsView: View {
         .modifyIf(listsMode.shouldShowMenuView) { view in
             view
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .navigationBarTrailing) {
                         menuView
                     }
                 }
