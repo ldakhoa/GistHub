@@ -64,11 +64,11 @@ public enum DiscoverGistsMode: Hashable {
     public var title: String {
         switch self {
         case .all:
-            "All Gists"
+            return "All Gists"
         case .forked:
-            "Forked"
+            return "Forked"
         case .starred:
-            "Starred"
+            return "Starred"
         }
     }
 }
