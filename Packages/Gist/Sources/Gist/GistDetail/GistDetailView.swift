@@ -209,21 +209,22 @@ public struct GistDetailView: View {
                 {
                     GistHubImage(url: url)
                 }
-                Text(gist.owner?.login ?? "")
-                    .bold()
+
+                if let files = gist.files, let fileName = files.keys.first {
+                    Text(gist.owner?.login ?? "")
+                        .bold()
+                    +
+                    Text(" / ")
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                    +
+                    Text(fileName)
+                        .bold()
+                }
             }
             .onTapGesture {
                 routerPath.navigateToUserProfileView(with: viewModel.gist.owner?.login ?? "")
             }
 
-            if let files = gist.files, let fileName = files.keys.first {
-                Text("/")
-                    .foregroundColor(Colors.neutralEmphasisPlus.color)
-
-                Text(fileName)
-                    .bold()
-                    .lineLimit(1)
-            }
             if !(gist.public ?? true) {
                 Image(systemName: "lock")
                     .font(.subheadline)
