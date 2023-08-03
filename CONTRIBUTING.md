@@ -1,4 +1,4 @@
-#
+# GistHub App
 
 ## 1. Cloning the repo
 
@@ -48,4 +48,20 @@ After adding a new module and its dependencies, you need to resolve all the modu
 ```bash
 cd GistHub/
 sh Scripts/resolve_packages.sh
+```
+
+# GraphQL
+
+To generate the new API
+
+```bash
+cd graphql/generator/
+swift run gpl_api_generator generate
+```
+
+To download the new GitHub schema
+
+```bash
+cd graphql/generator/
+swift run gpl_api_generator download --token <github access token>
 ```

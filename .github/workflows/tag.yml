@@ -1,0 +1,15 @@
+name: Git Tag
+
+on:
+  push:
+    branches:
+      - CI/Release
+
+jobs:
+  tag:
+    name: Swift-macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Git tag and push
+        run: sh Scripts/tag_when_release.sh

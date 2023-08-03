@@ -26,19 +26,19 @@ import Models
         self.commentClient = commentClient
     }
 
-    func starGist(gistID: String) async {
+    func starGist() async {
         do {
-            try await gistHubClient.starGist(gistID: gistID)
-            await isStarred(gistID: gistID)
+            let starred = try await gistHubClient.starGist(gistID: gist.nodeID!)
+            starButtonState = starred ? .starred : .unstarred
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
     }
 
-    func unstarGist(gistID: String) async {
+    func unstarGist() async {
         do {
-            try await gistHubClient.unstarGist(gistID: gistID)
-            await isStarred(gistID: gistID)
+            let starred = try await gistHubClient.unstarGist(gistID: gist.nodeID!)
+            starButtonState = starred ? .starred : .unstarred
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
@@ -46,10 +46,10 @@ import Models
 
     func isStarred(gistID: String) async {
         do {
-            try await gistHubClient.isStarred(gistID: gistID)
-            starButtonState = .starred
+            let starred = try await gistHubClient.isStarred(gistID: gistID)
+            starButtonState = starred ? .starred : .unstarred
         } catch {
-            starButtonState = .unstarred
+            contentState = .error(error: error.localizedDescription)
         }
     }
 

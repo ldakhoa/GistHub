@@ -1,0 +1,26 @@
+mutation RemoveStar($input: RemoveStarInput!) {
+  removeStar(input: $input) {
+    starrable {
+      id
+      viewerHasStarred
+    }
+  }
+}
+
+mutation AddStar($input: AddStarInput!) {
+  addStar(input: $input) {
+    starrable {
+      id
+      viewerHasStarred
+    }
+  }
+}
+
+query IsStarred($gistID: String!) {
+  viewer {
+    gist(name: $gistID) {
+      viewerHasStarred
+    }
+  }
+}
+

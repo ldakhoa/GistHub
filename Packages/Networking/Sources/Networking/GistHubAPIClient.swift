@@ -9,19 +9,21 @@ import Foundation
 import Networkable
 import Models
 import AppAccount
+import GistHubGraphQL
+import Apollo
 
 public protocol GistHubAPIClient: Client {
     /// Allows you to add a new gist with one or more files.
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
     /// List gists for the authenticated user.
-    func gists() async throws -> [Gist]
+    func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List gists for from the user name.
-    func gists(fromUserName userName: String) async throws -> [Gist]
+    func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
-    func starredGists() async throws -> [Gist]
+    func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
 
     /// Get authenticated user info.
     func user() async throws -> User
@@ -30,13 +32,17 @@ public protocol GistHubAPIClient: Client {
     func user(fromUserName userName: String) async throws -> User
 
     /// Star a gist.
-    func starGist(gistID: String) async throws
+    /// - Parameter gistID: ID of the gist to be starred
+    /// - Returns: Bool value indicating if the gist is starred
+    func starGist(gistID: String) async throws -> Bool
 
     /// Unstar a gist.
-    func unstarGist(gistID: String) async throws
+    /// - Parameter gistID: ID of the gist to be unstarred
+    /// - Returns: Bool value indicating if the gist is starred
+    func unstarGist(gistID: String) async throws -> Bool
 
     /// Check if gist is starred.
-    func isStarred(gistID: String) async throws
+    func isStarred(gistID: String) async throws -> Bool
 
     /// Get a gist.
     func gist(fromGistID gistID: String) async throws -> Gist
@@ -76,49 +82,99 @@ public protocol GistHubAPIClient: Client {
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
     private let session: NetworkSession
+    private let graphQLSession: GraphQLNetworkSession
 
-    public init(session: NetworkSession = .github) {
+    public init(
+        session: NetworkSession = .github,
+        graphQLSession: GraphQLNetworkSession = GraphQLNetworkSession()
+    ) {
         self.session = session
+        self.graphQLSession = graphQLSession
     }
 
     public func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
-    public func gists() async throws -> [Gist] {
-        try await session.data(for: API.gists)
+    public func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse {
+        let inputCursor: GraphQLNullable<String>
+        if let cursor {
+            inputCursor = GraphQLNullable(stringLiteral: cursor)
+        } else {
+            inputCursor = GraphQLNullable.none
+        }
+        let query = GistsQuery(
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: inputCursor, privacy: GraphQLNullable(GistPrivacy.all)
+        )
+        let data = try await graphQLSession.query(query)
+        return GistsResponse(data: data)
     }
 
-    public func gists(fromUserName userName: String) async throws -> [Gist] {
-        try await session.data(for: API.gistsFromUserName(userName: userName))
+    public func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse {
+        let inputCursor: GraphQLNullable<String>
+        if let cursor {
+            inputCursor = GraphQLNullable(stringLiteral: cursor)
+        } else {
+            inputCursor = GraphQLNullable.none
+        }
+        let query = GistsFromUserQuery(
+            userName: userName,
+            privacy: GraphQLNullable(GistPrivacy.all),
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: inputCursor
+        )
+        let data = try await graphQLSession.query(query)
+        return GistsResponse(data: data)
     }
 
-    public func starredGists() async throws -> [Gist] {
-        try await session.data(for: API.starredGists)
+    public func starredGists(page: Int, perPage: Int) async throws -> GistsResponse {
+        let gists: [Gist] = try await session.data(for: API.starredGists(page: page, perPage: perPage))
+        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 
     public func user() async throws -> User {
         try await session.data(for: API.user)
     }
 
+    public func starGist(gistID: String) async throws -> Bool {
+        let mutation = AddStarMutation(input: AddStarInput(starrableId: gistID))
+        let data = try await graphQLSession.mutate(mutation)
+        guard let starred = data.addStar?.starrable?.viewerHasStarred else {
+            throw ApolloError.responseError
+        }
+        return starred
+    }
+
     public func user(fromUserName userName: String) async throws -> User {
         try await session.data(for: API.userFromUserName(userName: userName))
     }
 
-    public func starGist(gistID: String) async throws {
-        try await session.data(for: API.starGist(gistID: gistID))
+    public func unstarGist(gistID: String) async throws -> Bool {
+        let mutation = RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))
+        let data = try await graphQLSession.mutate(mutation)
+        guard let starred = data.removeStar?.starrable?.viewerHasStarred else {
+            throw ApolloError.responseError
+        }
+        return starred
     }
 
-    public func unstarGist(gistID: String) async throws {
-        try await session.data(for: API.unstarGist(gistID: gistID))
-    }
-
-    public func isStarred(gistID: String) async throws {
-        try await session.data(for: API.isStarred(gistID: gistID))
+    public func isStarred(gistID: String) async throws -> Bool {
+        let query = IsStarredQuery(gistID: gistID)
+        let data = try await graphQLSession.query(query)
+        guard let starred = data.viewer.gist?.viewerHasStarred else {
+            throw ApolloError.responseError
+        }
+        return starred
     }
 
     public func gist(fromGistID gistID: String) async throws -> Gist {
-        try await session.data(for: API.gist(gistID: gistID))
+        let query = GistQuery(gistID: gistID)
+        let data = try await graphQLSession.query(query)
+        guard let gist = data.gist else {
+            throw ApolloError.responseError
+        }
+        return gist
     }
 
     public func deleteGist(fromGistID gistID: String) async throws {
@@ -166,7 +222,10 @@ extension DefaultGistHubAPIClient {
         case create(description: String?, files: [String: File], public: Bool)
         case gists
         case gistsFromUserName(userName: String)
-        case starredGists
+        case starredGists(
+            page: Int,
+            perPage: Int
+        )
         case user
         case userFromUserName(userName: String)
         case starGist(gistID: String)
@@ -197,8 +256,8 @@ extension DefaultGistHubAPIClient {
                 return "/gists"
             case let .gistsFromUserName(userName):
                 return "/users/\(userName)/gists"
-            case .starredGists:
-                return "/gists/starred"
+            case let .starredGists(page, perPage):
+                return "/gists/starred?page=\(page)&per_page=\(perPage)"
             case .user:
                 return "/user"
             case let .userFromUserName(userName):

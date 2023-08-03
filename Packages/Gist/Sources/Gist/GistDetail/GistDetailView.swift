@@ -44,21 +44,21 @@ public struct GistDetailView: View {
             switch viewModel.contentState {
             case .loading:
                 ProgressView()
-            case let .error(error):
-                // TODO: Replace by ErrorView
-                Text(error)
-                    .foregroundColor(Colors.danger.color)
+            case .error:
+                ErrorView(title: "Cannot Connect") {
+                    fetchMetaData()
+                }
             case let .content(gist):
                 ZStack {
                     ScrollViewReader { scrollViewProxy in
                         ScrollView(showsIndicators: true) {
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 10) {
                                 titleView(gist: gist)
 
                                 if let description = gist.description, !description.isEmpty {
                                     Text(description)
                                         .foregroundColor(Colors.neutralEmphasisPlus.color)
-                                        .fixedSize(horizontal: false, vertical: true)
+                                        .font(.subheadline)
                                 }
 
                                 if let createdAt = gist.createdAt,
@@ -71,6 +71,32 @@ public struct GistDetailView: View {
                                         Text("Last active \(createdAt.agoString())")
                                             .foregroundColor(Colors.neutralEmphasisPlus.color)
                                             .font(.subheadline)
+                                    }
+                                }
+
+                                if let fork = gist.fork, let stargazerCount = gist.stargazerCount {
+                                    HStack(spacing: 10) {
+                                        HStack(spacing: 4) {
+                                            let stargazerCountText = stargazerCount > 1 ? "stars" : "star"
+                                            Image("star")
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .frame(width: 16, height: 16)
+                                            Text("\(stargazerCount) \(stargazerCountText)")
+                                                .font(.subheadline)
+                                        }
+                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+
+                                        HStack(spacing: 4) {
+                                            let forkCountText = fork.totalCount > 1 ? "forks" : "fork"
+                                            Image("fork")
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .frame(width: 16, height: 16)
+                                            Text("\(fork.totalCount) \(forkCountText)")
+                                                .font(.subheadline)
+                                        }
+                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
                                     }
                                 }
 
@@ -127,18 +153,10 @@ public struct GistDetailView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            Task {
-                await viewModel.isStarred(gistID: gistId)
-                await commentViewModel.fetchComments(gistID: gistId)
-                await viewModel.gist(gistID: gistId)
-            }
+            fetchMetaData()
         }
         .refreshable {
-            Task {
-                await viewModel.gist(gistID: gistId)
-                await commentViewModel.fetchComments(gistID: gistId)
-                await viewModel.isStarred(gistID: gistId)
-            }
+            fetchMetaData()
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -191,16 +209,22 @@ public struct GistDetailView: View {
                 {
                     GistHubImage(url: url)
                 }
-                Text(gist.owner?.login ?? "")
-                    .bold()
-            }
-            if let files = gist.files, let fileName = files.keys.first {
-                Text("/")
-                    .foregroundColor(Colors.neutralEmphasisPlus.color)
 
-                Text(fileName)
-                    .bold()
+                if let files = gist.files, let fileName = files.keys.first {
+                    Text(gist.owner?.login ?? "")
+                        .bold()
+                    +
+                    Text(" / ")
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                    +
+                    Text(fileName)
+                        .bold()
+                }
             }
+            .onTapGesture {
+                routerPath.navigateToUserProfileView(with: viewModel.gist.owner?.login ?? "")
+            }
+
             if !(gist.public ?? true) {
                 Image(systemName: "lock")
                     .font(.subheadline)
@@ -213,7 +237,7 @@ public struct GistDetailView: View {
     @ViewBuilder
     private var menuView: some View {
         Menu {
-            if currentAccount.user?.id == viewModel.gist.owner?.id {
+            if currentAccount.user?.login == viewModel.gist.owner?.login {
                 makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                     routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
                         Task {
@@ -243,7 +267,7 @@ public struct GistDetailView: View {
 
             Divider()
 
-            if currentAccount.user?.id == viewModel.gist.owner?.id {
+            if currentAccount.user?.login == viewModel.gist.owner?.login {
                 makeMenuButton(title: "Delete", systemImage: "trash", role: .destructive) {
                     showDeleteAlert.toggle()
                 }
@@ -319,9 +343,9 @@ public struct GistDetailView: View {
             Task {
                 HapticManager.shared.fireHaptic(of: .buttonPress)
                 if isStarred {
-                    await viewModel.unstarGist(gistID: gistId)
+                    await viewModel.unstarGist()
                 } else {
-                    await viewModel.starGist(gistID: gistId)
+                    await viewModel.starGist()
                 }
             }
         } label: {
@@ -357,6 +381,14 @@ public struct GistDetailView: View {
     ) -> some View {
         Button(role: role ?? .none, action: action) {
             Label(title, systemImage: systemImage)
+        }
+    }
+
+    private func fetchMetaData() {
+        Task {
+            await viewModel.isStarred(gistID: gistId)
+            await commentViewModel.fetchComments(gistID: gistId)
+            await viewModel.gist(gistID: gistId)
         }
     }
 }

@@ -86,6 +86,7 @@ public struct SettingView: View {
         .toolbar(.visible, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarRole(.automatic)
+        .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog(
             "Are you sure?",
             isPresented: $showConfirmationDialog,

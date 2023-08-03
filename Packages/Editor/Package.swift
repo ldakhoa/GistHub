@@ -4,7 +4,10 @@ import PackageDescription
 
 let package = Package(
     name: "Editor",
-    platforms: [.iOS(.v16)],
+    platforms: [
+        .iOS(.v16),
+        .macOS(.v13)
+    ],
     products: [
         .library(
             name: "Editor",
@@ -19,7 +22,7 @@ let package = Package(
         .package(name: "Markdown", path: "../Markdown"),
         .package(
             url: "https://github.com/simonbs/Runestone",
-            .upToNextMajor(from: "0.2.9")
+            .upToNextMajor(from: "0.3.2")
         ),
         .package(
             url: "https://github.com/simonbs/KeyboardToolbar",

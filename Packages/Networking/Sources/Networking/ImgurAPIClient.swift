@@ -50,7 +50,7 @@ extension DefaultImgurAPIClient {
                     "Authorization": "Client-ID \(Secrets.Imgur.clientId)",
                     "Content-Type": "multipart/form-data; boundary=\(Constants.boundary)"
                 ]
-            default:
+            case .credits:
                 return [
                     "Authorization": "Client-ID \(Secrets.Imgur.clientId)"
                 ]
@@ -84,7 +84,7 @@ extension DefaultImgurAPIClient {
                 data.appendString("\r\n\r\n\(base64Image)\r\n")
                 data.appendString("--\(Constants.boundary)--\r\n")
                 return data
-            default:
+            case .credits:
                 return nil
             }
         }

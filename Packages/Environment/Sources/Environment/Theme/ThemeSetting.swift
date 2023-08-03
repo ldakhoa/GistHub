@@ -8,15 +8,15 @@
 import Foundation
 
 public enum ThemeSetting: String, CaseIterable, Hashable {
-    case tomorrow
-    case tomorrowNight
+    case gitHubLight
+    case gitHubDark
 
     public func makeTheme() -> EditorTheme {
         switch self {
-        case .tomorrow:
-            return TomorrowTheme()
-        case .tomorrowNight:
-            return TomorrowNightTheme()
+        case .gitHubLight:
+            return GitHubTheme()
+        case .gitHubDark:
+            return GitHubDarkTheme()
         }
     }
 }

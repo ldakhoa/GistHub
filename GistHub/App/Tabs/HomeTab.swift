@@ -46,28 +46,28 @@ struct HomeTab: View {
     // Only show at Home Tab when login
     @State
     private var whatsNew: WhatsNew? = WhatsNew(
-        version: "1.0.5",
+        version: "1.1.0",
         title: "What's New in GistHub",
         features: [
             .init(
-                image: .init(systemName: "safari"),
-                title: "Open in GistHub",
-                subtitle: "Easily open gists in GistHub app from Safari for quick access, commenting, and browsing."
+                image: .init(systemName: "person.crop.circle.badge.questionmark"),
+                title: "Profile View",
+                subtitle: "Get to know fellow Gist users with detailed profiles, all gists and starred gists."
             ),
             .init(
-                image: .init(systemName: "doc.text.image"),
-                title: "Upload image in Gist markdown",
-                subtitle: "Effortlessly include images in your Markdown gists by uploading them directly within the app."
+                image: .init(systemName: "magnifyingglass.circle"),
+                title: "Discover Gists",
+                subtitle: "Explore curated and trending gists to expand your knowledge."
             ),
             .init(
-                image: .init(systemName: "pencil.circle"),
-                title: "Edit a Gist",
-                subtitle: "Update gist description and files right in the GistHub app, making changes on the go."
+                image: .init(systemName: "star"),
+                title: "Stargazer",
+                subtitle: "See the popularity of gists which displays the number of users who have starred each gist."
             ),
             .init(
-                image: .init(systemName: "exclamationmark.bubble"),
-                title: "Report a Bug",
-                subtitle: "Instantly report bugs within GistHub app, eliminating the need to raise issues on GitHub."
+                image: .init(systemName: "note.text"),
+                title: "New editor theme",
+                subtitle: "Enhance your coding and viewing experience with a fresh and modern visual style."
             )
         ],
         primaryAction: WhatsNew.PrimaryAction(
@@ -78,7 +78,7 @@ struct HomeTab: View {
         secondaryAction: WhatsNew.SecondaryAction(
             title: "Learn more",
             foregroundColor: Colors.accent.color,
-            action: .openURL(URL(string: "https://github.com/ldakhoa/GistHub/releases/tag/1.0.5"))
+            action: .openURL(URL(string: "https://github.com/ldakhoa/GistHub/releases/tag/1.1.0"))
         )
     )
 }

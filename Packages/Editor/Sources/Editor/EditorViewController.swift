@@ -144,7 +144,7 @@ public final class EditorViewController: UIViewController {
 
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.userInterfaceStyle == .dark {
-            textView.applyTheme(TomorrowNightTheme())
+            textView.applyTheme(GitHubDarkTheme())
         } else {
             let theme = UserDefaults.standard.theme.makeTheme()
             textView.applyTheme(theme)
@@ -221,21 +221,21 @@ public final class EditorViewController: UIViewController {
             ]),
             KeyboardToolGroup(items: [
                 KeyboardToolGroupItem(
-                    representativeTool: BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") {
-                        self.shiftRight()
+                    representativeTool: BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") { [weak self] in
+                        self?.shiftRight()
                     },
                     tools: [
-                        BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") {
-                            self.shiftRight()
+                        BlockKeyboardTool(symbolName: "arrow.right.to.line.compact") { [weak self] in
+                            self?.shiftRight()
                         },
-                        BlockKeyboardTool(symbolName: "arrow.left.to.line.compact") {
-                            self.shiftLeft()
+                        BlockKeyboardTool(symbolName: "arrow.left.to.line.compact") { [weak self] in
+                            self?.shiftLeft()
                         },
-                        BlockKeyboardTool(symbolName: "arrow.up.to.line.compact") {
-                            self.shiftUp()
+                        BlockKeyboardTool(symbolName: "arrow.up.to.line.compact") { [weak self] in
+                            self?.shiftUp()
                         },
-                        BlockKeyboardTool(symbolName: "arrow.down.to.line.compact") {
-                            self.shiftDown()
+                        BlockKeyboardTool(symbolName: "arrow.down.to.line.compact") { [weak self] in
+                            self?.shiftDown()
                         }
                 ]),
                 KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "(", textView: textView), tools: [

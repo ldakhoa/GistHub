@@ -26,6 +26,8 @@ public struct Gist: Codable, Identifiable, Hashable {
     public let commentsURL: String?
     public let owner: User?
     public let truncated: Bool?
+    public let stargazerCount: Int?
+    public let fork: Fork?
 
     public init(
         id: String,
@@ -44,7 +46,9 @@ public struct Gist: Codable, Identifiable, Hashable {
         comments: Int? = nil,
         commentsURL: String? = nil,
         owner: User? = nil,
-        isTruncated: Bool = false
+        isTruncated: Bool = false,
+        stargazerCount: Int? = nil,
+        fork: Fork? = nil
     ) {
         self.id = id
         self.url = url
@@ -63,6 +67,8 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commentsURL = commentsURL
         self.owner = owner
         self.truncated = isTruncated
+        self.stargazerCount = stargazerCount
+        self.fork = fork
     }
 
     public init(from decoder: Decoder) throws {
@@ -84,6 +90,8 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commentsURL = try container.decodeIfPresent(String.self, forKey: .commentsURL)
         self.owner = try container.decodeIfPresent(User.self, forKey: .owner)
         self.truncated = try container.decodeIfPresent(Bool.self, forKey: .truncated)
+        self.stargazerCount = try container.decodeIfPresent(Int.self, forKey: .stargazerCount)
+        self.fork = try container.decodeIfPresent(Fork.self, forKey: .fork)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -104,6 +112,8 @@ public struct Gist: Codable, Identifiable, Hashable {
         case commentsURL = "comments_url"
         case owner = "owner"
         case truncated = "truncated"
+        case stargazerCount
+        case fork
     }
 
     public static func == (lhs: Gist, rhs: Gist) -> Bool {
@@ -162,7 +172,9 @@ public extension Gist {
             comments: 1,
             commentsURL: "https://github.com/ldakhoa",
             owner: .stubbed,
-            isTruncated: false
+            isTruncated: false,
+            stargazerCount: 0,
+            fork: Fork(totalCount: 0)
         )
     }
 }

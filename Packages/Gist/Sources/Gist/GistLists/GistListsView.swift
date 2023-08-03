@@ -17,13 +17,14 @@ public struct GistListsView: View {
 
     // MARK: - Dependencies
 
-    private let listsMode: GistListsMode
+    @State private var listsMode: GistListsMode
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
+    @State private var progressViewId = 0
 
     // MARK: - Initializer
 
     public init(listsMode: GistListsMode) {
-        self.listsMode = listsMode
+        _listsMode = State(initialValue: listsMode)
     }
 
     // MARK: - View
@@ -37,10 +38,18 @@ public struct GistListsView: View {
                         GistListsRowView(gist: gist)
                             .redacted(reason: .placeholder)
                     }
-                case let .content(gists):
-                    ForEach(gists) { gist in
+                case .content:
+                    ForEach(viewModel.gists) { gist in
                         HStack {
                             GistListsRowView(gist: gist)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.fetchMoreGistsIfNeeded(
+                                            currentGistID: gist.id,
+                                            mode: listsMode
+                                        )
+                                    }
+                                }
                             Spacer()
                         }
                         .contentShape(Rectangle())
@@ -53,6 +62,19 @@ public struct GistListsView: View {
                             contextMenuPreview(gist: gist)
                         }
                     }
+
+                    if viewModel.isLoadingMoreGists {
+                        HStack(alignment: .center) {
+                            Spacer()
+                            ProgressView()
+                                .id(progressViewId)
+                                .onAppear {
+                                    progressViewId += 1
+                                }
+                            Spacer()
+                        }
+                        .listRowSeparator(.hidden)
+                    }
                 case .error:
                     ErrorView(
                         title: "Cannot Connect",
@@ -63,6 +85,7 @@ public struct GistListsView: View {
                     .listRowSeparator(.hidden)
                 }
             }
+            .animation(.linear, value: viewModel.gists)
 
             if listsMode == .currentUserGists {
                 newGistFloatingButton
@@ -71,14 +94,25 @@ public struct GistListsView: View {
         .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
-        .navigationTitle(Text(listsMode.navigationTitle))
         .onLoad { fetchGists() }
-        .refreshable { fetchGists() }
-        .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+        .refreshable { refreshGists() }
         .scrollDismissesKeyboard(.interactively)
-        .onChange(of: viewModel.searchText) { _ in
-            viewModel.search()
+        .modifyIf(listsMode.shouldShowMenuView) { view in
+            view
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        menuView
+                    }
+                }
         }
+        .modifyIf(listsMode.shouldShowSearch) { view in
+            view
+                .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+                .onChange(of: viewModel.searchText) { _ in
+                    viewModel.search()
+                }
+        }
+        .navigationTitle(Text(listsMode.navigationTitle))
     }
 
     @ViewBuilder
@@ -102,6 +136,42 @@ public struct GistListsView: View {
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
             }
+        }
+    }
+
+    @ViewBuilder
+    private var menuView: some View {
+        Menu {
+            makeMenuButton(title: "All gists", image: "code24") {
+                self.listsMode = .discover(mode: .all)
+                refreshGists()
+            }
+
+            makeMenuButton(title: "Starred", image: "star") {
+                self.listsMode = .discover(mode: .starred)
+                refreshGists()
+            }
+
+            makeMenuButton(title: "Forked", image: "fork") {
+                self.listsMode = .discover(mode: .forked)
+                refreshGists()
+            }
+
+        } label: {
+            Image(systemName: "chevron.down.circle")
+                .fontWeight(.semibold)
+                .foregroundColor(Colors.accent.color)
+        }
+    }
+
+    private func makeMenuButton(
+        title: String,
+        image: String,
+        role: ButtonRole? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(role: role ?? .none, action: action) {
+            Label(title, image: image)
         }
     }
 
@@ -135,7 +205,13 @@ public struct GistListsView: View {
 
     private func fetchGists() {
         Task {
-            await viewModel.fetchGists(listsMode: listsMode)
+            await viewModel.fetchGists(mode: self.listsMode)
+        }
+    }
+
+    private func refreshGists() {
+        Task {
+            await viewModel.refreshGists(mode: self.listsMode)
         }
     }
 }

@@ -4,7 +4,10 @@ import PackageDescription
 
 let package = Package(
     name: "Models",
-    platforms: [.iOS(.v16)],
+    platforms: [
+        .iOS(.v16),
+        .macOS(.v13)
+    ],
     products: [
         .library(
             name: "Models",
@@ -22,7 +25,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/simonbs/Runestone",
-            .upToNextMajor(from: "0.2.9")
+            from: "0.3.2"
         ),
         .package(name: "Utilities", path: "../Utilities")
     ],

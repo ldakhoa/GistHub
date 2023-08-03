@@ -5,7 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "Networking",
-    platforms: [.iOS(.v16)],
+    platforms: [
+        .iOS(.v16),
+        .macOS(.v13)
+    ],
     products: [
         .library(
             name: "Networking",
@@ -15,7 +18,8 @@ let package = Package(
     dependencies: [
         .package(name: "Models", path: "../Models"),
         .package(name: "AppAccount", path: "../AppAccount"),
-        .package(url: "https://github.com/duytph/Networkable", from: "2.0.0")
+        .package(url: "https://github.com/duytph/Networkable", from: "2.0.0"),
+        .package(url: "https://github.com/apollographql/apollo-ios.git", from: "1.3.2")
     ],
     targets: [
         .target(
@@ -23,7 +27,15 @@ let package = Package(
             dependencies: [
                 "Models",
                 "Networkable",
-                "AppAccount"
+                "AppAccount",
+                "GistHubGraphQL",
+                .product(name: "Apollo", package: "apollo-ios")
+            ]
+        ),
+        .target(
+            name: "GistHubGraphQL",
+            dependencies: [
+                .product(name: "Apollo", package: "apollo-ios")
             ]
         ),
         .testTarget(

@@ -14,8 +14,8 @@ public struct EditorViewRepresentable: UIViewControllerRepresentable {
     private let content: Binding<String>
     private let language: File.Language
     private let style: EditorViewController.Style
-    @State private var isEditable = true
-    @State private var isSelectable = true
+    @State private var isEditable: Bool
+    @State private var isSelectable: Bool
 
     public init(
         style: EditorViewController.Style = .normal,
