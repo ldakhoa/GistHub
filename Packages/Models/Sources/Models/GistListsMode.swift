@@ -16,7 +16,7 @@ public enum GistListsMode: Hashable {
     public var navigationTitle: String {
         switch self {
         case .currentUserGists:
-            return "All Gists"
+            return "Gists"
         case .userStarredGists:
             return "Starred Gists"
         case .userGists:

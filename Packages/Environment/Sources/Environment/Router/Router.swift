@@ -74,7 +74,7 @@ public class RouterPath: ObservableObject {
     @discardableResult
     public func handle(url: URL) -> OpenURLAction.Result {
         guard let host = url.host(), host == AppInfo.mainHost else {
-            return .systemAction
+            return urlHandler?(url) ?? .systemAction
         }
 
         let pathComponents: [String] = url.pathComponents
