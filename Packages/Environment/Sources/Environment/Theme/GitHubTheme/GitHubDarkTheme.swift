@@ -17,7 +17,7 @@ public final class GitHubDarkTheme: EditorTheme {
 
     public let selectedLineBackgroundColor = UIColor(colorValue: ColorValue(0x444D56))
     public let selectedLinesLineNumberColor = UIColor(colorValue: ColorValue(0xF6F8FA))
-    public let selectedLinesGutterBackgroundColor = UIColor.green // need changes
+    public let selectedLinesGutterBackgroundColor = UIColor.clear
 
     public let invisibleCharactersColor = UIColor(colorValue: ColorValue(0x6A737D))
 
