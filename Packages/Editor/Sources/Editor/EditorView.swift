@@ -165,11 +165,23 @@ public struct EditorView: View {
                     }
                 }
             }
+            .onReceive(.editorTextViewDidBeginEditing) { _ in
+                onRenameFile()
+            }
             .submitLabel(.done)
             .onSubmit {
-                showRenameFileTextField = false
-                // TODO: Change language type and set reset editor
+                onRenameFile()
             }
+    }
+
+    private func onRenameFile() {
+        showRenameFileTextField = false
+
+        let language = fileName
+            .getFileExtension()?
+            .getLanguage() ?? .markdown
+
+        NotificationCenter.default.post(name: .textViewShouldUpdateState, object: language)
     }
 
     private func updateGist() {

@@ -93,18 +93,13 @@ public final class EditorViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        if language == .markdown {
-            textView.inputAccessoryView = MarkdownKeyboardToolsView(textView: textView)
-        } else {
-            textView.inputAccessoryView = keyboardToolbarView
-            setupKeyboardTools()
-        }
+        setupInputAccessoryView(with: language)
 
         textView.isEditable = isEditable
         textView.isSelectable = isSelectable
         textView.isFindInteractionEnabled = true
 
-        setTextViewState(on: textView)
+        setTextViewState(on: textView, with: language)
 
         NotificationCenter.default.addObserver(
             self,
@@ -124,6 +119,13 @@ public final class EditorViewController: UIViewController {
             self,
             selector: #selector(updateTextViewTheme),
             name: .textViewShouldUpdateTheme,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(shouldUpdateTextViewState),
+            name: .textViewShouldUpdateState,
             object: nil
         )
 
@@ -151,11 +153,20 @@ public final class EditorViewController: UIViewController {
         }
     }
 
-    private func setTextViewState(on textView: TextView) {
+    private func setupInputAccessoryView(with language: File.Language) {
+        if language == .markdown {
+            textView.inputAccessoryView = MarkdownKeyboardToolsView(textView: textView)
+        } else {
+            textView.inputAccessoryView = keyboardToolbarView
+            setupKeyboardTools()
+        }
+    }
+
+    private func setTextViewState(on textView: TextView, with language: File.Language) {
         DispatchQueue.global(qos: .userInitiated).async {
             let text = self.content.wrappedValue
             let theme = UserDefaults.standard.theme.makeTheme()
-            let state = TextViewState(text: text, theme: theme, language: self.language.treeSitterLanguage)
+            let state = TextViewState(text: text, theme: theme, language: language.treeSitterLanguage)
 
             DispatchQueue.main.async {
                 textView.setState(state)
@@ -175,6 +186,16 @@ public final class EditorViewController: UIViewController {
     private func updateTextView(notification: Notification) {
         guard let content = notification.object as? String else { return }
         textView.text = content
+    }
+
+    @objc
+    private func shouldUpdateTextViewState(notification: Notification) {
+        guard let language = notification.object as? File.Language else { return }
+        setTextViewState(on: textView, with: language)
+
+        if language == .markdown {
+            setupInputAccessoryView(with: language)
+        }
     }
 
     @objc
@@ -361,6 +382,10 @@ extension EditorViewController: TextViewDelegate {
         canReplaceTextIn highlightedRange: HighlightedRange
     ) -> Bool {
         true
+    }
+
+    public func textViewDidBeginEditing(_ textView: TextView) {
+        NotificationCenter.default.post(name: .editorTextViewDidBeginEditing, object: nil)
     }
 }
 
