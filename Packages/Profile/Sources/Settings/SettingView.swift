@@ -12,6 +12,7 @@ import DesignSystem
 import Editor
 import Utilities
 import Environment
+import Networking
 
 public struct SettingView: View {
 
@@ -31,12 +32,17 @@ public struct SettingView: View {
     public var body: some View {
         List {
             Section {
-                ButtonRowView(title: "Manage Accounts") {
-                    routerPath.navigate(to: .settingsAccount)
+                Link(destination: reviewAccessUrl) {
+                    HStack {
+                        Text("Review GitHub Access")
+                            .foregroundColor(Colors.foreground.color)
+                        Spacer()
+                        RightChevronRowImage()
+                    }
                 }
 
-                ButtonRowView(title: "Code Options") {
-                    routerPath.navigate(to: .editorCodeSettings)
+                ButtonRowView(title: "Manage Accounts") {
+                    routerPath.navigate(to: .settingsAccount)
                 }
             }
 
@@ -50,11 +56,12 @@ public struct SettingView: View {
                         Text("View GistHub Repo")
                             .foregroundColor(Colors.foreground.color)
                         Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14))
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color(UIColor.tertiaryLabel))
+                        RightChevronRowImage()
                     }
+                }
+
+                ButtonRowView(title: "Code Options") {
+                    routerPath.navigate(to: .editorCodeSettings)
                 }
 
                 Toggle(isOn: $userDefaultsStore.openExternalsLinksInSafari) {
@@ -98,6 +105,17 @@ public struct SettingView: View {
         } message: {
             Text("You will be signed out from all of your accounts. Do you want to sign out?")
         }
+    }
+
+    private var reviewAccessUrl: URL {
+        guard let url = URLBuilder
+            .github()
+            .add(paths: ["settings", "connections", "applications", Secrets.GitHub.clientId])
+            .url
+        else {
+            return URLBuilder.github().url!
+        }
+        return url
     }
 }
 
