@@ -24,9 +24,6 @@ public struct EditorView: View {
     private let alertPublisher = NotificationCenter.default.publisher(for: .markdownEditorViewShouldShowAlert)
     @ObservedObject private var filesObservableObject: FilesObservableObject
 
-    // Only need if style is create
-    @State private var files: [String: File]?
-
     // MARK: - State
 
     @Environment(\.dismiss) private var dismiss
@@ -50,7 +47,6 @@ public struct EditorView: View {
         language: File.Language,
         gist: Gist? = nil,
         navigationTitle: String = "Edit",
-        files: [String: File]? = nil,
         filesObservableObject: FilesObservableObject = .init(),
         updateContentCompletion: (() -> Void)? = nil
     ) {
@@ -60,7 +56,6 @@ public struct EditorView: View {
         self.language = language
         self.gist = gist
         self.navigationTitle = navigationTitle
-        _files = State(wrappedValue: files)
         self.filesObservableObject = filesObservableObject
         self.updateContentCompletion = updateContentCompletion
     }
