@@ -24,17 +24,12 @@ final class EditorViewModel: ObservableObject {
 
     func updateGist(
         gistID: String,
-        fileName: String,
-        content: String,
+        files: [String: File?],
         completion: (() -> Void)? = nil
     ) async throws {
-        let gist = try await client.updateGist(
-            fromGistID: gistID,
-            fileName: fileName,
-            content: content
-        )
+        let gist = try await client.updateGist(fromGistID: gistID, description: nil, files: files)
         if gist.url != nil {
-            completion!()
+            completion?()
         }
     }
 
@@ -49,7 +44,7 @@ final class EditorViewModel: ObservableObject {
             content: nil
         )
         if gist.url != nil {
-            completion!()
+            completion?()
         }
     }
 

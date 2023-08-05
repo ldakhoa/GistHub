@@ -35,6 +35,7 @@ public struct EditorView: View {
     @State private var showConfirmDialog = false
     @State private var error = ""
 
+    private let originalFileName: String
     @State private var showRenameFileTextField: Bool = false
     @FocusState private var focusRenameFileTextField: Bool
 
@@ -52,6 +53,7 @@ public struct EditorView: View {
     ) {
         self.style = style
         _fileName = State(initialValue: fileName)
+        self.originalFileName = fileName
         _content = State(initialValue: content)
         self.language = language
         self.gist = gist
@@ -131,6 +133,9 @@ public struct EditorView: View {
                 NotificationCenter.default.post(name: .editorTextViewTextDidChange, object: newValue)
                 contentHasChanged = newValue != originalContent ? true : false
             }
+            .onChange(of: fileName) { newValue in
+                contentHasChanged = newValue != originalFileName ? true : false
+            }
             .toastError(isPresenting: $showErrorToast, error: error)
             .onAppear {
                 self.originalContent = self.content
@@ -148,7 +153,6 @@ public struct EditorView: View {
         TextField("", text: $fileName)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .background(UIColor.secondarySystemBackground.color)
-            .animation(.easeIn(duration: 0.5), value: showRenameFileTextField)
             .frame(height: 40)
             .showClearButton($fileName)
             .tint(Colors.textFieldTint.color)
@@ -182,7 +186,20 @@ public struct EditorView: View {
     private func updateGist() {
         Task {
             do {
-                try await viewModel.updateGist(gistID: gist?.id ?? "", fileName: fileName, content: self.content) {
+                let files: [String: File?]
+                let currentFile: File = File(filename: fileName, content: content)
+
+                // File name has changed, should delete old file
+                if originalFileName != fileName {
+                    files = [
+                        originalFileName: nil,
+                        fileName: currentFile
+                    ]
+                } else {
+                    files = [fileName: currentFile]
+                }
+
+                try await viewModel.updateGist(gistID: gist?.id ?? "", files: files) {
                     if language == .markdown {
                         NotificationCenter.default.post(name: .markdownPreviewShouldReload, object: content)
                     }
