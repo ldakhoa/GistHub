@@ -77,10 +77,6 @@ struct GistHubApp: App {
             let tabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithOpaqueBackground()
             UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-            // correct the transparency bug for Navigation bars
-            let navigationBarAppearance = UINavigationBarAppearance()
-            navigationBarAppearance.configureWithOpaqueBackground()
-            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
         .background(UIColor.systemBackground.color)
         .tint(Colors.accent.color)
