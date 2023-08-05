@@ -167,12 +167,6 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
-				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
-				6A3372112A7E345F00A7686E /* graphql */,
-				6A9BF50029503C0300EBFF04 /* ci_scripts */,
-				6A7CF6B5294652B9007B7D68 /* Frameworks */,
-				6A7CF5302943CF33007B7D68 /* GistHub */,
-				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
 				6A641C402A56A91B0095334B /* AppAccount */,
 				6A641C332A5687A50095334B /* DesignSystem */,
 				6A641C492A56E99E0095334B /* Editor */,
@@ -184,6 +178,12 @@
 				6A641C302A55F00B0095334B /* Networking */,
 				6A641C4A2A56E9DF0095334B /* Profile */,
 				6A641C342A5688460095334B /* Utilities */,
+				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
+				6A9BF50029503C0300EBFF04 /* ci_scripts */,
+				6A7CF6B5294652B9007B7D68 /* Frameworks */,
+				6A7CF5302943CF33007B7D68 /* GistHub */,
+				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
+				6A3372112A7E345F00A7686E /* graphql */,
 				6A7CF52F2943CF33007B7D68 /* Products */,
 			);
 			sourceTree = "<group>";
