@@ -56,7 +56,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "download --token &lt;githubtoken&gt;"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
