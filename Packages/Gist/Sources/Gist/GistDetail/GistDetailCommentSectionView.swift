@@ -13,7 +13,14 @@ struct GistDetailCommentSectionView: View {
         ZStack {
             switch commentViewModel.contentState {
             case .loading:
-                ProgressView()
+                VStack(alignment: .leading) {
+                    ForEach(Comment.placeholders, id: \.id) { comment in
+                        CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
+                            .redacted(reason: .placeholder)
+                        Divider()
+                            .overlay(Colors.neutralEmphasis.color)
+                    }
+                }
             case let .error(error):
                 Text(error).foregroundColor(Colors.danger.color)
             case .showContent:

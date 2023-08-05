@@ -54,6 +54,7 @@ import Models
     }
 
     func gist(gistID: String) async {
+        contentState = .loading
         do {
             async let gist = gistHubClient.gist(fromGistID: gistID)
             self.gist = try await gist

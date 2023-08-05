@@ -25,6 +25,7 @@ public final class CommentViewModel: ObservableObject {
     }
 
     public func fetchComments(gistID: String) async {
+        contentState = .loading
         do {
             let comments = try await client.comments(gistID: gistID)
             self.comments = comments
