@@ -1,3 +1,15 @@
+- [GistHub App](#gisthub-app)
+	- [1. Cloning the repo](#1-cloning-the-repo)
+	- [2. Installing](#2-installing)
+	- [3. Setting up OAuth for login](#3-setting-up-oauth-for-login)
+		- [Registering](#registering)
+- [Modularization](#modularization)
+	- [Add new Module](#add-new-module)
+	- [Resolve all Modules](#resolve-all-modules)
+- [GraphQL](#graphql)
+	- [Using Xcode](#using-xcode)
+	- [Using CLI](#using-cli)
+
 # GistHub App
 
 ## 1. Cloning the repo
@@ -54,12 +66,34 @@ sh Scripts/resolve_packages.sh
 
 To generate the new API
 
+## Using Xcode
+
+Open the GistHub/GistHub.xcodeproj file. Then select `gpl_api_generator` scheme with macOS target `My Mac`.
+
+**Generating code from `*.graphql`**
+
+1. Go to Product > Scheme > Edit Scheme...
+2. Go to Run > Arguments.
+3. Make sure `generate` argument is checked.
+4. Hit run to generate.
+
+**To download the new GitHub schema**
+
+1. Go to Product > Scheme > Edit Scheme...
+2. Go to Run > Arguments.
+3. Make sure `download` argument is checked.
+4. Hit run to download.
+
+## Using CLI
+
+**Generating code from `*.graphql`**
+
 ```bash
 cd graphql/generator/
 swift run gpl_api_generator generate
 ```
 
-To download the new GitHub schema
+**Dowloading the new GitHub schema**
 
 ```bash
 cd graphql/generator/
