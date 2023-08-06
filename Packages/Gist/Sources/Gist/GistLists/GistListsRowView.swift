@@ -1,9 +1,11 @@
 import SwiftUI
 import Models
 import DesignSystem
+import OrderedCollections
 
 struct GistListsRowView: View {
     let gist: Gist
+    let gistListsMode: GistListsMode
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -59,8 +61,8 @@ struct GistListsRowView: View {
                 }
 
                 HStack(alignment: .center) {
-                    let fileTitle = files.keys.count > 1 ? "files" : "file"
-                    footerItem(title: "\(files.keys.count) \(fileTitle)", imageName: "file-code")
+                    let fileTitle: String = files.keys.count > 1 ? "files" : "file"
+                    footerItem(title: "\(getFilesCount(from: files)) \(fileTitle)", imageName: "file-code")
                     let forkCountTitle = gist.fork?.totalCount ?? 0 > 1 ? "forks" : "fork"
                     footerItem(title: "\(gist.fork?.totalCount ?? 0) \(forkCountTitle)", imageName: "fork")
                     let commentTitle = gist.comments ?? 0 > 1 ? "comments" : "comment"
@@ -70,6 +72,17 @@ struct GistListsRowView: View {
                 }
             }
         }
+    }
+
+    private func getFilesCount(from files: OrderedDictionary<String, File>) -> Int {
+        let filesCount: Int
+        switch gistListsMode {
+        case .currentUserGists, .userGists:
+            filesCount = files.keys.count
+        case .userStarredGists, .discover:
+            filesCount = gist.fileTotalCount
+        }
+        return filesCount
     }
 
     private func footerItem(title: String, imageName: String) -> some View {

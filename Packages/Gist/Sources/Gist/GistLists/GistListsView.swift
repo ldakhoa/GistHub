@@ -35,13 +35,13 @@ public struct GistListsView: View {
                 switch viewModel.contentState {
                 case .loading:
                     ForEach(Gist.placeholders) { gist in
-                        GistListsRowView(gist: gist)
+                        GistListsRowView(gist: gist, gistListsMode: listsMode)
                             .redacted(reason: .placeholder)
                     }
                 case .content:
                     ForEach(viewModel.gists) { gist in
                         HStack {
-                            GistListsRowView(gist: gist)
+                            GistListsRowView(gist: gist, gistListsMode: listsMode)
                                 .onAppear {
                                     Task {
                                         await viewModel.fetchMoreGistsIfNeeded(
