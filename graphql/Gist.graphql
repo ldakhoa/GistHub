@@ -1,16 +1,6 @@
-query Gists($first: Int, $after: String, $privacy: GistPrivacy) {
+query Gists($first: Int, $after: String, $privacy: GistPrivacy, $orderBy: GistOrder) {
   viewer {
-    gists(first: $first, after: $after, privacy: $privacy) {
-      edges {
-        node {
-          ...GistDetails
-        }
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-    }
+    ...GistList
   }
 }
 
@@ -22,9 +12,14 @@ query Gist($gistID: String!) {
   }
 }
 
-query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $after: String) {
+query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $after: String, $orderBy: GistOrder) {
   user(login: $userName) {
-    gists(privacy: $privacy, first: $first, after: $after) {
+    ...GistList
+  }
+}
+
+fragment GistList on User {
+    gists(privacy: $privacy, first: $first, after: $after, orderBy: $orderBy) {
      edges {
         node {
           ...GistDetails
@@ -35,7 +30,6 @@ query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $aft
         endCursor
       }
     }
-  }
 }
 
 fragment GistDetails on Gist {
