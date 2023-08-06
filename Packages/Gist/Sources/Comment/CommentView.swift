@@ -37,20 +37,20 @@ public struct CommentView: View {
         VStack(alignment: .leading) {
             HStack(alignment: .bottom) {
                 if
-                    let avatarURLString = comment.user.avatarURL,
+                    let avatarURLString = comment.user?.avatarURL,
                     let url = URL(string: avatarURLString)
                 {
                     GistHubImage(url: url, width: 44, height: 44, cornerRadius: 24)
                         .onTapGesture {
-                            routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
+                            routerPath.navigateToUserProfileView(with: comment.user?.login ?? "ghost")
                         }
                 }
                 VStack(alignment: .leading, spacing: -6) {
                     HStack {
-                        Text(comment.user.login ?? "")
+                        Text(comment.user?.login ?? "ghost")
                             .bold()
                             .onTapGesture {
-                                routerPath.navigateToUserProfileView(with: comment.user.login ?? "")
+                                routerPath.navigateToUserProfileView(with: comment.user?.login ?? "ghost")
                             }
                         if let createdAt = comment.createdAt {
                             Text("· \(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
@@ -99,13 +99,13 @@ public struct CommentView: View {
             .padding(.horizontal, -16)
         }
         .confirmationDialog("", isPresented: $showContentActionConfirmedDialog) {
-            if comment.user.login == currentAccount.user?.login {
+            if comment.user?.login == currentAccount.user?.login {
                 Button("Delete", role: .destructive) {
                     showDeleteConfirmedDialog.toggle()
                 }
             }
 
-            if comment.user.login == currentAccount.user?.login {
+            if comment.user?.login == currentAccount.user?.login {
                 Button("Edit") {
                     routerPath.presentedSheet = .markdownTextEditor(
                         style: .updateComment(content: comment.body ?? "")
