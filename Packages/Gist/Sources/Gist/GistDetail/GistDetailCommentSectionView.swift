@@ -9,6 +9,8 @@ struct GistDetailCommentSectionView: View {
     let gistId: String
     let currentAccount: CurrentAccount
 
+    @State private var progressViewId = 0
+
     var body: some View {
         ZStack {
             switch commentViewModel.contentState {
@@ -27,6 +29,14 @@ struct GistDetailCommentSectionView: View {
                     LazyVStack(alignment: .leading) {
                         ForEach(comments, id: \.id) { comment in
                             CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
+                                .onAppear {
+                                    Task {
+                                        await commentViewModel.fetchMoreCommentsIfNeeded(
+                                            currentCommentID: comment.nodeID,
+                                            gistID: gistId
+                                        )
+                                    }
+                                }
                                 .id(comment.id)
                                 .environmentObject(currentAccount)
                             if !isLastObject(objects: comments, object: comment) {
@@ -37,6 +47,19 @@ struct GistDetailCommentSectionView: View {
                     }
                     .padding(.vertical, comments.isEmpty ? 0 : 4)
                     .background(Colors.itemBackground)
+
+                    if commentViewModel.isLoadingMoreComments {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .foregroundColor(Colors.accent.color)
+                                .id(progressViewId)
+                                .onAppear {
+                                    progressViewId += 1
+                                }
+                            Spacer()
+                        }
+                    }
                 }
             }
         }

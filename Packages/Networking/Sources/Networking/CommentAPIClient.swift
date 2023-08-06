@@ -14,6 +14,9 @@ public protocol CommentAPIClient {
     /// Get comments of the gist.
     func comments(gistID: String) async throws -> [Comment]
 
+    /// Get comments of the gist.
+    func comments(gistID: String, page: Int, perPage: Int) async throws -> [Comment]
+
     /// Create a gist comment
     func createComment(gistID: String, body: String) async throws -> Comment
 
@@ -32,7 +35,11 @@ public final class DefaultCommentAPIClient: CommentAPIClient {
     }
 
     public func comments(gistID: String) async throws -> [Comment] {
-        try await session.data(for: API.comments(gistID: gistID))
+        try await session.data(for: API.comments(gistID: gistID, page: 1, perPage: 1))
+    }
+
+    public func comments(gistID: String, page: Int, perPage: Int) async throws -> [Comment] {
+        try await session.data(for: API.comments(gistID: gistID, page: page, perPage: perPage))
     }
 
     public func createComment(gistID: String, body: String) async throws -> Comment {
@@ -50,7 +57,8 @@ public final class DefaultCommentAPIClient: CommentAPIClient {
 
 extension DefaultCommentAPIClient {
     enum API: Request {
-        case comments(gistID: String)
+//        case comments(gistID: String)
+        case comments(gistID: String, page: Int, perPage: Int)
         case createComment(gistID: String, body: String)
         case updateComment(gistID: String, commentID: Int, body: String)
         case deleteComment(gistID: String, commentID: Int)
@@ -67,9 +75,10 @@ extension DefaultCommentAPIClient {
 
         var url: String {
             switch self {
-            case let .comments(gistID),
-                let .createComment(gistID, _):
+            case let .createComment(gistID, _):
                 return "/gists/\(gistID)/comments"
+            case let .comments(gistID, page, perPage):
+                return "/gists/\(gistID)/comments?page=\(page)&per_page=\(perPage)"
             case let .updateComment(gistID, commentID, _),
                 let .deleteComment(gistID, commentID):
                 return "/gists/\(gistID)/comments/\(commentID)"
