@@ -18,9 +18,11 @@ public struct Gist: Codable, Identifiable, Hashable {
     public let gitPushURL: String?
     public let htmlURL: String?
     public let files: OrderedDictionary<String, File>?
+    public let fileTotalCount: Int?
     public let `public`: Bool?
     public let createdAt: Date?
     public let updatedAt: Date?
+    public let isUpdated: Bool?
     public let description: String?
     public let comments: Int?
     public let commentsURL: String?
@@ -39,9 +41,11 @@ public struct Gist: Codable, Identifiable, Hashable {
         gitPushURL: String? = nil,
         htmlURL: String? = nil,
         files: OrderedDictionary<String, File>? = nil,
+        fileTotalCount: Int? = 1,
         isPublic: Bool? = nil,
         createdAt: Date? = nil,
         updatedAt: Date? = nil,
+        isUpdated: Bool? = false,
         description: String? = nil,
         comments: Int? = nil,
         commentsURL: String? = nil,
@@ -59,9 +63,11 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.gitPushURL = gitPushURL
         self.htmlURL = htmlURL
         self.files = files
+        self.fileTotalCount = fileTotalCount
         self.public = isPublic
         self.createdAt = createdAt
         self.updatedAt = updatedAt
+        self.isUpdated = isUpdated
         self.description = description
         self.comments = comments
         self.commentsURL = commentsURL
@@ -82,9 +88,11 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.gitPushURL = try container.decodeIfPresent(String.self, forKey: .gitPushURL)
         self.htmlURL = try container.decodeIfPresent(String.self, forKey: .htmlURL)
         self.files = try container.decodeIfPresent([String: File].self, forKey: .files)?.toOrderedDictionary()
+        self.fileTotalCount = try container.decodeIfPresent(Int.self, forKey: .fileTotalCount)
         self.public = try container.decodeIfPresent(Bool.self, forKey: .public)
         self.createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt)
         self.updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
+        self.isUpdated = try container.decodeIfPresent(Bool.self, forKey: .isUpdated)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.comments = try container.decodeIfPresent(Int.self, forKey: .comments)
         self.commentsURL = try container.decodeIfPresent(String.self, forKey: .commentsURL)
@@ -104,9 +112,11 @@ public struct Gist: Codable, Identifiable, Hashable {
         case gitPushURL = "git_push_url"
         case htmlURL = "html_url"
         case files = "files"
+        case fileTotalCount = "fileCount"
         case `public` = "public"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case isUpdated
         case description
         case comments = "comments"
         case commentsURL = "comments_url"
