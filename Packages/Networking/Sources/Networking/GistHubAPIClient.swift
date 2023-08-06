@@ -106,7 +106,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let query = GistsQuery(
             first: GraphQLNullable(integerLiteral: pageSize),
             after: inputCursor,
-             privacy: GraphQLNullable(GistPrivacy.all),
+            privacy: GraphQLNullable(GistPrivacy.all),
             orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
         )
         let data = try await graphQLSession.query(query)
