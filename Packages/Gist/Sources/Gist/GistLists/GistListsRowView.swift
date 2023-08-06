@@ -62,8 +62,9 @@ struct GistListsRowView: View {
                 }
 
                 HStack(alignment: .center) {
-                    let fileTitle: String = files.keys.count > 1 ? "files" : "file"
-                    footerItem(title: "\(getFilesCount(from: files)) \(fileTitle)", imageName: "file-code")
+                    let filesCountPrefix = getFilesCount(from: files)
+                    let fileTitle: String = filesCountPrefix > 1 ? "files" : "file"
+                    footerItem(title: "\(filesCountPrefix) \(fileTitle)", imageName: "file-code")
                     let forkCountTitle = gist.fork?.totalCount ?? 0 > 1 ? "forks" : "fork"
                     footerItem(title: "\(gist.fork?.totalCount ?? 0) \(forkCountTitle)", imageName: "fork")
                     let commentTitle = gist.comments ?? 0 > 1 ? "comments" : "comment"
