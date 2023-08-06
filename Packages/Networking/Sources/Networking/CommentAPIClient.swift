@@ -12,9 +12,6 @@ import AppAccount
 
 public protocol CommentAPIClient {
     /// Get comments of the gist.
-    func comments(gistID: String) async throws -> [Comment]
-
-    /// Get comments of the gist.
     func comments(gistID: String, page: Int, perPage: Int) async throws -> [Comment]
 
     /// Create a gist comment
@@ -32,10 +29,6 @@ public final class DefaultCommentAPIClient: CommentAPIClient {
 
     public init(session: NetworkSession = .github) {
         self.session = session
-    }
-
-    public func comments(gistID: String) async throws -> [Comment] {
-        try await session.data(for: API.comments(gistID: gistID, page: 1, perPage: 1))
     }
 
     public func comments(gistID: String, page: Int, perPage: Int) async throws -> [Comment] {
@@ -57,7 +50,6 @@ public final class DefaultCommentAPIClient: CommentAPIClient {
 
 extension DefaultCommentAPIClient {
     enum API: Request {
-//        case comments(gistID: String)
         case comments(gistID: String, page: Int, perPage: Int)
         case createComment(gistID: String, body: String)
         case updateComment(gistID: String, commentID: Int, body: String)
