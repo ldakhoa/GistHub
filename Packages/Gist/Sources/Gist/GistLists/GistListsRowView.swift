@@ -55,7 +55,8 @@ struct GistListsRowView: View {
                     }
                 } else if let updatedAt = gist.updatedAt {
                     // For gisthubapp server case
-                    Text("Last active \(updatedAt.agoString())")
+                    let prefixContent: String = gist.isUpdated ?? false ? "Last active" : "Created"
+                    Text("\(prefixContent) \(updatedAt.agoString())")
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
                         .font(.caption)
                 }
@@ -80,7 +81,7 @@ struct GistListsRowView: View {
         case .currentUserGists, .userGists:
             filesCount = files.keys.count
         case .userStarredGists, .discover:
-            filesCount = gist.fileTotalCount
+            filesCount = gist.fileTotalCount ?? 1
         }
         return filesCount
     }
