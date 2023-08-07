@@ -63,7 +63,7 @@ public struct EditorDisplayView: View {
                                     gist: gist
                                 )
                             } label: {
-                                Label("Edit", systemImage: "pencil")
+                                Label("Edit File", systemImage: "pencil")
                             }
                         }
 
