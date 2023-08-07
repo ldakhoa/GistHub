@@ -105,10 +105,12 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         }
         let query = GistsQuery(
             first: GraphQLNullable(integerLiteral: pageSize),
-            after: inputCursor, privacy: GraphQLNullable(GistPrivacy.all)
+            after: inputCursor,
+            privacy: GraphQLNullable(GistPrivacy.all),
+            orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
         )
         let data = try await graphQLSession.query(query)
-        return GistsResponse(data: data)
+        return GistsResponse(data: data.viewer.gists)
     }
 
     public func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse {
@@ -122,10 +124,14 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
             userName: userName,
             privacy: GraphQLNullable(GistPrivacy.all),
             first: GraphQLNullable(integerLiteral: pageSize),
-            after: inputCursor
+            after: inputCursor,
+            orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
         )
         let data = try await graphQLSession.query(query)
-        return GistsResponse(data: data)
+        guard let gists = data.user?.gists else {
+            throw ApolloError.responseError
+        }
+        return GistsResponse(data: gists)
     }
 
     public func starredGists(page: Int, perPage: Int) async throws -> GistsResponse {
@@ -216,6 +222,7 @@ extension DefaultGistHubAPIClient {
     enum Constants {
         static let repo = "GistHub"
         static let owner = "ldakhoa"
+        static let defaultGistsOrdering = GistOrder(field: .case(.createdAt), direction: .case(.desc))
     }
 
     enum API: Request {

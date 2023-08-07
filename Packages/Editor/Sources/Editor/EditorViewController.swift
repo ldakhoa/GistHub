@@ -21,10 +21,7 @@ public protocol EditorViewControllerDelegate: AnyObject {
 
 public final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
-        let textView = TextView.makeConfigured(
-            usingSettings: .standard,
-            userInterfaceStyle: traitCollection.userInterfaceStyle
-        )
+        let textView = TextView.makeConfigured(usingSettings: .standard)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
         textView.delegate = self
@@ -144,6 +141,7 @@ public final class EditorViewController: UIViewController {
         )
     }
 
+<<<<<<< HEAD
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if traitCollection.userInterfaceStyle == .dark {
             textView.applyTheme(GitHubDarkTheme())
@@ -296,6 +294,20 @@ public final class EditorViewController: UIViewController {
                 ])
             ]),
             KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "gear") { [weak self] in
+                    let editorCodeSettingsViewController = UIHostingController(
+                        rootView: EditorCodeSettingsView(shouldHideDoneButton: true)
+                            .environmentObject(UserDefaultsStore.shared)
+                    )
+                    let navigationController = UINavigationController(rootViewController: editorCodeSettingsViewController)
+                    editorCodeSettingsViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                        title: "Done",
+                        style: .plain,
+                        target: self,
+                        action: #selector(self?.dismissEditorCodeSetting)
+                    )
+                    self?.present(navigationController, animated: true)
+                }),
                 KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "magnifyingglass") { [weak self] in
                     self?.textView.findInteraction?.presentFindNavigator(showingReplace: false)
                 }),
@@ -304,6 +316,13 @@ public final class EditorViewController: UIViewController {
                 })
             ])
         ]
+    }
+
+    @objc
+    private func dismissEditorCodeSetting() {
+        if let topViewController = UIApplication.shared.topViewController {
+            topViewController.dismiss(animated: true)
+        }
     }
 
     @objc

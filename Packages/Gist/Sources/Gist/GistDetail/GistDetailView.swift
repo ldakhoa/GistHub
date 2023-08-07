@@ -384,11 +384,16 @@ public struct GistDetailView: View {
         }
     }
 
-    private func fetchMetaData() {
+    private func fetchMetaData(refresh: Bool = false) {
         Task {
             await viewModel.isStarred(gistID: gistId)
-            await commentViewModel.fetchComments(gistID: gistId)
             await viewModel.gist(gistID: gistId)
+
+            if refresh {
+                await commentViewModel.refreshComments(from: gistId)
+            } else {
+                await commentViewModel.fetchComments(gistID: gistId)
+            }
         }
     }
 }

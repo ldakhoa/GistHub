@@ -11,7 +11,7 @@ public struct Comment: Codable {
     public let url: String
     public let id: Int?
     public let nodeID: String?
-    public let user: User
+    public let user: User?
     public let authorAssociation: String?
     public let createdAt: Date?
     public let updatedAt: Date?

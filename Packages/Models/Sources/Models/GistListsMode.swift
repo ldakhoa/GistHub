@@ -22,7 +22,7 @@ public enum GistListsMode: Hashable {
         case .userGists:
             return "Gists"
         case let .discover(mode):
-            return mode.title
+            return "Discover Gists"
         }
     }
 
@@ -56,10 +56,16 @@ public enum GistListsMode: Hashable {
     }
 }
 
-public enum DiscoverGistsMode: Hashable {
+public enum DiscoverGistsMode: Int, Identifiable, Hashable {
     case all
     case forked
     case starred
+
+    public var id: Int {
+        rawValue
+    }
+
+    public static let allCases: [DiscoverGistsMode] = [.all, .forked, .starred]
 
     public var title: String {
         switch self {

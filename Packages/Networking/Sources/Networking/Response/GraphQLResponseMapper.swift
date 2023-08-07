@@ -95,9 +95,9 @@ private extension OrderedDictionary<String, File> {
 
 // MARK: - Helpers
 
-// MARK: GistsQuery
+// MARK: GistList
 
-extension GistsQuery.Data.Viewer.Gists.Edge.Node {
+extension GistList.Gists.Edge.Node {
     var gistDetails: GistDetails {
         return Self.Fragments(_dataDict: __data).gistDetails
     }
@@ -112,14 +112,6 @@ public extension GistQuery.Data {
 }
 
 extension GistQuery.Data.Viewer.Gist {
-    var gistDetails: GistDetails {
-        return Self.Fragments(_dataDict: __data).gistDetails
-    }
-}
-
-// MARK: GistFromUserQuery
-
-extension GistsFromUserQuery.Data.User.Gists.Edge.Node {
     var gistDetails: GistDetails {
         return Self.Fragments(_dataDict: __data).gistDetails
     }

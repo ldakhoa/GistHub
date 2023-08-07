@@ -25,23 +25,12 @@ public struct GistsResponse {
         self.hasNextPage = hasNextPage
     }
 
-    init(data: GistsQuery.Data) {
-        let pageInfo = data.viewer.gists.pageInfo
+    init(data: GistList.Gists) {
+        let pageInfo = data.pageInfo
         cursor = pageInfo.endCursor ?? ""
         hasNextPage = pageInfo.hasNextPage
 
-        let gistsEdges = data.viewer.gists.edges ?? []
-        gists = gistsEdges.compactMap { edge in
-            edge?.node?.gistDetails.toGist()
-        }
-    }
-
-    init(data: GistsFromUserQuery.Data) {
-        let pageInfo = data.user?.gists.pageInfo
-        cursor = pageInfo?.endCursor ?? ""
-        hasNextPage = pageInfo?.hasNextPage ?? false
-
-        let gistsEdges = data.user?.gists.edges ?? []
+        let gistsEdges = data.edges ?? []
         gists = gistsEdges.compactMap { edge in
             edge?.node?.gistDetails.toGist()
         }
