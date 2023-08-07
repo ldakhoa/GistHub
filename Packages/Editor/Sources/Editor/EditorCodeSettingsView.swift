@@ -42,7 +42,6 @@ public struct EditorCodeSettingsView: View {
                 makeToggleView(isOn: $userDefaultsStore.showLineNumbers, title: "Show Line Numbers")
                 makeToggleView(isOn: $userDefaultsStore.wrapLines, title: "Line Wrapping")
                 makeToggleView(isOn: $userDefaultsStore.highlightSelectedLine, title: "Highlight Selected Line")
-                makeToggleView(isOn: $userDefaultsStore.forceDarkTheme, title: "Force Dark Theme")
             } header: {
                 Text("display")
             }

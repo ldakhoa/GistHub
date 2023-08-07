@@ -62,14 +62,6 @@ public final class UserDefaultsStore: ObservableObject {
         }
     }
 
-    @AppStorage(Keys.darkTheme)
-    public var forceDarkTheme: Bool = false {
-        didSet {
-            settings.theme = forceDarkTheme ? .gitHubDark : .gitHubLight
-            NotificationCenter.default.post(name: .textViewShouldUpdateTheme, object: nil)
-        }
-    }
-
     @AppStorage(Keys.openExternalsLinksInSafari)
     public var openExternalsLinksInSafari: Bool = false
 }
@@ -84,7 +76,6 @@ enum Keys {
     static let highlightSelectedLine = "GistHub.highlightSelectedLine"
     static let showPageGuide = "GistHub.showPageGuide"
     static let theme = "GistHub.theme"
-    static let darkTheme = "GistHub.darktheme"
     static let openExternalsLinksInSafari = "GistHub.openExternalsLinksInSafari"
 }
 
@@ -151,15 +142,6 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Keys.showPageGuide)
-        }
-    }
-
-    public var forceDarkTheme: Bool {
-        get {
-            return bool(forKey: Keys.darkTheme)
-        }
-        set {
-            set(newValue, forKey: Keys.darkTheme)
         }
     }
 
