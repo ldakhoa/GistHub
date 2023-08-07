@@ -23,7 +23,12 @@ public struct EditorCodeSettingsView: View {
         }
         """
 
-    public init() {}
+    // When launch screen from UIKit, the `dismiss` object cannot work.
+    private let shouldHideDoneButton: Bool
+
+    public init(shouldHideDoneButton: Bool = false) {
+        self.shouldHideDoneButton = shouldHideDoneButton
+    }
 
     public var body: some View {
         List {
@@ -60,11 +65,14 @@ public struct EditorCodeSettingsView: View {
         .scrollDismissesKeyboard(.interactively)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Done") {
-                    dismiss()
+                if !shouldHideDoneButton {
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
         }
+        .tint(Colors.accent.color)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 

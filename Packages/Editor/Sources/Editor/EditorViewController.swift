@@ -264,8 +264,17 @@ public final class EditorViewController: UIViewController {
             ]),
             KeyboardToolGroup(items: [
                 KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "gear") { [weak self] in
-                    let editorCodeSettingsViewController = UIHostingController(rootView: EditorCodeSettingsView().environmentObject(UserDefaultsStore.shared))
+                    let editorCodeSettingsViewController = UIHostingController(
+                        rootView: EditorCodeSettingsView(shouldHideDoneButton: true)
+                            .environmentObject(UserDefaultsStore.shared)
+                    )
                     let navigationController = UINavigationController(rootViewController: editorCodeSettingsViewController)
+                    editorCodeSettingsViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                        title: "Done",
+                        style: .plain,
+                        target: self,
+                        action: #selector(self?.dismissEditorCodeSetting)
+                    )
                     self?.present(navigationController, animated: true)
                 }),
                 KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "magnifyingglass") { [weak self] in
@@ -276,6 +285,13 @@ public final class EditorViewController: UIViewController {
                 })
             ])
         ]
+    }
+
+    @objc
+    private func dismissEditorCodeSetting() {
+        if let topViewController = UIApplication.shared.topViewController {
+            topViewController.dismiss(animated: true)
+        }
     }
 
     @objc
