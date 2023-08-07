@@ -263,6 +263,11 @@ public final class EditorViewController: UIViewController {
                 ])
             ]),
             KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "gear") { [weak self] in
+                    let editorCodeSettingsViewController = UIHostingController(rootView: EditorCodeSettingsView().environmentObject(UserDefaultsStore.shared))
+                    let navigationController = UINavigationController(rootViewController: editorCodeSettingsViewController)
+                    self?.present(navigationController, animated: true)
+                }),
                 KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "magnifyingglass") { [weak self] in
                     self?.textView.findInteraction?.presentFindNavigator(showingReplace: false)
                 }),
