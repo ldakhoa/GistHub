@@ -10,10 +10,7 @@ import Runestone
 import Environment
 
 extension TextView {
-    static func makeConfigured(
-        usingSettings settings: UserDefaults,
-        userInterfaceStyle: UIUserInterfaceStyle
-    ) -> TextView {
+    static func makeConfigured(usingSettings settings: UserDefaults) -> TextView {
         let textView = TextView()
         textView.alwaysBounceVertical = true
         textView.contentInsetAdjustmentBehavior = .always
@@ -32,8 +29,7 @@ extension TextView {
 
         textView.applySettings(from: settings)
 
-        // Force dark mode if user interface style is dark
-        let theme = userInterfaceStyle == .light ? settings.theme.makeTheme() : GitHubDarkTheme()
+        let theme = settings.theme.makeTheme()
         textView.applyTheme(theme)
         textView.applySettings(from: settings)
         return textView

@@ -21,10 +21,7 @@ public protocol EditorViewControllerDelegate: AnyObject {
 
 public final class EditorViewController: UIViewController {
     private lazy var textView: TextView = {
-        let textView = TextView.makeConfigured(
-            usingSettings: .standard,
-            userInterfaceStyle: traitCollection.userInterfaceStyle
-        )
+        let textView = TextView.makeConfigured(usingSettings: .standard)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.editorDelegate = self
         textView.delegate = self
@@ -140,15 +137,6 @@ public final class EditorViewController: UIViewController {
             name: .textViewShouldShowPhotoPicker,
             object: nil
         )
-    }
-
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if traitCollection.userInterfaceStyle == .dark {
-            textView.applyTheme(GitHubDarkTheme())
-        } else {
-            let theme = UserDefaults.standard.theme.makeTheme()
-            textView.applyTheme(theme)
-        }
     }
 
     private func setTextViewState(on textView: TextView) {
@@ -275,6 +263,11 @@ public final class EditorViewController: UIViewController {
                 ])
             ]),
             KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "gear") { [weak self] in
+                    let editorCodeSettingsViewController = UIHostingController(rootView: EditorCodeSettingsView().environmentObject(UserDefaultsStore.shared))
+                    let navigationController = UINavigationController(rootViewController: editorCodeSettingsViewController)
+                    self?.present(navigationController, animated: true)
+                }),
                 KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "magnifyingglass") { [weak self] in
                     self?.textView.findInteraction?.presentFindNavigator(showingReplace: false)
                 }),
