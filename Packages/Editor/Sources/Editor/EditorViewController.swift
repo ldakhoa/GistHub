@@ -141,16 +141,6 @@ public final class EditorViewController: UIViewController {
         )
     }
 
-<<<<<<< HEAD
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if traitCollection.userInterfaceStyle == .dark {
-            textView.applyTheme(GitHubDarkTheme())
-        } else {
-            let theme = UserDefaults.standard.theme.makeTheme()
-            textView.applyTheme(theme)
-        }
-    }
-
     private func setupInputAccessoryView(with language: File.Language) {
         if language == .markdown {
             textView.inputAccessoryView = MarkdownKeyboardToolsView(textView: textView)
