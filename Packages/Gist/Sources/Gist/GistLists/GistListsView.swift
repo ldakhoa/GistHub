@@ -14,12 +14,14 @@ import Utilities
 public struct GistListsView: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var routerPath: RouterPath
+    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
+    @State private var progressViewId = 0
+    @State private var selectedDiscoverGists: DiscoverGistsMode = .all
+    private let discoverGists: [DiscoverGistsMode] = DiscoverGistsMode.allCases
 
     // MARK: - Dependencies
 
     @State private var listsMode: GistListsMode
-    @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
-    @State private var progressViewId = 0
 
     // MARK: - Initializer
 
@@ -100,9 +102,19 @@ public struct GistListsView: View {
         .modifyIf(listsMode.shouldShowMenuView) { view in
             view
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        menuView
+                    ToolbarItem(placement: .principal) {
+                        Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
+                            ForEach(discoverGists) { discoverGist in
+                                Text(discoverGist.title)
+                                    .tag(discoverGist)
+                            }
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
                     }
+                }
+                .onChange(of: selectedDiscoverGists) { newValue in
+                    self.listsMode = .discover(mode: newValue)
+                    refreshGists()
                 }
         }
         .modifyIf(listsMode.shouldShowSearch) { view in
@@ -136,31 +148,6 @@ public struct GistListsView: View {
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
             }
-        }
-    }
-
-    @ViewBuilder
-    private var menuView: some View {
-        Menu {
-            makeMenuButton(title: "All gists", image: "code24") {
-                self.listsMode = .discover(mode: .all)
-                refreshGists()
-            }
-
-            makeMenuButton(title: "Starred", image: "star") {
-                self.listsMode = .discover(mode: .starred)
-                refreshGists()
-            }
-
-            makeMenuButton(title: "Forked", image: "fork") {
-                self.listsMode = .discover(mode: .forked)
-                refreshGists()
-            }
-
-        } label: {
-            Image(systemName: "chevron.down.circle")
-                .fontWeight(.semibold)
-                .foregroundColor(Colors.accent.color)
         }
     }
 

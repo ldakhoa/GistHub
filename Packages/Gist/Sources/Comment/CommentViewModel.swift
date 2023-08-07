@@ -56,7 +56,7 @@ public final class CommentViewModel: ObservableObject {
 
             isLoadingMoreComments = false
             contentState = .showContent
-            shouldScrollToComment = true
+            shouldScrollToComment = false
         } catch {
             contentState = .error(error: error.localizedDescription)
         }
