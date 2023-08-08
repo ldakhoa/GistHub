@@ -9,6 +9,8 @@ import Foundation
 
 public extension NSNotification.Name {
     static let editorTextViewTextDidChange = NSNotification.Name("editorTextViewTextDidChange")
+    static let editorTextViewDidBeginEditing = NSNotification.Name("editorTextViewDidBeginEditing")
+    static let textViewShouldUpdateState = NSNotification.Name("textViewShouldUpdateState")
     static let textViewShouldUpdateSettings = NSNotification.Name("textViewShouldUpdateSettings")
     static let textViewShouldUpdateTheme = NSNotification.Name("textViewShouldUpdateTheme")
     static let textViewShouldShowMarkdownPreview = NSNotification.Name("textViewShouldShowMarkdownPreview")

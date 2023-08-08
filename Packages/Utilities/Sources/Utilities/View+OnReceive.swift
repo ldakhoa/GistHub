@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func onReceive(
+    public func onReceive(
         _ name: Notification.Name,
         center: NotificationCenter = .default,
         object: AnyObject? = nil,

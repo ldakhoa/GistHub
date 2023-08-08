@@ -15,9 +15,20 @@ struct GistDetailCommentSectionView: View {
         ZStack {
             switch commentViewModel.contentState {
             case .loading:
-                ProgressView()
-            case let .error(error):
-                Text(error).foregroundColor(Colors.danger.color)
+                VStack(alignment: .leading) {
+                    ForEach(Comment.placeholders, id: \.id) { comment in
+                        CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
+                        Divider()
+                            .overlay(Colors.neutralEmphasis.color)
+                    }
+                }
+                .redacted(reason: .placeholder)
+            case .error:
+                ErrorView(title: "Cannot Load Comment") {
+                    Task {
+                        await commentViewModel.fetchComments(gistID: gistId)
+                    }
+                }
             case .showContent:
                 let comments = commentViewModel.comments
                 VStack(alignment: .leading) {

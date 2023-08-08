@@ -73,7 +73,7 @@ public struct EditorDisplayView: View {
                             Label("View Code Options", systemImage: "gear")
                         }
 
-                        if gist.owner?.id == currentAccount.user?.id {
+                        if gist.owner?.login == currentAccount.user?.login {
                             Divider()
                             Button(role: .destructive) {
                                 showConfirmDialog.toggle()

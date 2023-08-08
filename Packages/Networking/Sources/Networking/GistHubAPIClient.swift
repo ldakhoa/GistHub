@@ -12,7 +12,7 @@ import AppAccount
 import GistHubGraphQL
 import Apollo
 
-public protocol GistHubAPIClient: Client {
+public protocol GistHubAPIClient {
     /// Allows you to add a new gist with one or more files.
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
