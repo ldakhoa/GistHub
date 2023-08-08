@@ -53,8 +53,16 @@ public struct CommentView: View {
                                 routerPath.navigateToUserProfileView(with: comment.user?.login ?? "ghost")
                             }
                         if let createdAt = comment.createdAt {
-                            Text("· \(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
-                                .foregroundColor(Colors.neutralEmphasisPlus.color)
+                            Menu {
+                                Button(role: .none) {} label: {
+                                    Text("\(createdAt.formattedDate())")
+                                        .font(.subheadline)
+                                }
+                            } label: {
+                                Text("\(createdAt.agoString(style: .short).replacingOccurrences(of: ". ago", with: ""))")
+                                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                            }
+
                         }
 
                         if comment.createdAt != comment.updatedAt {

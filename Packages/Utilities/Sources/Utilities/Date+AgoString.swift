@@ -13,4 +13,12 @@ extension Date {
         formatter.unitsStyle = style
         return formatter.localizedString(for: self, relativeTo: .now)
     }
+
+    public func formattedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy, h:mm:ss a zzz"
+        dateFormatter.timeZone = TimeZone.current
+
+        return dateFormatter.string(from: self)
+    }
 }
