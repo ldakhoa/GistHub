@@ -46,6 +46,9 @@ public struct UserProfileView: View {
         .onAppear {
             fetchUser()
         }
+        .refreshable {
+            fetchUser()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
