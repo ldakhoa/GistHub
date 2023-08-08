@@ -80,5 +80,6 @@ struct GistHubApp: App {
         Task {
             await currentAccount.fetchCurrentUser()
         }
+        selectedTab = .home
     }
 }
