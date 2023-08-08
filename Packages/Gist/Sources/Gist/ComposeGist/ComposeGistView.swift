@@ -67,6 +67,17 @@ public struct ComposeGistView: View {
                             buildEditorView(file: file, fileName: fileName)
                         }
                     }
+                    .onDelete { indexSet in
+                        let sortedFileNames = filesObservableObject.files.keys.sorted()
+                        for index in indexSet {
+                            // Check if the index is within the array bounds
+                            guard index < sortedFileNames.count else { continue }
+
+                            let fileName = sortedFileNames[index]
+                            filesObservableObject.files.removeValue(forKey: fileName)
+                        }
+                    }
+
                     Button("Add file") {
                         hideKeyboard()
                         presentNewFileAlert = true
@@ -79,7 +90,6 @@ public struct ComposeGistView: View {
 
                         NavigationLink("Create") {
                             buildEditorView(fileName: newFileTitle)
-//                            newFileTitle = ""
                         }
 
                         Button("Cancel", role: .cancel) {
