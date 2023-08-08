@@ -72,12 +72,6 @@ struct GistHubApp: App {
                     .tag(tab)
             }
         }
-        .onAppear {
-            // correct the transparency bug for Tab bars
-            let tabBarAppearance = UITabBarAppearance()
-            tabBarAppearance.configureWithOpaqueBackground()
-            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-        }
         .background(UIColor.systemBackground.color)
         .tint(Colors.accent.color)
     }
