@@ -35,29 +35,28 @@ public struct HomeView: View {
             }
 
             Section {
-                    VStack(spacing: 12) {
-                        Text("Add favorite gists here for quick access anytime, without the need to search")
-                            .multilineTextAlignment(.center)
+                VStack(spacing: 12) {
+                    Text("Add favorite gists here for quick access anytime, without the need to search")
+                        .multilineTextAlignment(.center)
 
-                        Button(action: {
-                        }, label: {
-                            HStack {
-                                Spacer()
-                                Text("Add Quick Access")
-                                    .font(.callout)
-                                    .fontWeight(.semibold)
-                                Spacer()
-                            }
-                            .padding(12)
-                            .foregroundColor(Colors.accent.color)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Colors.buttonBorder.color)
-                            )
-                        })
-//                        .frame(maxWidth: .infinity)
-                    }
+                    Button(action: {
+                    }, label: {
+                        HStack {
+                            Spacer()
+                            Text("Add Quick Access")
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                            Spacer()
+                        }
+                        .padding(12)
+                        .foregroundColor(Colors.accent.color)
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Colors.buttonBorder.color)
+                        )
+                    })
+                }
                 .frame(maxWidth: .infinity)
             } header: {
                 Text("Quick Access")
@@ -106,9 +105,9 @@ public struct HomeView: View {
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
                 } icon: {
                     Image(systemName: image)
-                        .font(.system(size: 13))
+                        .font(.system(size: 14))
                         .fontWeight(.medium)
-                        .frame(width: 28, height: 28)
+                        .frame(width: 32, height: 32)
                         .foregroundColor(.white)
                         .background(imageBackground)
                         .cornerRadius(6.0)
@@ -117,5 +116,6 @@ public struct HomeView: View {
                 RightChevronRowImage()
             }
         })
+        .frame(height: 37)
     }
 }

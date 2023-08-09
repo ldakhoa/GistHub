@@ -68,9 +68,9 @@ struct GistHubApp: App {
             selectedTab = newTab
 
             if selectedTab == .newGist {
+                selectedTab = prevSelectedTab
                 HapticManager.shared.fireHaptic(of: .tabSelection)
                 openNewGist.toggle()
-                selectedTab = prevSelectedTab
             } else {
                 prevSelectedTab = newTab
             }

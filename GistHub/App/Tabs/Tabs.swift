@@ -29,7 +29,7 @@ enum Tab: Int, Identifiable, Hashable {
         case .home:
             HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .search:
-            HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+            SearchTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .newGist:
             Text("")
         case .profile:

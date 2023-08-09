@@ -8,8 +8,9 @@
 import SwiftUI
 import Environment
 import Gist
+import Search
 
-struct StarredTab: View {
+struct SearchTab: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
     @StateObject private var routerPath: RouterPath = RouterPath()
     @Binding var selectedTab: Tab
@@ -25,16 +26,16 @@ struct StarredTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .userStarredGists(userName: currentAccount.user?.login))
+            SearchView()
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
-//        .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
-//            if popToRootTab != .starred {
-//                routerPath.path = []
-//            }
-//        }
-//        .withSafariRouter(isActiveTab: selectedTab == .starred)
+        .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
+            if popToRootTab != .search {
+                routerPath.path = []
+            }
+        }
+        .withSafariRouter(isActiveTab: selectedTab == .search)
         .environmentObject(routerPath)
     }
 }
