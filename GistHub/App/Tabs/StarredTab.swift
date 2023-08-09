@@ -29,12 +29,12 @@ struct StarredTab: View {
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }
-        .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
-            if popToRootTab != .starred {
-                routerPath.path = []
-            }
-        }
-        .withSafariRouter(isActiveTab: selectedTab == .starred)
+//        .onChange(of: $popToRootTab.wrappedValue) { popToRootTab in
+//            if popToRootTab != .starred {
+//                routerPath.path = []
+//            }
+//        }
+//        .withSafariRouter(isActiveTab: selectedTab == .starred)
         .environmentObject(routerPath)
     }
 }

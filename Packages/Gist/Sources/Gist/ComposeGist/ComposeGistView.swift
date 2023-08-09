@@ -172,7 +172,7 @@ public struct ComposeGistView: View {
                         description: description,
                         files: filesObservableObject.files
                     )
-                    completion!(gist)
+                    completion?(gist)
                     dismiss()
                 } catch let updateError {
                     error = updateError.localizedDescription
@@ -197,7 +197,7 @@ public struct ComposeGistView: View {
                             files: filesObservableObject.files,
                             public: false)
                         dismiss()
-                        completion!(gist)
+                        completion?(gist)
                     } catch let createError {
                         error = createError.localizedDescription
                         self.showErrorToast.toggle()

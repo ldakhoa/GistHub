@@ -154,14 +154,14 @@ public struct UserProfileView: View {
     }
 }
 
-public struct ProfileMainView: View {
+struct ProfileMainView: View {
     private let user: User
 
-    public init(user: User) {
+    init(user: User) {
         self.user = user
     }
 
-    public var body: some View {
+    var body: some View {
         mainView
     }
 

@@ -2,9 +2,10 @@ import SwiftUI
 
 enum Tab: Int, Identifiable, Hashable {
     case home
-    case starred
+    case search
     case profile
     case discover
+    case newGist
     case other
 
     var id: Int {
@@ -12,7 +13,7 @@ enum Tab: Int, Identifiable, Hashable {
     }
 
     static func loggedInTabs() -> [Tab] {
-        [.home, .starred, .discover, .profile]
+        [.home, .search, .newGist, .discover, .profile]
     }
 
     static func loggedOutTabs() -> [Tab] {
@@ -27,13 +28,14 @@ enum Tab: Int, Identifiable, Hashable {
         switch self {
         case .home:
             HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
-        case .starred:
-            StarredTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+        case .search:
+            HomeTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
+        case .newGist:
+            Text("")
         case .profile:
             ProfileTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
         case .discover:
             DiscoverTab(selectedTab: selectedTab, popToRootTab: popToRootTab)
-
         case .other:
             EmptyView()
         }
@@ -43,8 +45,10 @@ enum Tab: Int, Identifiable, Hashable {
         switch self {
         case .home:
             return "Home"
-        case .starred:
-            return "Starred"
+        case .search:
+            return "Search"
+        case .newGist:
+            return "New Gist"
         case .discover:
             return "Discover"
         case .profile:
@@ -58,8 +62,10 @@ enum Tab: Int, Identifiable, Hashable {
         switch self {
         case .home:
             return "home"
-        case .starred:
-            return "star"
+        case .search:
+            return "tb_search"
+        case .newGist:
+            return "new_gist"
         case .discover:
             return "discover"
         case .profile:

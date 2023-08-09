@@ -10,12 +10,16 @@ import DesignSystem
 import AppAccount
 import Environment
 import Login
+import Gist
 
 @main
 struct GistHubApp: App {
     @State private var selectedTab: Tab = .home
     @State private var showLogin: Bool = false
     @State private var popToRootTab: Tab = .other
+    @State private var prevSelectedTab: Tab = .home
+    @State private var openNewGist: Bool = false
+
     @StateObject private var appAccountManager = AppAccountsManager.shared
     @StateObject private var currentAccount = CurrentAccount.shared
     @StateObject private var userDefaultsStore = UserDefaultsStore.shared
@@ -62,6 +66,14 @@ struct GistHubApp: App {
                 HapticManager.shared.fireHaptic(of: .tabSelection)
             }
             selectedTab = newTab
+
+            if selectedTab == .newGist {
+                HapticManager.shared.fireHaptic(of: .tabSelection)
+                openNewGist.toggle()
+                selectedTab = prevSelectedTab
+            } else {
+                prevSelectedTab = newTab
+            }
         })) {
             ForEach(tabs) { tab in
                 tab.makeContentView(popToRootTab: $popToRootTab, selectedTab: $selectedTab)
@@ -74,6 +86,12 @@ struct GistHubApp: App {
         }
         .background(UIColor.systemBackground.color)
         .tint(Colors.accent.color)
+        .sheet(isPresented: $openNewGist) {
+            ComposeGistView(style: .createGist) { newGist in
+                guard let htmlURL = newGist.htmlURL, let url = URL(string: htmlURL) else { return }
+                NotificationCenter.default.post(name: .openGistDetailFromURL, object: url)
+            }
+        }
     }
 
     private func setupEnv() {

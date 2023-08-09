@@ -15,6 +15,7 @@
 		6A0CA5C72A62D7C700366D03 /* Models in Frameworks */ = {isa = PBXBuildFile; productRef = 6A0CA5C62A62D7C700366D03 /* Models */; };
 		6A181F9B2A7A7FA80002DC99 /* DiscoverTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A181F9A2A7A7FA80002DC99 /* DiscoverTab.swift */; };
 		6A2D7B642A762FDD00DCC09D /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6A2D7B632A762FDD00DCC09D /* WhatsNewKit */; };
+		6A34C15C2A8368C700BF07F5 /* Home in Frameworks */ = {isa = PBXBuildFile; productRef = 6A34C15B2A8368C700BF07F5 /* Home */; };
 		6A6D6C8E2A670C6800F47796 /* GistHubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C8D2A670C6800F47796 /* GistHubApp.swift */; };
 		6A6D6C912A670D6D00F47796 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C902A670D6D00F47796 /* Tabs.swift */; };
 		6A6D6C932A67160C00F47796 /* HomeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A6D6C922A67160C00F47796 /* HomeTab.swift */; };
@@ -73,6 +74,7 @@
 		6A3372132A7E345F00A7686E /* Gist.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gist.graphql; sourceTree = "<group>"; };
 		6A3372142A7E345F00A7686E /* Star.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Star.graphql; sourceTree = "<group>"; };
 		6A3372152A7E345F00A7686E /* generator */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = generator; sourceTree = "<group>"; };
+		6A34C15A2A83682D00BF07F5 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Home; path = Packages/Home; sourceTree = "<group>"; };
 		6A641C302A55F00B0095334B /* Networking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Networking; path = Packages/Networking; sourceTree = "<group>"; };
 		6A641C312A55F52F0095334B /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Models; path = Packages/Models; sourceTree = "<group>"; };
 		6A641C322A5684D00095334B /* Markdown */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Markdown; path = Packages/Markdown; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				6AF19EF12A6EBFE400E1AC24 /* Networking in Frameworks */,
 				6AF19EF52A6EBFE400E1AC24 /* Utilities in Frameworks */,
 				6AF19EF32A6EBFE400E1AC24 /* Profile in Frameworks */,
+				6A34C15C2A8368C700BF07F5 /* Home in Frameworks */,
 				6AF19EE72A6EBFE400E1AC24 /* DesignSystem in Frameworks */,
 				6AF19EE52A6EBFE400E1AC24 /* AppAccount in Frameworks */,
 				6AF19EEB2A6EBFE400E1AC24 /* Gist in Frameworks */,
@@ -167,6 +170,7 @@
 		6A7CF5252943CF33007B7D68 = {
 			isa = PBXGroup;
 			children = (
+				6A34C15A2A83682D00BF07F5 /* Home */,
 				6A641C402A56A91B0095334B /* AppAccount */,
 				6A641C332A5687A50095334B /* DesignSystem */,
 				6A641C492A56E99E0095334B /* Editor */,
@@ -295,6 +299,7 @@
 				6AF19EF42A6EBFE400E1AC24 /* Utilities */,
 				6AF19EF62A6EC14D00E1AC24 /* Editor */,
 				6A2D7B632A762FDD00DCC09D /* WhatsNewKit */,
+				6A34C15B2A8368C700BF07F5 /* Home */,
 			);
 			productName = GistHub;
 			productReference = 6A7CF52E2943CF33007B7D68 /* GistHub.app */;
@@ -750,6 +755,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6A2D7B622A762FDD00DCC09D /* XCRemoteSwiftPackageReference "WhatsNewKit" */;
 			productName = WhatsNewKit;
+		};
+		6A34C15B2A8368C700BF07F5 /* Home */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Home;
 		};
 		6AF19EE42A6EBFE400E1AC24 /* AppAccount */ = {
 			isa = XCSwiftPackageProductDependency;
