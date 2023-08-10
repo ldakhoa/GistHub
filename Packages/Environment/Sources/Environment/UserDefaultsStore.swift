@@ -66,7 +66,7 @@ public final class UserDefaultsStore: ObservableObject {
     public var openExternalsLinksInSafari: Bool = false
 
     @AppStorage(UserDefaultsStore.Keys.recentSearchKeywords)
-    public var recentSearchKeywords: [String] = ["Test", "ldakhoa", "lmvan"]
+    public var recentSearchKeywords: SearchRecentStore<String> = SearchRecentStore<String>([])
 }
 
 extension UserDefaultsStore {

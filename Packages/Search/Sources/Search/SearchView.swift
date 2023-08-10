@@ -24,7 +24,7 @@ public struct SearchView: View {
                         Text("Recent searches")
                         Spacer()
                         Button("Clear") {
-                            userDefaultsStore.recentSearchKeywords = []
+                            userDefaultsStore.recentSearchKeywords.removeAll()
                         }
                     }
                     .headerProminence(.increased)
@@ -70,6 +70,7 @@ public struct SearchView: View {
     ) -> some View {
         Button {
             action()
+            userDefaultsStore.recentSearchKeywords.insert(viewModel.query)
         } label: {
             HStack {
                 Label("\(title) with \"\(viewModel.query)\"", systemImage: image)

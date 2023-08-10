@@ -94,6 +94,7 @@ struct SearchUserListRow: View {
                 }
                 VStack(alignment: .leading) {
                     Text(user.name ?? "")
+                        .foregroundColor(UIColor.label.color)
                     Text(user.login ?? "ghost")
                         .font(.callout)
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
