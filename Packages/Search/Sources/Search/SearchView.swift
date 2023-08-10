@@ -48,7 +48,9 @@ public struct SearchView: View {
                 SearchEmptyView()
             }
         })
-        .animation(.linear, value: viewModel.query)
+        .listStyle(.plain)
+        .background(Colors.scrollViewBackground.color)
+        .animation(.linear, value: viewModel.query.isEmpty)
         .searchable(text: $viewModel.query, prompt: Text("Search GistHub"))
         .autocorrectionDisabled()
         .autocapitalization(.none)
