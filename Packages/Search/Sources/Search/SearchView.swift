@@ -31,7 +31,7 @@ public struct SearchView: View {
                 }
             } else if !viewModel.query.isEmpty {
                 Section {
-                    searchButtonRow(title: "Gists", image: "list.bullet.rectangle.portrait") {
+                    searchButtonRow(title: "Gists", image: "doc.text.magnifyingglass") {
                     }
                     searchButtonRow(title: "File name", image: "puzzlepiece.extension") {
                     }
@@ -58,7 +58,7 @@ public struct SearchView: View {
         .autocapitalization(.none)
         .navigationTitle("Search")
         .onSubmit(of: .search) {
-            print(123123)
+            print("Should handle search all")
         }
     }
 
