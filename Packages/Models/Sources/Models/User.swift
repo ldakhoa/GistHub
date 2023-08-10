@@ -131,4 +131,8 @@ public extension User {
             siteAdmin: false
         )
     }
+
+    static var placeholders: [User] {
+        [.stubbed, .stubbed, .stubbed, .stubbed, .stubbed]
+    }
 }

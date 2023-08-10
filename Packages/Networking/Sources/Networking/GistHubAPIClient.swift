@@ -28,6 +28,9 @@ public protocol GistHubAPIClient {
     /// Get authenticated user info.
     func user() async throws -> User
 
+    /// Search users from query.
+    func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse
+
     /// Get the user from user name.
     func user(fromUserName userName: String) async throws -> User
 
@@ -156,6 +159,20 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.userFromUserName(userName: userName))
     }
 
+    public func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse {
+        let inputCursor: GraphQLNullable<String>
+        if let cursor {
+            inputCursor = GraphQLNullable(stringLiteral: cursor)
+        } else {
+            inputCursor = GraphQLNullable.none
+        }
+
+        let query = UserSearchQuery(username: query, after: inputCursor)
+        let data = try await graphQLSession.query(query)
+        let userSearchResponse = UserSearchResponse(data: data)
+        return userSearchResponse
+    }
+
     public func unstarGist(gistID: String) async throws -> Bool {
         let mutation = RemoveStarMutation(input: RemoveStarInput(starrableId: gistID))
         let data = try await graphQLSession.mutate(mutation)
@@ -235,6 +252,7 @@ extension DefaultGistHubAPIClient {
         )
         case user
         case userFromUserName(userName: String)
+        case searchUsersFromQuery(query: String)
         case starGist(gistID: String)
         case unstarGist(gistID: String)
         case isStarred(gistID: String)
@@ -269,6 +287,8 @@ extension DefaultGistHubAPIClient {
                 return "/user"
             case let .userFromUserName(userName):
                 return "/users/\(userName)"
+            case let .searchUsersFromQuery(query):
+                return "/search/users?q=\(query)"
             case let .starGist(gistID),
                 let .unstarGist(gistID),
                 let .isStarred(gistID):
@@ -286,7 +306,7 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName:
+            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName, .searchUsersFromQuery:
                 return .get
             case .starGist:
                 return .put

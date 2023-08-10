@@ -272,6 +272,8 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "Mutation": return GistHubGraphQL.Objects.Mutation
     case "RemoveStarPayload": return GistHubGraphQL.Objects.RemoveStarPayload
     case "AddStarPayload": return GistHubGraphQL.Objects.AddStarPayload
+    case "SearchResultItemConnection": return GistHubGraphQL.Objects.SearchResultItemConnection
+    case "SearchResultItemEdge": return GistHubGraphQL.Objects.SearchResultItemEdge
     default: return nil
     }
   }

@@ -3,6 +3,7 @@ import DesignSystem
 import Environment
 
 public struct SearchView: View {
+    @EnvironmentObject private var routerPath: RouterPath
     @EnvironmentObject private var userDefaultsStore: UserDefaultsStore
     @StateObject private var viewModel: SearchViewModel = SearchViewModel()
 
@@ -35,26 +36,30 @@ public struct SearchView: View {
                     searchButtonRow(title: "File name", image: "puzzlepiece.extension") {
                     }
                     searchButtonRow(title: "Users", image: "person") {
+                        routerPath.navigate(to: .searchUsers(query: viewModel.query))
                     }
                     searchButtonRow(title: "Query", image: "point.topleft.down.curvedto.point.bottomright.up") {
                     }
-
                 }
                 .foregroundColor(Colors.buttonForeground.color)
             }
         }
+        .background(Colors.scrollViewBackground.color)
+        .scrollContentBackground(.hidden)
         .overlay(Group {
             if viewModel.query.isEmpty && userDefaultsStore.recentSearchKeywords.isEmpty {
                 SearchEmptyView()
             }
         })
-        .listStyle(.plain)
-        .background(Colors.scrollViewBackground.color)
+        .listStyle(.grouped)
         .animation(.linear, value: viewModel.query.isEmpty)
         .searchable(text: $viewModel.query, prompt: Text("Search GistHub"))
         .autocorrectionDisabled()
         .autocapitalization(.none)
         .navigationTitle("Search")
+        .onSubmit(of: .search) {
+            print(123123)
+        }
     }
 
     @ViewBuilder
@@ -64,6 +69,7 @@ public struct SearchView: View {
         action: @escaping () -> Void
     ) -> some View {
         Button {
+            action()
         } label: {
             HStack {
                 Label("\(title) with \"\(viewModel.query)\"", systemImage: image)
@@ -73,14 +79,5 @@ public struct SearchView: View {
             .frame(height: 38)
         }
 
-    }
-}
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            SearchView()
-                .environmentObject(UserDefaultsStore.shared)
-        }
     }
 }

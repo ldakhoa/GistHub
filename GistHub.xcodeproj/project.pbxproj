@@ -63,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A053EFD2A84EE9400DA970E /* Search.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Search.graphql; sourceTree = "<group>"; };
 		6A0CA5B22A62C4FF00366D03 /* GistHubActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GistHubActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		6A0CA5B62A62C4FF00366D03 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -151,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				6A3372122A7E345F00A7686E /* schema.graphqls */,
+				6A053EFD2A84EE9400DA970E /* Search.graphql */,
 				6A3372132A7E345F00A7686E /* Gist.graphql */,
 				6A3372142A7E345F00A7686E /* Star.graphql */,
 				6A3372152A7E345F00A7686E /* generator */,

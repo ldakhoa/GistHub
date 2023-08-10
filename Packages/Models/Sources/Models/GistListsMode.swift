@@ -21,7 +21,7 @@ public enum GistListsMode: Hashable {
             return "Starred Gists"
         case .userGists:
             return "Gists"
-        case let .discover(mode):
+        case .discover:
             return "Discover Gists"
         }
     }
