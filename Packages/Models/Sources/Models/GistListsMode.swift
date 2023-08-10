@@ -6,16 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 public enum GistListsMode: Hashable {
     case currentUserGists
     case userStarredGists(userName: String?)
     case userGists(userName: String)
+    case search(query: String)
     case discover(mode: DiscoverGistsMode)
 
     public var navigationTitle: String {
         switch self {
-        case .currentUserGists:
+        case .currentUserGists, .search:
             return "Gists"
         case .userStarredGists:
             return "Starred Gists"
@@ -32,8 +34,17 @@ public enum GistListsMode: Hashable {
             return "Search Starred Gists"
         case .currentUserGists, .userGists:
             return "Search Gists"
-        case .discover:
+        case .discover, .search:
             return ""
+        }
+    }
+
+    public var navigationStyle: NavigationBarItem.TitleDisplayMode {
+        switch self {
+        case .search, .userGists, .userStarredGists:
+            return .inline
+        default:
+            return .large
         }
     }
 
@@ -41,7 +52,7 @@ public enum GistListsMode: Hashable {
         switch self {
         case .currentUserGists, .userStarredGists, .userGists:
             return true
-        case .discover:
+        case .discover, .search:
             return false
         }
     }

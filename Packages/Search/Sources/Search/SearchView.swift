@@ -32,13 +32,16 @@ public struct SearchView: View {
             } else if !viewModel.query.isEmpty {
                 Section {
                     searchButtonRow(title: "Gists", image: "doc.text.magnifyingglass") {
+                        routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
                     }
                     searchButtonRow(title: "File name", image: "puzzlepiece.extension") {
+                        routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
                     }
                     searchButtonRow(title: "Users", image: "person") {
                         routerPath.navigate(to: .searchUsers(query: viewModel.query))
                     }
                     searchButtonRow(title: "Query", image: "point.topleft.down.curvedto.point.bottomright.up") {
+                        routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
                     }
                 }
                 .foregroundColor(Colors.buttonForeground.color)

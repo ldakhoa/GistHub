@@ -81,7 +81,7 @@ struct GistListsRowView: View {
         switch gistListsMode {
         case .currentUserGists, .userGists:
             filesCount = files.keys.count
-        case .userStarredGists, .discover:
+        case .userStarredGists, .discover, .search:
             filesCount = gist.fileTotalCount ?? 1
         }
         return filesCount

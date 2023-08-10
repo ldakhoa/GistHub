@@ -125,6 +125,7 @@ public struct GistListsView: View {
                 }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
+        .navigationBarTitleDisplayMode(listsMode.navigationStyle)
     }
 
     @ViewBuilder

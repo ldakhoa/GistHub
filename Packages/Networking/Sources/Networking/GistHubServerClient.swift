@@ -10,6 +10,7 @@ public protocol GistHubServerClient {
     func discoverStarredGists(page: Int) async throws -> GistsResponse
     func discoverForkedGists(page: Int) async throws -> GistsResponse
 
+    func search(from query: String, page: Int) async throws -> GistsResponse
 }
 
 public final class DefaultGistHubServerClient: GistHubServerClient {
@@ -32,13 +33,16 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
     public func discoverStarredGists(page: Int) async throws -> GistsResponse {
         let gists: [Gist] = try await session.data(for: API.discoverStarredGists(page: page))
         return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
-
     }
 
     public func discoverForkedGists(page: Int) async throws -> GistsResponse {
         let gists: [Gist] = try await session.data(for: API.discoverForkedGists(page: page))
         return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
+    }
 
+    public func search(from query: String, page: Int) async throws -> GistsResponse {
+        let gists: [Gist] = try await session.data(for: API.search(query: query, page: page))
+        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 }
 
@@ -48,6 +52,7 @@ extension DefaultGistHubServerClient {
         case discoverGists(page: Int)
         case discoverStarredGists(page: Int)
         case discoverForkedGists(page: Int)
+        case search(query: String, page: Int)
 
         var url: String {
             switch self {
@@ -59,6 +64,8 @@ extension DefaultGistHubServerClient {
                 return "/discover/starred?page=\(page)"
             case let .discoverForkedGists(page):
                 return "/discover/forked?page=\(page)"
+            case let .search(query, page):
+                return "/search?q=\(query)&p=\(page)"
             }
         }
 
