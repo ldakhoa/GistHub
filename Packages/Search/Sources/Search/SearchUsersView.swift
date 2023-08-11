@@ -25,16 +25,17 @@ public struct SearchUsersView: View {
             case .loading:
                 ProgressView()
             case .error:
-                ErrorView(title: "Cannot Connect") {
+                ErrorView(
+                    title: "Cannot Connect",
+                    message: "Something went wrong. Please try again."
+                ) {
                     Task {
                         await searchUsers()
                     }
                 }
             case let .content(users):
                 if users.isEmpty {
-                    Text("There aren't any users.")
-                        .font(.title2)
-                        .bold()
+                    EmptyStatefulView(title: "There aren't any users.")
                 } else {
                     List {
                         Section {
