@@ -45,7 +45,10 @@ public struct GistDetailView: View {
             case .loading:
                 ProgressView()
             case .error:
-                ErrorView(title: "Cannot Connect") {
+                ErrorView(
+                    title: "Cannot Connect",
+                    message: "Something went wrong. Please try again."
+                ) {
                     fetchMetaData()
                 }
             case let .content(gist):

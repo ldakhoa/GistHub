@@ -119,6 +119,11 @@ public struct GistListsView: View {
                     viewModel.search()
                 }
         }
+        .overlay(Group {
+            if viewModel.gists.isEmpty && viewModel.contentState != .loading {
+                EmptyStatefulView(title: "There aren't any gists.")
+            }
+        })
         .navigationTitle(Text(listsMode.navigationTitle))
         .navigationBarTitleDisplayMode(listsMode.navigationStyle)
     }
