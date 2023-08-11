@@ -12,6 +12,7 @@ import Editor
 import Profile
 import Settings
 import AppAccount
+import Search
 
 @MainActor
 extension View {
@@ -32,6 +33,8 @@ extension View {
                 GistListsView(listsMode: mode)
             case let .userProfile(userName):
                 UserProfileView(userName: userName)
+            case let .searchUsers(query):
+                SearchUsersView(query: query)
             }
         }
     }

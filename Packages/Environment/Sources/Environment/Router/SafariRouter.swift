@@ -26,15 +26,7 @@ private struct SafariRouter: ViewModifier {
                 return routerPath.handle(url: url)
             })
             .onOpenURL { url in
-                guard isActiveTab else { return }
-
-                // Open external URL (from gisthub://)
-                let urlString = url.absoluteString.replacingOccurrences(
-                    of: "gisthub://",
-                    with: "https://"
-                )
-                guard let url = URL(string: urlString), url.host != nil else { return }
-                routerPath.handle(url: url)
+                openUrl(url)
             }
             .onAppear {
                 guard isActiveTab else { return }
@@ -44,10 +36,27 @@ private struct SafariRouter: ViewModifier {
                     return webView.open(url)
                 }
             }
+            .onReceive(.openGistDetailFromURL) { notification in
+                guard let url = notification.object as? URL else { return }
+                openUrl(url)
+            }
             .background {
                 WindowReader { window in
                     webView.windowScene = window.windowScene
                 }
             }
+    }
+
+    private func openUrl(_ url: URL) {
+        guard isActiveTab else { return }
+
+        // Open external URL (from gisthub://)
+        let urlString = url.absoluteString.replacingOccurrences(
+            of: "gisthub://",
+            with: "https://"
+        )
+
+        guard let url = URL(string: urlString), url.host != nil else { return }
+        routerPath.handle(url: url)
     }
 }

@@ -17,7 +17,6 @@ public struct GistListsView: View {
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State private var progressViewId = 0
     @State private var selectedDiscoverGists: DiscoverGistsMode = .all
-    private let discoverGists: [DiscoverGistsMode] = DiscoverGistsMode.allCases
 
     // MARK: - Dependencies
 
@@ -32,8 +31,8 @@ public struct GistListsView: View {
     // MARK: - View
 
     public var body: some View {
-        ZStack {
-            List {
+        List {
+            Section {
                 switch viewModel.contentState {
                 case .loading:
                     ForEach(Gist.placeholders) { gist in
@@ -86,13 +85,20 @@ public struct GistListsView: View {
                     }
                     .listRowSeparator(.hidden)
                 }
-            }
-            .animation(.linear, value: viewModel.gists)
-
-            if listsMode == .currentUserGists {
-                newGistFloatingButton
+            } header: {
+                if listsMode.shouldShowMenuView {
+                    Picker("", selection: $selectedDiscoverGists) {
+                        ForEach(DiscoverGistsMode.allCases) { discoverGist in
+                            Text(discoverGist.title)
+                                .tag(discoverGist)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .scrollContentBackground(.hidden)
+                }
             }
         }
+        .animation(.linear, value: viewModel.gists)
         .listRowBackground(Colors.listBackground.color)
         .listStyle(.plain)
         .animation(.default, value: viewModel.searchText)
@@ -101,17 +107,6 @@ public struct GistListsView: View {
         .scrollDismissesKeyboard(.interactively)
         .modifyIf(listsMode.shouldShowMenuView) { view in
             view
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
-                            ForEach(discoverGists) { discoverGist in
-                                Text(discoverGist.title)
-                                    .tag(discoverGist)
-                            }
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                    }
-                }
                 .onChange(of: selectedDiscoverGists) { newValue in
                     self.listsMode = .discover(mode: newValue)
                     refreshGists()
@@ -125,30 +120,7 @@ public struct GistListsView: View {
                 }
         }
         .navigationTitle(Text(listsMode.navigationTitle))
-    }
-
-    @ViewBuilder
-    private var newGistFloatingButton: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                GistHubButton(
-                    imageName: "plus",
-                    foregroundColor: Color.white,
-                    background: Colors.accent.color,
-                    padding: 16.0,
-                    radius: 32.0
-                ) {
-                    routerPath.presentedSheet = .newGist { gist in
-                        viewModel.insert(gist)
-                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                    }
-                }
-                .padding(.trailing, 16)
-                .padding(.bottom, 16)
-            }
-        }
+        .navigationBarTitleDisplayMode(listsMode.navigationStyle)
     }
 
     private func makeMenuButton(

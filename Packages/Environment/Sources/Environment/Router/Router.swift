@@ -15,6 +15,7 @@ public enum RouterDestination: Hashable {
     case editorCodeSettings
     case gistLists(mode: GistListsMode)
     case userProfile(userName: String)
+    case searchUsers(query: String)
 }
 
 public enum SheetDestination: Identifiable {
