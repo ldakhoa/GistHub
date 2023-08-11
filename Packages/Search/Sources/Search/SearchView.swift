@@ -34,14 +34,20 @@ public struct SearchView: View {
                     searchButtonRow(title: "Gists", image: "doc.text.magnifyingglass") {
                         routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
                     }
-                    searchButtonRow(title: "File name", image: "puzzlepiece.extension") {
-                        routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
+                    searchButtonRow(title: "File name", image: "doc.on.doc") {
+                        let fileNameQuery: String = "filename:\(viewModel.query)"
+                        routerPath.navigate(to: .gistLists(mode: .search(query: fileNameQuery)))
                     }
-                    searchButtonRow(title: "Users", image: "person") {
+                    searchButtonRow(title: "Language", image: "network") {
+                        let languageQuery: String = "language:\(viewModel.query)"
+                        routerPath.navigate(to: .gistLists(mode: .search(query: languageQuery)))
+                    }
+                    searchButtonRow(title: "Extension", image: "puzzlepiece.extension") {
+                        let extensionQuery: String = "extension:\(viewModel.query)"
+                        routerPath.navigate(to: .gistLists(mode: .search(query: extensionQuery)))
+                    }
+                    searchButtonRow(title: "People", image: "person") {
                         routerPath.navigate(to: .searchUsers(query: viewModel.query))
-                    }
-                    searchButtonRow(title: "Query", image: "point.topleft.down.curvedto.point.bottomright.up") {
-                        routerPath.navigate(to: .gistLists(mode: .search(query: viewModel.query)))
                     }
                 }
                 .foregroundColor(Colors.buttonForeground.color)
