@@ -115,8 +115,8 @@ public final class GistListsViewModel: ObservableObject {
     private func fetchGistsByListsMode(mode: GistListsMode) async throws -> [Gist] {
         let gistsResponse: GistsResponse
         switch mode {
-        case .currentUserGists:
-            gistsResponse = try await gistHubClient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+        case let .currentUserGists(filter):
+            gistsResponse = try await gistHubClient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor, privacy: filter)
             pagingCursor = gistsResponse.cursor
         case let .userStarredGists(userName):
             guard let userName else { return [] }

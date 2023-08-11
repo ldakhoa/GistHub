@@ -17,7 +17,9 @@ public struct GistListsView: View {
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State private var progressViewId = 0
     @State private var selectedDiscoverGists: DiscoverGistsMode = .all
+    @State private var selectedGistsPrivacy: GistsPrivacyFilter = .all
     private let discoverGists: [DiscoverGistsMode] = DiscoverGistsMode.allCases
+    private let gistsPrivacyFilter: [GistsPrivacyFilter] = GistsPrivacyFilter.allCases
 
     // MARK: - Dependencies
 
@@ -32,99 +34,114 @@ public struct GistListsView: View {
     // MARK: - View
 
     public var body: some View {
-        ZStack {
-            List {
-                switch viewModel.contentState {
-                case .loading:
-                    ForEach(Gist.placeholders) { gist in
-                        GistListsRowView(gist: gist, gistListsMode: listsMode)
-                            .redacted(reason: .placeholder)
-                    }
-                case .content:
-                    ForEach(viewModel.gists) { gist in
-                        HStack {
+        VStack {
+            HStack {
+                privacyFilterMenu()
+                Spacer()
+                Button {
+                } label: {
+                    Text("Sort")
+                }
+            }
+            .padding(.horizontal, 16)
+            ZStack {
+                List {
+                    switch viewModel.contentState {
+                    case .loading:
+                        ForEach(Gist.placeholders) { gist in
                             GistListsRowView(gist: gist, gistListsMode: listsMode)
-                                .onAppear {
-                                    Task {
-                                        await viewModel.fetchMoreGistsIfNeeded(
-                                            currentGistID: gist.id,
-                                            mode: listsMode
-                                        )
+                                .redacted(reason: .placeholder)
+                        }
+                    case .content:
+                        ForEach(viewModel.gists) { gist in
+                            HStack {
+                                GistListsRowView(gist: gist, gistListsMode: listsMode)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.fetchMoreGistsIfNeeded(
+                                                currentGistID: gist.id,
+                                                mode: listsMode
+                                            )
+                                        }
                                     }
-                                }
-                            Spacer()
+                                Spacer()
+                            }
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                            }
+                            .contextMenu {
+                                contextMenu(gist: gist)
+                            } preview: {
+                                contextMenuPreview(gist: gist)
+                            }
                         }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                        }
-                        .contextMenu {
-                            contextMenu(gist: gist)
-                        } preview: {
-                            contextMenuPreview(gist: gist)
-                        }
-                    }
 
-                    if viewModel.isLoadingMoreGists {
-                        HStack(alignment: .center) {
-                            Spacer()
-                            ProgressView()
-                                .id(progressViewId)
-                                .onAppear {
-                                    progressViewId += 1
-                                }
-                            Spacer()
+                        if viewModel.isLoadingMoreGists {
+                            HStack(alignment: .center) {
+                                Spacer()
+                                ProgressView()
+                                    .id(progressViewId)
+                                    .onAppear {
+                                        progressViewId += 1
+                                    }
+                                Spacer()
+                            }
+                            .listRowSeparator(.hidden)
+                        }
+                    case .error:
+                        ErrorView(
+                            title: "Cannot Connect",
+                            message: "Something went wrong. Please try again."
+                        ) {
+                            fetchGists()
                         }
                         .listRowSeparator(.hidden)
                     }
-                case .error:
-                    ErrorView(
-                        title: "Cannot Connect",
-                        message: "Something went wrong. Please try again."
-                    ) {
-                        fetchGists()
-                    }
-                    .listRowSeparator(.hidden)
                 }
-            }
-            .animation(.linear, value: viewModel.gists)
+                .animation(.linear, value: viewModel.gists)
 
-            if listsMode == .currentUserGists {
-                newGistFloatingButton
+                if case .currentUserGists = listsMode {
+                    newGistFloatingButton
+                }
             }
-        }
-        .listRowBackground(Colors.listBackground.color)
-        .listStyle(.plain)
-        .animation(.default, value: viewModel.searchText)
-        .onLoad { fetchGists() }
-        .refreshable { refreshGists() }
-        .scrollDismissesKeyboard(.interactively)
-        .modifyIf(listsMode.shouldShowMenuView) { view in
-            view
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
-                            ForEach(discoverGists) { discoverGist in
-                                Text(discoverGist.title)
-                                    .tag(discoverGist)
+            .listRowBackground(Colors.listBackground.color)
+            .listStyle(.plain)
+            .animation(.default, value: viewModel.searchText)
+            .onLoad { fetchGists() }
+            .refreshable { refreshGists() }
+            .scrollDismissesKeyboard(.interactively)
+            .modifyIf(listsMode.shouldShowMenuView) { view in
+                view
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
+                                ForEach(discoverGists) { discoverGist in
+                                    Text(discoverGist.title)
+                                        .tag(discoverGist)
+                                }
                             }
+                            .pickerStyle(SegmentedPickerStyle())
                         }
-                        .pickerStyle(SegmentedPickerStyle())
                     }
-                }
-                .onChange(of: selectedDiscoverGists) { newValue in
-                    self.listsMode = .discover(mode: newValue)
-                    refreshGists()
-                }
+            }
+            .onChange(of: selectedDiscoverGists) { newValue in
+                self.listsMode = .discover(mode: newValue)
+                refreshGists()
+            }
+            .onChange(of: selectedGistsPrivacy) { newValue in
+                self.listsMode = .currentUserGists(filter: newValue)
+                refreshGists()
+            }
+            .modifyIf(listsMode.shouldShowSearch) { view in
+                view
+                    .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+                    .onChange(of: viewModel.searchText) { _ in
+                        viewModel.search()
+                    }
+            }
+            .navigationTitle(Text(listsMode.navigationTitle))
         }
-        .modifyIf(listsMode.shouldShowSearch) { view in
-            view
-                .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
-                .onChange(of: viewModel.searchText) { _ in
-                    viewModel.search()
-                }
-        }
-        .navigationTitle(Text(listsMode.navigationTitle))
     }
 
     @ViewBuilder
@@ -160,6 +177,26 @@ public struct GistListsView: View {
         Button(role: role ?? .none, action: action) {
             Label(title, image: image)
         }
+    }
+
+    @ViewBuilder
+    private func privacyFilterMenu() -> some View {
+        Menu(selectedGistsPrivacy.title) {
+            ForEach(gistsPrivacyFilter, id: \.self) { privacy in
+                Button {
+                    selectedGistsPrivacy = privacy
+                } label: {
+                    Text(privacy.title)
+                }
+            }
+        }
+        .menuStyle(GistHubMenuStyle(
+            imageName: "chevron.down",
+            foregroundColor: Colors.buttonForeground.color,
+            background: Colors.buttonBackground.color,
+            radius: 8.0,
+            controlSize: .mini
+        ))
     }
 
     // MARK: - Context Menu

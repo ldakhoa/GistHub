@@ -17,7 +17,7 @@ public protocol GistHubAPIClient {
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
     /// List gists for the authenticated user.
-    func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
+    func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter) async throws -> GistsResponse
 
     /// List gists for from the user name.
     func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
@@ -96,7 +96,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
-    public func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse {
+    public func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter) async throws -> GistsResponse {
         let inputCursor: GraphQLNullable<String>
         if let cursor {
             inputCursor = GraphQLNullable(stringLiteral: cursor)
@@ -106,7 +106,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let query = GistsQuery(
             first: GraphQLNullable(integerLiteral: pageSize),
             after: inputCursor,
-            privacy: GraphQLNullable(GistPrivacy.all),
+            privacy: GraphQLNullable(privacy.graphQLPrivacy),
             orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
         )
         let data = try await graphQLSession.query(query)
@@ -333,6 +333,19 @@ extension DefaultGistHubAPIClient {
             default:
                 return nil
             }
+        }
+    }
+}
+
+private extension GistsPrivacyFilter {
+    var graphQLPrivacy: GistPrivacy {
+        switch self {
+        case .all:
+            return .all
+        case .public:
+            return .public
+        case .secret:
+            return .secret
         }
     }
 }

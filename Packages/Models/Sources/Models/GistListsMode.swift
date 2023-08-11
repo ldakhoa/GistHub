@@ -8,7 +8,7 @@
 import Foundation
 
 public enum GistListsMode: Hashable {
-    case currentUserGists
+    case currentUserGists(filter: GistsPrivacyFilter)
     case userStarredGists(userName: String?)
     case userGists(userName: String)
     case discover(mode: DiscoverGistsMode)
@@ -54,6 +54,15 @@ public enum GistListsMode: Hashable {
             return false
         }
     }
+
+    public var shouldShowFilter: Bool {
+        switch self {
+        case .currentUserGists:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public enum DiscoverGistsMode: Int, Identifiable, Hashable {
@@ -75,6 +84,27 @@ public enum DiscoverGistsMode: Int, Identifiable, Hashable {
             return "Forked"
         case .starred:
             return "Starred"
+        }
+    }
+}
+
+public enum GistsPrivacyFilter: Int, Identifiable, Hashable, CaseIterable {
+    case all
+    case `public`
+    case secret
+
+    public var id: Int {
+        rawValue
+    }
+
+    public var title: String {
+        switch self {
+        case .all:
+            return "All Gists"
+        case .public:
+            return "Public"
+        case .secret:
+            return "Secret"
         }
     }
 }
