@@ -116,3 +116,16 @@ extension GistQuery.Data.Viewer.Gist {
         return Self.Fragments(_dataDict: __data).gistDetails
     }
 }
+
+extension UserSearchQuery.Data.Search.Edge.Node {
+    var toUser: User? {
+        if let user = self.asUser {
+            let login = user.login
+            let name = user.name
+            let avatarUrl = user.avatarUrl
+
+            return User(login: login, avatarURL: avatarUrl, name: name)
+        }
+        return nil
+    }
+}

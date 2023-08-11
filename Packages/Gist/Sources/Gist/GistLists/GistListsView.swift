@@ -142,6 +142,15 @@ public struct GistListsView: View {
             }
             .navigationTitle(Text(listsMode.navigationTitle))
         }
+        .modifyIf(listsMode.shouldShowSearch) { view in
+            view
+                .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
+                .onChange(of: viewModel.searchText) { _ in
+                    viewModel.search()
+                }
+        }
+        .navigationTitle(Text(listsMode.navigationTitle))
+        .navigationBarTitleDisplayMode(listsMode.navigationStyle)
     }
 
     @ViewBuilder

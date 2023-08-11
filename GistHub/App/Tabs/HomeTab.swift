@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Environment
+import Home
 import Gist
 import WhatsNewKit
 import DesignSystem
@@ -26,7 +27,7 @@ struct HomeTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-            GistListsView(listsMode: .currentUserGists(filter: .all))
+            HomeView()
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)
         }

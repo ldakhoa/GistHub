@@ -17,4 +17,5 @@ public extension NSNotification.Name {
     static let textViewShouldShowPhotoPicker = NSNotification.Name("textViewShouldShowPhotoPicker")
     static let markdownPreviewShouldReload = NSNotification.Name("markdownPreviewShouldReload")
     static let markdownEditorViewShouldShowAlert = NSNotification.Name("markDownEditorViewShouldShowAlert")
+    static let openGistDetailFromURL = NSNotification.Name("openGistDetailFromURL")
 }

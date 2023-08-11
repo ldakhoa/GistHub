@@ -1,0 +1,17 @@
+query UserSearchQuery($username: String!, $after: String) {
+  search(query: $username, type: USER, first: 20, after: $after) {
+    edges {
+      node {
+        ... on User {
+          login
+          name
+          avatarUrl
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
