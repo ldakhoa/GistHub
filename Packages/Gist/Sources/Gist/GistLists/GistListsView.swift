@@ -17,7 +17,6 @@ public struct GistListsView: View {
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State private var progressViewId = 0
     @State private var selectedDiscoverGists: DiscoverGistsMode = .all
-    private let discoverGists: [DiscoverGistsMode] = DiscoverGistsMode.allCases
 
     // MARK: - Dependencies
 
@@ -33,57 +32,70 @@ public struct GistListsView: View {
 
     public var body: some View {
         List {
-            switch viewModel.contentState {
-            case .loading:
-                ForEach(Gist.placeholders) { gist in
-                    GistListsRowView(gist: gist, gistListsMode: listsMode)
-                        .redacted(reason: .placeholder)
-                }
-            case .content:
-                ForEach(viewModel.gists) { gist in
-                    HStack {
+            Section {
+                switch viewModel.contentState {
+                case .loading:
+                    ForEach(Gist.placeholders) { gist in
                         GistListsRowView(gist: gist, gistListsMode: listsMode)
-                            .onAppear {
-                                Task {
-                                    await viewModel.fetchMoreGistsIfNeeded(
-                                        currentGistID: gist.id,
-                                        mode: listsMode
-                                    )
+                            .redacted(reason: .placeholder)
+                    }
+                case .content:
+                    ForEach(viewModel.gists) { gist in
+                        HStack {
+                            GistListsRowView(gist: gist, gistListsMode: listsMode)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.fetchMoreGistsIfNeeded(
+                                            currentGistID: gist.id,
+                                            mode: listsMode
+                                        )
+                                    }
                                 }
-                            }
-                        Spacer()
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                        }
+                        .contextMenu {
+                            contextMenu(gist: gist)
+                        } preview: {
+                            contextMenuPreview(gist: gist)
+                        }
                     }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                    }
-                    .contextMenu {
-                        contextMenu(gist: gist)
-                    } preview: {
-                        contextMenuPreview(gist: gist)
-                    }
-                }
 
-                if viewModel.isLoadingMoreGists {
-                    HStack(alignment: .center) {
-                        Spacer()
-                        ProgressView()
-                            .id(progressViewId)
-                            .onAppear {
-                                progressViewId += 1
-                            }
-                        Spacer()
+                    if viewModel.isLoadingMoreGists {
+                        HStack(alignment: .center) {
+                            Spacer()
+                            ProgressView()
+                                .id(progressViewId)
+                                .onAppear {
+                                    progressViewId += 1
+                                }
+                            Spacer()
+                        }
+                        .listRowSeparator(.hidden)
+                    }
+                case .error:
+                    ErrorView(
+                        title: "Cannot Connect",
+                        message: "Something went wrong. Please try again."
+                    ) {
+                        fetchGists()
                     }
                     .listRowSeparator(.hidden)
                 }
-            case .error:
-                ErrorView(
-                    title: "Cannot Connect",
-                    message: "Something went wrong. Please try again."
-                ) {
-                    fetchGists()
+            } header: {
+                if listsMode.shouldShowMenuView {
+                    Picker("", selection: $selectedDiscoverGists) {
+                        ForEach(DiscoverGistsMode.allCases) { discoverGist in
+                            Text(discoverGist.title)
+                                .tag(discoverGist)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .scrollContentBackground(.hidden)
                 }
-                .listRowSeparator(.hidden)
             }
         }
         .animation(.linear, value: viewModel.gists)
@@ -95,17 +107,6 @@ public struct GistListsView: View {
         .scrollDismissesKeyboard(.interactively)
         .modifyIf(listsMode.shouldShowMenuView) { view in
             view
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
-                            ForEach(discoverGists) { discoverGist in
-                                Text(discoverGist.title)
-                                    .tag(discoverGist)
-                            }
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                    }
-                }
                 .onChange(of: selectedDiscoverGists) { newValue in
                     self.listsMode = .discover(mode: newValue)
                     refreshGists()
