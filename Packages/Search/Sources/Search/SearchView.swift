@@ -19,6 +19,12 @@ public struct SearchView: View {
                         }
                         .frame(height: 38)
                     }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            let keyword = userDefaultsStore.recentSearchKeywords[index]
+                            userDefaultsStore.recentSearchKeywords.remove(keyword)
+                        }
+                    }
                 } header: {
                     HStack {
                         Text("Recent searches")
