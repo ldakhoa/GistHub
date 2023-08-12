@@ -74,6 +74,15 @@ public enum GistListsMode: Hashable {
             return false
         }
     }
+
+    public var shouldShowSortOption: Bool {
+        switch self {
+        case .currentUserGists, .userGists:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public enum DiscoverGistsMode: Int, Identifiable, Hashable, CaseIterable {
@@ -114,6 +123,32 @@ public enum GistsPrivacyFilter: Int, Identifiable, Hashable, CaseIterable {
             return "Public"
         case .secret:
             return "Secret"
+        }
+    }
+}
+
+public enum GistsSortOption: Int, Hashable, CaseIterable {
+    case created
+    case leastRecentlyCreated
+    case updated
+    case leastRecentlyUpdated
+    case pushed
+    case leastRecentlyPushed
+
+    public var title: String {
+        switch self {
+        case .created:
+            return "Recently created"
+        case .leastRecentlyCreated:
+            return "Least recently created"
+        case .updated:
+            return "Recently updated"
+        case .leastRecentlyUpdated:
+            return "Least recently updated"
+        case .pushed:
+            return "Recently pushed"
+        case .leastRecentlyPushed:
+            return "Least recently pushed"
         }
     }
 }
