@@ -34,113 +34,86 @@ public struct GistListsView: View {
     // MARK: - View
 
     public var body: some View {
-        VStack {
-            HStack {
-                privacyFilterMenu()
-                Spacer()
-                Button {
-                } label: {
-                    Text("Sort")
-                }
-            }
-            .padding(.horizontal, 16)
-            ZStack {
-                List {
-                    switch viewModel.contentState {
-                    case .loading:
-                        ForEach(Gist.placeholders) { gist in
+        List {
+            Section {
+                switch viewModel.contentState {
+                case .loading:
+                    ForEach(Gist.placeholders) { gist in
+                        GistListsRowView(gist: gist, gistListsMode: listsMode)
+                            .redacted(reason: .placeholder)
+                    }
+                case .content:
+                    ForEach(viewModel.gists) { gist in
+                        HStack {
                             GistListsRowView(gist: gist, gistListsMode: listsMode)
-                                .redacted(reason: .placeholder)
-                        }
-                    case .content:
-                        ForEach(viewModel.gists) { gist in
-                            HStack {
-                                GistListsRowView(gist: gist, gistListsMode: listsMode)
-                                    .onAppear {
-                                        Task {
-                                            await viewModel.fetchMoreGistsIfNeeded(
-                                                currentGistID: gist.id,
-                                                mode: listsMode
-                                            )
-                                        }
+                                .onAppear {
+                                    Task {
+                                        await viewModel.fetchMoreGistsIfNeeded(
+                                            currentGistID: gist.id,
+                                            mode: listsMode
+                                        )
                                     }
-                                Spacer()
-                            }
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                            }
-                            .contextMenu {
-                                contextMenu(gist: gist)
-                            } preview: {
-                                contextMenuPreview(gist: gist)
-                            }
+                                }
+                            Spacer()
                         }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                        }
+                        .contextMenu {
+                            contextMenu(gist: gist)
+                        } preview: {
+                            contextMenuPreview(gist: gist)
+                        }
+                    }
 
-                        if viewModel.isLoadingMoreGists {
-                            HStack(alignment: .center) {
-                                Spacer()
-                                ProgressView()
-                                    .id(progressViewId)
-                                    .onAppear {
-                                        progressViewId += 1
-                                    }
-                                Spacer()
-                            }
-                            .listRowSeparator(.hidden)
-                        }
-                    case .error:
-                        ErrorView(
-                            title: "Cannot Connect",
-                            message: "Something went wrong. Please try again."
-                        ) {
-                            fetchGists()
+                    if viewModel.isLoadingMoreGists {
+                        HStack(alignment: .center) {
+                            Spacer()
+                            ProgressView()
+                                .id(progressViewId)
+                                .onAppear {
+                                    progressViewId += 1
+                                }
+                            Spacer()
                         }
                         .listRowSeparator(.hidden)
                     }
+                case .error:
+                    ErrorView(
+                        title: "Cannot Connect",
+                        message: "Something went wrong. Please try again."
+                    ) {
+                        fetchGists()
+                    }
+                    .listRowSeparator(.hidden)
                 }
-                .animation(.linear, value: viewModel.gists)
-
-                if case .currentUserGists = listsMode {
-                    newGistFloatingButton
-                }
-            }
-            .listRowBackground(Colors.listBackground.color)
-            .listStyle(.plain)
-            .animation(.default, value: viewModel.searchText)
-            .onLoad { fetchGists() }
-            .refreshable { refreshGists() }
-            .scrollDismissesKeyboard(.interactively)
-            .modifyIf(listsMode.shouldShowMenuView) { view in
-                view
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Picker("What is your favorite color?", selection: $selectedDiscoverGists) {
-                                ForEach(discoverGists) { discoverGist in
-                                    Text(discoverGist.title)
-                                        .tag(discoverGist)
-                                }
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
+            } header: {
+                if listsMode.shouldShowMenuView {
+                    Picker("", selection: $selectedDiscoverGists) {
+                        ForEach(DiscoverGistsMode.allCases) { discoverGist in
+                            Text(discoverGist.title)
+                                .tag(discoverGist)
                         }
                     }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .scrollContentBackground(.hidden)
+                }
             }
-            .onChange(of: selectedDiscoverGists) { newValue in
-                self.listsMode = .discover(mode: newValue)
-                refreshGists()
-            }
-            .onChange(of: selectedGistsPrivacy) { newValue in
-                self.listsMode = .currentUserGists(filter: newValue)
-                refreshGists()
-            }
-            .modifyIf(listsMode.shouldShowSearch) { view in
-                view
-                    .searchable(text: $viewModel.searchText, prompt: listsMode.promptSearchText)
-                    .onChange(of: viewModel.searchText) { _ in
-                        viewModel.search()
-                    }
-            }
-            .navigationTitle(Text(listsMode.navigationTitle))
+        }
+        .animation(.linear, value: viewModel.gists)
+        .listRowBackground(Colors.listBackground.color)
+        .listStyle(.plain)
+        .animation(.default, value: viewModel.searchText)
+        .onLoad { fetchGists() }
+        .refreshable { refreshGists() }
+        .scrollDismissesKeyboard(.interactively)
+        .modifyIf(listsMode.shouldShowMenuView) { view in
+            view
+                .onChange(of: selectedDiscoverGists) { newValue in
+                    self.listsMode = .discover(mode: newValue)
+                    refreshGists()
+                }
         }
         .modifyIf(listsMode.shouldShowSearch) { view in
             view
@@ -149,32 +122,13 @@ public struct GistListsView: View {
                     viewModel.search()
                 }
         }
+        .overlay(Group {
+            if viewModel.gists.isEmpty && viewModel.contentState != .loading {
+                EmptyStatefulView(title: "There aren't any gists.")
+            }
+        })
         .navigationTitle(Text(listsMode.navigationTitle))
         .navigationBarTitleDisplayMode(listsMode.navigationStyle)
-    }
-
-    @ViewBuilder
-    private var newGistFloatingButton: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                GistHubButton(
-                    imageName: "plus",
-                    foregroundColor: Color.white,
-                    background: Colors.accent.color,
-                    padding: 16.0,
-                    radius: 32.0
-                ) {
-                    routerPath.presentedSheet = .newGist { gist in
-                        viewModel.insert(gist)
-                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                    }
-                }
-                .padding(.trailing, 16)
-                .padding(.bottom, 16)
-            }
-        }
     }
 
     private func makeMenuButton(

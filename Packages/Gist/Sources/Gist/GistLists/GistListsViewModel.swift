@@ -149,7 +149,7 @@ public final class GistListsViewModel: ObservableObject {
 }
 
 extension GistListsViewModel {
-    enum ContentState {
+    enum ContentState: Equatable {
         case loading
         case content
         case error(error: String)
