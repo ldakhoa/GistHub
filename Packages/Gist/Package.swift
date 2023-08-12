@@ -25,7 +25,11 @@ let package = Package(
         .package(name: "Markdown", path: "../Markdown"),
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Utilities", path: "../Utilities"),
-        .package(name: "Editor", path: "../Editor")
+        .package(name: "Editor", path: "../Editor"),
+        .package(
+            url: "https://github.com/apple/swift-collections.git",
+            .upToNextMajor(from: "1.0.4")
+        )
     ],
     targets: [
         .target(
@@ -38,7 +42,8 @@ let package = Package(
                 "Environment",
                 "Utilities",
                 "Comment",
-                "Editor"
+                "Editor",
+                .product(name: "Collections", package: "swift-collections")
             ]
         ),
         .testTarget(
