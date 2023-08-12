@@ -13,6 +13,7 @@ public struct Gist: Codable, Identifiable, Hashable {
     public let forksURL: String?
     public let commitsURL: String?
     public let id: String
+    public let draftID: String?
     public let nodeID: String?
     public let gitPullURL: String?
     public let gitPushURL: String?
@@ -37,6 +38,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         forksURL: String? = nil,
         commitsURL: String? = nil,
         nodeID: String? = nil,
+        draftID: String? = nil,
         gitPullURL: String? = nil,
         gitPushURL: String? = nil,
         htmlURL: String? = nil,
@@ -59,6 +61,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.forksURL = forksURL
         self.commitsURL = commitsURL
         self.nodeID = nodeID
+        self.draftID = draftID
         self.gitPullURL = gitPullURL
         self.gitPushURL = gitPushURL
         self.htmlURL = htmlURL
@@ -84,6 +87,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         self.commitsURL = try container.decodeIfPresent(String.self, forKey: .commitsURL)
         self.id = try container.decode(String.self, forKey: .id)
         self.nodeID = try container.decodeIfPresent(String.self, forKey: .nodeID)
+        self.draftID = try container.decodeIfPresent(String.self, forKey: .draftID)
         self.gitPullURL = try container.decodeIfPresent(String.self, forKey: .gitPullURL)
         self.gitPushURL = try container.decodeIfPresent(String.self, forKey: .gitPushURL)
         self.htmlURL = try container.decodeIfPresent(String.self, forKey: .htmlURL)
@@ -108,6 +112,7 @@ public struct Gist: Codable, Identifiable, Hashable {
         case commitsURL = "commits_url"
         case id = "id"
         case nodeID = "node_id"
+        case draftID
         case gitPullURL = "git_pull_url"
         case gitPushURL = "git_push_url"
         case htmlURL = "html_url"

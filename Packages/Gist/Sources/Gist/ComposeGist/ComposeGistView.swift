@@ -20,6 +20,7 @@ public struct ComposeGistView: View {
     @StateObject private var viewModel = ComposeGistViewModel()
     @ObservedObject private var filesObservableObject = FilesObservableObject()
 
+    @State private var showCreateAGistListSheet: Bool = false
     @State private var description: String = ""
     @State private var presentNewFileAlert = false
     @State private var presentCreateDialog = false
@@ -185,9 +186,12 @@ public struct ComposeGistView: View {
 
     private func buildCreateButton() -> some View {
         Button("Create") {
-            presentCreateDialog = true
+            showCreateAGistListSheet.toggle()
         }
-        .disabled(!enableCreateNewGist)
+        .sheet(isPresented: $showCreateAGistListSheet) {
+            CreateAGistListSheetview()
+        }
+//        .disabled(!enableCreateNewGist)
         .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
             Button("Create secret gist") {
                 Task {
@@ -212,7 +216,7 @@ public struct ComposeGistView: View {
                             files: filesObservableObject.files,
                             public: true)
                         dismiss()
-                        completion!(gist)
+                        completion?(gist)
                     } catch let createError {
                         error = createError.localizedDescription
                         self.showErrorToast.toggle()
@@ -246,6 +250,7 @@ public struct ComposeGistView: View {
 extension ComposeGistView {
     public enum Style {
         case createGist
+//        case draft
         case update(gist: Gist)
 
         var navigationTitle: String {
