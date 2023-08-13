@@ -189,43 +189,18 @@ public struct ComposeGistView: View {
             showCreateAGistListSheet.toggle()
         }
         .sheet(isPresented: $showCreateAGistListSheet) {
-            CreateAGistListSheetview()
-        }
-//        .disabled(!enableCreateNewGist)
-        .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
-            Button("Create secret gist") {
-                Task {
-                    do {
-                        let gist = try await viewModel.createGist(
-                            description: description,
-                            files: filesObservableObject.files,
-                            public: false)
-                        dismiss()
-                        completion?(gist)
-                    } catch let createError {
-                        error = createError.localizedDescription
-                        self.showErrorToast.toggle()
-                    }
+            CreateAGistListSheetview { action in
+                switch action {
+                case .public:
+                    onCreatePublicGist()
+                case .secret:
+                    onCreateSecretGist()
+                case .draft:
+                    onCreateDraftGist()
                 }
             }
-            Button("Create public gist") {
-                Task {
-                    do {
-                        let gist = try await viewModel.createGist(
-                            description: description,
-                            files: filesObservableObject.files,
-                            public: true)
-                        dismiss()
-                        completion?(gist)
-                    } catch let createError {
-                        error = createError.localizedDescription
-                        self.showErrorToast.toggle()
-                    }
-                }
-            }
-        } message: {
-            Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
         }
+        .disabled(!enableCreateNewGist)
     }
 
     @ViewBuilder
@@ -245,12 +220,46 @@ public struct ComposeGistView: View {
             filesObservableObject: filesObservableObject
         )
     }
+
+    private func onCreatePublicGist() {
+        Task {
+            do {
+                let gist = try await viewModel.createGist(
+                    description: description,
+                    files: filesObservableObject.files,
+                    public: true)
+                dismiss()
+                completion?(gist)
+            } catch let createError {
+                error = createError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func onCreateSecretGist() {
+        Task {
+            do {
+                let gist = try await viewModel.createGist(
+                    description: description,
+                    files: filesObservableObject.files,
+                    public: false)
+                dismiss()
+                completion?(gist)
+            } catch let createError {
+                error = createError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func onCreateDraftGist() {
+    }
 }
 
 extension ComposeGistView {
     public enum Style {
         case createGist
-//        case draft
         case update(gist: Gist)
 
         var navigationTitle: String {

@@ -4,6 +4,8 @@ import Environment
 
 struct CreateAGistListSheetview: View {
     @Environment(\.dismiss) private var dismiss
+    let completion: ((Action) -> Void)?
+
     var body: some View {
         ZStack {
             VStack {
@@ -31,24 +33,9 @@ struct CreateAGistListSheetview: View {
                     .padding(.top, 8)
 
                 VStack(spacing: 12) {
-                    makeCreateButton(
-                        title: "Create public gist",
-                        description: "Public gists are visible to everyone.",
-                        image: "arrowtriangle.up.circle"
-                    ) {
-                    }
-                    makeCreateButton(
-                        title: "Create secret gist",
-                        description: "Secret gists are hidden by search engine but visible to anyone you give the URL to.",
-                        image: "lock.circle"
-                    ) {
-                    }
-                    makeCreateButton(
-                        title: "Create draft gist",
-                        description: "Draft gists are a secure way to store, manage, and collaborate on unfinished work, snippets, or ideas.",
-                        image: "doc.circle"
-                    ) {
-                    }
+                    makeCreateButton(withAction: .public)
+                    makeCreateButton(withAction: .secret)
+                    makeCreateButton(withAction: .draft)
                 }
                 Spacer()
             }
@@ -60,23 +47,19 @@ struct CreateAGistListSheetview: View {
 
     @ViewBuilder
     @MainActor
-    private func makeCreateButton(
-        title: String,
-        description: String,
-        image: String,
-        action: @escaping () -> Void
-    ) -> some View {
+    private func makeCreateButton(withAction action: Action) -> some View {
         Button {
             HapticManager.shared.fireHaptic(of: .buttonPress)
-            action()
+            completion?(action)
+            dismiss()
         } label: {
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
                     VStack(alignment: .leading) {
-                        Text(title)
+                        Text(action.title)
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(Colors.accent.color)
-                        Text(description)
+                        Text(action.description)
                             .font(.system(size: 13))
                             .foregroundColor(Colors.neutralEmphasisPlus.color)
                             .multilineTextAlignment(.leading)
@@ -85,7 +68,7 @@ struct CreateAGistListSheetview: View {
 
                     Spacer()
 
-                    Image(systemName: image)
+                    Image(systemName: action.image)
                         .resizable()
                         .fontWeight(.ultraLight)
                         .frame(width: 42, height: 42)
@@ -100,5 +83,46 @@ struct CreateAGistListSheetview: View {
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Colors.buttonBorder.color)
         )
+    }
+}
+
+extension CreateAGistListSheetview {
+    enum Action {
+        case `public`
+        case secret
+        case draft
+
+        var description: String {
+            switch self {
+            case .public:
+                return "Public gists are visible to everyone."
+            case .secret:
+                return "Secret gists are hidden by search engine but visible to anyone you give the URL to."
+            case .draft:
+                return "Draft gists are a secure way to store, manage, and collaborate on unfinished work, snippets, or ideas exclusively within the GistHub app."
+            }
+        }
+
+        var title: String {
+            switch self {
+            case .public:
+                return "Create public gist"
+            case .secret:
+                return "Create secret gist"
+            case .draft:
+                return "Create draft gist"
+            }
+        }
+
+        var image: String {
+            switch self {
+            case .public:
+                return "arrowtriangle.up.circle"
+            case .secret:
+                return "lock.circle"
+            case .draft:
+                return "doc.circle"
+            }
+        }
     }
 }
