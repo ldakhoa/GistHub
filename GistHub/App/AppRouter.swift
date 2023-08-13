@@ -31,6 +31,8 @@ extension View {
                 EditorCodeSettingsView()
             case let .gistLists(mode):
                 GistListsView(listsMode: mode)
+            case .draftGistLists:
+                DraftGistListsView()
             case let .userProfile(userName):
                 UserProfileView(userName: userName)
             case let .searchUsers(query):

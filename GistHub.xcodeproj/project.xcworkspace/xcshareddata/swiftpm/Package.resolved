@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher",
       "state" : {
-        "revision" : "c1f60c63f356d364f4284ba82961acbe7de79bcc",
-        "version" : "7.8.1"
+        "revision" : "c75584ac759cbb16b204d0a7de3ebf53ea6b304d",
+        "version" : "7.9.0"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simonbs/treesitterlanguages",
       "state" : {
-        "revision" : "f23b8872561daf747e233ba7d6130d9e680f52e1",
-        "version" : "0.1.4"
+        "revision" : "a15ab30453d14097355d7d78ec7c0feb008cfbba",
+        "version" : "0.1.7"
       }
     },
     {

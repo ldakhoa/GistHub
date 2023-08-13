@@ -28,6 +28,7 @@ public struct HomeView: View {
                 }
 
                 buttonRowView(title: "Draft", image: "doc.text", imageBackground: Colors.Palette.Orange.orange3.dynamicColor.color) {
+                    routerPath.navigate(to: .draftGistLists)
                 }
             } header: {
                 Text("My Gist")

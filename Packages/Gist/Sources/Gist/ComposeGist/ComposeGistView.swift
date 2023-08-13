@@ -20,6 +20,7 @@ public struct ComposeGistView: View {
     @StateObject private var viewModel = ComposeGistViewModel()
     @ObservedObject private var filesObservableObject = FilesObservableObject()
 
+    @State private var showCreateAGistListSheet: Bool = false
     @State private var description: String = ""
     @State private var presentNewFileAlert = false
     @State private var presentCreateDialog = false
@@ -185,43 +186,21 @@ public struct ComposeGistView: View {
 
     private func buildCreateButton() -> some View {
         Button("Create") {
-            presentCreateDialog = true
+            showCreateAGistListSheet.toggle()
+        }
+        .sheet(isPresented: $showCreateAGistListSheet) {
+            CreateAGistListSheetview { action in
+                switch action {
+                case .public:
+                    onCreatePublicGist()
+                case .secret:
+                    onCreateSecretGist()
+                case .draft:
+                    onCreateDraftGist()
+                }
+            }
         }
         .disabled(!enableCreateNewGist)
-        .confirmationDialog("Create a gist", isPresented: $presentCreateDialog, titleVisibility: .visible) {
-            Button("Create secret gist") {
-                Task {
-                    do {
-                        let gist = try await viewModel.createGist(
-                            description: description,
-                            files: filesObservableObject.files,
-                            public: false)
-                        dismiss()
-                        completion?(gist)
-                    } catch let createError {
-                        error = createError.localizedDescription
-                        self.showErrorToast.toggle()
-                    }
-                }
-            }
-            Button("Create public gist") {
-                Task {
-                    do {
-                        let gist = try await viewModel.createGist(
-                            description: description,
-                            files: filesObservableObject.files,
-                            public: true)
-                        dismiss()
-                        completion!(gist)
-                    } catch let createError {
-                        error = createError.localizedDescription
-                        self.showErrorToast.toggle()
-                    }
-                }
-            }
-        } message: {
-            Text("Create secret gists are hidden by search engine but visible to anyone you give the URL to.\nCreate public gists are visible to everyone.")
-        }
     }
 
     @ViewBuilder
@@ -240,6 +219,41 @@ public struct ComposeGistView: View {
             language: language,
             filesObservableObject: filesObservableObject
         )
+    }
+
+    private func onCreatePublicGist() {
+        Task {
+            do {
+                let gist = try await viewModel.createGist(
+                    description: description,
+                    files: filesObservableObject.files,
+                    public: true)
+                dismiss()
+                completion?(gist)
+            } catch let createError {
+                error = createError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func onCreateSecretGist() {
+        Task {
+            do {
+                let gist = try await viewModel.createGist(
+                    description: description,
+                    files: filesObservableObject.files,
+                    public: false)
+                dismiss()
+                completion?(gist)
+            } catch let createError {
+                error = createError.localizedDescription
+                self.showErrorToast.toggle()
+            }
+        }
+    }
+
+    private func onCreateDraftGist() {
     }
 }
 
