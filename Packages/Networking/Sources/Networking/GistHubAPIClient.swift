@@ -380,10 +380,6 @@ private extension GistsSortOption {
             return GistOrder(field: .case(.updatedAt), direction: .case(.desc))
         case .leastRecentlyUpdated:
             return GistOrder(field: .case(.updatedAt), direction: .case(.asc))
-        case .pushed:
-            return GistOrder(field: .case(.pushedAt), direction: .case(.desc))
-        case .leastRecentlyPushed:
-            return GistOrder(field: .case(.pushedAt), direction: .case(.asc))
         }
     }
 }
