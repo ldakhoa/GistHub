@@ -180,7 +180,7 @@ public struct GistListsView: View {
         } label: {
             HStack {
                 Image(systemName: "slider.horizontal.3")
-                Text("Filter options")
+                Text("Type")
             }
             Text(selectedGistsPrivacy.title)
         }
