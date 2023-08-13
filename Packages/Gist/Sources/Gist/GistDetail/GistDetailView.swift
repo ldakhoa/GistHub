@@ -275,7 +275,7 @@ public struct GistDetailView: View {
                 }
             }
         } label: {
-            Image(systemName: "ellipsis")
+            Image(systemName: "ellipsis.circle")
                 .foregroundColor(Colors.accent.color)
         }
     }

@@ -132,8 +132,6 @@ public enum GistsSortOption: Int, Hashable, CaseIterable {
     case leastRecentlyCreated
     case updated
     case leastRecentlyUpdated
-    case pushed
-    case leastRecentlyPushed
 
     public var title: String {
         switch self {
@@ -145,10 +143,6 @@ public enum GistsSortOption: Int, Hashable, CaseIterable {
             return "Recently updated"
         case .leastRecentlyUpdated:
             return "Least recently updated"
-        case .pushed:
-            return "Recently pushed"
-        case .leastRecentlyPushed:
-            return "Least recently pushed"
         }
     }
 }
