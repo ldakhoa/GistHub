@@ -27,7 +27,13 @@ public struct HomeView: View {
                     routerPath.navigate(to: .gistLists(mode: .userStarredGists(userName: currentAccount.user?.login ?? "ghost")))
                 }
 
-                buttonRowView(title: "Draft", image: "doc.text", imageBackground: Colors.Palette.Orange.orange3.dynamicColor.color) {
+                forkButtonRowView
+
+                buttonRowView(
+                    title: "Draft",
+                    image: "doc.text",
+                    imageBackground: Colors.Palette.Orange.orange3.dynamicColor.color
+                ) {
                     routerPath.navigate(to: .draftGistLists)
                 }
             } header: {
@@ -69,27 +75,26 @@ public struct HomeView: View {
     }
 
     @ViewBuilder
-    private var newGistFloatingButton: some View {
-        VStack {
-            Spacer()
+    var forkButtonRowView: some View {
+        Button(action: {}, label: {
             HStack {
-                Spacer()
-                GistHubButton(
-                    imageName: "plus",
-                    foregroundColor: Color.white,
-                    background: Colors.accent.color,
-                    padding: 18.0,
-                    radius: 36.0
-                ) {
-                    routerPath.presentedSheet = .newGist { gist in
-//                        viewModel.insert(gist)
-                        routerPath.navigate(to: .gistDetail(gistId: gist.id))
-                    }
+                Label {
+                    Text("Forked")
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                } icon: {
+                    Image(uiImage: UIImage(named: "fork")!)
+                        .renderingMode(.template)
+                        .frame(width: 9, height: 9)
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(Colors.Palette.Purple.purple3.dynamicColor.color)
+                        .cornerRadius(6.0)
                 }
-                .padding(.trailing, 16)
-                .padding(.bottom, 16)
+                Spacer()
+                RightChevronRowImage()
             }
-        }
+        })
+        .frame(height: 37)
     }
 
     @ViewBuilder
