@@ -178,15 +178,17 @@ public struct GistListsView: View {
                 }
             }
         } label: {
-            VStack {
-                Text(selectedGistsPrivacy.title)
+            HStack {
+                Image(systemName: "slider.horizontal.3")
+                Text("Filter options")
             }
+            Text(selectedGistsPrivacy.title)
         }
     }
 
     @ViewBuilder
     private var sortOrderMenu: some View {
-        Menu(selectedSortOption.title) {
+        Menu {
             ForEach(gistsSortOptions, id: \.self) { sortOption in
                 Button {
                     selectedSortOption = sortOption
@@ -199,6 +201,12 @@ public struct GistListsView: View {
                     }
                 }
             }
+        } label: {
+            HStack {
+                Image(systemName: "arrow.up.arrow.down")
+                Text("Sort by")
+            }
+            Text(selectedSortOption.title)
         }
     }
 
@@ -209,10 +217,11 @@ public struct GistListsView: View {
                 privacyFilterMenu
             }
             if listsMode.shouldShowSortOption {
+                Divider()
                 sortOrderMenu
             }
         } label: {
-            Image(systemName: "ellipsis")
+            Image(systemName: "ellipsis.circle")
                 .foregroundColor(Colors.accent.color)
         }
     }
