@@ -17,6 +17,7 @@ public final class GistListsViewModel: ObservableObject {
 
     @Published var gists: [Gist] = []
     @Published var isLoadingMoreGists = false
+    @Published var sortOption: GistsSortOption = .created
 
     private let gistHubClient: GistHubAPIClient
     private let serverClient: GistHubServerClient
@@ -117,15 +118,25 @@ public final class GistListsViewModel: ObservableObject {
     private func fetchGistsByListsMode(mode: GistListsMode) async throws -> [Gist] {
         let gistsResponse: GistsResponse
         switch mode {
-        case .currentUserGists:
-            gistsResponse = try await gistHubClient.gists(pageSize: Constants.pagingSize, cursor: pagingCursor)
+        case let .currentUserGists(filter):
+            gistsResponse = try await gistHubClient.gists(
+                pageSize: Constants.pagingSize,
+                cursor: pagingCursor,
+                privacy: filter,
+                sortOption: sortOption
+            )
             pagingCursor = gistsResponse.cursor
         case let .userStarredGists(userName):
             guard let userName else { return [] }
             gistsResponse = try await serverClient.starredGists(fromUserName: userName, page: currentStarredPage)
             currentStarredPage += 1
         case let .userGists(userName):
-            gistsResponse = try await gistHubClient.gists(fromUserName: userName, pageSize: Constants.pagingSize, cursor: pagingCursor)
+            gistsResponse = try await gistHubClient.gists(
+                fromUserName: userName,
+                pageSize: Constants.pagingSize,
+                cursor: pagingCursor,
+                sortOption: sortOption
+            )
             pagingCursor = gistsResponse.cursor
         case let .search(query):
             gistsResponse = try await serverClient.search(from: query, page: searchGistsPage)

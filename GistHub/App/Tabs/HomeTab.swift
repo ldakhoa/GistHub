@@ -27,7 +27,6 @@ struct HomeTab: View {
 
     var body: some View {
         NavigationStack(path: $routerPath.path) {
-//            GistListsView(listsMode: .currentUserGists)
             HomeView()
                 .withAppRouter()
                 .withSheetDestinations(sheetDestinations: $routerPath.presentedSheet)

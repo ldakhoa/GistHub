@@ -16,7 +16,7 @@ public struct HomeView: View {
                     image: "doc.text.magnifyingglass",
                     imageBackground: Colors.buttonForeground.color
                 ) {
-                    routerPath.navigate(to: .gistLists(mode: .currentUserGists))
+                    routerPath.navigate(to: .gistLists(mode: .currentUserGists(filter: .all)))
                 }
 
                 buttonRowView(

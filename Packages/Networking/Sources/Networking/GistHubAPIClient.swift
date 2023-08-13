@@ -17,10 +17,10 @@ public protocol GistHubAPIClient {
     func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
 
     /// List gists for the authenticated user.
-    func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse
+    func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter, sortOption: GistsSortOption) async throws -> GistsResponse
 
     /// List gists for from the user name.
-    func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse
+    func gists(fromUserName userName: String, pageSize: Int, cursor: String?, sortOption: GistsSortOption) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
     func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
@@ -99,7 +99,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
-    public func gists(pageSize: Int, cursor: String?) async throws -> GistsResponse {
+    public func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter, sortOption: GistsSortOption) async throws -> GistsResponse {
         let inputCursor: GraphQLNullable<String>
         if let cursor {
             inputCursor = GraphQLNullable(stringLiteral: cursor)
@@ -109,14 +109,14 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let query = GistsQuery(
             first: GraphQLNullable(integerLiteral: pageSize),
             after: inputCursor,
-            privacy: GraphQLNullable(GistPrivacy.all),
-            orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
+            privacy: GraphQLNullable(privacy.graphQLPrivacy),
+            orderBy: GraphQLNullable(sortOption.graphQLOrder)
         )
         let data = try await graphQLSession.query(query)
         return GistsResponse(data: data.viewer.gists)
     }
 
-    public func gists(fromUserName userName: String, pageSize: Int, cursor: String?) async throws -> GistsResponse {
+    public func gists(fromUserName userName: String, pageSize: Int, cursor: String?, sortOption: GistsSortOption) async throws -> GistsResponse {
         let inputCursor: GraphQLNullable<String>
         if let cursor {
             inputCursor = GraphQLNullable(stringLiteral: cursor)
@@ -128,7 +128,7 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
             privacy: GraphQLNullable(GistPrivacy.all),
             first: GraphQLNullable(integerLiteral: pageSize),
             after: inputCursor,
-            orderBy: GraphQLNullable(Constants.defaultGistsOrdering)
+            orderBy: GraphQLNullable(sortOption.graphQLOrder)
         )
         let data = try await graphQLSession.query(query)
         guard let gists = data.user?.gists else {
@@ -239,7 +239,6 @@ extension DefaultGistHubAPIClient {
     enum Constants {
         static let repo = "GistHub"
         static let owner = "ldakhoa"
-        static let defaultGistsOrdering = GistOrder(field: .case(.createdAt), direction: .case(.desc))
     }
 
     enum API: Request {
@@ -353,6 +352,38 @@ extension DefaultGistHubAPIClient {
             default:
                 return nil
             }
+        }
+    }
+}
+
+private extension GistsPrivacyFilter {
+    var graphQLPrivacy: GistPrivacy {
+        switch self {
+        case .all:
+            return .all
+        case .public:
+            return .public
+        case .secret:
+            return .secret
+        }
+    }
+}
+
+private extension GistsSortOption {
+    var graphQLOrder: GistOrder {
+        switch self {
+        case .created:
+            return GistOrder(field: .case(.createdAt), direction: .case(.desc))
+        case .leastRecentlyCreated:
+            return GistOrder(field: .case(.createdAt), direction: .case(.asc))
+        case .updated:
+            return GistOrder(field: .case(.updatedAt), direction: .case(.desc))
+        case .leastRecentlyUpdated:
+            return GistOrder(field: .case(.updatedAt), direction: .case(.asc))
+        case .pushed:
+            return GistOrder(field: .case(.pushedAt), direction: .case(.desc))
+        case .leastRecentlyPushed:
+            return GistOrder(field: .case(.pushedAt), direction: .case(.asc))
         }
     }
 }

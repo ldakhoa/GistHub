@@ -17,6 +17,12 @@ public struct GistListsView: View {
     @StateObject private var viewModel: GistListsViewModel = GistListsViewModel()
     @State private var progressViewId = 0
     @State private var selectedDiscoverGists: DiscoverGistsMode = .all
+    @State private var selectedGistsPrivacy: GistsPrivacyFilter = .all
+    @State private var selectedSortOption: GistsSortOption = .created
+
+    private let discoverGists: [DiscoverGistsMode] = DiscoverGistsMode.allCases
+    private let gistsPrivacyFilter: [GistsPrivacyFilter] = GistsPrivacyFilter.allCases
+    private let gistsSortOptions: [GistsSortOption] = GistsSortOption.allCases
 
     // MARK: - Dependencies
 
@@ -119,11 +125,33 @@ public struct GistListsView: View {
                     viewModel.search()
                 }
         }
+        .modifyIf(listsMode.shouldShowFilter) { view in
+            view
+                .onChange(of: selectedGistsPrivacy) { newValue in
+                    self.listsMode = .currentUserGists(filter: newValue)
+                    refreshGists()
+                }
+        }
+        .modifyIf(listsMode.shouldShowSortOption) { view in
+            view
+                .onChange(of: selectedSortOption) { newValue in
+                    self.viewModel.sortOption = newValue
+                    refreshGists()
+                }
+        }
         .overlay(Group {
             if viewModel.gists.isEmpty && viewModel.contentState != .loading {
                 EmptyStatefulView(title: "There aren't any gists.")
             }
         })
+        .modifyIf(listsMode.shouldShowSortOption || listsMode.shouldShowFilter) { view in
+            view
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        trailingToolbarItem
+                    }
+                }
+        }
         .navigationTitle(Text(listsMode.navigationTitle))
         .navigationBarTitleDisplayMode(listsMode.navigationStyle)
     }
@@ -136,6 +164,56 @@ public struct GistListsView: View {
     ) -> some View {
         Button(role: role ?? .none, action: action) {
             Label(title, image: image)
+        }
+    }
+
+    @ViewBuilder
+    private var privacyFilterMenu: some View {
+        Menu {
+            ForEach(gistsPrivacyFilter, id: \.self) { privacy in
+                Button {
+                    selectedGistsPrivacy = privacy
+                } label: {
+                    Text(privacy.title)
+                }
+            }
+        } label: {
+            VStack {
+                Text(selectedGistsPrivacy.title)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var sortOrderMenu: some View {
+        Menu(selectedSortOption.title) {
+            ForEach(gistsSortOptions, id: \.self) { sortOption in
+                Button {
+                    selectedSortOption = sortOption
+                } label: {
+                    HStack {
+                        if sortOption == selectedSortOption {
+                            Image(systemName: "checkmark")
+                        }
+                        Text(sortOption.title)
+                    }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var trailingToolbarItem: some View {
+        Menu {
+            if listsMode.shouldShowFilter {
+                privacyFilterMenu
+            }
+            if listsMode.shouldShowSortOption {
+                sortOrderMenu
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .foregroundColor(Colors.accent.color)
         }
     }
 

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 public enum GistListsMode: Hashable {
-    case currentUserGists
+    case currentUserGists(filter: GistsPrivacyFilter)
     case userStarredGists(userName: String?)
     case userGists(userName: String)
     case search(query: String)
@@ -65,6 +65,24 @@ public enum GistListsMode: Hashable {
             return false
         }
     }
+
+    public var shouldShowFilter: Bool {
+        switch self {
+        case .currentUserGists:
+            return true
+        default:
+            return false
+        }
+    }
+
+    public var shouldShowSortOption: Bool {
+        switch self {
+        case .currentUserGists, .userGists:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public enum DiscoverGistsMode: Int, Identifiable, Hashable, CaseIterable {
@@ -84,6 +102,53 @@ public enum DiscoverGistsMode: Int, Identifiable, Hashable, CaseIterable {
             return "Forked"
         case .starred:
             return "Starred"
+        }
+    }
+}
+
+public enum GistsPrivacyFilter: Int, Identifiable, Hashable, CaseIterable {
+    case all
+    case `public`
+    case secret
+
+    public var id: Int {
+        rawValue
+    }
+
+    public var title: String {
+        switch self {
+        case .all:
+            return "All Gists"
+        case .public:
+            return "Public"
+        case .secret:
+            return "Secret"
+        }
+    }
+}
+
+public enum GistsSortOption: Int, Hashable, CaseIterable {
+    case created
+    case leastRecentlyCreated
+    case updated
+    case leastRecentlyUpdated
+    case pushed
+    case leastRecentlyPushed
+
+    public var title: String {
+        switch self {
+        case .created:
+            return "Recently created"
+        case .leastRecentlyCreated:
+            return "Least recently created"
+        case .updated:
+            return "Recently updated"
+        case .leastRecentlyUpdated:
+            return "Least recently updated"
+        case .pushed:
+            return "Recently pushed"
+        case .leastRecentlyPushed:
+            return "Least recently pushed"
         }
     }
 }
