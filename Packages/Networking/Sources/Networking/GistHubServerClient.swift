@@ -10,7 +10,12 @@ public protocol GistHubServerClient {
     func discoverStarredGists(page: Int) async throws -> GistsResponse
     func discoverForkedGists(page: Int) async throws -> GistsResponse
 
-    func search(from query: String, page: Int, sortOption: GistSearchResultSortOption) async throws -> GistSearchResult
+    func search(
+        from query: String,
+        page: Int,
+        language: String,
+        sortOption: GistSearchResultSortOption
+    ) async throws -> GistSearchResult
 }
 
 public final class DefaultGistHubServerClient: GistHubServerClient {
@@ -43,9 +48,15 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
     public func search(
         from query: String,
         page: Int,
+        language: String,
         sortOption: GistSearchResultSortOption
     ) async throws -> GistSearchResult {
-        try await session.data(for: API.search(query: query, page: page, sortOption: sortOption))
+        try await session.data(
+            for: API.search(query: query,
+            page: page,
+            language: language,
+            sortOption: sortOption)
+        )
     }
 }
 
@@ -55,7 +66,7 @@ extension DefaultGistHubServerClient {
         case discoverGists(page: Int)
         case discoverStarredGists(page: Int)
         case discoverForkedGists(page: Int)
-        case search(query: String, page: Int, sortOption: GistSearchResultSortOption)
+        case search(query: String, page: Int, language: String, sortOption: GistSearchResultSortOption)
 
         var url: String {
             switch self {
@@ -67,8 +78,8 @@ extension DefaultGistHubServerClient {
                 return "/discover/starred?page=\(page)"
             case let .discoverForkedGists(page):
                 return "/discover/forked?page=\(page)"
-            case let .search(query, page, gistSearchResultSortOption):
-                return "/search?q=\(query)&p=\(page)&o=\(gistSearchResultSortOption.sortOption.direction)&s=\(gistSearchResultSortOption.sortOption.field)"
+            case let .search(query, page, language, gistSearchResultSortOption):
+                return "/search?q=\(query)&l=\(language)&p=\(page)&o=\(gistSearchResultSortOption.sortOption.direction)&s=\(gistSearchResultSortOption.sortOption.field.rawValue)"
             }
         }
 

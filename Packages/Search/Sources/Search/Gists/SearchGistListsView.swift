@@ -102,6 +102,9 @@ public struct SearchGistListsView: View {
             NavigationStack {
                 SearchGistLanguagesView(searchResultLanguages: viewModel.searchResultLanguages) { language in
                     viewModel.searchResultLanguageSelected = language
+                    Task {
+                        await viewModel.refreshGists(from: query)
+                    }
                 }
             }
         }

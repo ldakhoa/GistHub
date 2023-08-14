@@ -57,6 +57,7 @@ final class SearchGistListsViewModel: ObservableObject {
         let gistSearchResult = try await serverClient.search(
             from: query,
             page: searchGistsPage,
+            language: searchResultLanguageSelected,
             sortOption: sortOption
         )
         searchGistsPage += 1
