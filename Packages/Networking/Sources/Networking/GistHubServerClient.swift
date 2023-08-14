@@ -10,7 +10,7 @@ public protocol GistHubServerClient {
     func discoverStarredGists(page: Int) async throws -> GistsResponse
     func discoverForkedGists(page: Int) async throws -> GistsResponse
 
-    func search(from query: String, page: Int) async throws -> GistsResponse
+    func search(from query: String, page: Int) async throws -> GistSearchResult
 }
 
 public final class DefaultGistHubServerClient: GistHubServerClient {
@@ -40,9 +40,8 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
         return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 
-    public func search(from query: String, page: Int) async throws -> GistsResponse {
-        let gists: [Gist] = try await session.data(for: API.search(query: query, page: page))
-        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
+    public func search(from query: String, page: Int) async throws -> GistSearchResult {
+        try await session.data(for: API.search(query: query, page: page))
     }
 }
 

@@ -12,12 +12,11 @@ public enum GistListsMode: Hashable {
     case currentUserGists(filter: GistsPrivacyFilter)
     case userStarredGists(userName: String?)
     case userGists(userName: String)
-    case search(query: String)
     case discover(mode: DiscoverGistsMode)
 
     public var navigationTitle: String {
         switch self {
-        case .currentUserGists, .search:
+        case .currentUserGists:
             return "Gists"
         case .userStarredGists:
             return "Starred Gists"
@@ -34,14 +33,14 @@ public enum GistListsMode: Hashable {
             return "Search Starred Gists"
         case .currentUserGists, .userGists:
             return "Search Gists"
-        case .discover, .search:
+        case .discover:
             return ""
         }
     }
 
     public var navigationStyle: NavigationBarItem.TitleDisplayMode {
         switch self {
-        case .search, .userGists, .userStarredGists:
+        case .userGists, .userStarredGists:
             return .inline
         default:
             return .large
@@ -52,8 +51,17 @@ public enum GistListsMode: Hashable {
         switch self {
         case .currentUserGists, .userStarredGists, .userGists:
             return true
-        case .discover, .search:
+        case .discover:
             return false
+        }
+    }
+
+    public var shouldGetFilesCountFromGist: Bool {
+        switch self {
+        case .currentUserGists, .userGists:
+            return false
+        default:
+            return true
         }
     }
 

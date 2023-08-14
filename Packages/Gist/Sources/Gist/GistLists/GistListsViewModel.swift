@@ -28,7 +28,6 @@ public final class GistListsViewModel: ObservableObject {
     private var currentDiscoverAllGistsPage: Int = 1
     private var currentDiscoverForkedGistsPage: Int = 1
     private var currentDiscoverStarredGistsPage: Int = 1
-    private var searchGistsPage: Int = 1
     private var hasMoreGists = false
 
     public init(
@@ -108,7 +107,6 @@ public final class GistListsViewModel: ObservableObject {
         currentDiscoverAllGistsPage = 1
         currentDiscoverStarredGistsPage = 1
         currentDiscoverForkedGistsPage = 1
-        searchGistsPage = 1
         pagingCursor = nil
         await fetchGists(mode: mode, refresh: true)
     }
@@ -138,9 +136,6 @@ public final class GistListsViewModel: ObservableObject {
                 sortOption: sortOption
             )
             pagingCursor = gistsResponse.cursor
-        case let .search(query):
-            gistsResponse = try await serverClient.search(from: query, page: searchGistsPage)
-            searchGistsPage += 1
         case let .discover(mode):
             switch mode {
             case .all:

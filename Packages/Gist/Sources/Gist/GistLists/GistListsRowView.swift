@@ -3,11 +3,16 @@ import Models
 import DesignSystem
 import OrderedCollections
 
-struct GistListsRowView: View {
+public struct GistListsRowView: View {
     let gist: Gist
-    let gistListsMode: GistListsMode
+    let shouldGetFilesCountFromGist: Bool
 
-    var body: some View {
+    public init(gist: Gist, shouldGetFilesCountFromGist: Bool) {
+        self.gist = gist
+        self.shouldGetFilesCountFromGist = shouldGetFilesCountFromGist
+    }
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             if let files = gist.files,
                let fileName: String = files.fileName {
@@ -78,11 +83,10 @@ struct GistListsRowView: View {
 
     private func getFilesCount(from files: OrderedDictionary<String, File>) -> Int {
         let filesCount: Int
-        switch gistListsMode {
-        case .currentUserGists, .userGists:
-            filesCount = files.keys.count
-        case .userStarredGists, .discover, .search:
+        if shouldGetFilesCountFromGist {
             filesCount = gist.fileTotalCount ?? 1
+        } else {
+            filesCount = files.keys.count
         }
         return filesCount
     }
