@@ -44,7 +44,7 @@ public struct SearchView: View {
                         let fileNameQuery: String = "filename:\(viewModel.query)"
                         routerPath.navigate(to: .searchGists(query: fileNameQuery))
                     }
-                    searchButtonRow(title: "Language", image: "network") {
+                    searchButtonRow(title: "Language", image: "globe") {
                         let languageQuery: String = "language:\(viewModel.query)"
                         routerPath.navigate(to: .searchGists(query: languageQuery))
                     }

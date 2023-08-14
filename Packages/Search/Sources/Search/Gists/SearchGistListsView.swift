@@ -11,6 +11,7 @@ public struct SearchGistListsView: View {
     @StateObject private var viewModel: SearchGistListsViewModel = SearchGistListsViewModel()
     @State private var progressViewId = 0
     @State private var selectedSortOption: GistSearchResultSortOption = .bestMatch
+    @State private var showLanguagesSheet: Bool = false
 
     private let gistsSortOptions: [GistSearchResultSortOption] = GistSearchResultSortOption.allCases
     private let query: String
@@ -97,6 +98,13 @@ public struct SearchGistListsView: View {
                 trailingToolbarItem
             }
         }
+        .sheet(isPresented: $showLanguagesSheet) {
+            NavigationStack {
+                SearchGistLanguagesView(searchResultLanguages: viewModel.searchResultLanguages) { language in
+                    viewModel.searchResultLanguageSelected = language
+                }
+            }
+        }
         .navigationTitle("Gists")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -105,9 +113,28 @@ public struct SearchGistListsView: View {
     private var trailingToolbarItem: some View {
         Menu {
             sortOrderMenu
+            Divider()
+            if !viewModel.searchResultLanguages.isEmpty {
+                languageMenuButton
+            }
         } label: {
             Image(systemName: "ellipsis.circle")
                 .foregroundColor(Colors.accent.color)
+        }
+    }
+
+    @ViewBuilder
+    private var languageMenuButton: some View {
+        Button {
+            showLanguagesSheet.toggle()
+        } label: {
+            HStack {
+                Image(systemName: "globe")
+                Text("Languages")
+            }
+            if !viewModel.searchResultLanguageSelected.isEmpty {
+                Text(viewModel.searchResultLanguageSelected)
+            }
         }
     }
 

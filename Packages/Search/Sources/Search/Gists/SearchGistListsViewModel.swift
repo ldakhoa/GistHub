@@ -5,6 +5,8 @@ import Networking
 @MainActor
 final class SearchGistListsViewModel: ObservableObject {
     @Published var gists: [Gist] = []
+    @Published var searchResultLanguageSelected: String = ""
+    @Published var searchResultLanguages: [GistSearchResultLanguage] = []
     @Published var contentState: ContentState = .loading
     @Published var isLoadingMoreGists = false
     @Published var sortOption: GistSearchResultSortOption = .bestMatch
@@ -60,6 +62,7 @@ final class SearchGistListsViewModel: ObservableObject {
         searchGistsPage += 1
         let gists = gistSearchResult.gists
         hasMoreGists = !gists.isEmpty
+        searchResultLanguages = gistSearchResult.languages ?? []
         return gists
     }
 
