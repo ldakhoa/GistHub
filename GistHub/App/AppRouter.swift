@@ -37,6 +37,8 @@ extension View {
                 UserProfileView(userName: userName)
             case let .searchUsers(query):
                 SearchUsersView(query: query)
+            case let .searchGists(query):
+                SearchGistListsView(query: query)
             }
         }
     }

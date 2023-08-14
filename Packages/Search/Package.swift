@@ -18,7 +18,8 @@ let package = Package(
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Models", path: "../Models"),
-        .package(name: "Networking", path: "../Networking")
+        .package(name: "Networking", path: "../Networking"),
+        .package(name: "Gist", path: "../Gist")
     ],
     targets: [
         .target(
@@ -27,7 +28,8 @@ let package = Package(
                 "DesignSystem",
                 "Environment",
                 "Models",
-                "Networking"
+                "Networking",
+                "Gist"
             ]
         ),
         .testTarget(

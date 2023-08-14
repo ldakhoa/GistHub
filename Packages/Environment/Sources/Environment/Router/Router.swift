@@ -17,6 +17,7 @@ public enum RouterDestination: Hashable {
     case draftGistLists
     case userProfile(userName: String)
     case searchUsers(query: String)
+    case searchGists(query: String)
 }
 
 public enum SheetDestination: Identifiable {

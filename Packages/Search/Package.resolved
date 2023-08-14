@@ -19,12 +19,48 @@
       }
     },
     {
+      "identity" : "gisthub-cmark-gfm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/gisthub-cmark-gfm-swift",
+      "state" : {
+        "revision" : "22c14c09d1e02b6cfaec5fbc90b0431fc1148d20",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "highlightr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/Highlightr",
+      "state" : {
+        "revision" : "ef5856b43b8a50e4292bb39b905c7cbf615c856f",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "htmlstring",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alexaubry/HTMLString",
+      "state" : {
+        "revision" : "04613a3b0f40a91e554b5174c0a10657f1a26357",
+        "version" : "6.0.1"
+      }
+    },
+    {
       "identity" : "inflectorkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattt/InflectorKit",
       "state" : {
         "revision" : "d8cbcc04972690aaa5fc760a2b9ddb3e9f0decd7",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/KeyboardToolbar",
+      "state" : {
+        "revision" : "5f95f8e9af98f6163a58caaceaadc3bf720fd7bd",
+        "version" : "0.1.1"
       }
     },
     {
@@ -70,6 +106,15 @@
       "state" : {
         "revision" : "7a2e3cd27de56f6d396e84f63beefd0267b55ccb",
         "version" : "0.14.1"
+      }
+    },
+    {
+      "identity" : "styledtextkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ldakhoa/StyledTextKit",
+      "state" : {
+        "revision" : "f4e75310e524797e8e750829e90c3620cb0f8dce",
+        "version" : "1.0.0"
       }
     },
     {
