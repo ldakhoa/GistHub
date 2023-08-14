@@ -52,7 +52,11 @@ final class SearchGistListsViewModel: ObservableObject {
     }
 
     private func fetchNewGists(from query: String) async throws -> [Gist] {
-        let gistSearchResult = try await serverClient.search(from: query, page: searchGistsPage)
+        let gistSearchResult = try await serverClient.search(
+            from: query,
+            page: searchGistsPage,
+            sortOption: sortOption
+        )
         searchGistsPage += 1
         let gists = gistSearchResult.gists
         hasMoreGists = !gists.isEmpty

@@ -41,4 +41,40 @@ public enum GistSearchResultSortOption: Int, Identifiable, Hashable, CaseIterabl
             return "Least recently updated"
         }
     }
+
+    public var sortOption: SortOption {
+        switch self {
+        case .bestMatch:
+            return SortOption(field: .bestMatch, direction: .desc)
+        case .mostStars:
+            return SortOption(field: .stars, direction: .desc)
+        case .fewestStars:
+            return SortOption(field: .stars, direction: .asc)
+        case .mostForks:
+            return SortOption(field: .forks, direction: .desc)
+        case .fewestForks:
+            return SortOption(field: .forks, direction: .asc)
+        case .recentlyUpdated:
+            return SortOption(field: .updated, direction: .desc)
+        case .leastRecentlyUpdated:
+            return SortOption(field: .updated, direction: .asc)
+        }
+    }
+
+    public struct SortOption {
+        public let field: Field
+        public let direction: Direction
+    }
+
+    public enum Field: String {
+        case stars
+        case forks
+        case updated
+        case bestMatch = ""
+    }
+
+    public enum Direction: String {
+        case asc
+        case desc
+    }
 }
