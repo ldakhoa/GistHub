@@ -126,7 +126,11 @@ public final class GistListsViewModel: ObservableObject {
             pagingCursor = gistsResponse.cursor
         case let .userStarredGists(userName):
             guard let userName else { return [] }
-            gistsResponse = try await serverClient.starredGists(fromUserName: userName, page: currentStarredPage)
+            gistsResponse = try await serverClient.starredGists(
+                fromUserName: userName,
+                page: currentStarredPage,
+                sortOption: sortOption
+            )
             currentStarredPage += 1
         case let .userGists(userName):
             gistsResponse = try await gistHubClient.gists(

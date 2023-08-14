@@ -85,7 +85,7 @@ public enum GistListsMode: Hashable {
 
     public var shouldShowSortOption: Bool {
         switch self {
-        case .currentUserGists, .userGists:
+        case .currentUserGists, .userGists, .userStarredGists:
             return true
         default:
             return false
@@ -152,5 +152,33 @@ public enum GistsSortOption: Int, Hashable, CaseIterable {
         case .leastRecentlyUpdated:
             return "Least recently updated"
         }
+    }
+
+    public var sortOption: SortOption {
+        switch self {
+        case .created:
+            return SortOption(field: .created, direction: .desc)
+        case .leastRecentlyCreated:
+            return SortOption(field: .created, direction: .asc)
+        case .updated:
+            return SortOption(field: .updated, direction: .desc)
+        case .leastRecentlyUpdated:
+            return SortOption(field: .updated, direction: .asc)
+        }
+    }
+
+    public struct SortOption {
+        public let field: Field
+        public let direction: Direction
+    }
+
+    public enum Field: String {
+        case created
+        case updated
+    }
+
+    public enum Direction: String {
+        case asc
+        case desc
     }
 }
