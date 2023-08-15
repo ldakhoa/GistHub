@@ -23,7 +23,10 @@ public final class GistListsViewModel: ObservableObject {
     private let serverClient: GistHubServerClient
     private var pagingCursor: String?
     private var originalGists: [Gist] = []
+
     private var isSearchingGists: Bool = false
+
+    private var currentGistsPage: Int = 1
     private var currentStarredPage: Int = 1
     private var currentDiscoverAllGistsPage: Int = 1
     private var currentDiscoverForkedGistsPage: Int = 1

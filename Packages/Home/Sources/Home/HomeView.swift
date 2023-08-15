@@ -75,7 +75,7 @@ public struct HomeView: View {
     }
 
     @ViewBuilder
-    var forkButtonRowView: some View {
+    private var forkButtonRowView: some View {
         Button(action: {}, label: {
             HStack {
                 Label {

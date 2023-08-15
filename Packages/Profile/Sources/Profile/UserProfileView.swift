@@ -74,23 +74,24 @@ public struct UserProfileView: View {
             VStack(spacing: 0) {
                 makeButton(
                     title: "Gists",
-                    systemImageName: "doc.text",
+                    image: "doc.text.magnifyingglass",
                     backgroundImage: Colors.buttonForeground.color
                 ) {
                     routerPath.navigate(to: .gistLists(mode: .userGists(userName: userName)))
                 }
 
-                Divider()
-                    .overlay(Colors.neutralEmphasis.color)
-                    .padding(.leading, 54)
+                divider
 
                 makeButton(
                     title: "Starred",
-                    systemImageName: "star",
+                    image: "star",
                     backgroundImage: Colors.Palette.Yellow.yellow2.dynamicColor.color
                 ) {
                     routerPath.navigate(to: .gistLists(mode: .userStarredGists(userName: userName)))
                 }
+                divider
+
+                forkButtonRowView
             }
             .background(Colors.listBackground.color)
         }
@@ -117,30 +118,63 @@ public struct UserProfileView: View {
         }
     }
 
-    private func makeButton(
-        title: LocalizedStringKey,
-        systemImageName: String,
-        backgroundImage: Color,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action, label: {
-            HStack(alignment: .center) {
-                HStack {
-                    Image(systemName: systemImageName)
-                        .font(.system(size: 14))
-                        .fontWeight(.medium)
-                        .frame(width: 28, height: 28)
-                        .foregroundColor(.white)
-                        .background(backgroundImage)
-                        .cornerRadius(6.0)
+    @ViewBuilder
+    private var divider: some View {
+        Divider()
+            .overlay(Colors.neutralEmphasis.color)
+            .padding(.leading, 56)
+    }
 
-                    Text(title)
+    @ViewBuilder
+    private var forkButtonRowView: some View {
+        Button(action: {}, label: {
+            HStack(alignment: .center) {
+                Label {
+                    Text("Forked")
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
+                } icon: {
+                    Image(uiImage: UIImage(named: "fork")!)
+                        .renderingMode(.template)
+                        .frame(width: 9, height: 9)
+                        .foregroundColor(.white)
+                        .padding(12)
+                        .background(Colors.Palette.Purple.purple3.dynamicColor.color)
+                        .cornerRadius(6.0)
                 }
                 Spacer()
                 RightChevronRowImage()
             }
         })
+        .frame(height: 37)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+    }
+
+    private func makeButton(
+        title: LocalizedStringKey,
+        image: String,
+        backgroundImage: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action, label: {
+            HStack(alignment: .center) {
+                Label {
+                    Text(title)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                } icon: {
+                    Image(systemName: image)
+                        .font(.system(size: 14))
+                        .fontWeight(.medium)
+                        .frame(width: 32, height: 32)
+                        .foregroundColor(.white)
+                        .background(backgroundImage)
+                        .cornerRadius(6.0)
+                }
+                Spacer()
+                RightChevronRowImage()
+            }
+        })
+        .frame(height: 37)
         .padding(.vertical, 12)
         .padding(.horizontal, 16)
     }
@@ -150,106 +184,6 @@ public struct UserProfileView: View {
     private func fetchUser() {
         Task {
             await viewModel.fetchUser(fromUserName: userName)
-        }
-    }
-}
-
-struct ProfileMainView: View {
-    private let user: User
-
-    init(user: User) {
-        self.user = user
-    }
-
-    var body: some View {
-        mainView
-    }
-
-    @ViewBuilder
-    private var mainView: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 12) {
-                if let avatarURLString = user.avatarURL, let url = URL(string: avatarURLString) {
-                    GistHubImage(url: url, width: 70, height: 70, cornerRadius: 35)
-                }
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(user.name ?? "")
-                        .font(.title2)
-                        .bold()
-                    Text("@\(user.login!)")
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                }
-            }
-
-            HStack(alignment: .center) {
-                if let company = user.company {
-                    imageText(imageName: "organization", title: company)
-                }
-
-                if let location = user.location {
-                    imageText(imageName: "location", title: location)
-                }
-
-                if let email = user.email {
-                    imageText(imageName: "at", title: email)
-                }
-            }
-
-            HStack(spacing: 4) {
-                Image("person")
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(Colors.neutralEmphasisPlus.color)
-
-                let followerText = user.followers ?? 0 > 1 ? "followers" : "follower"
-                Text("\(user.followers ?? 0) ") +
-                Text(followerText).foregroundColor(Colors.neutralEmphasisPlus.color)
-
-                Text(" · ")
-
-                let followingText = user.followers ?? 0 > 1 ? "followings" : "following"
-                Text("\(user.following ?? 0) ") +
-                Text(followingText).foregroundColor(Colors.neutralEmphasisPlus.color)
-            }
-
-            if let htmlURL = user.htmlURL,
-               let url = URL(string: htmlURL) {
-                Link(destination: url) {
-                    HStack {
-                        Spacer()
-                        Text("View GitHub Profile")
-                            .font(.callout)
-                            .fontWeight(.semibold)
-                        Spacer()
-                    }
-                    .padding(12)
-                    .background(Colors.buttonBackground.color)
-                    .foregroundColor(Colors.buttonForeground.color)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Colors.buttonBorder.color)
-                    )
-                }
-                .padding(.top, 8)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(24)
-    }
-
-    private func imageText(imageName: String, title: String) -> some View {
-        HStack(spacing: 4) {
-            Image(imageName)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(Colors.neutralEmphasisPlus.color)
-                .frame(width: 16, height: 16)
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(Colors.neutralEmphasisPlus.color)
         }
     }
 }
