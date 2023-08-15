@@ -27,10 +27,6 @@ public final class GistListsViewModel: ObservableObject {
     private var isSearchingGists: Bool = false
 
     private var currentGistsPage: Int = 1
-//    private var currentStarredPage: Int = 1
-//    private var currentDiscoverAllGistsPage: Int = 1
-//    private var currentDiscoverForkedGistsPage: Int = 1
-//    private var currentDiscoverStarredGistsPage: Int = 1
     private var hasMoreGists = false
 
     public init(
@@ -106,10 +102,6 @@ public final class GistListsViewModel: ObservableObject {
         }
         contentState = .loading
         hasMoreGists = false
-//        currentStarredPage = 1
-//        currentDiscoverAllGistsPage = 1
-//        currentDiscoverStarredGistsPage = 1
-//        currentDiscoverForkedGistsPage = 1
         currentGistsPage = 1
         pagingCursor = nil
         await fetchGists(mode: mode, refresh: true)
