@@ -75,8 +75,10 @@ public struct HomeView: View {
     }
 
     @ViewBuilder
-    var forkButtonRowView: some View {
-        Button(action: {}, label: {
+    private var forkButtonRowView: some View {
+        Button(action: {
+            routerPath.navigate(to: .gistLists(mode: .userForkedGists(userName: currentAccount.user?.login ?? "ghost")))
+        }, label: {
             HStack {
                 Label {
                     Text("Forked")

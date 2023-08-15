@@ -10,6 +10,13 @@ public protocol GistHubServerClient {
         sortOption: GistsSortOption
     ) async throws -> GistsResponse
 
+    /// Get starred gists from the user name.
+    func forkedGists(
+        fromUserName userName: String,
+        page: Int,
+        sortOption: GistsSortOption
+    ) async throws -> GistsResponse
+
     func discoverGists(page: Int) async throws -> GistsResponse
     func discoverStarredGists(page: Int) async throws -> GistsResponse
     func discoverForkedGists(page: Int) async throws -> GistsResponse
@@ -34,7 +41,22 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
         page: Int,
         sortOption: GistsSortOption
     ) async throws -> GistsResponse {
-        let gists: [Gist] = try await session.data(for: API.starredGists(userName: userName, page: page, sortOption: sortOption))
+        let gists: [Gist] = try await session.data(for: API.starredGists(
+            userName: userName,
+            page: page,
+            sortOption: sortOption))
+        return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
+    }
+
+    public func forkedGists(
+        fromUserName userName: String,
+        page: Int,
+        sortOption: GistsSortOption
+    ) async throws -> GistsResponse {
+        let gists: [Gist] = try await session.data(for: API.forkedGists(
+            userName: userName,
+            page: page,
+            sortOption: sortOption))
         return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 
@@ -71,6 +93,7 @@ public final class DefaultGistHubServerClient: GistHubServerClient {
 extension DefaultGistHubServerClient {
     enum API: Request {
         case starredGists(userName: String, page: Int, sortOption: GistsSortOption)
+        case forkedGists(userName: String, page: Int, sortOption: GistsSortOption)
         case discoverGists(page: Int)
         case discoverStarredGists(page: Int)
         case discoverForkedGists(page: Int)
@@ -80,6 +103,8 @@ extension DefaultGistHubServerClient {
             switch self {
             case let .starredGists(userName, page, gistsSortOption):
                 return "/users/\(userName)/starred?page=\(page)&direction=\(gistsSortOption.sortOption.direction)&sort=\(gistsSortOption.sortOption.field)"
+            case let .forkedGists(userName, page, gistsSortOption):
+                return "/users/\(userName)/forked?page=\(page)&direction=\(gistsSortOption.sortOption.direction)&sort=\(gistsSortOption.sortOption.field)"
             case let .discoverGists(page):
                 return "/discover?page=\(page)"
             case let .discoverStarredGists(page):

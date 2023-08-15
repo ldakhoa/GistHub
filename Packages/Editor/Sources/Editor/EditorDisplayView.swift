@@ -82,7 +82,7 @@ public struct EditorDisplayView: View {
                             }
                         }
                     } label: {
-                        Image(systemName: "ellipsis")
+                        Image(systemName: "ellipsis.circle")
                             .font(.system(size: 18))
                     }
                     .confirmationDialog(
