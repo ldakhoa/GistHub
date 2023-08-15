@@ -127,7 +127,9 @@ public struct UserProfileView: View {
 
     @ViewBuilder
     private var forkButtonRowView: some View {
-        Button(action: {}, label: {
+        Button(action: {
+            routerPath.navigate(to: .gistLists(mode: .userForkedGists(userName: userName)))
+        }, label: {
             HStack(alignment: .center) {
                 Label {
                     Text("Forked")

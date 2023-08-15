@@ -11,6 +11,7 @@ import SwiftUI
 public enum GistListsMode: Hashable {
     case currentUserGists(filter: GistsPrivacyFilter)
     case userStarredGists(userName: String?)
+    case userForkedGists(userName: String?)
     case userGists(userName: String)
     case discover(mode: DiscoverGistsMode)
 
@@ -20,6 +21,8 @@ public enum GistListsMode: Hashable {
             return "Gists"
         case .userStarredGists:
             return "Starred Gists"
+        case .userForkedGists:
+            return "Forked Gists"
         case .userGists:
             return "Gists"
         case .discover:
@@ -33,6 +36,8 @@ public enum GistListsMode: Hashable {
             return "Search Starred Gists"
         case .currentUserGists, .userGists:
             return "Search Gists"
+        case .userForkedGists:
+            return "Search Forked Gists"
         case .discover:
             return ""
         }
@@ -49,7 +54,7 @@ public enum GistListsMode: Hashable {
 
     public var shouldShowSearch: Bool {
         switch self {
-        case .currentUserGists, .userStarredGists, .userGists:
+        case .currentUserGists, .userStarredGists, .userGists, .userForkedGists:
             return true
         case .discover:
             return false
@@ -85,7 +90,7 @@ public enum GistListsMode: Hashable {
 
     public var shouldShowSortOption: Bool {
         switch self {
-        case .currentUserGists, .userGists, .userStarredGists:
+        case .currentUserGists, .userGists, .userStarredGists, .userForkedGists:
             return true
         default:
             return false

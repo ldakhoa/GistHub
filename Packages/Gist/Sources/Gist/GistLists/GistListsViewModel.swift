@@ -27,10 +27,10 @@ public final class GistListsViewModel: ObservableObject {
     private var isSearchingGists: Bool = false
 
     private var currentGistsPage: Int = 1
-    private var currentStarredPage: Int = 1
-    private var currentDiscoverAllGistsPage: Int = 1
-    private var currentDiscoverForkedGistsPage: Int = 1
-    private var currentDiscoverStarredGistsPage: Int = 1
+//    private var currentStarredPage: Int = 1
+//    private var currentDiscoverAllGistsPage: Int = 1
+//    private var currentDiscoverForkedGistsPage: Int = 1
+//    private var currentDiscoverStarredGistsPage: Int = 1
     private var hasMoreGists = false
 
     public init(
@@ -106,10 +106,11 @@ public final class GistListsViewModel: ObservableObject {
         }
         contentState = .loading
         hasMoreGists = false
-        currentStarredPage = 1
-        currentDiscoverAllGistsPage = 1
-        currentDiscoverStarredGistsPage = 1
-        currentDiscoverForkedGistsPage = 1
+//        currentStarredPage = 1
+//        currentDiscoverAllGistsPage = 1
+//        currentDiscoverStarredGistsPage = 1
+//        currentDiscoverForkedGistsPage = 1
+        currentGistsPage = 1
         pagingCursor = nil
         await fetchGists(mode: mode, refresh: true)
     }
@@ -127,14 +128,6 @@ public final class GistListsViewModel: ObservableObject {
                 sortOption: sortOption
             )
             pagingCursor = gistsResponse.cursor
-        case let .userStarredGists(userName):
-            guard let userName else { return [] }
-            gistsResponse = try await serverClient.starredGists(
-                fromUserName: userName,
-                page: currentStarredPage,
-                sortOption: sortOption
-            )
-            currentStarredPage += 1
         case let .userGists(userName):
             gistsResponse = try await gistHubClient.gists(
                 fromUserName: userName,
@@ -143,17 +136,33 @@ public final class GistListsViewModel: ObservableObject {
                 sortOption: sortOption
             )
             pagingCursor = gistsResponse.cursor
+        case let .userStarredGists(userName):
+            guard let userName else { return [] }
+            gistsResponse = try await serverClient.starredGists(
+                fromUserName: userName,
+                page: currentGistsPage,
+                sortOption: sortOption
+            )
+            currentGistsPage += 1
+        case let .userForkedGists(userName):
+            guard let userName else { return [] }
+            gistsResponse = try await serverClient.forkedGists(
+                fromUserName: userName,
+                page: currentGistsPage,
+                sortOption: sortOption
+            )
+            currentGistsPage += 1
         case let .discover(mode):
             switch mode {
             case .all:
-                gistsResponse = try await serverClient.discoverGists(page: currentDiscoverAllGistsPage)
-                currentDiscoverAllGistsPage += 1
+                gistsResponse = try await serverClient.discoverGists(page: currentGistsPage)
+                currentGistsPage += 1
             case .forked:
-                gistsResponse = try await serverClient.discoverForkedGists(page: currentDiscoverForkedGistsPage)
-                currentDiscoverForkedGistsPage += 1
+                gistsResponse = try await serverClient.discoverForkedGists(page: currentGistsPage)
+                currentGistsPage += 1
             case .starred:
-                gistsResponse = try await serverClient.discoverStarredGists(page: currentDiscoverForkedGistsPage)
-                currentDiscoverStarredGistsPage += 1
+                gistsResponse = try await serverClient.discoverStarredGists(page: currentGistsPage)
+                currentGistsPage += 1
             }
         }
         hasMoreGists = gistsResponse.hasNextPage
