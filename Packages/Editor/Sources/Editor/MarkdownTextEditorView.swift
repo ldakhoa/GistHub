@@ -92,7 +92,7 @@ public struct MarkdownTextEditorView: View {
                                     ProgressView()
                                         .tint(Colors.accent.color)
                                 } else {
-                                    Text("Save")
+                                    Text(style.trailingBarTitle)
                                 }
                             }
                             .bold()

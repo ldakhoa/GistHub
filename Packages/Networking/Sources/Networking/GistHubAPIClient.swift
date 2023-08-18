@@ -81,6 +81,9 @@ public protocol GistHubAPIClient {
     ///   - title: The title of the issue.
     ///   - content: The contents of the issue.
     func createIssue(withTitle title: String, content: String?) async throws
+
+    /// Get recent comments from `user name`
+    func recentComments(fromUserName: String) async throws -> [RecentComment]?
 }
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -232,6 +235,14 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
 
     public func createIssue(withTitle title: String, content: String?) async throws {
         try await session.data(for: API.createIssue(title: title, content: content))
+    }
+
+    public func recentComments(fromUserName userName: String) async throws -> [RecentComment]? {
+        let query = RecentCommentsQuery(username: userName, last: GraphQLNullable(integerLiteral: 10))
+        let data = try await graphQLSession.query(query)
+        let nodes = data.user?.gistComments.nodes
+        let recentComments = nodes?.compactMap { $0?.toRecentComment() }
+        return recentComments
     }
 }
 

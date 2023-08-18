@@ -5,6 +5,7 @@ import Environment
 public struct HomeView: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var routerPath: RouterPath
+    @StateObject private var viewModel: HomeViewModel = HomeViewModel()
 
     public init() {}
 
@@ -41,33 +42,51 @@ public struct HomeView: View {
                     .headerProminence(.increased)
             }
 
-            Section {
-                VStack(spacing: 12) {
-                    Text("Add favorite gists here for quick access anytime, without the need to search")
-                        .multilineTextAlignment(.center)
+            // Temporary turn it off
+//            Section {
+//                QuickAccessSectionView()
+//            } header: {
+//                Text("Quick Access")
+//                    .headerProminence(.increased)
+//            }
 
-                    Button(action: {
-                    }, label: {
-                        HStack {
-                            Spacer()
-                            Text("Add Quick Access")
-                                .font(.callout)
-                                .fontWeight(.semibold)
-                            Spacer()
-                        }
-                        .padding(12)
-                        .foregroundColor(Colors.accent.color)
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Colors.buttonBorder.color)
-                        )
-                    })
+            switch viewModel.contentState {
+            case .loading:
+                HStack {
+                    Spacer()
+                    ProgressView()
+                        .tint(Colors.accent.color)
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity)
-            } header: {
-                Text("Quick Access")
-                    .headerProminence(.increased)
+                .listRowBackground(Color.clear)
+            case .error:
+                ErrorView(title: "Cannot Connect", message: "Something went wrong. Please try again.") {
+                    Task {
+                        await viewModel.refresh(from: currentAccount.user?.login)
+                    }
+                }
+            case .content:
+                if !viewModel.recentComments.isEmpty {
+                    Section {
+                        RecentActivitiesSectionView(recentComments: viewModel.recentComments)
+                    } header: {
+                        Text("Recent Activities")
+                            .headerProminence(.increased)
+                    }
+                }
+            }
+        }
+        .onChange(of: currentAccount.isLoadingUser) { isLoading in
+            // Fetch current account user take some second to load
+            Task {
+                if !isLoading {
+                    await viewModel.fetchRecentComments(from: currentAccount.user?.login)
+                }
+            }
+        }
+        .refreshable {
+            Task {
+                await viewModel.fetchRecentComments(from: currentAccount.user?.login)
             }
         }
         .navigationTitle("Home")

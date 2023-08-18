@@ -100,6 +100,7 @@
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6A84D8022A8CF91F00C01F34 /* RecentActivities.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RecentActivities.graphql; sourceTree = "<group>"; };
 		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,6 +155,7 @@
 				6A3372122A7E345F00A7686E /* schema.graphqls */,
 				6A053EFD2A84EE9400DA970E /* Search.graphql */,
 				6A3372132A7E345F00A7686E /* Gist.graphql */,
+				6A84D8022A8CF91F00C01F34 /* RecentActivities.graphql */,
 				6A3372142A7E345F00A7686E /* Star.graphql */,
 				6A3372152A7E345F00A7686E /* generator */,
 			);

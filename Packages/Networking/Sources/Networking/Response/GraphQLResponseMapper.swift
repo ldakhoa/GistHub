@@ -129,3 +129,43 @@ extension UserSearchQuery.Data.Search.Edge.Node {
         return nil
     }
 }
+
+extension RecentCommentsQuery.Data.User.GistComments.Node {
+    func toRecentComment() -> RecentComment {
+        let dateFormatter = ISO8601DateFormatter()
+
+        let gist = Models.Gist(
+            id: self.gist.name,
+            files: filesModel,
+            description: self.gist.description,
+            owner: User(
+                login: self.gist.owner?.login,
+                avatarURL: self.gist.owner?.avatarUrl
+            )
+        )
+        let recentComment = RecentComment(
+            id: self.id,
+            gist: gist,
+            author: User(login: self.author?.login),
+            body: self.body,
+            updatedAt: dateFormatter.date(from: self.updatedAt),
+            createdAt: dateFormatter.date(from: self.createdAt)
+        )
+        return recentComment
+    }
+
+    private var filesModel: OrderedDictionary<String, Models.File> {
+        guard let files = self.gist.files else { return [:] }
+        let filesNodes = files.compactMap { $0 }
+        var result: OrderedDictionary<String, Models.File> = [:]
+        for fileNode in filesNodes {
+            let file = File(filename: fileNode.name)
+            let fileObject = file
+            result[fileObject.filename ?? ""] = fileObject
+        }
+        result.sort { file1, file2 in
+            file1.key < file2.key
+        }
+        return result
+    }
+}
