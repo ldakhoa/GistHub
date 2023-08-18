@@ -58,6 +58,7 @@ public struct HomeView: View {
                         .tint(Colors.accent.color)
                     Spacer()
                 }
+                .listRowBackground(Color.clear)
             case .error:
                 ErrorView(title: "Cannot Connect", message: "Something went wrong. Please try again.") {
                     Task {
@@ -65,11 +66,13 @@ public struct HomeView: View {
                     }
                 }
             case .content:
-                Section {
-                    RecentActivitiesSectionView(recentComments: viewModel.recentComments)
-                } header: {
-                    Text("Recent Activities")
-                        .headerProminence(.increased)
+                if !viewModel.recentComments.isEmpty {
+                    Section {
+                        RecentActivitiesSectionView(recentComments: viewModel.recentComments)
+                    } header: {
+                        Text("Recent Activities")
+                            .headerProminence(.increased)
+                    }
                 }
             }
         }
@@ -79,6 +82,11 @@ public struct HomeView: View {
                 if !isLoading {
                     await viewModel.fetchRecentComments(from: currentAccount.user?.login)
                 }
+            }
+        }
+        .refreshable {
+            Task {
+                await viewModel.fetchRecentComments(from: currentAccount.user?.login)
             }
         }
         .navigationTitle("Home")

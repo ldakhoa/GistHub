@@ -8,7 +8,7 @@ public class RecentCommentsQuery: GraphQLQuery {
   public static let operationName: String = "RecentComments"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RecentComments($username: String!, $last: Int) { user(login: $username) { __typename gistComments(last: $last) { __typename nodes { __typename gist { __typename name description files { __typename name } owner { __typename login avatarUrl } } body updatedAt createdAt author { __typename login } } } } }"#
+      #"query RecentComments($username: String!, $last: Int) { user(login: $username) { __typename gistComments(last: $last) { __typename nodes { __typename id gist { __typename name description files { __typename name } owner { __typename login avatarUrl } } body updatedAt createdAt author { __typename login } } } } }"#
     ))
 
   public var username: String
@@ -81,6 +81,7 @@ public class RecentCommentsQuery: GraphQLQuery {
           public static var __parentType: ApolloAPI.ParentType { GistHubGraphQL.Objects.GistComment }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
+            .field("id", GistHubGraphQL.ID.self),
             .field("gist", Gist.self),
             .field("body", String.self),
             .field("updatedAt", GistHubGraphQL.DateTime.self),
@@ -88,6 +89,7 @@ public class RecentCommentsQuery: GraphQLQuery {
             .field("author", Author?.self),
           ] }
 
+          public var id: GistHubGraphQL.ID { __data["id"] }
           /// The associated gist.
           public var gist: Gist { __data["gist"] }
           /// Identifies the comment body.

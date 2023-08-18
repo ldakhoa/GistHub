@@ -2,6 +2,7 @@ query RecentComments($username: String!, $last: Int) {
   user(login: $username) {
     gistComments(last: $last) {
       nodes {
+        id
         gist {
           name
           description

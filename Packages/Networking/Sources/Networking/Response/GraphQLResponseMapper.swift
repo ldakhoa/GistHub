@@ -144,6 +144,7 @@ extension RecentCommentsQuery.Data.User.GistComments.Node {
             )
         )
         let recentComment = RecentComment(
+            id: self.id,
             gist: gist,
             author: User(login: self.author?.login),
             body: self.body,

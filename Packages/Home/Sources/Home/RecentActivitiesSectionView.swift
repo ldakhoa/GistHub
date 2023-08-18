@@ -3,6 +3,7 @@ import Models
 import DesignSystem
 import OrderedCollections
 import Environment
+import Utilities
 
 struct RecentActivitiesSectionView: View {
     @EnvironmentObject private var routerPath: RouterPath
@@ -32,21 +33,29 @@ struct RecentActivitiesSectionView: View {
                             Text(fileName)
                                 .bold()
                         }
+                        .font(.callout)
                     }
-
-                    Spacer()
-
-                    Text("11d")
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
                 }
 
-                if let description = recentComment.gist.description {
-                    Text(description)
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                }
+//                if let description = recentComment.gist.description {
+//                    Text(description)
+//                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+//                }
 
-                Text("You commented")
+                Text("\"\(recentComment.body)\"")
                     .foregroundColor(Colors.neutralEmphasisPlus.color)
+                    .font(.callout)
+                    .truncationMode(.tail)
+                    .lineLimit(2)
+
+                if let updatedAt = recentComment.updatedAt,
+                   let createdAt = recentComment.createdAt {
+                    let date = updatedAt == createdAt ? createdAt : updatedAt
+                    Text("You commented \(date.agoString(style: .spellOut))")
+                        .foregroundColor(Colors.neutralEmphasis.color)
+                        .font(.subheadline)
+                }
+
             }
             .contentShape(Rectangle())
             .onTapGesture {

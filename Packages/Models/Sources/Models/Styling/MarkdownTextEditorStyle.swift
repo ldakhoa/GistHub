@@ -16,6 +16,15 @@ public enum MarkdownTextEditorStyle: Equatable {
         }
     }
 
+    public var trailingBarTitle: String {
+        switch self {
+        case .createGist:
+            return "Save"
+        case .writeComment, .updateComment:
+            return "Comment"
+        }
+    }
+
     public var placeholder: String {
         switch self {
         case .createGist:

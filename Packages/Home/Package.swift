@@ -16,14 +16,16 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "DesignSystem", path: "../DesignSystem"),
-        .package(name: "Environment", path: "../Environment")
+        .package(name: "Environment", path: "../Environment"),
+        .package(name: "Utilities", path: "../Utilities")
     ],
     targets: [
         .target(
             name: "Home",
             dependencies: [
                 "DesignSystem",
-                "Environment"
+                "Environment",
+                "Utilities"
             ]
         ),
         .testTarget(
