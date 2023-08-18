@@ -42,12 +42,13 @@ public struct HomeView: View {
                     .headerProminence(.increased)
             }
 
-            Section {
-                QuickAccessSectionView()
-            } header: {
-                Text("Quick Access")
-                    .headerProminence(.increased)
-            }
+            // Temporary turn it off
+//            Section {
+//                QuickAccessSectionView()
+//            } header: {
+//                Text("Quick Access")
+//                    .headerProminence(.increased)
+//            }
 
             switch viewModel.contentState {
             case .loading:
@@ -72,10 +73,12 @@ public struct HomeView: View {
                 }
             }
         }
-        .onAppear {
+        .onChange(of: currentAccount.isLoadingUser) { isLoading in
+            // Fetch current account user take some second to load
             Task {
-                await viewModel.fetchRecentComments(from: "ldakhoa")
-//                await viewModel.fetchRecentComments(from: currentAccount.user?.login)
+                if !isLoading {
+                    await viewModel.fetchRecentComments(from: currentAccount.user?.login)
+                }
             }
         }
         .navigationTitle("Home")

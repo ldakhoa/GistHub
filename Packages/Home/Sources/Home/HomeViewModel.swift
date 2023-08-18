@@ -19,9 +19,7 @@ final class HomeViewModel: ObservableObject {
         do {
             if let recentComments = try await client.recentComments(fromUserName: currentUserName) {
                 var recentCommentsSet = OrderedSet(recentComments)
-                print(">> ", recentCommentsSet)
                 recentCommentsSet.reverse()
-                print(">> Final: ", recentCommentsSet)
                 self.recentComments = recentCommentsSet
             }
             contentState = .content
