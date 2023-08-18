@@ -61,7 +61,7 @@ public struct GistListsView: View {
                         }
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            routerPath.navigate(to: .gistDetail(gistId: gist.id))
+                            routerPath.navigateToGistDetail(with: gist.id)
                         }
                         .contextMenu {
                             contextMenu(gist: gist)

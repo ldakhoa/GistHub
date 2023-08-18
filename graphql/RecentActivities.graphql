@@ -1,0 +1,25 @@
+query RecentComments($username: String!, $last: Int) {
+  user(login: $username) {
+    gistComments(last: $last) {
+      nodes {
+        gist {
+          name
+          description
+          files {
+            name
+          }
+          owner {
+            login
+            avatarUrl
+          }
+        }
+        body
+        updatedAt
+        createdAt
+        author {
+          login
+        }
+      }
+    }
+  }
+}
