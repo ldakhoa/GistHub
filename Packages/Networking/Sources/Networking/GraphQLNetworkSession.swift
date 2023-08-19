@@ -12,15 +12,26 @@ import AppAccount
 import os
 
 public final class GraphQLNetworkSession {
-
     private lazy var client: ApolloClient? = {
         guard let url = URL(string: "https://api.github.com/graphql") else {
             return nil
         }
         let cache = InMemoryNormalizedCache()
         let store = ApolloStore(cache: cache)
-        let sessionClient = URLSessionClient()
-        let provider = NetworkInterceptorProvider(client: sessionClient, shouldInvalidateClientOnDeinit: true, store: store)
+
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+
+        // disable URL caching for the gisthub REST API
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        configuration.urlCache = nil
+        let sessionClient = URLSessionClient(sessionConfiguration: configuration)
+
+        let provider = NetworkInterceptorProvider(
+            client: sessionClient,
+            shouldInvalidateClientOnDeinit: true,
+            store: store
+        )
         let requestChainTransport = RequestChainNetworkTransport(
             interceptorProvider: provider,
             endpointURL: url
@@ -38,18 +49,34 @@ public final class GraphQLNetworkSession {
         guard let client else {
             throw ApolloError.invalidEndpointURL
         }
+
+        let lock = NSLock()
         return try await withCheckedThrowingContinuation { continuation in
+            // Sometime Apollo calls completion callback multiple times causing fatal error with
+            // > Thread 1: Fatal error: SWIFT TASK CONTINUATION MISUSE: query(_:) tried to resume its continuation more than once, throwing responseError!
+            // Try setting continuation to nil, but this still have some space for resuming twice or more,
+            // we can probably nil out the variable before resuming the continuing, to reduce the window in which a second invocation of `fetch(query:)` happen.
+            // Howver if `client.fetch(query:)` can be invoked simultaneously from multiple threads,
+            // that still won't avoid race conditions.
+            // So we can use simple lock to add some additional synchorization around the check of the continuation.
+            var nillableContinuation: CheckedContinuation<T.Data, Error>? = continuation
+
             client.fetch(query: query) { result in
+                lock.lock()
+                defer { lock.unlock() }
                 switch result {
                 case let .success(graphQLResult):
                     if let data = graphQLResult.data {
-                        continuation.resume(returning: data)
+                        nillableContinuation?.resume(returning: data)
+                        nillableContinuation = nil
                     }
                     if graphQLResult.errors != nil {
-                        continuation.resume(throwing: ApolloError.responseError)
+                        nillableContinuation?.resume(throwing: ApolloError.responseError)
+                        nillableContinuation = nil
                     }
                 case let .failure(error):
-                    continuation.resume(throwing: error)
+                    nillableContinuation?.resume(throwing: error)
+                    nillableContinuation = nil
                 }
             }
         }
@@ -96,6 +123,7 @@ private final class AuthorizationInterceptor: ApolloInterceptor {
             let appAccountsManager = AppAccountsManager()
             guard let focusedUserSession = appAccountsManager.focusedAccount else { return }
             request.addHeader(name: "Authorization", value: "bearer \(focusedUserSession.token)")
+            print("🚀 Apollo operation: \(request.operation)")
             chain.proceedAsync(
                 request: request,
                 response: response,
