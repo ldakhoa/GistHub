@@ -8,7 +8,7 @@ public class RecentCommentsQuery: GraphQLQuery {
   public static let operationName: String = "RecentComments"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RecentComments($username: String!, $last: Int) { user(login: $username) { __typename gistComments(last: $last) { __typename nodes { __typename id gist { __typename name description files { __typename name } owner { __typename login avatarUrl } } body updatedAt createdAt author { __typename login } } } } }"#
+      #"query RecentComments($username: String!, $last: Int) { user(login: $username) { __typename gistComments(last: $last) { __typename nodes { __typename id gist { __typename name url description files { __typename name } owner { __typename login avatarUrl } } body updatedAt createdAt author { __typename login } } } } }"#
     ))
 
   public var username: String
@@ -112,6 +112,7 @@ public class RecentCommentsQuery: GraphQLQuery {
             public static var __selections: [ApolloAPI.Selection] { [
               .field("__typename", String.self),
               .field("name", String.self),
+              .field("url", GistHubGraphQL.URI.self),
               .field("description", String?.self),
               .field("files", [File?]?.self),
               .field("owner", Owner?.self),
@@ -119,6 +120,8 @@ public class RecentCommentsQuery: GraphQLQuery {
 
             /// The gist name.
             public var name: String { __data["name"] }
+            /// The HTTP URL for this Gist.
+            public var url: GistHubGraphQL.URI { __data["url"] }
             /// The gist description.
             public var description: String? { __data["description"] }
             /// The files in this gist.

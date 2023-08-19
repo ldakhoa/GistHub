@@ -5,6 +5,7 @@ query RecentComments($username: String!, $last: Int) {
         id
         gist {
           name
+          url
           description
           files {
             name

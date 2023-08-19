@@ -239,6 +239,13 @@ public struct GistDetailView: View {
     @ViewBuilder
     private var menuView: some View {
         Menu {
+            // ShareLink in Menu currently works on iOS 16.1
+            if let htmlURL = viewModel.gist.htmlURL,
+               let shareUrl = URL(string: htmlURL) {
+                ShareLinkView(item: shareUrl)
+                Divider()
+            }
+
             if currentAccount.user?.login == viewModel.gist.owner?.login {
                 makeMenuButton(title: "Edit Gist", systemImage: "pencil") {
                     routerPath.presentedSheet = .editGist(viewModel.gist) { newGist in
@@ -255,16 +262,6 @@ public struct GistDetailView: View {
                 Link(destination: url) {
                     Label("Open In Browser", systemImage: "globe")
                 }
-            }
-
-            // ShareLink in Menu currently works on iOS 16.1
-            if #available(iOS 16.1, *) {
-                let titlePreview = "\(viewModel.gist.owner?.login ?? "")/\(viewModel.gist.files?.fileName ?? "")"
-                ShareLinkView(
-                    itemString: viewModel.gist.htmlURL ?? "",
-                    previewTitle: titlePreview,
-                    labelTitle: "Share"
-                )
             }
 
             Divider()
@@ -396,6 +393,25 @@ public struct GistDetailView: View {
             } else {
                 await commentViewModel.fetchComments(gistID: gistId)
             }
+        }
+    }
+}
+
+public extension GistDetailView {
+    @ViewBuilder
+    static func contextMenuPreview(
+        gist: Gist,
+        currentAccount: CurrentAccount,
+        routerPath: RouterPath
+    ) -> some View {
+        // Put in NavigationStack to solve size issues
+        NavigationStack {
+            GistDetailView(gistId: gist.id)
+                .environmentObject(currentAccount)
+                .environmentObject(routerPath)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
+                .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")
         }
     }
 }

@@ -1,25 +1,19 @@
 import SwiftUI
 
 public struct ShareLinkView: View {
-    private let itemString: String
-    private let previewTitle: String
+    private let item: URL
     private let labelTitle: String
 
     public init(
-        itemString: String,
-        previewTitle: String,
+        item: URL,
         labelTitle: String = "Share via..."
     ) {
-        self.itemString = itemString
-        self.previewTitle = previewTitle
+        self.item = item
         self.labelTitle = labelTitle
     }
 
     public var body: some View {
-        ShareLink(
-            item: itemString,
-            preview: SharePreview(previewTitle, image: Image("default"))
-        ) {
+        ShareLink(item: item) {
             Label(labelTitle, systemImage: "square.and.arrow.up")
         }
     }
