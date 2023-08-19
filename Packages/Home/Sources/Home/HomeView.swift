@@ -1,9 +1,11 @@
 import SwiftUI
 import DesignSystem
 import Environment
+import AppAccount
 
 public struct HomeView: View {
     @EnvironmentObject private var currentAccount: CurrentAccount
+    @EnvironmentObject private var appAccountsManager: AppAccountsManager
     @EnvironmentObject private var routerPath: RouterPath
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
 
@@ -76,12 +78,9 @@ public struct HomeView: View {
                 }
             }
         }
-        .onChange(of: currentAccount.isLoadingUser) { isLoading in
-            // Fetch current account user take some second to load
+        .onAppear {
             Task {
-                if !isLoading {
-                    await viewModel.fetchRecentComments(from: currentAccount.user?.login)
-                }
+                await viewModel.fetchRecentComments(from: appAccountsManager.focusedAccount?.username)
             }
         }
         .refreshable {

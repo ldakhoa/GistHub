@@ -6,7 +6,7 @@ import Environment
 
 struct GistDetailCommentSectionView: View {
     @ObservedObject var commentViewModel: CommentViewModel
-    let gistId: String
+    let gist: Gist
     let currentAccount: CurrentAccount
 
     @State private var progressViewId = 0
@@ -20,7 +20,7 @@ struct GistDetailCommentSectionView: View {
             case .error:
                 ErrorView(title: "Cannot Load Comment") {
                     Task {
-                        await commentViewModel.fetchComments(gistID: gistId)
+                        await commentViewModel.fetchComments(gistID: gist.id)
                     }
                 }
             case .showContent:
@@ -33,12 +33,12 @@ struct GistDetailCommentSectionView: View {
                         .padding(.horizontal, 16)
                     LazyVStack(alignment: .leading) {
                         ForEach(comments, id: \.id) { comment in
-                            CommentView(comment: comment, gistID: gistId, viewModel: commentViewModel)
+                            CommentView(comment: comment, gist: gist, viewModel: commentViewModel)
                                 .onAppear {
                                     Task {
                                         await commentViewModel.fetchMoreCommentsIfNeeded(
                                             currentCommentID: comment.nodeID,
-                                            gistID: gistId
+                                            gistID: gist.id
                                         )
                                     }
                                 }

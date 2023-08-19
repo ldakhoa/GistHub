@@ -131,7 +131,7 @@ public struct GistDetailView: View {
                             let listPaddingBottom: CGFloat = floatingButtonSize.height + 16 + 8
                             GistDetailCommentSectionView(
                                 commentViewModel: commentViewModel,
-                                gistId: gistId,
+                                gist: gist,
                                 currentAccount: currentAccount
                             )
                             .padding(.bottom, listPaddingBottom)
