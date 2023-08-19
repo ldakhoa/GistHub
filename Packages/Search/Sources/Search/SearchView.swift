@@ -57,6 +57,21 @@ public struct SearchView: View {
                     }
                 }
                 .foregroundColor(Colors.buttonForeground.color)
+
+                if let url = URL(string: "https://docs.github.com/en/search-github/searching-on-github/searching-gists") {
+                    Section {
+                        Link(destination: url) {
+                            HStack(alignment: .center, spacing: 4) {
+                                Image(systemName: "info.circle")
+                                Text("See how to search gists efficiently...")
+                            }
+                        }
+                        .font(.callout)
+                        .foregroundColor(Colors.accent.color)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    }
+                }
             }
         }
         .background(Colors.scrollViewBackground.color)
@@ -73,7 +88,7 @@ public struct SearchView: View {
         .autocapitalization(.none)
         .navigationTitle("Search")
         .onSubmit(of: .search) {
-            print("Should handle search all")
+            routerPath.navigate(to: .searchGists(query: viewModel.query))
         }
     }
 
