@@ -14,7 +14,7 @@ import Environment
 
 public struct CommentView: View {
     private let comment: Comment
-    private let gistID: String
+    private let gist: Gist
     @ObservedObject private var viewModel: CommentViewModel
     @EnvironmentObject private var currentAccount: CurrentAccount
     @EnvironmentObject private var routerPath: RouterPath
@@ -25,11 +25,11 @@ public struct CommentView: View {
 
     public init(
         comment: Comment,
-        gistID: String,
+        gist: Gist,
         viewModel: CommentViewModel
     ) {
         self.comment = comment
-        self.gistID = gistID
+        self.gist = gist
         self.viewModel = viewModel
     }
 
@@ -121,7 +121,7 @@ public struct CommentView: View {
                         Task {
                             guard let commentId = comment.id else { return }
                             await viewModel.updateComment(
-                                gistID: gistID,
+                                gistID: gist.id,
                                 commentID: commentId,
                                 body: content
                             )
@@ -136,11 +136,17 @@ public struct CommentView: View {
                 ) { content in
                     Task {
                         await viewModel.createComment(
-                            gistID: gistID,
+                            gistID: gist.id,
                             body: content
                         )
                     }
                 }
+            }
+
+            if let gistUrlString = gist.url,
+               let commentId = comment.id,
+               let shareCommentUrl = URL(string: "\(gistUrlString)?permalink_comment_id=\(commentId)#gistcomment-\(commentId)") {
+                ShareLinkView(item: shareCommentUrl, labelTitle: "Share")
             }
         }
         .confirmationDialog(
@@ -150,7 +156,7 @@ public struct CommentView: View {
         ) {
             Button("Delete", role: .destructive) {
                 Task {
-                    await viewModel.deleteComments(gistID: gistID, commentID: comment.id ?? 0)
+                    await viewModel.deleteComments(gistID: gist.id, commentID: comment.id ?? 0)
                 }
             }
         }

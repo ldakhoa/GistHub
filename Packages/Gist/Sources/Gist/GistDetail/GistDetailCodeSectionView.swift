@@ -69,8 +69,9 @@ struct GistDetailCodeSectionView: View {
             navigateToEditorDisplay(with: file)
         }
         .contextMenu {
-            let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-            ShareLinkView(itemString: gist.htmlURL ?? "", previewTitle: titlePreview)
+            if let url = gist.url, let shareUrl = URL(string: "\(url)#\(fileName)") {
+                ShareLinkView(item: shareUrl)
+            }
         } preview: {
             contextMenuPreview(content: content, fileName: fileName, language: language)
         }

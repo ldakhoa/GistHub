@@ -15,17 +15,21 @@ let package = Package(
         )
     ],
     dependencies: [
+        .package(name: "AppAccount", path: "../AppAccount"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "Environment", path: "../Environment"),
-        .package(name: "Utilities", path: "../Utilities")
+        .package(name: "Utilities", path: "../Utilities"),
+        .package(name: "Gist", path: "../Gist")
     ],
     targets: [
         .target(
             name: "Home",
             dependencies: [
+                "AppAccount",
                 "DesignSystem",
                 "Environment",
-                "Utilities"
+                "Utilities",
+                "Gist"
             ]
         ),
         .testTarget(

@@ -66,7 +66,11 @@ public struct GistListsView: View {
                         .contextMenu {
                             contextMenu(gist: gist)
                         } preview: {
-                            contextMenuPreview(gist: gist)
+                            GistDetailView.contextMenuPreview(
+                                gist: gist,
+                                currentAccount: currentAccount,
+                                routerPath: routerPath
+                            )
                         }
                     }
 
@@ -230,25 +234,8 @@ public struct GistListsView: View {
 
     @ViewBuilder
     private func contextMenu(gist: Gist) -> some View {
-        let titlePreview = "\(gist.owner?.login ?? "")/\(gist.files?.fileName ?? "")"
-        ShareLink(
-            item: gist.htmlURL ?? "",
-            preview: SharePreview(titlePreview, image: Image(systemName: "home"))
-        ) {
-            Label("Share via...", systemImage: "square.and.arrow.up")
-        }
-    }
-
-    @ViewBuilder
-    private func contextMenuPreview(gist: Gist) -> some View {
-        // Put in NavigationStack to solve size issues
-        NavigationStack {
-            GistDetailView(gistId: gist.id)
-                .environmentObject(currentAccount)
-                .environmentObject(routerPath)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbarBackground(UIColor.secondarySystemGroupedBackground.color, for: .navigationBar)
-                .navigationTitle("\(gist.owner?.login ?? "") / \(gist.files?.fileName ?? "")")
+        if let url = gist.url, let shareUrl = URL(string: url) {
+            ShareLinkView(item: shareUrl)
         }
     }
 

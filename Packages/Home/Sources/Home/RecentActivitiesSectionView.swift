@@ -4,9 +4,12 @@ import DesignSystem
 import OrderedCollections
 import Environment
 import Utilities
+import Gist
 
 struct RecentActivitiesSectionView: View {
     @EnvironmentObject private var routerPath: RouterPath
+    @EnvironmentObject private var currentAccount: CurrentAccount
+
     let recentComments: OrderedSet<RecentComment>
 
     var body: some View {
@@ -60,6 +63,17 @@ struct RecentActivitiesSectionView: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 routerPath.navigateToGistDetail(with: recentComment.gist.id)
+            }
+            .contextMenu {
+                if let url = recentComment.gist.url, let shareUrl = URL(string: url) {
+                    ShareLinkView(item: shareUrl)
+                }
+            } preview: {
+                GistDetailView.contextMenuPreview(
+                    gist: recentComment.gist,
+                    currentAccount: currentAccount,
+                    routerPath: routerPath
+                )
             }
         }
     }

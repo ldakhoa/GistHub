@@ -136,6 +136,7 @@ extension RecentCommentsQuery.Data.User.GistComments.Node {
 
         let gist = Models.Gist(
             id: self.gist.name,
+            url: self.gist.url,
             files: filesModel,
             description: self.gist.description,
             owner: User(

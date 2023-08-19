@@ -52,9 +52,7 @@ public struct UserProfileView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if currentAccount.user?.login == viewModel.user.login {
-                    authenticatedToolbar
-                }
+                trailingToolbar
             }
 
             if scrollOffset.y >= -11 {
@@ -98,22 +96,34 @@ public struct UserProfileView: View {
     }
 
     @ViewBuilder
-    private var authenticatedToolbar: some View {
-        HStack(spacing: 0) {
-            Button {
-                routerPath.navigate(to: .settings)
-            } label: {
-                Image(systemName: "gear")
-                    .foregroundColor(Colors.accent.color)
+    private var trailingToolbar: some View {
+        HStack(spacing: 2) {
+            if currentAccount.user?.login == viewModel.user.login {
+                Button {
+                    routerPath.navigate(to: .settings)
+                } label: {
+                    Image(systemName: "gear")
+                        .foregroundColor(Colors.accent.color)
+                        .font(.system(size: 18))
+                }
             }
 
-            let titlePreview = "\(currentAccount.user?.login ?? "") - Overview"
-            ShareLink(
-                item: currentAccount.user?.htmlURL ?? "",
-                preview: SharePreview(titlePreview, image: Image("default"))
-            ) {
+            Menu {
+                if let htmlUrl = viewModel.user.htmlURL,
+                    let url = URL(string: htmlUrl) {
+                    ShareLink(item: url) {
+                        Text("Share GitHub Profile")
+                    }
+                }
+                if let url = URL(string: "https://gist.github.com/\(userName)") {
+                    ShareLink(item: url) {
+                        Text("Share Gist Profile")
+                    }
+                }
+            } label: {
                 Image(systemName: "square.and.arrow.up")
                     .foregroundColor(Colors.accent.color)
+                    .font(.system(size: 18))
             }
         }
     }

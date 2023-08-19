@@ -45,7 +45,7 @@ import TreeSitterYAMLRunestone
 
 public struct File: Codable, Identifiable, Hashable, Equatable {
     public var id: String {
-        rawURL ?? ""
+        rawURL ?? UUID().uuidString
     }
 
     public let filename: String?
