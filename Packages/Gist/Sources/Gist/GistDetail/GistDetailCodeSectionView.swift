@@ -69,7 +69,7 @@ struct GistDetailCodeSectionView: View {
             navigateToEditorDisplay(with: file)
         }
         .contextMenu {
-            if let url = gist.url, let shareUrl = URL(string: url) {
+            if let url = gist.url, let shareUrl = URL(string: "\(url)#\(fileName)") {
                 ShareLinkView(item: shareUrl)
             }
         } preview: {
