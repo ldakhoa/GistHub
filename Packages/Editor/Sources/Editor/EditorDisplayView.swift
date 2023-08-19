@@ -54,6 +54,11 @@ public struct EditorDisplayView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
+                        if let url = gist.url, let shareUrl = URL(string: "\(url)#\(fileName)") {
+                            ShareLinkView(item: shareUrl)
+                            Divider()
+                        }
+
                         if gist.owner?.login == currentAccount.user?.login {
                             Button {
                                 routerPath.presentedSheet = .editorView(
