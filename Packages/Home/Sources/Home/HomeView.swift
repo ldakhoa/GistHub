@@ -32,13 +32,14 @@ public struct HomeView: View {
 
                 forkButtonRowView
 
-                buttonRowView(
-                    title: "Draft",
-                    image: "doc.text",
-                    imageBackground: Colors.Palette.Orange.orange3.dynamicColor.color
-                ) {
-                    routerPath.navigate(to: .draftGistLists)
-                }
+                // Temporary turn it off
+//                buttonRowView(
+//                    title: "Draft",
+//                    image: "doc.text",
+//                    imageBackground: Colors.Palette.Orange.orange3.dynamicColor.color
+//                ) {
+//                    routerPath.navigate(to: .draftGistLists)
+//                }
             } header: {
                 Text("My Gist")
                     .headerProminence(.increased)

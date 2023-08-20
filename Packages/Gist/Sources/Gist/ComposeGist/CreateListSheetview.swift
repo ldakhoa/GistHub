@@ -35,14 +35,14 @@ struct CreateAGistListSheetview: View {
                 VStack(spacing: 12) {
                     makeCreateButton(withAction: .public)
                     makeCreateButton(withAction: .secret)
-                    makeCreateButton(withAction: .draft)
+//                    makeCreateButton(withAction: .draft)
                 }
                 Spacer()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .presentationDetents([.height(380), .height(400)])
+        .presentationDetents([.height(260), .height(400)])
     }
 
     @ViewBuilder
