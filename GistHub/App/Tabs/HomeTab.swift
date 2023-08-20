@@ -47,32 +47,37 @@ struct HomeTab: View {
     // Only show at Home Tab when login
     @State
     private var whatsNew: WhatsNew? = WhatsNew(
-        version: "1.1.0",
+        version: "1.2.0",
         title: "What's New in GistHub",
         features: [
             .init(
-                image: .init(systemName: "person.crop.circle.badge.questionmark"),
-                title: "Profile View",
-                subtitle: "Get to know fellow Gist users with detailed profiles, all gists and starred gists."
+                image: .init(systemName: "house.circle"),
+                title: "New UI",
+                subtitle: "Enjoy a fresh look with Recent Activities and easier gist selection."
             ),
             .init(
                 image: .init(systemName: "magnifyingglass.circle"),
-                title: "Discover Gists",
-                subtitle: "Explore curated and trending gists to expand your knowledge."
+                title: "Global Search",
+                subtitle: "Find global gists and user profiles effortlessly with our enhanced search feature."
             ),
             .init(
-                image: .init(systemName: "star"),
-                title: "Stargazer",
-                subtitle: "See the popularity of gists which displays the number of users who have starred each gist."
+                image: .init(systemName: "fork.knife.circle"),
+                  title: "View Forked Gists",
+                  subtitle: "View Forked Gists: Explore forked gists from any user in our open-source community."
             ),
             .init(
-                image: .init(systemName: "note.text"),
-                title: "New editor theme",
-                subtitle: "Enhance your coding and viewing experience with a fresh and modern visual style."
+                image: .init(systemName: "square.and.arrow.up.circle"),
+                title: "Share Things",
+                subtitle: "Share gists, files, comments, and profiles easily with our improved sharing options."
+            ),
+            .init(
+                image: .init(systemName: "point.3.connected.trianglepath.dotted"),
+                title: "Explore Followers and Following User's Gists",
+                subtitle: "Discover and view gist profiles of your followers and the users you follow."
             )
         ],
         primaryAction: WhatsNew.PrimaryAction(
-            title: "Continue",
+            title: "Explore now",
             backgroundColor: Colors.accent.color,
             foregroundColor: .white
         ),
