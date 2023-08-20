@@ -61,6 +61,8 @@ public struct UserListView<ViewModel: UserListViewModeling>: View {
                         await viewModel.refresh()
                     }
                 }
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
         }
         .padding(.top, -28)
