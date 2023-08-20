@@ -310,6 +310,10 @@ extension MarkdownViewController: MarkdownStyledTextViewDelegate {
             }
 
             UIApplication.shared.open(url)
+        case .username(let login):
+            if let url = URL(string: "gisthub://gist.github.com/\(login)") {
+                UIApplication.shared.open(url)
+            }
         case .email(let email):
             if let url = URL(string: "mailto:\(email)") {
                 UIApplication.shared.open(url)

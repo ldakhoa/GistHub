@@ -91,14 +91,17 @@ private extension TextElement {
             builder.add(attributes: attributes)
             children.build(builder, options: options, context: CMarkContext(inLink: true), userInterfaceStyle: userInterfaceStyle)
 
-//        case .mention(let login):
+        case .mention(let login):
+            builder.add(
+                text: "@\(login)",
+                traits: .traitBold,
+                attributes: [MarkdownAttribute.username: login]
+            )
         case .checkbox(let checked, let originalRange):
             builder.addCheckbox(
                 checked: checked,
                 range: originalRange,
                 viewerCanUpdate: options.viewerCanUpdate)
-        default:
-            break
         }
         return builder
     }

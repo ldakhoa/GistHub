@@ -10,12 +10,15 @@ import Foundation
 enum MarkdownAttributeHandling {
     case url(URL)
     case email(String)
+    case username(String)
     case checkbox(MarkdownCheckboxModel)
 
     static func make(attributes: [NSAttributedString.Key: Any]?) -> MarkdownAttributeHandling? {
         guard let attributes = attributes else { return nil }
         if let urlString = attributes[MarkdownAttribute.url] as? String, let url = URL(string: urlString) {
             return .url(url)
+        } else if let usernameString = attributes[MarkdownAttribute.username] as? String {
+            return .username(usernameString)
         } else if let emailString = attributes[MarkdownAttribute.email] as? String {
             return .email(emailString)
         } else if let checkbox = attributes[MarkdownAttribute.checkbox] as? MarkdownCheckboxModel {
