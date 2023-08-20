@@ -44,6 +44,10 @@ public struct UserListView<ViewModel: UserListViewModeling>: View {
                 }
             }
         }
+        .padding(.top, -28)
+        .listStyle(.grouped)
+        .toolbar(.visible, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .onAppear {
             Task {
                 await viewModel.fetchUsers(refresh: false)

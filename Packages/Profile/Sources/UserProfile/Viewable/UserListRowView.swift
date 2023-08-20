@@ -26,7 +26,7 @@ public struct UserListRowView: View {
                         .font(.callout)
                         .foregroundColor(Colors.neutralEmphasisPlus.color)
 
-                    if let bio = user.bio, !bio.isEmpty {
+                    if let bio = user.bio?.trimmingCharacters(in: .whitespacesAndNewlines), !bio.isEmpty {
                         Text(bio)
                             .font(.callout)
                             .foregroundColor(UIColor.label.color)

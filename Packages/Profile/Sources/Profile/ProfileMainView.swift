@@ -1,8 +1,11 @@
 import SwiftUI
 import Models
 import DesignSystem
+import Environment
 
 struct ProfileMainView: View {
+    @EnvironmentObject private var routerPath: RouterPath
+
     private let user: User
 
     init(user: User) {
@@ -61,7 +64,7 @@ struct ProfileMainView: View {
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    print(123)
+                    routerPath.navigate(to: .userFollows(login: user.login ?? "ghost", type: .follower))
                 }
 
                 Text(" · ")
@@ -76,7 +79,7 @@ struct ProfileMainView: View {
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    print(123)
+                    routerPath.navigate(to: .userFollows(login: user.login ?? "ghost", type: .following))
                 }
             }
 

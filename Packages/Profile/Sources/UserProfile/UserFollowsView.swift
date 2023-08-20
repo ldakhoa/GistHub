@@ -14,6 +14,8 @@ public struct UserFollowsView: View {
     public var body: some View {
         let viewModel = UserFollowViewModel(login: login, type: type)
         UserListView(viewModel: viewModel)
+            .navigationTitle(type.title)
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 
