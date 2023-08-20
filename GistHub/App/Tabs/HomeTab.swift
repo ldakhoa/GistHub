@@ -43,7 +43,7 @@ struct HomeTab: View {
             versionStore: UserDefaultsWhatsNewVersionStore()
         )
     }
-
+    
     // Only show at Home Tab when login
     @State
     private var whatsNew: WhatsNew? = WhatsNew(
@@ -62,8 +62,8 @@ struct HomeTab: View {
             ),
             .init(
                 image: .init(systemName: "fork.knife.circle"),
-                  title: "View Forked Gists",
-                  subtitle: "View Forked Gists: Explore forked gists from any user in our open-source community."
+                title: "View Forked Gists",
+                subtitle: "View Forked Gists: Explore forked gists from any user in our open-source community."
             ),
             .init(
                 image: .init(systemName: "square.and.arrow.up.circle"),
