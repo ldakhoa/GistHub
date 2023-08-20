@@ -43,7 +43,7 @@ struct HomeTab: View {
             versionStore: UserDefaultsWhatsNewVersionStore()
         )
     }
-    
+
     // Only show at Home Tab when login
     @State
     private var whatsNew: WhatsNew? = WhatsNew(
@@ -84,7 +84,7 @@ struct HomeTab: View {
         secondaryAction: WhatsNew.SecondaryAction(
             title: "Learn more",
             foregroundColor: Colors.accent.color,
-            action: .openURL(URL(string: "https://github.com/ldakhoa/GistHub/releases/tag/1.1.0"))
+            action: .openURL(URL(string: "https://github.com/ldakhoa/GistHub/releases/tag/1.2.0"))
         )
     )
 }
