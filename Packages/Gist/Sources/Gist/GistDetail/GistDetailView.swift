@@ -152,7 +152,6 @@ public struct GistDetailView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             fetchMetaData()
@@ -161,9 +160,6 @@ public struct GistDetailView: View {
             fetchMetaData()
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                leadingToolbarItem
-            }
             if scrollOffset.y >= 15 {
                 ToolbarItem(placement: .principal) {
                     VStack(alignment: .center) {
@@ -314,17 +310,6 @@ public struct GistDetailView: View {
                 .padding(.bottom, 16)
             }
         }
-    }
-
-    @ViewBuilder
-    private var leadingToolbarItem: some View {
-        Button(action: {
-            presentationMode.wrappedValue.dismiss()
-        }, label: {
-            Image(systemName: "chevron.backward")
-                .font(.system(size: 18))
-                .foregroundColor(Colors.accent.color)
-        })
     }
 
     @ViewBuilder
