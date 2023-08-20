@@ -5,6 +5,40 @@ import Models
 import Networking
 import UserProfile
 
+final class SearchUsersViewModel: UserListViewModeling {
+    @Published var contentState: UserProfile.UserListContentState = .loading
+    @Published var isLoadingMoreUsers: Bool = false
+    @Published var users: [Models.User] = []
+
+    private let client: GistHubAPIClient
+    private let query: String
+
+    public init(
+        query: String,
+        client: GistHubAPIClient = DefaultGistHubAPIClient()
+    ) {
+        self.query = query
+        self.client = client
+    }
+
+    func fetchUsers(refresh: Bool = false) async {
+        contentState = .loading
+        do {
+            let userSearchResponse = try await client.searchUsers(from: query, cursor: nil)
+            self.users = userSearchResponse.users
+            contentState = .content
+        } catch {
+            contentState = .error
+        }
+    }
+
+    func refresh() async {
+        await fetchUsers()
+    }
+
+    func fetchMoreUsersIfNeeded(currentUserLogin: String?) async {}
+}
+
 public struct SearchUsersView: View {
     @EnvironmentObject private var routerPath: RouterPath
     private let client: GistHubAPIClient

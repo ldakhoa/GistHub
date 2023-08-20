@@ -7,6 +7,8 @@ public struct UserListView<ViewModel: UserListViewModeling>: View {
     @StateObject private var viewModel: ViewModel
     @EnvironmentObject private var routerPath: RouterPath
 
+    @State private var progressViewId: Int = 0
+
     public init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -28,6 +30,23 @@ public struct UserListView<ViewModel: UserListViewModeling>: View {
                             UserListRowView(user: user) {
                                 routerPath.navigateToUserProfileView(with: user.login ?? "ghost")
                             }
+                            .onAppear {
+                                Task {
+                                    await viewModel.fetchMoreUsersIfNeeded(currentUserLogin: user.login)
+                                }
+                            }
+                        }
+                        if viewModel.isLoadingMoreUsers {
+                            HStack(alignment: .center) {
+                                Spacer()
+                                ProgressView()
+                                    .id(progressViewId)
+                                    .onAppear {
+                                        progressViewId += 1
+                                    }
+                                Spacer()
+                            }
+                            .listRowSeparator(.hidden)
                         }
                     } header: {
                         Spacer(minLength: 0)

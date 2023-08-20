@@ -76,7 +76,7 @@ public final class UserFollowViewModel: UserListViewModeling {
     }
 
     @MainActor
-    public func fetchMoreUsersIfNeeded(currentUserLogin: String) async {
+    public func fetchMoreUsersIfNeeded(currentUserLogin: String?) async {
         guard
             hasMoreUsers,
             !isLoadingMoreUsers,

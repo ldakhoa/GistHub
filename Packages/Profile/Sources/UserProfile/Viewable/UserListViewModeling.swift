@@ -14,6 +14,6 @@ public protocol UserListViewModeling: ObservableObject, AnyObject {
     var users: [User] { get }
 
     func fetchUsers(refresh: Bool) async
-    func fetchMoreUsersIfNeeded(currentUserLogin: String) async
+    func fetchMoreUsersIfNeeded(currentUserLogin: String?) async
     func refresh() async
 }
