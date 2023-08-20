@@ -19,7 +19,8 @@ let package = Package(
         .package(name: "Environment", path: "../Environment"),
         .package(name: "Models", path: "../Models"),
         .package(name: "Networking", path: "../Networking"),
-        .package(name: "Gist", path: "../Gist")
+        .package(name: "Gist", path: "../Gist"),
+        .package(name: "Profile", path: "../Profile")
     ],
     targets: [
         .target(
@@ -29,7 +30,8 @@ let package = Package(
                 "Environment",
                 "Models",
                 "Networking",
-                "Gist"
+                "Gist",
+                .product(name: "UserProfile", package: "Profile")
             ]
         ),
         .testTarget(

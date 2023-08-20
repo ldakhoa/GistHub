@@ -52,14 +52,32 @@ struct ProfileMainView: View {
                     .foregroundColor(Colors.neutralEmphasisPlus.color)
 
                 let followerText = user.followers ?? 0 > 1 ? "followers" : "follower"
-                Text("\(user.followers ?? 0) ") +
-                Text(followerText).foregroundColor(Colors.neutralEmphasisPlus.color)
+                Group {
+                    Text("\(user.followers ?? 0) ")
+                        .bold()
+                    +
+                    Text(followerText)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    print(123)
+                }
 
                 Text(" · ")
 
                 let followingText = user.followers ?? 0 > 1 ? "followings" : "following"
-                Text("\(user.following ?? 0) ") +
-                Text(followingText).foregroundColor(Colors.neutralEmphasisPlus.color)
+                Group {
+                    Text("\(user.following ?? 0) ")
+                        .bold()
+                    +
+                    Text(followingText)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    print(123)
+                }
             }
 
             if let htmlURL = user.htmlURL,

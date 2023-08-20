@@ -8,7 +8,7 @@ public class UserSearchQuery: GraphQLQuery {
   public static let operationName: String = "UserSearchQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query UserSearchQuery($username: String!, $after: String) { search(query: $username, type: USER, first: 20, after: $after) { __typename edges { __typename node { __typename ... on User { login name avatarUrl } } } pageInfo { __typename hasNextPage endCursor } } }"#
+      #"query UserSearchQuery($username: String!, $after: String) { search(query: $username, type: USER, first: 20, after: $after) { __typename edges { __typename node { __typename ... on User { login name bio avatarUrl } } } pageInfo { __typename hasNextPage endCursor } } }"#
     ))
 
   public var username: String
@@ -106,6 +106,7 @@ public class UserSearchQuery: GraphQLQuery {
             public static var __selections: [ApolloAPI.Selection] { [
               .field("login", String.self),
               .field("name", String?.self),
+              .field("bio", String?.self),
               .field("avatarUrl", GistHubGraphQL.URI.self),
             ] }
 
@@ -113,6 +114,8 @@ public class UserSearchQuery: GraphQLQuery {
             public var login: String { __data["login"] }
             /// The user's public profile name.
             public var name: String? { __data["name"] }
+            /// The user's public profile bio.
+            public var bio: String? { __data["bio"] }
             /// A URL pointing to the user's public avatar.
             public var avatarUrl: GistHubGraphQL.URI { __data["avatarUrl"] }
           }

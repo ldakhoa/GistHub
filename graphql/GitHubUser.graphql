@@ -4,6 +4,10 @@ query Followers($login: String!, $first: Int, $after: String) {
       nodes {
         ...UserDetail
       }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
 }
@@ -13,6 +17,10 @@ query Followings($login: String!, $first: Int, $after: String) {
     following(first: $first, after: $after) {
       nodes {
         ...UserDetail
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

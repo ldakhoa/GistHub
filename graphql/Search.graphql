@@ -5,6 +5,7 @@ query UserSearchQuery($username: String!, $after: String) {
         ... on User {
           login
           name
+          bio
           avatarUrl
         }
       }

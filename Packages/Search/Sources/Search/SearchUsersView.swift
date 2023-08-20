@@ -3,6 +3,7 @@ import DesignSystem
 import Environment
 import Models
 import Networking
+import UserProfile
 
 public struct SearchUsersView: View {
     @EnvironmentObject private var routerPath: RouterPath
@@ -40,7 +41,7 @@ public struct SearchUsersView: View {
                     List {
                         Section {
                             ForEach(users, id: \.login) { user in
-                                SearchUserListRow(user: user) {
+                                UserListRowView(user: user) {
                                     routerPath.navigateToUserProfileView(with: user.login ?? "ghost")
                                 }
                             }
@@ -80,41 +81,5 @@ extension SearchUsersView {
         case loading
         case content(users: [User])
         case error
-    }
-}
-
-struct SearchUserListRow: View {
-    let user: User
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(alignment: .center) {
-                if let avatarUrlString = user.avatarURL, let url = URL(string: avatarUrlString) {
-                    GistHubImage(url: url, width: 48, height: 48, cornerRadius: 24)
-                }
-                VStack(alignment: .leading) {
-                    Text(user.name ?? "")
-                        .foregroundColor(UIColor.label.color)
-                    Text(user.login ?? "ghost")
-                        .font(.callout)
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                }
-                Spacer()
-                RightChevronRowImage()
-            }
-        }
-    }
-}
-
-struct SearchUsersView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                SearchUsersView(query: "ldakhoa")
-            }
-
-            SearchUserListRow(user: .stubbed) {}
-        }
     }
 }

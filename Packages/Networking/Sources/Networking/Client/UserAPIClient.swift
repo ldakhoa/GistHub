@@ -11,6 +11,18 @@ public protocol UserAPIClient {
 
     /// Get the user info from user name.
     func user(fromUserName userName: String) async throws -> User
+
+    func followers(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> UsersResponse
+
+    func followings(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> UsersResponse
 }
 
 public final class DefaultUserAPIClient: UserAPIClient {
@@ -37,6 +49,46 @@ public final class DefaultUserAPIClient: UserAPIClient {
 
     public func user(fromUserName userName: String) async throws -> User {
         try await session.data(for: API.userFromUserName(userName: userName))
+    }
+
+    public func followers(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> UsersResponse {
+        let query = FollowersQuery(
+            login: userName,
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: cursor.mapSome { $0 }
+        )
+        let data = try await graphQLSession.query(query)
+        guard let followers = data.user?.followers else { throw ApolloError.responseError }
+        let response: UsersResponse = UsersResponse(
+            users: (followers.nodes ?? []).compactMap { $0?.toUser },
+            cursor: followers.pageInfo.endCursor ?? "",
+            hasNextPage: followers.pageInfo.hasNextPage
+        )
+        return response
+    }
+
+    public func followings(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> UsersResponse {
+        let query = FollowingsQuery(
+            login: userName,
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: cursor.mapSome { $0 }
+        )
+        let data = try await graphQLSession.query(query)
+        guard let following = data.user?.following else { throw ApolloError.responseError }
+        let response: UsersResponse = UsersResponse(
+            users: (following.nodes ?? []).compactMap { $0?.toUser },
+            cursor: following.pageInfo.endCursor ?? "",
+            hasNextPage: following.pageInfo.hasNextPage
+        )
+        return response
     }
 }
 

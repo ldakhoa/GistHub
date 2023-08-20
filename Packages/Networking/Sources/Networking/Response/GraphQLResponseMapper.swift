@@ -99,7 +99,7 @@ private extension OrderedDictionary<String, File> {
 
 extension GistList.Gists.Edge.Node {
     var gistDetails: GistDetails {
-        return Self.Fragments(_dataDict: __data).gistDetails
+        Self.Fragments(_dataDict: __data).gistDetails
     }
 }
 
@@ -113,9 +113,37 @@ public extension GistQuery.Data {
 
 extension GistQuery.Data.Viewer.Gist {
     var gistDetails: GistDetails {
-        return Self.Fragments(_dataDict: __data).gistDetails
+        Self.Fragments(_dataDict: __data).gistDetails
     }
 }
+
+// MARK: User Queries...
+
+extension FollowersQuery.Data.User.Followers.Node {
+    var toUser: User {
+        User(
+            login: self.login,
+            avatarURL: self.avatarUrl,
+            url: self.url,
+            name: self.name,
+            bio: self.bio
+        )
+    }
+}
+
+extension FollowingsQuery.Data.User.Following.Node {
+    var toUser: User {
+        User(
+            login: self.login,
+            avatarURL: self.avatarUrl,
+            url: self.url,
+            name: self.name,
+            bio: self.bio
+        )
+    }
+}
+
+// MARK: UserSearchQuery
 
 extension UserSearchQuery.Data.Search.Edge.Node {
     var toUser: User? {
@@ -123,12 +151,15 @@ extension UserSearchQuery.Data.Search.Edge.Node {
             let login = user.login
             let name = user.name
             let avatarUrl = user.avatarUrl
+            let bio = user.bio
 
-            return User(login: login, avatarURL: avatarUrl, name: name)
+            return User(login: login, avatarURL: avatarUrl, name: name, bio: bio)
         }
         return nil
     }
 }
+
+// MARK: RecentCommentsQuery
 
 extension RecentCommentsQuery.Data.User.GistComments.Node {
     func toRecentComment() -> RecentComment {

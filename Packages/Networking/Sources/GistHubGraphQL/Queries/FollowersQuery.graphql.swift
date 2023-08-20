@@ -8,7 +8,7 @@ public class FollowersQuery: GraphQLQuery {
   public static let operationName: String = "Followers"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query Followers($login: String!, $first: Int, $after: String) { user(login: $login) { __typename followers(first: $first, after: $after) { __typename nodes { __typename ...UserDetail } } } }"#,
+      #"query Followers($login: String!, $first: Int, $after: String) { user(login: $login) { __typename followers(first: $first, after: $after) { __typename nodes { __typename ...UserDetail } pageInfo { __typename hasNextPage endCursor } } } }"#,
       fragments: [UserDetail.self]
     ))
 
@@ -74,10 +74,13 @@ public class FollowersQuery: GraphQLQuery {
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
           .field("nodes", [Node?]?.self),
+          .field("pageInfo", PageInfo.self),
         ] }
 
         /// A list of nodes.
         public var nodes: [Node?]? { __data["nodes"] }
+        /// Information to aid in pagination.
+        public var pageInfo: PageInfo { __data["pageInfo"] }
 
         /// User.Followers.Node
         ///
@@ -109,6 +112,26 @@ public class FollowersQuery: GraphQLQuery {
 
             public var userDetail: UserDetail { _toFragment() }
           }
+        }
+
+        /// User.Followers.PageInfo
+        ///
+        /// Parent Type: `PageInfo`
+        public struct PageInfo: GistHubGraphQL.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { GistHubGraphQL.Objects.PageInfo }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("hasNextPage", Bool.self),
+            .field("endCursor", String?.self),
+          ] }
+
+          /// When paginating forwards, are there more items?
+          public var hasNextPage: Bool { __data["hasNextPage"] }
+          /// When paginating forwards, the cursor to continue.
+          public var endCursor: String? { __data["endCursor"] }
         }
       }
     }
