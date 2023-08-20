@@ -1,8 +1,11 @@
 import SwiftUI
 import Models
 import DesignSystem
+import Environment
 
 struct ProfileMainView: View {
+    @EnvironmentObject private var routerPath: RouterPath
+
     private let user: User
 
     init(user: User) {
@@ -52,14 +55,32 @@ struct ProfileMainView: View {
                     .foregroundColor(Colors.neutralEmphasisPlus.color)
 
                 let followerText = user.followers ?? 0 > 1 ? "followers" : "follower"
-                Text("\(user.followers ?? 0) ") +
-                Text(followerText).foregroundColor(Colors.neutralEmphasisPlus.color)
+                Group {
+                    Text("\(user.followers ?? 0) ")
+                        .bold()
+                    +
+                    Text(followerText)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    routerPath.navigate(to: .userFollows(login: user.login ?? "ghost", type: .follower))
+                }
 
                 Text(" · ")
 
                 let followingText = user.followers ?? 0 > 1 ? "followings" : "following"
-                Text("\(user.following ?? 0) ") +
-                Text(followingText).foregroundColor(Colors.neutralEmphasisPlus.color)
+                Group {
+                    Text("\(user.following ?? 0) ")
+                        .bold()
+                    +
+                    Text(followingText)
+                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    routerPath.navigate(to: .userFollows(login: user.login ?? "ghost", type: .following))
+                }
             }
 
             if let htmlURL = user.htmlURL,

@@ -25,14 +25,8 @@ public protocol GistHubAPIClient {
     /// List the authenticated user's starred gist.
     func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
 
-    /// Get authenticated user info.
-    func user() async throws -> User
-
     /// Search users from query.
     func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse
-
-    /// Get the user from user name.
-    func user(fromUserName userName: String) async throws -> User
 
     /// Star a gist.
     /// - Parameter gistID: ID of the gist to be starred
@@ -87,8 +81,12 @@ public protocol GistHubAPIClient {
 }
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
+    // MARK: - Dependencies
+
     private let session: NetworkSession
     private let graphQLSession: GraphQLNetworkSession
+
+    // MARK: - Initializer
 
     public init(
         session: NetworkSession = .github,
@@ -98,20 +96,16 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         self.graphQLSession = graphQLSession
     }
 
+    // MARK: - GistHubAPIClient
+
     public func create(description: String?, files: [String: File], public: Bool) async throws -> Gist {
         try await session.data(for: API.create(description: description, files: files, public: `public`))
     }
 
     public func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter, sortOption: GistsSortOption) async throws -> GistsResponse {
-        let inputCursor: GraphQLNullable<String>
-        if let cursor {
-            inputCursor = GraphQLNullable(stringLiteral: cursor)
-        } else {
-            inputCursor = GraphQLNullable.none
-        }
         let query = GistsQuery(
             first: GraphQLNullable(integerLiteral: pageSize),
-            after: inputCursor,
+            after: cursor.mapSome { $0 },
             privacy: GraphQLNullable(privacy.graphQLPrivacy),
             orderBy: GraphQLNullable(sortOption.graphQLOrder)
         )
@@ -119,18 +113,17 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(data: data.viewer.gists)
     }
 
-    public func gists(fromUserName userName: String, pageSize: Int, cursor: String?, sortOption: GistsSortOption) async throws -> GistsResponse {
-        let inputCursor: GraphQLNullable<String>
-        if let cursor {
-            inputCursor = GraphQLNullable(stringLiteral: cursor)
-        } else {
-            inputCursor = GraphQLNullable.none
-        }
+    public func gists(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?,
+        sortOption: GistsSortOption
+    ) async throws -> GistsResponse {
         let query = GistsFromUserQuery(
             userName: userName,
             privacy: GraphQLNullable(GistPrivacy.all),
             first: GraphQLNullable(integerLiteral: pageSize),
-            after: inputCursor,
+            after: cursor.mapSome { $0 },
             orderBy: GraphQLNullable(sortOption.graphQLOrder)
         )
         let data = try await graphQLSession.query(query)
@@ -145,10 +138,6 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return GistsResponse(gists: gists, hasNextPage: !gists.isEmpty)
     }
 
-    public func user() async throws -> User {
-        try await session.data(for: API.user)
-    }
-
     public func starGist(gistID: String) async throws -> Bool {
         let mutation = AddStarMutation(input: AddStarInput(starrableId: gistID))
         let data = try await graphQLSession.mutate(mutation)
@@ -158,19 +147,11 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return starred
     }
 
-    public func user(fromUserName userName: String) async throws -> User {
-        try await session.data(for: API.userFromUserName(userName: userName))
-    }
-
     public func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse {
-        let inputCursor: GraphQLNullable<String>
-        if let cursor {
-            inputCursor = GraphQLNullable(stringLiteral: cursor)
-        } else {
-            inputCursor = GraphQLNullable.none
-        }
-
-        let query = UserSearchQuery(username: query, after: inputCursor)
+        let query = UserSearchQuery(
+            username: query,
+            after: cursor.mapSome { $0 }
+        )
         let data = try await graphQLSession.query(query)
         let userSearchResponse = UserSearchResponse(data: data)
         return userSearchResponse
@@ -260,8 +241,6 @@ extension DefaultGistHubAPIClient {
             page: Int,
             perPage: Int
         )
-        case user
-        case userFromUserName(userName: String)
         case searchUsersFromQuery(query: String)
         case starGist(gistID: String)
         case unstarGist(gistID: String)
@@ -293,10 +272,6 @@ extension DefaultGistHubAPIClient {
                 return "/users/\(userName)/gists"
             case let .starredGists(page, perPage):
                 return "/gists/starred?page=\(page)&per_page=\(perPage)"
-            case .user:
-                return "/user"
-            case let .userFromUserName(userName):
-                return "/users/\(userName)"
             case let .searchUsersFromQuery(query):
                 return "/search/users?q=\(query)"
             case let .starGist(gistID),
@@ -316,7 +291,7 @@ extension DefaultGistHubAPIClient {
             switch self {
             case .create, .createIssue:
                 return .post
-            case .gists, .starredGists, .user, .isStarred, .gist, .gistsFromUserName, .userFromUserName, .searchUsersFromQuery:
+            case .gists, .starredGists, .isStarred, .gist, .gistsFromUserName, .searchUsersFromQuery:
                 return .get
             case .starGist:
                 return .put

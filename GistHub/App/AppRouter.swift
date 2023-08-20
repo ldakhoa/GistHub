@@ -10,6 +10,7 @@ import Environment
 import Gist
 import Editor
 import Profile
+import UserProfile
 import Settings
 import AppAccount
 import Search
@@ -39,6 +40,8 @@ extension View {
                 SearchUsersView(query: query)
             case let .searchGists(query):
                 SearchGistListsView(query: query)
+            case let .userFollows(login, type):
+                UserFollowsView(login: login, type: type)
             }
         }
     }

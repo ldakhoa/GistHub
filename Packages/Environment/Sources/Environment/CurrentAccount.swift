@@ -9,9 +9,9 @@ public class CurrentAccount: ObservableObject {
     @Published public private(set) var user: User?
     @Published public private(set) var isLoadingUser: Bool = false
 
-    private let client: GistHubAPIClient
+    private let client: UserAPIClient
 
-    public init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+    public init(client: UserAPIClient = DefaultUserAPIClient()) {
         self.client = client
     }
 

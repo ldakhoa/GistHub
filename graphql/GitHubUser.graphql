@@ -1,0 +1,35 @@
+query Followers($login: String!, $first: Int, $after: String) {
+  user(login: $login) {
+    followers(first: $first, after: $after) {
+      nodes {
+        ...UserDetail
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
+
+query Followings($login: String!, $first: Int, $after: String) {
+  user(login: $login) {
+    following(first: $first, after: $after) {
+      nodes {
+        ...UserDetail
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
+
+fragment UserDetail on User {
+  url
+  login
+  avatarUrl
+  name
+  bio
+}

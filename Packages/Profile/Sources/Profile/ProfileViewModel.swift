@@ -13,9 +13,9 @@ import Models
     @Published var contentState: ContentState = .loading
     @Published private(set) var user: User = .stubbed
 
-    private let client: GistHubAPIClient
+    private let client: UserAPIClient
 
-    init(client: GistHubAPIClient = DefaultGistHubAPIClient()) {
+    init(client: UserAPIClient = DefaultUserAPIClient()) {
         self.client = client
     }
 

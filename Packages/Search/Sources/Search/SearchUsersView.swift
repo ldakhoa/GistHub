@@ -3,6 +3,41 @@ import DesignSystem
 import Environment
 import Models
 import Networking
+import UserProfile
+
+final class SearchUsersViewModel: UserListViewModeling {
+    @Published var contentState: UserProfile.UserListContentState = .loading
+    @Published var isLoadingMoreUsers: Bool = false
+    @Published var users: [Models.User] = []
+
+    private let client: GistHubAPIClient
+    private let query: String
+
+    public init(
+        query: String,
+        client: GistHubAPIClient = DefaultGistHubAPIClient()
+    ) {
+        self.query = query
+        self.client = client
+    }
+
+    func fetchUsers(refresh: Bool = false) async {
+        contentState = .loading
+        do {
+            let userSearchResponse = try await client.searchUsers(from: query, cursor: nil)
+            self.users = userSearchResponse.users
+            contentState = .content
+        } catch {
+            contentState = .error
+        }
+    }
+
+    func refresh() async {
+        await fetchUsers()
+    }
+
+    func fetchMoreUsersIfNeeded(currentUserLogin: String?) async {}
+}
 
 public struct SearchUsersView: View {
     @EnvironmentObject private var routerPath: RouterPath
@@ -40,7 +75,7 @@ public struct SearchUsersView: View {
                     List {
                         Section {
                             ForEach(users, id: \.login) { user in
-                                SearchUserListRow(user: user) {
+                                UserListRowView(user: user) {
                                     routerPath.navigateToUserProfileView(with: user.login ?? "ghost")
                                 }
                             }
@@ -80,41 +115,5 @@ extension SearchUsersView {
         case loading
         case content(users: [User])
         case error
-    }
-}
-
-struct SearchUserListRow: View {
-    let user: User
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(alignment: .center) {
-                if let avatarUrlString = user.avatarURL, let url = URL(string: avatarUrlString) {
-                    GistHubImage(url: url, width: 48, height: 48, cornerRadius: 24)
-                }
-                VStack(alignment: .leading) {
-                    Text(user.name ?? "")
-                        .foregroundColor(UIColor.label.color)
-                    Text(user.login ?? "ghost")
-                        .font(.callout)
-                        .foregroundColor(Colors.neutralEmphasisPlus.color)
-                }
-                Spacer()
-                RightChevronRowImage()
-            }
-        }
-    }
-}
-
-struct SearchUsersView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                SearchUsersView(query: "ldakhoa")
-            }
-
-            SearchUserListRow(user: .stubbed) {}
-        }
     }
 }

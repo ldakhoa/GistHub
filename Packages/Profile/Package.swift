@@ -14,6 +14,10 @@ let package = Package(
             targets: ["Profile"]
         ),
         .library(
+            name: "UserProfile",
+            targets: ["UserProfile"]
+        ),
+        .library(
             name: "Settings",
             targets: ["Settings"]
         )
@@ -29,6 +33,15 @@ let package = Package(
     targets: [
         .target(
             name: "Profile",
+            dependencies: [
+                "Networking",
+                "Models",
+                "Settings",
+                "DesignSystem"
+            ]
+        ),
+        .target(
+            name: "UserProfile",
             dependencies: [
                 "Networking",
                 "Models",
