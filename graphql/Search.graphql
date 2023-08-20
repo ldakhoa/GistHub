@@ -1,5 +1,5 @@
-query UserSearchQuery($username: String!, $after: String) {
-  search(query: $username, type: USER, first: 20, after: $after) {
+query UserSearchQuery($username: String!, $first: Int, $after: String) {
+  search(query: $username, type: USER, first: $first, after: $after) {
     edges {
       node {
         ... on User {

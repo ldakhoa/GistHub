@@ -8,22 +8,26 @@ public class UserSearchQuery: GraphQLQuery {
   public static let operationName: String = "UserSearchQuery"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query UserSearchQuery($username: String!, $after: String) { search(query: $username, type: USER, first: 20, after: $after) { __typename edges { __typename node { __typename ... on User { login name bio avatarUrl } } } pageInfo { __typename hasNextPage endCursor } } }"#
+      #"query UserSearchQuery($username: String!, $first: Int, $after: String) { search(query: $username, type: USER, first: $first, after: $after) { __typename edges { __typename node { __typename ... on User { login name bio avatarUrl } } } pageInfo { __typename hasNextPage endCursor } } }"#
     ))
 
   public var username: String
+  public var first: GraphQLNullable<Int>
   public var after: GraphQLNullable<String>
 
   public init(
     username: String,
+    first: GraphQLNullable<Int>,
     after: GraphQLNullable<String>
   ) {
     self.username = username
+    self.first = first
     self.after = after
   }
 
   public var __variables: Variables? { [
     "username": username,
+    "first": first,
     "after": after
   ] }
 
@@ -36,7 +40,7 @@ public class UserSearchQuery: GraphQLQuery {
       .field("search", Search.self, arguments: [
         "query": .variable("username"),
         "type": "USER",
-        "first": 20,
+        "first": .variable("first"),
         "after": .variable("after")
       ]),
     ] }

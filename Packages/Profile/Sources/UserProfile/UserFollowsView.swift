@@ -3,16 +3,15 @@ import Networking
 import Models
 
 public struct UserFollowsView: View {
-    private let login: String
+    @StateObject private var viewModel: UserFollowViewModel
     private let type: UserFollowType
 
     public init(login: String, type: UserFollowType) {
-        self.login = login
+        _viewModel = StateObject(wrappedValue: UserFollowViewModel(login: login, type: type))
         self.type = type
     }
 
     public var body: some View {
-        let viewModel = UserFollowViewModel(login: login, type: type)
         UserListView(viewModel: viewModel)
             .navigationTitle(type.title)
             .navigationBarTitleDisplayMode(.inline)

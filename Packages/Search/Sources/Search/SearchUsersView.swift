@@ -5,6 +5,21 @@ import Models
 import Networking
 import UserProfile
 
+public struct SearchUsersView: View {
+    @EnvironmentObject private var routerPath: RouterPath
+    @StateObject private var viewModel: SearchUsersViewModel
+
+    public init(query: String) {
+        _viewModel = StateObject(wrappedValue: SearchUsersViewModel(query: query))
+    }
+
+    public var body: some View {
+        UserListView(viewModel: viewModel)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Users")
+    }
+}
+
 final class SearchUsersViewModel: UserListViewModeling {
     @Published var contentState: UserProfile.UserListContentState = .loading
     @Published var isLoadingMoreUsers: Bool = false
@@ -12,6 +27,8 @@ final class SearchUsersViewModel: UserListViewModeling {
 
     private let client: GistHubAPIClient
     private let query: String
+    private var pagingCursor: String?
+    private var hasMoreUsers: Bool = false
 
     public init(
         query: String,
@@ -21,99 +38,49 @@ final class SearchUsersViewModel: UserListViewModeling {
         self.client = client
     }
 
+    @MainActor
     func fetchUsers(refresh: Bool = false) async {
-        contentState = .loading
         do {
-            let userSearchResponse = try await client.searchUsers(from: query, cursor: nil)
-            self.users = userSearchResponse.users
+            isLoadingMoreUsers = true
+            let usersResponse = try await client.searchUsers(
+                from: query,
+                pageSize: 20,
+                cursor: pagingCursor
+            )
+            pagingCursor = usersResponse.cursor
+            hasMoreUsers = usersResponse.hasNextPage
+
+            if refresh {
+                users = usersResponse.users
+            } else {
+                users.append(contentsOf: usersResponse.users)
+            }
+
+            isLoadingMoreUsers = false
             contentState = .content
         } catch {
             contentState = .error
         }
     }
 
+    @MainActor
     func refresh() async {
-        await fetchUsers()
-    }
-
-    func fetchMoreUsersIfNeeded(currentUserLogin: String?) async {}
-}
-
-public struct SearchUsersView: View {
-    @EnvironmentObject private var routerPath: RouterPath
-    private let client: GistHubAPIClient
-    private let query: String
-    @State private var contentState: ContentState = .loading
-
-    public init(
-        query: String,
-        client: GistHubAPIClient = DefaultGistHubAPIClient()
-    ) {
-        self.query = query
-        self.client = client
-    }
-
-    public var body: some View {
-        ZStack {
-            Colors.scrollViewBackground.color
-            switch contentState {
-            case .loading:
-                ProgressView()
-            case .error:
-                ErrorView(
-                    title: "Cannot Connect",
-                    message: "Something went wrong. Please try again."
-                ) {
-                    Task {
-                        await searchUsers()
-                    }
-                }
-            case let .content(users):
-                if users.isEmpty {
-                    EmptyStatefulView(title: "There aren't any users.")
-                } else {
-                    List {
-                        Section {
-                            ForEach(users, id: \.login) { user in
-                                UserListRowView(user: user) {
-                                    routerPath.navigateToUserProfileView(with: user.login ?? "ghost")
-                                }
-                            }
-                        } header: {
-                            Spacer(minLength: 0)
-                        }
-                    }
-                    .padding(.top, -28)
-                }
-            }
-        }
-        .onAppear {
-            Task {
-                await searchUsers()
-            }
-        }
-        .listStyle(.grouped)
-        .navigationTitle("Users")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.visible, for: .navigationBar)
-        .toolbarBackground(.visible, for: .navigationBar)
-    }
-
-    private func searchUsers() async {
         contentState = .loading
-        do {
-            let userSearchResponse = try await client.searchUsers(from: query, cursor: nil)
-            contentState = .content(users: userSearchResponse.users)
-        } catch {
-            contentState = .error
-        }
+        hasMoreUsers = false
+        pagingCursor = nil
+        await fetchUsers(refresh: true)
     }
-}
 
-extension SearchUsersView {
-    enum ContentState {
-        case loading
-        case content(users: [User])
-        case error
+    @MainActor
+    func fetchMoreUsersIfNeeded(currentUserLogin: String?) async {
+        guard
+            hasMoreUsers,
+            !isLoadingMoreUsers,
+            let login = users.last?.login,
+            login == currentUserLogin
+        else {
+            return
+        }
+        await fetchUsers()
     }
 }

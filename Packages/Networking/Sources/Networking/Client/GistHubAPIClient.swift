@@ -26,7 +26,11 @@ public protocol GistHubAPIClient {
     func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
 
     /// Search users from query.
-    func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse
+    func searchUsers(
+        from query: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> UserSearchResponse
 
     /// Star a gist.
     /// - Parameter gistID: ID of the gist to be starred
@@ -147,9 +151,13 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         return starred
     }
 
-    public func searchUsers(from query: String, cursor: String?) async throws -> UserSearchResponse {
+    public func searchUsers(
+        from query: String,
+        pageSize: Int,
+        cursor: String?) async throws -> UserSearchResponse {
         let query = UserSearchQuery(
             username: query,
+            first: GraphQLNullable(integerLiteral: pageSize),
             after: cursor.mapSome { $0 }
         )
         let data = try await graphQLSession.query(query)
