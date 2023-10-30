@@ -64,8 +64,6 @@ sh Scripts/resolve_packages.sh
 
 # GraphQL
 
-To generate the new API
-
 ## Using Xcode
 
 Open the GistHub/GistHub.xcodeproj file. Then select `gpl_api_generator` scheme with macOS target `My Mac`.
