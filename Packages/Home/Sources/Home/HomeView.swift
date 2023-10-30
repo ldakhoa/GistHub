@@ -79,10 +79,8 @@ public struct HomeView: View {
                 }
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchRecentComments(from: appAccountsManager.focusedAccount?.username)
-            }
+        .task {
+            await viewModel.fetchRecentComments(from: appAccountsManager.focusedAccount?.username)
         }
         .refreshable {
             Task {
