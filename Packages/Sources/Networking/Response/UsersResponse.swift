@@ -17,15 +17,4 @@ public struct UsersResponse {
         self.cursor = cursor
         self.hasNextPage = hasNextPage
     }
-
-//    init(data: T) {
-//        let pageInfo = data.pageInfo
-//        cursor = pageInfo.endCursor ?? ""
-//        hasNextPage = pageInfo.hasNextPage
-//
-//        let gistsEdges = data.edges ?? []
-//        users = gistsEdges.compactMap { edge in
-//            edge?.node?.gistDetails.toGist()
-//        }
-//    }
 }

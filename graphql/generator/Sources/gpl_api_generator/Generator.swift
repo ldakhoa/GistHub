@@ -38,7 +38,6 @@ struct GraphQLGenerator: ParsableCommand {
 
         let outputPath = sourceRootURL
             .childFolderURL(folderName: "Packages")
-            .childFolderURL(folderName: "Networking")
             .childFolderURL(folderName: "Sources")
             .childFolderURL(folderName: "GistHubGraphQL")
 
@@ -50,10 +49,16 @@ struct GraphQLGenerator: ParsableCommand {
             testMocks: .none
         )
 
+        let options: ApolloCodegenConfiguration.OutputOptions = ApolloCodegenConfiguration.OutputOptions(
+            schemaDocumentation: .include,
+            pruneGeneratedFiles: true
+        )
+
         let configuration = ApolloCodegenConfiguration(
             schemaNamespace: "GistHubGraphQL",
             input: input,
-            output: output
+            output: output,
+            options: options
         )
 
         do {

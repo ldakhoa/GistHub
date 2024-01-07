@@ -7,7 +7,4 @@
    <FileRef
       location = "group:App/GistHub.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:graphql">
-   </FileRef>
 </Workspace>
