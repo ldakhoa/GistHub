@@ -253,6 +253,6 @@ extension Product {
     /// - Parameter name: The name of the library product.
     /// - Returns: A Product instance.
     static func singleTargetLibrary(_ name: String) -> Product {
-        .library(name: name, targets: [name])
+        .library(name: name, type: .static, targets: [name])
     }
 }
