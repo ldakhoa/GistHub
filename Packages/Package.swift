@@ -39,6 +39,7 @@ let package = Package(
         .package(url: "https://github.com/alexaubry/HTMLString", from: "6.0.0"),
         .package(url: "https://github.com/duytph/Networkable", from: "2.0.0"),
         .package(url: "https://github.com/apollographql/apollo-ios.git", from: "1.3.2"),
+        .package(url: "https://github.com/krzysztofzablocki/Inject.git", from: "1.3.0")
     ],
     targets: [
         .target(
@@ -91,7 +92,8 @@ let package = Package(
                 "Utilities",
                 "Comment",
                 "Editor",
-                .product(name: "Collections", package: "swift-collections")
+                .product(name: "Collections", package: "swift-collections"),
+                "Inject"
             ]
         ),
         .target(

@@ -1,20 +1,15 @@
-//
-//  GistDetailView.swift
-//  GistHub
-//
-//  Created by Khoa Le on 10/12/2022.
-//
-
 import SwiftUI
 import DesignSystem
 import Models
 import Editor
 import Comment
 import Environment
+import Inject
 
 public struct GistDetailView: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @EnvironmentObject private var routerPath: RouterPath
+    @ObserveInjection private var inject
 
     @StateObject private var viewModel = GistDetailViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
@@ -195,6 +190,7 @@ public struct GistDetailView: View {
             presentationMode.wrappedValue.dismiss()
         }
         .toastError(isPresenting: $commentViewModel.showErrorToast, error: commentViewModel.errorToastTitle)
+        .enableInjection()
     }
 
     @ViewBuilder
