@@ -4,6 +4,7 @@ import Models
 
 public enum RouterDestination: Hashable {
     case gistDetail(gistId: String)
+    case stargazersFromGistDetail(gistID: String)
     case editorDisplay(
         content: String,
         fileName: String,
@@ -73,6 +74,10 @@ public class RouterPath: ObservableObject {
 
     public func navigateToGistDetail(with gistId: String) {
         navigate(to: .gistDetail(gistId: gistId))
+    }
+
+    public func navigateToUserList() {
+        
     }
 
     // Possible URL

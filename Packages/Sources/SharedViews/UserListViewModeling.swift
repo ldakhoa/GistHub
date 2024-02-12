@@ -1,5 +1,4 @@
 import Foundation
-import Networking
 import Models
 
 public enum UserListContentState {

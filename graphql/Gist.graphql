@@ -18,6 +18,27 @@ query GistsFromUser($userName: String!, $privacy: GistPrivacy, $first: Int, $aft
   }
 }
 
+query stargazersFromGistDetail($gistID: String!, $first: Int, $after: String) {
+  viewer {
+    gist(name: $gistID) {
+      id
+      description
+      stargazers(first: $first, after: $after) {
+        nodes {
+          avatarUrl
+          bio
+          name
+          login
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+
 fragment GistList on User {
     gists(privacy: $privacy, first: $first, after: $after, orderBy: $orderBy) {
      edges {

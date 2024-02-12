@@ -79,10 +79,22 @@ public struct GistDetailView: View {
                                                 .resizable()
                                                 .renderingMode(.template)
                                                 .frame(width: 16, height: 16)
-                                            Text("\(stargazerCount) \(stargazerCountText)")
-                                                .font(.subheadline)
+
+                                            Group {
+                                                Text("\(stargazerCount)")
+                                                    .bold()
+
+                                                Text("\(stargazerCountText)")
+                                                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                            }
+                                            .font(.subheadline)
                                         }
-                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            if stargazerCount > 0 {
+                                                routerPath.navigate(to: .stargazersFromGistDetail(gistID: gistId))
+                                            }
+                                        }
 
                                         HStack(spacing: 4) {
                                             let forkCountText = fork.totalCount > 1 ? "forks" : "fork"
@@ -90,10 +102,15 @@ public struct GistDetailView: View {
                                                 .resizable()
                                                 .renderingMode(.template)
                                                 .frame(width: 16, height: 16)
-                                            Text("\(fork.totalCount) \(forkCountText)")
-                                                .font(.subheadline)
+                                            Group {
+                                                Text("\(fork.totalCount)")
+                                                    .bold()
+
+                                                Text("\(forkCountText)")
+                                                    .foregroundColor(Colors.neutralEmphasisPlus.color)
+                                            }
+                                            .font(.subheadline)
                                         }
-                                        .foregroundColor(Colors.neutralEmphasisPlus.color)
                                     }
                                 }
 

@@ -269,6 +269,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "GistFile": return GistHubGraphQL.Objects.GistFile
     case "GistCommentConnection": return GistHubGraphQL.Objects.GistCommentConnection
     case "PageInfo": return GistHubGraphQL.Objects.PageInfo
+    case "StargazerConnection": return GistHubGraphQL.Objects.StargazerConnection
     case "FollowerConnection": return GistHubGraphQL.Objects.FollowerConnection
     case "FollowingConnection": return GistHubGraphQL.Objects.FollowingConnection
     case "Mutation": return GistHubGraphQL.Objects.Mutation

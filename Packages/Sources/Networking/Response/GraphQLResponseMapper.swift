@@ -159,6 +159,15 @@ extension UserSearchQuery.Data.Search.Edge.Node {
     }
 }
 
+extension StargazersFromGistDetailQuery.Data.Viewer.Gist.Stargazers.Node {
+    var toUser: User? {
+        if let name, let bio {
+            return User(login: login, avatarURL: avatarUrl, name: name, bio: bio)
+        }
+        return nil
+    }
+}
+
 // MARK: RecentCommentsQuery
 
 extension RecentCommentsQuery.Data.User.GistComments.Node {

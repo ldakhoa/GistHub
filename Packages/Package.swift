@@ -92,6 +92,7 @@ let package = Package(
                 "Utilities",
                 "Comment",
                 "Editor",
+                "SharedViews",
                 .product(name: "Collections", package: "swift-collections"),
                 "Inject"
             ]
@@ -212,7 +213,8 @@ let package = Package(
                 "Networking",
                 "Models",
                 "Settings",
-                "DesignSystem"
+                "DesignSystem",
+                "SharedViews"
             ]
         ),
 
@@ -236,7 +238,17 @@ let package = Package(
                 "Models",
                 "Networking",
                 "Gist",
-                "Profile"
+                "Profile",
+                "SharedViews"
+            ]
+        ),
+
+        .target(
+            name: "SharedViews",
+            dependencies: [
+                "DesignSystem",
+                "Models",
+                "Environment"
             ]
         ),
 
