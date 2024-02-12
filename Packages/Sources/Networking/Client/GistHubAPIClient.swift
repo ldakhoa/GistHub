@@ -96,7 +96,7 @@ public protocol GistHubAPIClient {
 
     /// Get recent comments from `user name`
     func recentComments(fromUserName: String) async throws -> [RecentComment]?
-    
+
     /// A list of users who have starred this starrable.
     /// - Parameters:
     ///   - gistID: The gist ID.

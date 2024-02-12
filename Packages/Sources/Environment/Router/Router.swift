@@ -76,10 +76,6 @@ public class RouterPath: ObservableObject {
         navigate(to: .gistDetail(gistId: gistId))
     }
 
-    public func navigateToUserList() {
-        
-    }
-
     // Possible URL
     // https://gist.github.com/<username>/<gistid>
     // https://gist.github.com/<username>/<gistid>#file-<file-name>

@@ -258,7 +258,7 @@ let package = Package(
                 "DesignSystem",
                 "AlertToast"
             ]
-        ),
+        )
     ]
 )
 
