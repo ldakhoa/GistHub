@@ -4,6 +4,7 @@ import Environment
 import Models
 import Networking
 import Profile
+import SharedViews
 
 public struct SearchUsersView: View {
     @EnvironmentObject private var routerPath: RouterPath
@@ -21,7 +22,7 @@ public struct SearchUsersView: View {
 }
 
 final class SearchUsersViewModel: UserListViewModeling {
-    @Published var contentState: Profile.UserListContentState = .loading
+    @Published var contentState: SharedViews.UserListContentState = .loading
     @Published var isLoadingMoreUsers: Bool = false
     @Published var users: [Models.User] = []
 

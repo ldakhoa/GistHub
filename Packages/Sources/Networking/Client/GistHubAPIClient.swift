@@ -14,13 +14,27 @@ import Apollo
 
 public protocol GistHubAPIClient {
     /// Allows you to add a new gist with one or more files.
-    func create(description: String?, files: [String: File], public: Bool) async throws -> Gist
+    func create(
+        description: String?,
+        files: [String: File],
+        public: Bool
+    ) async throws -> Gist
 
     /// List gists for the authenticated user.
-    func gists(pageSize: Int, cursor: String?, privacy: GistsPrivacyFilter, sortOption: GistsSortOption) async throws -> GistsResponse
+    func gists(
+        pageSize: Int,
+        cursor: String?,
+        privacy: GistsPrivacyFilter,
+        sortOption: GistsSortOption
+    ) async throws -> GistsResponse
 
     /// List gists for from the user name.
-    func gists(fromUserName userName: String, pageSize: Int, cursor: String?, sortOption: GistsSortOption) async throws -> GistsResponse
+    func gists(
+        fromUserName userName: String,
+        pageSize: Int,
+        cursor: String?,
+        sortOption: GistsSortOption
+    ) async throws -> GistsResponse
 
     /// List the authenticated user's starred gist.
     func starredGists(page: Int, perPage: Int) async throws -> GistsResponse
@@ -82,6 +96,18 @@ public protocol GistHubAPIClient {
 
     /// Get recent comments from `user name`
     func recentComments(fromUserName: String) async throws -> [RecentComment]?
+
+    /// A list of users who have starred this starrable.
+    /// - Parameters:
+    ///   - gistID: The gist ID.
+    ///   - pageSize: The size of response.
+    ///   - cursor: The cursor from page info.
+    /// - Returns: The stargazer response contains list of users.
+    func stargazersFromGistDetail(
+        gistID: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> StargazersResponse
 }
 
 public final class DefaultGistHubAPIClient: GistHubAPIClient {
@@ -232,6 +258,20 @@ public final class DefaultGistHubAPIClient: GistHubAPIClient {
         let nodes = data.user?.gistComments.nodes
         let recentComments = nodes?.compactMap { $0?.toRecentComment() }
         return recentComments
+    }
+
+    public func stargazersFromGistDetail(
+        gistID: String,
+        pageSize: Int,
+        cursor: String?
+    ) async throws -> StargazersResponse {
+        let query = StargazersFromGistDetailQuery(
+            gistID: gistID,
+            first: GraphQLNullable(integerLiteral: pageSize),
+            after: cursor.mapSome { $0 }
+        )
+        let data = try await graphQLSession.query(query)
+        return StargazersResponse(data: data)
     }
 }
 

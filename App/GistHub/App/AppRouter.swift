@@ -22,8 +22,15 @@ extension View {
             switch destination {
             case let .gistDetail(gistId):
                 GistDetailView(gistId: gistId)
+            case let .stargazersFromGistDetail(gistId):
+                StargazersView(gistID: gistId)
             case let .editorDisplay(content, fileName, gist, language):
-                EditorDisplayView(content: content, fileName: fileName, gist: gist, language: language)
+                EditorDisplayView(
+                    content: content,
+                    fileName: fileName,
+                    gist: gist,
+                    language: language
+                )
             case .settings:
                 SettingView()
             case .settingsAccount:

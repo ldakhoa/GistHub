@@ -4,6 +4,7 @@ import Models
 
 public enum RouterDestination: Hashable {
     case gistDetail(gistId: String)
+    case stargazersFromGistDetail(gistID: String)
     case editorDisplay(
         content: String,
         fileName: String,

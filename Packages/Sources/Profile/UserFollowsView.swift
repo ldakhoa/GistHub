@@ -1,6 +1,7 @@
 import SwiftUI
 import Networking
 import Models
+import SharedViews
 
 public struct UserFollowsView: View {
     @StateObject private var viewModel: UserFollowViewModel
