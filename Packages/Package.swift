@@ -30,7 +30,7 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.8.1"),
         .package(url: "https://github.com/evgenyneu/keychain-swift", branch: "master"),
         .package(url: "https://github.com/apple/swift-collections.git", .upToNextMajor(from: "1.0.4")),
-        .package(url: "https://github.com/simonbs/Runestone", .upToNextMajor(from: "0.3.2")),
+        .package(url: "https://github.com/simonbs/Runestone", .upToNextMajor(from: "0.5.1")),
         .package(url: "https://github.com/simonbs/KeyboardToolbar", .upToNextMajor(from: "0.1.1")),
         .package(url: "https://github.com/simonbs/treesitterlanguages", from: "0.1.0"),
         .package(url: "https://github.com/ldakhoa/StyledTextKit", from: "1.0.0"),
