@@ -79,7 +79,6 @@
 		6A7CF53A2943CF35007B7D68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6A7CF53D2943CF35007B7D68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6A7CF53F2943CF35007B7D68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		6AEEE4532966CD5200767BD6 /* emoji.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = emoji.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				6A20DF6329620DE30040EBD0 /* GistHub.xcconfig */,
-				6A9BF50029503C0300EBFF04 /* ci_scripts */,
 				6A7CF6B5294652B9007B7D68 /* Frameworks */,
 				6A7CF5302943CF33007B7D68 /* GistHub */,
 				6A0CA5B52A62C4FF00366D03 /* GistHubActionExtension */,
@@ -194,14 +192,6 @@
 				6A0CA5B32A62C4FF00366D03 /* UniformTypeIdentifiers.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6A9BF50029503C0300EBFF04 /* ci_scripts */ = {
-			isa = PBXGroup;
-			children = (
-				6A9BF50129503C3200EBFF04 /* ci_pre_xcodebuild.sh */,
-			);
-			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

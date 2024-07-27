@@ -4,7 +4,7 @@ echo "Stage: PRE-Xcode Build is activated ..."
 
 cd ..
 
-cd GistHub/Resources
+cd App/GistHub/Resources
 
 plutil -replace GITHUBID -string $GITHUBID Info.plist
 plutil -replace GITHUBSECRET -string $GITHUBSECRET Info.plist
